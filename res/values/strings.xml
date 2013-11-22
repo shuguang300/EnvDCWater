@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">滇池水务</string>
+    
+    <string name="main_activity_radiogroup_machinemanage">设备信息管理</string>
+    <string name="main_activity_radiogroup_consmanage">构筑物管理</string>
+    <string name="main_activity_radiogroup_machineinfo">设备信息查看</string>
+    <string name="main_activity_radiogroup_planmanage">保养计划管理</string>
+    
+</resources>
