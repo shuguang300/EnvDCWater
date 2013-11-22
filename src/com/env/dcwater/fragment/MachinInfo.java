@@ -8,8 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MachineManage extends Fragment{
-	private View view;
+public class MachinInfo extends Fragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -17,7 +16,6 @@ public class MachineManage extends Fragment{
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.fragment_machinemanage,container, false);
-		return view;
+		return inflater.inflate(R.layout.fragment_machineinfo, container, false);
 	}
 }

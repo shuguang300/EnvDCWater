@@ -2,46 +2,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    <LinearLayout
-        android:id="@+id/main_activity_fragment"
-        android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="vertical"
-    	android:background="#000000">
-    </LinearLayout>
+   
     
     <RadioGroup
+        android:id="@+id/main_activity_controll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
         <RadioButton 
+            android:id="@+id/radiogroup_machinemanage"
             android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
         	android:button="@null"
         	android:drawableTop="@drawable/ic_launcher"
-            android:text="@string/main_activity_radiogroup_machinemanage"/>
+            android:text="@string/main_activity_radiogroup_machinemanage"
+            android:gravity="center_horizontal"/>
         <RadioButton 
+            android:id="@+id/radiogroup_consmanage"
             android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
         	android:button="@null"
         	android:drawableTop="@drawable/ic_launcher"
-            android:text="@string/main_activity_radiogroup_consmanage"/>
+            android:text="@string/main_activity_radiogroup_consmanage"
+            android:gravity="center_horizontal"/>
         <RadioButton 
+            android:id="@+id/radiogroup_machineinfo"
             android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
         	android:button="@null"
         	android:drawableTop="@drawable/ic_launcher"
-            android:text="@string/main_activity_radiogroup_machineinfo"/>
+            android:text="@string/main_activity_radiogroup_machineinfo"
+            android:gravity="center_horizontal"/>
         <RadioButton 
+            android:id="@+id/radiogroup_planmanage"
             android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
         	android:button="@null"
         	android:drawableTop="@drawable/ic_launcher"
-            android:text="@string/main_activity_radiogroup_planmanage"/>
+            android:text="@string/main_activity_radiogroup_planmanage"
+            android:gravity="center_horizontal"/>
     </RadioGroup>
+    
+     <LinearLayout
+        android:id="@+id/main_activity_fragment"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_above="@id/main_activity_controll"
+    	android:orientation="vertical">
+    </LinearLayout>
 </RelativeLayout>
