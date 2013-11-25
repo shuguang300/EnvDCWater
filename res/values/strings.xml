@@ -7,4 +7,13 @@
     <string name="main_activity_radiogroup_machineinfo">设备信息查看</string>
     <string name="main_activity_radiogroup_planmanage">保养计划管理</string>
     
+    <string-array name="test">
+        <item>设备1</item>
+        <item>设备2</item>
+        <item>设备3</item>
+        <item>设备4</item>
+        <item>设备5</item>
+        <item>设备6</item>
+    </string-array>
+    
 </resources>
