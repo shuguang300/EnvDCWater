@@ -15,6 +15,7 @@
             android:layout_alignParentLeft="true"
             android:textColor="@color/white"
             android:gravity="center_vertical"
+            android:text="@string/app_name"
             android:drawableLeft="@drawable/activity_main_arrowright" />
         
     </RelativeLayout>
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/blue"
+        android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
         <RadioButton
@@ -64,7 +66,8 @@
         <FrameLayout
             android:id="@+id/main_activity_fragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:padding="10dp" >
         </FrameLayout>
 
         <ListView

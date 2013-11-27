@@ -1,14 +1,12 @@
 package com.env.dcwater.fragment;
-
 import com.env.dcwater.R;
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MachinInfo extends Fragment{
+public class MachineInfo extends Fragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

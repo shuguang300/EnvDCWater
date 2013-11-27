@@ -7,13 +7,56 @@
     <string name="main_activity_radiogroup_machineinfo">设备信息查看</string>
     <string name="main_activity_radiogroup_planmanage">保养计划管理</string>
     
-    <string-array name="test">
+    <string name="fragment_machinemanage_name">设备名称</string>
+    <string name="fragment_machinemanage_pos">安装位置</string>
+    <string name="fragment_machinemanage_mode">型号</string>
+    <string name="fragment_machinemanage_manufacture">生产厂商</string>
+    <string name="fragment_machinemanage_more">详情</string>
+    <string name="fragment_machinemanage_update">修改</string>
+    <string name="fragment_machinemanage_delete">删除</string>
+    
+    <string name="fragment_consmanage_name">构筑物名称</string>
+    <string name="fragment_consmanage_size">构筑物尺寸</string>
+    <string name="fragment_consmanage_area">有效容积</string>
+    <string name="fragment_consmanage_remark">备注</string>
+    <string name="fragment_consmanage_more">查看</string>
+    <string name="fragment_consmanage_update">编辑</string>
+    <string name="fragment_consmanage_delete">删除</string>
+    
+    <string name="fragment_machineinfo"></string>
+    
+    <string-array name="machinemanage">
         <item>设备1</item>
         <item>设备2</item>
         <item>设备3</item>
         <item>设备4</item>
         <item>设备5</item>
         <item>设备6</item>
+    </string-array>
+    
+    <string-array name="consmanage">
+        <item>构筑物1</item>
+        <item>构筑物2</item>
+        <item>构筑物3</item>
+        <item>构筑物4</item>
+        <item>构筑物5</item>
+        <item>构筑物6</item>
+    </string-array>
+    <string-array name="machineinfo">
+        <item>设备信息1</item>
+        <item>设备信息2</item>
+        <item>设备信息3</item>
+        <item>设备信息4</item>
+        <item>设备信息5</item>
+        <item>设备信息6</item>
+    </string-array>
+    <string-array name="planmanage">
+        <item>计划1</item>
+        <item>计划2</item>
+        <item>计划3</item>
+        <item>计划4</item>
+        <item>计划5</item>
+        <item>计划6</item>
     </string-array>
     
 </resources>
