@@ -11,6 +11,7 @@
     <string name="fragment_machinemanage_pos">安装位置</string>
     <string name="fragment_machinemanage_mode">型号</string>
     <string name="fragment_machinemanage_manufacture">生产厂商</string>
+    <string name="fragment_machinemanage_add">添加</string>
     <string name="fragment_machinemanage_more">详情</string>
     <string name="fragment_machinemanage_update">修改</string>
     <string name="fragment_machinemanage_delete">删除</string>

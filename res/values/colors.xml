@@ -1,4 +1,5 @@
 <resources> 
+    <color name="lightblue">#63B8FF</color>
 	<color name="blue">#3972C6</color>
 	<color name="gray">#DEDFDE</color>
 	<color name="white">#ffffff</color>

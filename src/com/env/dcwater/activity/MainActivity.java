@@ -1,5 +1,9 @@
 package com.env.dcwater.activity;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import com.env.dcwater.R;
+import com.env.dcwater.component.FragmentListAdapter;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.ConsManage;
 import com.env.dcwater.fragment.MachineInfo;
@@ -8,6 +12,7 @@ import com.env.dcwater.fragment.PlanManage;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -20,7 +25,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -39,16 +43,18 @@ public class MainActivity extends NfcActivity{
 	private FrameLayout fragmentContainer;
 	private GestureDetector gestureDetector;
 	private TextView drawerlayoutToggle;
-	private ArrayAdapter<String> mlistAdapter;
+	private FragmentListAdapter mlistAdapter;
+	private ListView mListView;
+	private DrawerLayout mDrawerLayout;
+	private List<HashMap<String, String>> fragmentListData;
 	private int pos = 0;
 	private final int RIGHT = 0;  
 	private final int LEFT = 1;  
-	public final int MACHINEMANAGE = 0;
-	public final int CONSMANAGE = 1;
-	public final int MACHINEINFO = 2;
-	public final int PLANMANAGE = 3;
-	private android.support.v4.widget.DrawerLayout mDrawerLayout;
-	private ListView mListView;
+	public static final int MACHINEMANAGE = 0;
+	public static final int CONSMANAGE = 1;
+	public static final int MACHINEINFO = 2;
+	public static final int PLANMANAGE = 3;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,6 +65,21 @@ public class MainActivity extends NfcActivity{
 	@Override
 	protected void onStart() {
 		super.onStart();
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
 	}
 	
 	private void init(){
@@ -91,9 +112,11 @@ public class MainActivity extends NfcActivity{
 		//初始化设置第一个界面
 		fm = getFragmentManager();
 		ft = fm.beginTransaction();
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("Data", fragmentListData.get(0));
+		machineManage.setArguments(bundle);
 		ft.replace(R.id.main_activity_fragment, machineManage);
 		ft.commit();
-		
 		
 		//监听抽屉的打开关闭事件
 		mDrawerLayout.setDrawerListener(new DrawerListener() {
@@ -113,6 +136,7 @@ public class MainActivity extends NfcActivity{
 			}
 		});
 		
+		//监听listview的单击事件
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
@@ -170,6 +194,7 @@ public class MainActivity extends NfcActivity{
 	public void mlistOnItemClick(int position){
 		switch (pos) {
 		case MACHINEMANAGE:
+			((MachineManage)machineManage).setData(fragmentListData.get(position));
 			break;
 		case CONSMANAGE:
 			break;
@@ -178,7 +203,6 @@ public class MainActivity extends NfcActivity{
 		case PLANMANAGE:
 			break;
 		}
-//		drawerlayoutToggle.setText(mlistAdapter.getItem(position));
 		mDrawerLayout.closeDrawer(Gravity.LEFT);
 	}
 	
@@ -187,24 +211,27 @@ public class MainActivity extends NfcActivity{
 	 * @param position
 	 */
 	public void initDrawlayoutList(int position){
-		String[] data = null;
+		fragmentListData = new ArrayList<HashMap<String,String>>();
+		mlistAdapter = new FragmentListAdapter(this, position, fragmentListData);
+		for(int i =0;i<5;i++){
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("MachineName", "MachineName"+i);
+			map.put("MachinePos", "MachinePos"+i);
+			map.put("MachineMode", "MachineMode"+i);
+			map.put("MachineManufacture", "MachineManufacture"+i);
+			fragmentListData.add(map);
+		}
 		switch (position) {
 		case MACHINEMANAGE:
-			data = getResources().getStringArray(R.array.machinemanage);
 			break;
 		case CONSMANAGE:
-			data = getResources().getStringArray(R.array.consmanage);
 			break;
 		case MACHINEINFO:
-			data = getResources().getStringArray(R.array.machineinfo);
 			break;
 		case PLANMANAGE:
-			data = getResources().getStringArray(R.array.planmanage);
 			break;
 		}
-		mlistAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,data);
  		mListView.setAdapter(mlistAdapter);
-// 		drawerlayoutToggle.setText(mlistAdapter.getItem(0));
 	}
 	
 	/**
@@ -229,48 +256,75 @@ public class MainActivity extends NfcActivity{
 			view.setCompoundDrawablesWithIntrinsicBounds(null,null,null,drawable); 
 			break;
 		}
-		 
 	}
 	
 	/**
-	 * 替换fragment
+	 * 替换fragment,并使用hide，show方法保存fragment的状态
 	 * @param position 需要展示的fragment的序号
 	 */
 	public void changeFragment(int position){
 		Fragment temp = null;
+		Bundle bundle = new Bundle();
 		if(position!=pos){
+			initDrawlayoutList(position);
 			switch (position) {
 			case MACHINEMANAGE:
 				if(machineManage==null){
 					machineManage = new MachineManage();
+					bundle.putSerializable("Data", fragmentListData.get(0));
+					machineManage.setArguments(bundle);
 				}
 				temp = machineManage;
 				break;
 			case CONSMANAGE:
 				if(consManage==null){
 					consManage = new ConsManage();
+					bundle.putSerializable("Data", fragmentListData.get(0));
+					consManage.setArguments(bundle);
 				}
 				temp = consManage;
 				break;
 			case MACHINEINFO:
 				if(machineInfo==null){
 					machineInfo = new MachineInfo();
+					bundle.putSerializable("Data", fragmentListData.get(0));
+					machineInfo.setArguments(bundle);
 				}
 				temp = machineInfo;
 				break;
 			case PLANMANAGE:
 				if(planManage==null){
 					planManage = new PlanManage();
+					bundle.putSerializable("Data", fragmentListData.get(0));
+					planManage.setArguments(bundle);
 				}
 				temp = planManage;
 				break;
 			}
 			ft = fm.beginTransaction();
-			ft.replace(R.id.main_activity_fragment, temp);
+			switch (pos) {
+			case MACHINEMANAGE:
+				ft.hide(machineManage);
+				break;
+			case CONSMANAGE:
+				ft.hide(consManage);
+				break;
+			case MACHINEINFO:
+				ft.hide(machineInfo);
+				break;
+			case PLANMANAGE:
+				ft.hide(planManage);
+				break;
+			}
+			if(temp.isAdded()){
+				ft.show(temp);
+			}else {
+				ft.add(temp, position+"");
+			}
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			ft.commit();
 			pos = position;
-			initDrawlayoutList(pos);
+			
 		}
 	}
 	
@@ -325,4 +379,5 @@ public class MainActivity extends NfcActivity{
 		}
 		fragmentControll.check(radioId);
 	}
+	
 } 
