@@ -2,6 +2,7 @@ package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.FragmentListAdapter;
 import com.env.dcwater.component.NfcActivity;
@@ -9,14 +10,19 @@ import com.env.dcwater.fragment.ConsManage;
 import com.env.dcwater.fragment.MachineInfo;
 import com.env.dcwater.fragment.MachineManage;
 import com.env.dcwater.fragment.PlanManage;
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.telephony.TelephonyManager;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -30,6 +36,7 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Ö÷½çÃæ
