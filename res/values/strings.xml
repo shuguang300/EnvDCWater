@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">滇池水务</string>
+    <string name="system_name">滇池智慧水务信息系统</string>
     
-    <string name="main_activity_radiogroup_machinemanage">设备信息管理</string>
-    <string name="main_activity_radiogroup_consmanage">构筑物管理</string>
-    <string name="main_activity_radiogroup_machineinfo">设备信息查看</string>
-    <string name="main_activity_radiogroup_planmanage">保养计划管理</string>
+    <string name="activity_machinemanage_radiogroup_machinemanage">设备信息管理</string>
+    <string name="activity_machinemanage_radiogroup_consmanage">构筑物管理</string>
+    <string name="activity_machinemanage_radiogroup_machineinfo">设备信息查看</string>
+    <string name="activity_machinemanage_radiogroup_planmanage">保养计划管理</string>
     
     <string name="fragment_machinemanage_name">设备名称</string>
     <string name="fragment_machinemanage_pos">安装位置</string>
@@ -23,6 +24,13 @@
     <string name="fragment_consmanage_more">查看</string>
     <string name="fragment_consmanage_update">编辑</string>
     <string name="fragment_consmanage_delete">删除</string>
+    
+    
+    <string name="activity_config_title">设置</string>
+    <string name="activity_userright_title">功能导航区</string>
+    <string name="activity_userright_group_machinemanage">设备管理</string>
+    <string name="activity_userright_group_performance">绩效管理</string>
+    <string name="activity_userright_group_analysis">生产统计分析</string>
     
     <string name="fragment_machineinfo"></string>
     

@@ -19,6 +19,11 @@ public class NfcActivity extends Activity{
 	}
 	
 	@Override
+	protected void onStart() {
+		super.onStart();
+	}
+	
+	@Override
 	protected void onResume() {
 		super.onResume();
 		nfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -27,7 +32,6 @@ public class NfcActivity extends Activity{
 				nfcAdapter.enableForegroundDispatch(this, NfcUtil.NFCPendingIntent(this), NfcUtil.intentFilters, NfcUtil.techList);
 			}
 		}
-		super.onResume();
 	}
 	
 	@Override
@@ -41,6 +45,11 @@ public class NfcActivity extends Activity{
 	@Override
 	protected void onStop() {
 		super.onStop();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
 	}
 	
 	@Override

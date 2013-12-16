@@ -1,84 +1,38 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
-    <RelativeLayout 
-        android:id="@+id/activity_main"
-        style="@style/activity_titlebar"
-        android:layout_alignParentTop="true">
 
-        <TextView
-            android:id="@+id/drawlayout_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:textColor="@color/white"
-            android:gravity="center_vertical"
-            android:text="@string/app_name"
-            android:drawableLeft="@drawable/activity_main_arrowright" />
-        
-    </RelativeLayout>
-    
-
-    <RadioGroup
-        android:id="@+id/main_activity_controll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/blue"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/radiogroup_machinemanage"
-            style="@style/fragmentcontroll_item"
-            android:checked="true"
-            android:drawableTop="@drawable/fragmentcontroll_item_bg"
-            android:text="@string/main_activity_radiogroup_machinemanage" />
-
-        <RadioButton
-            android:id="@+id/radiogroup_consmanage"
-            style="@style/fragmentcontroll_item"
-            android:drawableTop="@drawable/fragmentcontroll_item_bg"
-            android:text="@string/main_activity_radiogroup_consmanage" />
-
-        <RadioButton
-            android:id="@+id/radiogroup_machineinfo"
-            style="@style/fragmentcontroll_item"
-            android:drawableTop="@drawable/fragmentcontroll_item_bg"
-            android:text="@string/main_activity_radiogroup_machineinfo" />
-
-        <RadioButton
-            android:id="@+id/radiogroup_planmanage"
-            style="@style/fragmentcontroll_item"
-            android:drawableTop="@drawable/fragmentcontroll_item_bg"
-            android:text="@string/main_activity_radiogroup_planmanage" />
-    </RadioGroup>
-
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/mdrawlayout"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/activity_main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/main_activity_controll"
-        android:layout_below="@id/activity_main" >
+        android:layout_gravity="center" >
+    </android.support.v4.view.ViewPager>
 
-        <FrameLayout
-            android:id="@+id/main_activity_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp" >
-        </FrameLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="30dp"
+        android:gravity="center_horizontal" >
 
-        <ListView
-            android:id="@+id/mdrawlayout_item"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:background="@color/white"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent" >
-        </ListView>
-    </android.support.v4.widget.DrawerLayout>
+        <ImageView
+            android:id="@+id/activity_main_page0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="matrix"
+            android:src="@drawable/page_now" />
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/activity_main_page1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:scaleType="matrix"
+            android:src="@drawable/page" />
+
+        
+    </LinearLayout>
+
+</FrameLayout>
