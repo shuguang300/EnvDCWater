@@ -1,6 +1,6 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
-
+import java.util.HashMap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -8,18 +8,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.UserRigthGroup;
+import com.env.dcwater.javabean.EnumList;
 
-public class MainActivity extends NfcActivity implements OnClickListener{
+public class MainActivity extends NfcActivity{
 	
 	private ViewPager viewPager;
 	private ImageView imageView0,imageView1;
@@ -27,22 +25,55 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	private ArrayList<View> views;
 	private long lastExitTime;
 	private LinearLayout userRightContainer;
-	private UserRigthGroup machineManageGroup,performanceGroup,analysisGroup;
-	
+	private UserRigthGroup machineManageGroup;
+	private ArrayList<HashMap<String, String>> data;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		iniData();
 		ini();
 	}
 	
+	/**
+	 *   测试数据
+	 */
+	private void iniData(){
+		data = new ArrayList<HashMap<String,String>>();
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put(EnumList.EnumUserRight.RightName, EnumList.EnumUserRight.MACHINEINFO.getName());
+		map.put(EnumList.EnumUserRight.RightCode, EnumList.EnumUserRight.MACHINEINFO.getCode()+"");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put(EnumList.EnumUserRight.RightName, EnumList.EnumUserRight.REPAIRMANAGE.getName());
+		map.put(EnumList.EnumUserRight.RightCode, EnumList.EnumUserRight.REPAIRMANAGE.getCode()+"");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put(EnumList.EnumUserRight.RightName, EnumList.EnumUserRight.MAINTAINHISTORY.getName());
+		map.put(EnumList.EnumUserRight.RightCode, EnumList.EnumUserRight.MAINTAINHISTORY.getCode()+"");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put(EnumList.EnumUserRight.RightName, EnumList.EnumUserRight.UPKEEPHISTORY.getName());
+		map.put(EnumList.EnumUserRight.RightCode, EnumList.EnumUserRight.UPKEEPHISTORY.getCode()+"");
+		data.add(map);
+	}
+	
+	
+	/**
+	 * 初始化布局控件
+	 */
 	private void ini(){
 		viewPager = (ViewPager)findViewById(R.id.activity_main_container);
 		imageView0 = (ImageView)findViewById(R.id.activity_main_page0);
 		imageView1 = (ImageView)findViewById(R.id.activity_main_page1);
-		userRigthView = LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_userright, null);
+		//注册用户权限界面
+		userRigthView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_userright, null);
+		//注册用户设置界面
+		configView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_config, null);
 		iniUserRight();
-		configView = LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_config, null);
 		iniConfig();
 		views = new ArrayList<View>();
 		views.add(userRigthView);
@@ -56,12 +87,8 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	 */
 	private void iniUserRight(){
 		userRightContainer = (LinearLayout)userRigthView.findViewById(R.id.activity_userright_container);
-		machineManageGroup = new UserRigthGroup(MainActivity.this,getResources().getString(R.string.activity_userright_group_machinemanage));
-		performanceGroup = new UserRigthGroup(MainActivity.this,getResources().getString(R.string.activity_userright_group_performance));
-		analysisGroup = new UserRigthGroup(MainActivity.this,getResources().getString(R.string.activity_userright_group_analysis));
+		machineManageGroup = new UserRigthGroup(MainActivity.this,getResources().getString(R.string.activity_userright_group_machinemanage),data);
 		userRightContainer.addView(machineManageGroup);
-		userRightContainer.addView(performanceGroup);
-		userRightContainer.addView(analysisGroup);
 	}
 	
 	/**
@@ -111,15 +138,6 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		lastExitTime = System.currentTimeMillis();	
 	}
 	
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.test:
-			break;
-		default:
-			break;
-		}
-	}
 	
 	class MainOnPageChangeListener implements OnPageChangeListener{
 		@Override

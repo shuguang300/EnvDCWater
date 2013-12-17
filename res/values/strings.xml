@@ -29,6 +29,12 @@
     <string name="activity_config_title">设置</string>
     <string name="activity_userright_title">功能导航区</string>
     <string name="activity_userright_group_machinemanage">设备管理</string>
+    <string name="activity_userright_item_machineinfo">设备信息查看</string>
+    <string name="activity_userright_item_repairmanage">报修管理</string>
+    <string name="activity_userright_item_maintainhistory">维修历史记录</string>
+    <string name="activity_userright_item_upkeephistory">保养历史记录</string>
+    
+    
     <string name="activity_userright_group_performance">绩效管理</string>
     <string name="activity_userright_group_analysis">生产统计分析</string>
     
