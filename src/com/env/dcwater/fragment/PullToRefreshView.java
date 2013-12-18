@@ -1,11 +1,10 @@
 package com.env.dcwater.fragment;
 
 import com.env.dcwater.R;
-
-import android.R.integer;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.Animation;
@@ -13,8 +12,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -39,7 +36,7 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 	private boolean mEnablePullRefresh = true; //是否允许pull refresh
 	private boolean mPullRefreshing = false; // 是否正在pullrefresh
 	private int mScrollBack;
-	
+	private float mLastY = -1; // 记录上一次y轴的位置
 	/**
 	 * 回到了顶部
 	 */
@@ -49,7 +46,7 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 	 */
 	private final int SCROLLBACK_FOOTER = 1;
 	/**
-	 * scroll back duration
+	 * 滚动延迟
 	 */
 	private final int SCROLL_DURATION = 500; 
 	/**
@@ -133,8 +130,7 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 	}
 	
 	/**
-	 * enable or disable pull down refresh feature.
-	 * 
+	 * 设置是否允许下拉
 	 * @param enable
 	 */
 	public void setPullRefreshEnable(boolean enable) {
@@ -146,22 +142,146 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 		}
 	}
 	
+	/**
+	 * 停止更新，重置header的高度
+	 */
+	public void stopRefresh() {
+		if (mPullRefreshing == true) {
+			mPullRefreshing = false;
+			resetHeaderHeight();
+		}
+	}
+	
+	/**
+	 * 重置headerview的可见高度
+	 */
+	private void resetHeaderHeight() {
+		int height = getVisiableHeight();
+		if (height == 0) // 不可见
+			return;
+		// refreshing and header isn't shown fully. do nothing.
+		if (mPullRefreshing && height <= mHeaderHeight) {
+			return;
+		}
+		int finalHeight = 0; // default: scroll back to dismiss header.
+		// is refreshing, just scroll back to show all the header.
+		if (mPullRefreshing && height > mHeaderHeight) {
+			finalHeight = mHeaderHeight;
+		}
+		mScrollBack = SCROLLBACK_HEADER;
+		mScroller.startScroll(0, height, 0, finalHeight - height,SCROLL_DURATION);
+		// trigger computeScroll
+		invalidate();
+	}
+	
+	
 	@Override
 	public void setOnScrollListener(OnScrollListener l) {
 		super.setOnScrollListener(l);
 		mScrollListener = l;
 	}
+	
+	@Override
+	public void computeScroll() {
+		super.computeScroll();
+		if (mScroller.computeScrollOffset()) {
+			if (mScrollBack == SCROLLBACK_HEADER) {
+				setVisiableHeight(mScroller.getCurrY());
+			} else {
+//				mFooterView.setBottomMargin(mScroller.getCurrY());
+			}
+			postInvalidate();
+			invokeOnScrolling();
+		}
+	}
+	
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		
+		if (mScrollListener != null) {
+			mScrollListener.onScrollStateChanged(view, scrollState);
+		}
 	}
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
-		
+		// send to user's listener
+		if (mScrollListener != null) {
+			mScrollListener.onScroll(view, firstVisibleItem, visibleItemCount,totalItemCount);
+		}
 	}
 	
+	@Override
+	public boolean onTouchEvent(MotionEvent ev) {
+		if (mLastY == -1) {
+			mLastY = ev.getRawY();
+		}
+		switch (ev.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			mLastY = ev.getRawY();
+			break;
+		case MotionEvent.ACTION_MOVE:
+			final float deltaY = ev.getRawY() - mLastY;
+			mLastY = ev.getRawY();
+			System.out.println("数据监测：" + getFirstVisiblePosition() + "---->"
+					+ getLastVisiblePosition());
+			if (getFirstVisiblePosition() == 0
+					&& (getVisiableHeight() > 0 || deltaY > 0)) {
+				// the first item is showing, header has shown or pull down.
+				updateHeaderHeight(deltaY / OFFSET_RADIO);
+				invokeOnScrolling();
+			} 
+//			else if (getLastVisiblePosition() == mTotalItemCount - 1
+//					&& (mFooterView.getBottomMargin() > 0 || deltaY < 0)) {
+//				// last item, already pulled up or want to pull up.
+//				updateFooterHeight(-deltaY / OFFSET_RADIO);
+//			}
+			break;
+		default:
+			mLastY = -1; // reset
+			if (getFirstVisiblePosition() == 0) {
+				// invoke refresh
+				if (mEnablePullRefresh
+						&& getVisiableHeight() > mHeaderHeight) {
+					mPullRefreshing = true;
+					setStatu(STATE_REFRESHING);
+					if (mOnRefreshListener != null) {
+						mOnRefreshListener.OnRefresh();
+					}
+				}
+				resetHeaderHeight();
+			}
+//			if (getLastVisiblePosition() == mTotalItemCount - 1) {
+//				// invoke load more.
+//				if (mEnablePullLoad
+//						&& mFooterView.getBottomMargin() > PULL_LOAD_MORE_DELTA) {
+//					startLoadMore();
+//				}
+//				resetFooterHeight();
+//			}
+			break;
+		}
+		return super.onTouchEvent(ev);
+	}
+	
+	private void invokeOnScrolling() {
+		if (mScrollListener instanceof OnXScrollListener) {
+			OnXScrollListener l = (OnXScrollListener) mScrollListener;
+			l.onXScrolling(this);
+		}
+	}
+	
+	private void updateHeaderHeight(float delta) {
+		setVisiableHeight((int) delta+getVisiableHeight());
+		if (mEnablePullRefresh && !mPullRefreshing) { // 未处于刷新状态，更新箭头
+			if (getVisiableHeight() >mHeaderHeight) {
+				setStatu(STATE_READY);
+			} else {
+				setStatu(STATE_NORMAL);
+			}
+		}
+		setSelection(0); // scroll to top each time
+	}
 	
 	/**
 	 * 设置上次刷新的时间
@@ -169,12 +289,6 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 	 */
 	public void setRefreshTime(String arg0){
 		mHeaderTime.setText(arg0);
-	}
-	/**
-	 * 停止刷新
-	 */
-	public void stopRefresh(){
-		
 	}
 	
 	/**
@@ -232,6 +346,14 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 	 */
 	public int getVisiableHeight(){
 		return mHeader.getHeight();
+	}
+	
+	/**
+	 * you can listen ListView.OnScrollListener or this one. it will invoke
+	 * onXScrolling when header/footer scroll back.
+	 */
+	public interface OnXScrollListener extends OnScrollListener {
+		public void onXScrolling(View view);
 	}
 	
 	/**
