@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
-import com.env.dcwater.fragment.UserRigthGroup;
+import com.env.dcwater.fragment.UserRigthGroupView;
 import com.env.dcwater.javabean.EnumList;
 
 public class MainActivity extends NfcActivity{
@@ -25,7 +25,7 @@ public class MainActivity extends NfcActivity{
 	private ArrayList<View> views;
 	private long lastExitTime;
 	private LinearLayout userRightContainer;
-	private UserRigthGroup machineManageGroup;
+	private UserRigthGroupView machineManageGroup;
 	private ArrayList<HashMap<String, String>> data;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,7 @@ public class MainActivity extends NfcActivity{
 	 */
 	private void iniUserRight(){
 		userRightContainer = (LinearLayout)userRigthView.findViewById(R.id.activity_userright_container);
-		machineManageGroup = new UserRigthGroup(MainActivity.this,getResources().getString(R.string.activity_userright_group_machinemanage),data);
+		machineManageGroup = new UserRigthGroupView(MainActivity.this,getResources().getString(R.string.activity_userright_group_machinemanage),data);
 		userRightContainer.addView(machineManageGroup);
 	}
 	

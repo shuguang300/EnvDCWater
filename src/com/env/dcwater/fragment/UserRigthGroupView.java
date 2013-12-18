@@ -23,13 +23,13 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class UserRigthGroup extends LinearLayout implements OnItemClickListener{
+public class UserRigthGroupView extends LinearLayout implements OnItemClickListener{
 	private TextView title;
 	private Context mContext;
 	private String mTitleStr;
 	private GridView rights;
 	private ArrayList<HashMap<String, String>> mRightLists;
-	public UserRigthGroup(Context context,String titleTxt,ArrayList<HashMap<String, String>> rightList){
+	public UserRigthGroupView(Context context,String titleTxt,ArrayList<HashMap<String, String>> rightList){
 		super(context);
 		mContext = context;
 		mTitleStr = titleTxt;
@@ -37,7 +37,7 @@ public class UserRigthGroup extends LinearLayout implements OnItemClickListener{
 		LayoutInflater.from(mContext).inflate(R.layout.view_userright_group, this);
 		ini();
 	}
-	public UserRigthGroup(Context context,AttributeSet attr){
+	public UserRigthGroupView(Context context,AttributeSet attr){
 		super(context, attr);
 	}
 	private void ini(){

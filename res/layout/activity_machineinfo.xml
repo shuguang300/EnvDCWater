@@ -22,13 +22,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp" >
-
-
-        </LinearLayout>
+   		<com.env.dcwater.fragment.PullToRefreshView
+   		    android:id="@+id/activity_machineinfo_info"
+   		    android:layout_width="match_parent"
+   		    android:layout_height="wrap_content" >
+   		</com.env.dcwater.fragment.PullToRefreshView>
 
         <ListView
             android:id="@+id/activity_machineinfo_listview"
