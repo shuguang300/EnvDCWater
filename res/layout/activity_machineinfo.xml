@@ -25,7 +25,8 @@
    		<com.env.dcwater.fragment.PullToRefreshView
    		    android:id="@+id/activity_machineinfo_info"
    		    android:layout_width="match_parent"
-   		    android:layout_height="wrap_content" >
+   		    android:layout_height="wrap_content"
+   		    android:listSelector="#00000000" >
    		</com.env.dcwater.fragment.PullToRefreshView>
 
         <ListView
@@ -35,7 +36,8 @@
             android:layout_gravity="left"
             android:background="@color/white"
             android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent" >
+            android:divider="@android:color/transparent"
+            android:listSelector="#00000000" >
         </ListView>
     </android.support.v4.widget.DrawerLayout>
 

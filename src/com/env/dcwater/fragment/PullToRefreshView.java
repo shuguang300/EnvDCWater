@@ -83,21 +83,21 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 		mHeaderView = new PullToRefreshHeadView(context);
 		mHeaderViewContent = (RelativeLayout) mHeaderView.findViewById(R.id.xlistview_header_content);
 		mHeaderTimeView = (TextView) mHeaderView.findViewById(R.id.xlistview_header_time);
+		mHeaderTimeView.setText("刚刚");
 		addHeaderView(mHeaderView);
 
 //		// init footer view
 //		mFooterView = new XListViewFooter(context);
 
 		// init header height
-		mHeaderView.getViewTreeObserver().addOnGlobalLayoutListener(
-				new OnGlobalLayoutListener() {
-					@SuppressWarnings("deprecation")
-					@Override
-					public void onGlobalLayout() {
-						mHeaderViewHeight = mHeaderViewContent.getHeight();
-						getViewTreeObserver().removeGlobalOnLayoutListener(this);
-					}
-				});
+		mHeaderView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				mHeaderViewHeight = mHeaderViewContent.getHeight();
+				getViewTreeObserver().removeGlobalOnLayoutListener(this);
+			}
+		});
 	}
 
 //	@Override
@@ -185,8 +185,7 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 	}
 
 	private void updateHeaderHeight(float delta) {
-		mHeaderView.setVisiableHeight((int) delta
-				+ mHeaderView.getVisiableHeight());
+		mHeaderView.setVisiableHeight((int) delta + mHeaderView.getVisiableHeight());
 		if (mEnablePullRefresh && !mPullRefreshing) { // 未处于刷新状态，更新箭头
 			if (mHeaderView.getVisiableHeight() > mHeaderViewHeight) {
 				mHeaderView.setState(PullToRefreshHeadView.STATE_READY);
@@ -214,8 +213,7 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 			finalHeight = mHeaderViewHeight;
 		}
 		mScrollBack = SCROLLBACK_HEADER;
-		mScroller.startScroll(0, height, 0, finalHeight - height,
-				SCROLL_DURATION);
+		mScroller.startScroll(0, height, 0, finalHeight - height,SCROLL_DURATION);
 		// trigger computeScroll
 		invalidate();
 	}
@@ -258,7 +256,6 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 		if (mLastY == -1) {
 			mLastY = ev.getRawY();
 		}
-
 		switch (ev.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			mLastY = ev.getRawY();
@@ -266,10 +263,7 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 		case MotionEvent.ACTION_MOVE:
 			final float deltaY = ev.getRawY() - mLastY;
 			mLastY = ev.getRawY();
-			System.out.println("数据监测：" + getFirstVisiblePosition() + "---->"
-					+ getLastVisiblePosition());
-			if (getFirstVisiblePosition() == 0
-					&& (mHeaderView.getVisiableHeight() > 0 || deltaY > 0)) {
+			if (getFirstVisiblePosition() == 0 && (mHeaderView.getVisiableHeight() > 0 || deltaY > 0)) {
 				// the first item is showing, header has shown or pull down.
 				updateHeaderHeight(deltaY / OFFSET_RADIO);
 				invokeOnScrolling();
