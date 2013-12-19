@@ -38,10 +38,12 @@
     <string name="activity_userright_group_performance">绩效管理</string>
     <string name="activity_userright_group_analysis">生产统计分析</string>
     
-    <string name="view_pulltorefresh_header_normal">下拉刷新</string>
-    <string name="view_pulltorefresh_header_ready">松开刷新数据</string>
-    <string name="view_pulltorefresh_header_loading">正在加载。。。。。。</string>
-    <string name="view_pulltorefresh_header_time">上次更新时间：</string>
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_header_hint_loading">正在加载...</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
     
     <string name="fragment_machineinfo"></string>
     

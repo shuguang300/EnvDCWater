@@ -1,27 +1,25 @@
 package com.env.dcwater.activity;
-
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.PullToRefreshView;
+import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 
-public class MachineInfoActivity extends NfcActivity implements OnItemClickListener{
+public class MachineInfoActivity extends NfcActivity implements OnItemClickListener,IXListViewListener{
 	private DrawerLayout mDrawerLayout;
 	private ListView mListView;
 	private PullToRefreshView infoListView;
+	private Handler mHandler;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,6 +42,9 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 		mListView.setAdapter(adapter);
 		mListView.setOnItemClickListener(this);
 		infoListView.setAdapter(adapter);
+		infoListView.setXListViewListener(this);
+		mHandler = new Handler();
+		
 	}
 	
 	@Override
@@ -74,5 +75,17 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 		mDrawerLayout.closeDrawer(Gravity.LEFT);
+	}
+	@Override
+	public void onRefresh() {
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				infoListView.setRefreshTime("¸Õ¸Õ");
+				infoListView.stopRefresh();
+				
+			}
+		}, 2000);
+		
 	}
 }
