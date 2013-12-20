@@ -69,31 +69,44 @@
             android:name="com.env.dcwater.activity.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/ic_launcher" >
         </activity>
         <activity
             android:name="com.env.dcwater.activity.MachineInfoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/ic_launcher">
         </activity>
         <activity
             android:name="com.env.dcwater.activity.RepairManageActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:label="@string/activity_userright_item_repairmanage"
+            android:icon="@drawable/ic_launcher" >
         </activity>
         <activity
             android:name="com.env.dcwater.activity.MaintainHistoryActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:label="@string/activity_userright_item_maintainhistory"
+            android:icon="@drawable/ic_launcher" >
         </activity>
         <activity
             android:name="com.env.dcwater.activity.UpkeepHistoryActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:label="@string/activity_userright_item_upkeephistory"
+            android:icon="@drawable/ic_launcher" >
         </activity>
         <activity
             android:name="com.env.dcwater.activity.MachineManageActivity"

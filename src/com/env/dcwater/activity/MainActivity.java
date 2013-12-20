@@ -1,17 +1,22 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.UserRigthGroupView;
@@ -27,12 +32,24 @@ public class MainActivity extends NfcActivity{
 	private LinearLayout userRightContainer;
 	private UserRigthGroupView machineManageGroup;
 	private ArrayList<HashMap<String, String>> data;
+	private ActionBar mActionBar;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		iniActionBar();
 		iniData();
 		ini();
+	}
+	
+	/**
+	 * 初始化actionbar
+	 */
+	private void iniActionBar(){
+		mActionBar = getActionBar();
+		mActionBar.setTitle(R.string.activity_userright_title);
+		mActionBar.setDisplayShowHomeEnabled(true);
+		mActionBar.setHomeButtonEnabled(true);
 	}
 	
 	/**
@@ -129,6 +146,23 @@ public class MainActivity extends NfcActivity{
 	}
 	
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			Toast.makeText(this, "注销", Toast.LENGTH_SHORT).show();
+			break;
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
 	public void onBackPressed() {
 		if(System.currentTimeMillis()-lastExitTime>2000){
 			Toast.makeText(MainActivity.this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
@@ -148,10 +182,12 @@ public class MainActivity extends NfcActivity{
 		public void onPageSelected(int arg0) {
 			switch (arg0) {
 			case 0:
+				mActionBar.setTitle(R.string.activity_userright_title);
 				imageView0.setImageDrawable(getResources().getDrawable(R.drawable.page_now));
 				imageView1.setImageDrawable(getResources().getDrawable(R.drawable.page));
 				break;
 			case 1:
+				mActionBar.setTitle(R.string.activity_config_title);
 				imageView0.setImageDrawable(getResources().getDrawable(R.drawable.page));
 				imageView1.setImageDrawable(getResources().getDrawable(R.drawable.page_now));
 				break;

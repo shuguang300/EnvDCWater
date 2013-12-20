@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item 
+        android:id="@+id/menu_machineinfo_maintainhistory"
+        android:title="@string/menu_machineinfo_maintainhistory"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="always|withText"/>
+    
+    <item
+        android:id="@+id/menu_machineinfo_upkeephistory"
+        android:title="@string/menu_machineinfo_upkeephistory"
+        android:showAsAction="always|withText"
+        android:icon="@drawable/ic_launcher"/>
+    <item
+        android:id="@+id/menu_machineinfo_refresh"
+        android:title="@string/menu_machineinfo_refresh"
+        android:showAsAction="always|withText"
+        android:icon="@drawable/ic_launcher"/>
+
+</menu>

@@ -4,16 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-	<RelativeLayout 
-        android:id="@+id/activity_repairmanage_titlebar"
-        style="@style/activity_titlebar">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:textColor="@color/white"
-            android:gravity="center_vertical"
-            android:text="@string/activity_userright_item_repairmanage" />
-    </RelativeLayout>
+    
+    <com.env.dcwater.fragment.PullToRefreshView 
+        android:id="@+id/activity_repairmanage_info"
+        android:layout_width="match_parent"
+   		android:layout_height="match_parent"
+   		android:listSelector="@drawable/inforitem_withnoconner_blue_bg">
+    </com.env.dcwater.fragment.PullToRefreshView>
+    
 </LinearLayout>

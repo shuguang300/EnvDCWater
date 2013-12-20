@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/menu_repairmanage_add"
+        android:title="@string/menu_repairmanage_add"
+        android:showAsAction="always|withText"
+        android:icon="@drawable/ic_launcher"/>
+    <item
+        android:id="@+id/menu_repairmanage_refresh"
+        android:title="@string/menu_repairmanage_refresh"
+        android:showAsAction="always|withText"
+        android:icon="@drawable/ic_launcher"/>
+</menu>

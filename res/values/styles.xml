@@ -36,7 +36,7 @@
 	    <item name="android:padding">10dp</item>
 	    <item name="android:layout_marginTop">5dp</item>
 	    <item name="android:clickable">true</item>
-	    <item name="android:background">@drawable/inforitem_withallconner_bg</item>
+	    <item name="android:background">@drawable/inforitem_withallconner_blue_bg</item>
 	</style>
 	<style name="fragment_button">
 	    <item name="android:layout_width">wrap_content</item>
@@ -48,6 +48,33 @@
 	    <item name="android:layout_height">match_parent</item>
 	    <item name="android:layout_margin">5dp</item>
 	    <item name="android:padding">5dp</item>
-	    <item name="android:background">@drawable/inforitem_withallconner_bg</item>
+	    <item name="android:background">@drawable/inforitem_withallconner_blue_bg</item>
 	</style>
+	<style name="CustomActionBarTheme"  parent="@android:style/Theme.Holo.Light">  
+        <item name="android:actionBarStyle">@style/MyActionBar</item>  
+        <item name="android:actionBarTabTextStyle">@style/MyActionBarTabText</item>  
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:actionBarDivider">@drawable/actionbar_item_divider</item>  
+        <!-- ActionBar 的小箭头 -->  
+     <!--    <item name="android:homeAsUpIndicator">@drawable/activity_machinemanage_arrowleft</item> -->
+    </style>  
+  
+    <!-- ActionBar styles -->  
+    <style name="MyActionBar"  parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/lightblack</item>  
+        <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
+       
+    </style>  
+    
+    
+    <!-- ActionBar title text -->  
+    <style name="MyActionBarTitleText"  parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">  
+        <item name="android:textColor">@color/white</item>  
+    </style>  
+  
+    <!-- ActionBar tabs text styles -->  
+    <style name="MyActionBarTabText"   parent="@android:style/Widget.Holo.ActionBar.TabText">  
+        <item name="android:textColor">@color/white</item>  
+    </style>  
+	
 </resources>

@@ -5,25 +5,9 @@
     android:background="@color/lightblue"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:id="@+id/activity_userright_titlebar"
-        style="@style/activity_titlebar"
-        android:layout_alignParentTop="true" >
-
-        <TextView
-            android:id="@+id/test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:gravity="center_vertical"
-            android:text="@string/activity_userright_title"
-            android:textColor="@color/white" />
-    </RelativeLayout>
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/activity_userright_titlebar" >
+        android:layout_height="match_parent" >
         <LinearLayout
             android:id="@+id/activity_userright_container"
             android:layout_width="match_parent"

@@ -2,6 +2,7 @@
     <color name="lightblue">#63B8FF</color>
 	<color name="blue">#3972C6</color>
 	<color name="gray">#DEDFDE</color>
+	<color name="transwhite">#50ffffff</color>
 	<color name="white">#ffffff</color>
 	<color name="black">#000000</color>
 	<color name="lightblack">#383838</color>

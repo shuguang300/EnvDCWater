@@ -35,6 +35,15 @@
     <string name="activity_userright_item_upkeephistory">保养历史记录</string>
     
     
+    <string name="menu_machineinfo_maintainhistory">维修历史</string>
+    <string name="menu_machineinfo_upkeephistory">保养历史</string>
+    <string name="menu_machineinfo_refresh">刷新</string>
+    <string name="menu_repairmanage_add">故障上报</string>
+    <string name="menu_repairmanage_refresh">刷新</string>
+    
+    <string name="contextmenu_repairmanage_update">修改</string>
+    <string name="contextmenu_repairmanage_delete">删除</string>
+    
     <string name="activity_userright_group_performance">绩效管理</string>
     <string name="activity_userright_group_analysis">生产统计分析</string>
     
