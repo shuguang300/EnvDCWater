@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
@@ -40,7 +41,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_repairmanage);
 		iniActionBar();
@@ -148,6 +148,17 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		//获取触发contextmenu的listview的item的position
+		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
+		int selectedPos = info.position;
+		switch (item.getItemId()) {
+		case R.id.contextmenu_repairmanage_update:
+			Toast.makeText(this, "修改"+selectedPos, Toast.LENGTH_SHORT).show();
+			break;
+		case R.id.contextmenu_repairmanage_delete:
+			Toast.makeText(this, "删除"+selectedPos, Toast.LENGTH_SHORT).show();
+			break;
+		}
 		return super.onContextItemSelected(item);
 	}
 	
@@ -184,22 +195,18 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	}
 	
 	class RepairManageItemAdapter extends BaseAdapter{
-
 		@Override
 		public int getCount() {
 			return mData.size();
 		}
-
 		@Override
 		public HashMap<String, String> getItem(int position) {
 			return mData.get(position);
 		}
-
 		@Override
 		public long getItemId(int position) {
 			return position;
 		}
-
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if(convertView==null){
@@ -218,7 +225,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			info.setText(map.get("Info"));
 			return convertView;
 		}
-		
 	}
 	
 }
