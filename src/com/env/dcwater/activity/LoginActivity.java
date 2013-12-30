@@ -9,6 +9,11 @@ import android.widget.Button;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 
+/**
+ * 登录窗口
+ * @author sk
+ *
+ */
 public class LoginActivity extends NfcActivity implements OnClickListener{
 	private Button loginButton;
 	private Intent userRightIntent;

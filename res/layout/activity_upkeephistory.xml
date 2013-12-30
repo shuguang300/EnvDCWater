@@ -4,4 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <com.env.dcwater.fragment.PullToRefreshView
+        android:id="@+id/activity_upkeephistory_list"
+        android:layout_width="match_parent"
+   		android:layout_height="match_parent"
+   		android:listSelector="@drawable/inforitem_withnoconner_blue_bg" >
+    </com.env.dcwater.fragment.PullToRefreshView>
+    
 </LinearLayout>

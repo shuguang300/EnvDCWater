@@ -28,6 +28,10 @@ import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 
+/**
+ * æŠ¥ä¿®ç®¡ç†
+ * @author sk
+ */
 public class RepairManageActivity extends NfcActivity implements IXListViewListener,OnItemClickListener,OnItemLongClickListener{
 	private ActionBar mActionBar;
 	private PullToRefreshView mListView;
@@ -49,7 +53,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	}
 	
 	/**
-	 * ³õÊ¼»¯actionbar
+	 * åˆå§‹åŒ–actionbar
 	 */
 	private void iniActionBar(){
 		mActionBar = getActionBar();
@@ -59,7 +63,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	}
 	
 	/**
-	 * ³õÊ¼»¯Ò³ÃæÊı¾İ
+	 * åˆå§‹åŒ–æ•°æ®
 	 */
 	private void iniData(){
 		mData = new ArrayList<HashMap<String,String>>();
@@ -67,17 +71,17 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		Random random = new Random();
 		for (int i = 0; i < 10; i++) {
 			map = new HashMap<String, String>();
-			map.put("ID", "±àºÅ"+random.nextInt(10));
-			map.put("Time", "Ê±¼ä"+random.nextInt(10));
-			map.put("State", "ÒÑÉÏ±¨"+random.nextInt(10));
-			map.put("Name", "Î»ÓÚ"+random.nextInt(10));
-			map.put("Info", "¹ÊÕÏĞÅÏ¢"+random.nextInt(10));
+			map.put("ID", "ï¿½ï¿½ï¿½"+random.nextInt(10));
+			map.put("Time", "Ê±ï¿½ï¿½"+random.nextInt(10));
+			map.put("State", "ï¿½ï¿½ï¿½Ï±ï¿½"+random.nextInt(10));
+			map.put("Name", "Î»ï¿½ï¿½"+random.nextInt(10));
+			map.put("Info", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢"+random.nextInt(10));
 			mData.add(map);
 		}
 	}
 	
 	/**
-	 * ³õÊ¼»¯²¼¾Ö¿Ø¼ş
+	 * åˆå§‹åŒ–view
 	 */
 	private void iniView(){
 		mListView = (PullToRefreshView)findViewById(R.id.activity_repairmanage_info);
@@ -130,10 +134,8 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			onBackPressed();
 			break;
 		case R.id.menu_repairmanage_add:
-			Toast.makeText(this, "Ôö¼ÓÉÏ±¨", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.menu_repairmanage_refresh:
-			Toast.makeText(this, "Ë¢ĞÂ", Toast.LENGTH_SHORT).show();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -143,20 +145,20 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		getMenuInflater().inflate(R.menu.contextmenu_repairmanage, menu);
-		menu.setHeaderTitle("¸ü¶à¹¦ÄÜ");  
+		menu.setHeaderTitle("ï¿½ï¿½à¹¦ï¿½ï¿½");  
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		//»ñÈ¡´¥·¢contextmenuµÄlistviewµÄitemµÄposition
+		//è·å¾—contextmenuçš„è§¦å‘æ§ä»¶
 		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
 		int selectedPos = info.position;
 		switch (item.getItemId()) {
 		case R.id.contextmenu_repairmanage_update:
-			Toast.makeText(this, "ĞŞ¸Ä"+selectedPos, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "ï¿½Ş¸ï¿½"+selectedPos, Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.contextmenu_repairmanage_delete:
-			Toast.makeText(this, "É¾³ı"+selectedPos, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "É¾ï¿½ï¿½"+selectedPos, Toast.LENGTH_SHORT).show();
 			break;
 		}
 		return super.onContextItemSelected(item);
@@ -191,10 +193,10 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		Toast.makeText(this, "ÏêÏ¸ĞÅÏ¢", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "ï¿½ï¿½Ï¸ï¿½ï¿½Ï¢", Toast.LENGTH_SHORT).show();
 	}
 	
-	class RepairManageItemAdapter extends BaseAdapter{
+	private class RepairManageItemAdapter extends BaseAdapter{
 		@Override
 		public int getCount() {
 			return mData.size();

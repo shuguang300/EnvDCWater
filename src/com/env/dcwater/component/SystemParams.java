@@ -1,7 +1,7 @@
 package com.env.dcwater.component;
 
 public class SystemParams {
-	// ´´½¨SystemParamsµ¥ÀıÄ£Ê½£¬ÓÃÒÔ´æ´¢ÏµÍ³±äÁ¿
+	// å°†ç³»ç»Ÿå¸¸ç”¨å˜é‡æ”¾åœ¨è¯¥ç±»å½“ä¸­
 	private static SystemParams Instance = new SystemParams();
 
 	public static SystemParams getInstance() {

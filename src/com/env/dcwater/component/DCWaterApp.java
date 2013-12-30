@@ -4,7 +4,7 @@ import android.app.Application;
 
 public class DCWaterApp extends Application{
 	
-	public static final int StartupStayTime = 0; //Ê×Ò³ÃæÍ£ÁôÊ±¼ä
+	public static final int StartupStayTime = 0; //ç™»é™†ç•Œé¢çš„å»¶è¿Ÿ
 	
 	@Override
 	public void onCreate() {

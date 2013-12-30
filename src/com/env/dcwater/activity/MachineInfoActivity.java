@@ -28,6 +28,10 @@ import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.CustomMethod;
 
+/**
+ * è®¾å¤‡ä¿¡æ¯æŸ¥çœ‹
+ * @author sk
+ */
 public class MachineInfoActivity extends NfcActivity implements OnItemClickListener,IXListViewListener{
 	private DrawerLayout mDrawerLayout;
 	private ListView mListView;
@@ -53,7 +57,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	}
 	
 	/**
-	 * ³õÊ¼»¯actionbar
+	 * åˆå§‹åŒ–actionbar
 	 */
 	private void iniActionBar(){
 		mActionBar = getActionBar();
@@ -63,7 +67,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	}
 	
 	/**
-	 * ³õÊ¼»¯view
+	 * åˆå§‹åŒ–view
 	 */
 	private void iniView(){
 		infoListView = (PullToRefreshView)findViewById(R.id.activity_machineinfo_info);
@@ -73,7 +77,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	}
 	
 	/**
-	 * ³õÊ¼»¯²âÊÔÓÃµÄÊı¾İ
+	 * åˆå§‹åŒ–æ•°æ®
 	 */
 	private void iniData(){
 		machineArray = getResources().getStringArray(R.array.machineinfo);
@@ -83,21 +87,21 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 		HashMap<String, String> map=null;
 		for(int i=0;i<10;i++){
 			map = new HashMap<String, String>();
-			map.put("Key",mSelectedMachine+"²ÎÊı"+i);
+			map.put("Key",mSelectedMachine+"ï¿½ï¿½ï¿½ï¿½"+i);
 			map.put("Value","Öµ:"+Math.random()*10);
 			mMachine.add(map);
 		}
 	}
 	
 	/**
-	 * ÉèÖÃĞÂµÄ²âÊÔÓÃµÄÊı¾İ
+	 * å¡«å……æ•°æ®
 	 */
 	private void setData(){
 		mMachine = new ArrayList<HashMap<String,String>>();
 		HashMap<String, String> map=null;
 		for(int i=0;i<10;i++){
 			map = new HashMap<String, String>();
-			map.put("Key",mSelectedMachine+"²ÎÊı"+i);
+			map.put("Key",mSelectedMachine+"ï¿½ï¿½ï¿½ï¿½"+i);
 			map.put("Value","Öµ:"+Math.random()*10);
 			mMachine.add(map);
 		}
@@ -105,7 +109,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	
 	
 	/**
-	 * Ìî³ä2¸ölistµÄÊı¾İs
+	 * åˆå§‹åŒ– listview
 	 */
 	private void iniListView(){
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(MachineInfoActivity.this, android.R.layout.simple_list_item_1,machineArray);
@@ -118,14 +122,14 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	}
 	
 	/**
-	 * µã»÷²é¿´Î¬ĞŞÀúÊ·
+	 * è·³è½¬åˆ°ç»´ä¿®å†å²
 	 */
 	private void startMaintainHistoryActivity(){
 		Intent intent = new Intent(this, MaintainHistoryActivity.class);
 		startActivity(intent);
 	}
 	/**
-	 * µã»÷²é¿´±£ÑøÀúÊ·
+	 * è·³è½¬åˆ°ä¿å…»å†å²
 	 */
 	private void startUpkeepHistoryActivity(){
 		Intent intent = new Intent(this, UpkeepHistoryActivity.class);
@@ -185,7 +189,6 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 			startUpkeepHistoryActivity();
 			break;
 		case R.id.menu_machineinfo_refresh:
-			Toast.makeText(this, "Ë¢ĞÂ", Toast.LENGTH_SHORT).show();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -213,7 +216,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 		}).start();
 	}
 	
-	class MachineInfoItemAdapter extends BaseAdapter{
+	private class MachineInfoItemAdapter extends BaseAdapter{
 		@Override
 		public int getCount() {
 			return mMachine.size();

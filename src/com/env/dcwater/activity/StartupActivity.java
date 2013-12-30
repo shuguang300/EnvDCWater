@@ -55,7 +55,7 @@ public class StartupActivity extends NfcActivity{
 	};
 	
 	/**
-	 *  进入登录界面
+	 *  鐧婚檰
 	 */
 	private void startLogin() {
 		loginIntent = new Intent(StartupActivity.this, LoginActivity.class);

@@ -76,7 +76,7 @@ public class UserRigthGroupView extends LinearLayout implements OnItemClickListe
 		startRightActivity(position);
 	}
 	
-	class UserRightGroupAdapter extends BaseAdapter{
+	private class UserRightGroupAdapter extends BaseAdapter{
 		
 		@Override
 		public int getCount() {

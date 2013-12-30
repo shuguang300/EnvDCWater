@@ -2,52 +2,53 @@ package com.env.dcwater.javabean;
 
 public class EnumList {
 	/**
-	 * @author Administrator
-	 * ÓÃ»§È¨ÏŞÃ¶¾Ù
+	 * @author Administrator ç”¨æˆ·æƒé™æšä¸¾
 	 */
-	public enum EnumUserRight{
+	public enum EnumUserRight {
+
 		/**
-		 * Éè±¸ĞÅÏ¢Ã¶¾Ù¶ÔÏó
+		 * è®¾å¤‡ä¿¡æ¯æšä¸¾å¯¹è±¡
 		 */
-		MACHINEINFO(0,"Éè±¸ĞÅÏ¢²é¿´"),
+		MACHINEINFO(0, "è®¾å¤‡ä¿¡æ¯æŸ¥çœ‹"),
 		/**
-		 * ±¨ĞŞÃ¶¾Ù¶ÔÏó
+		 * æŠ¥ä¿®æšä¸¾å¯¹è±¡
 		 */
-		REPAIRMANAGE(1,"±¨ĞŞ¹ÜÀí"),
+		REPAIRMANAGE(1, "æŠ¥ä¿®ç®¡ç†"),
 		/**
-		 * Î¬ĞŞ¼ÇÂ¼Ã¶¾Ù¶ÔÏó
+		 * ç»´ä¿®è®°å½•æšä¸¾å¯¹è±¡
 		 */
-		MAINTAINHISTORY(2,"Î¬ĞŞÀúÊ·¼ÇÂ¼"),
+		MAINTAINHISTORY(2, "ç»´ä¿®å†å²è®°å½•"),
 		/**
-		 * ±£Ñø¼ÇÂ¼Ã¶¾Ù¶ÔÏó
+		 * ä¿å…»è®°å½•æšä¸¾å¯¹è±¡
 		 */
-		UPKEEPHISTORY(3,"±£ÑøÀúÊ·¼ÇÂ¼");
-		
+		UPKEEPHISTORY(3, "ä¿å…»å†å²è®°å½•");
+
 		/**
-		 * È¨ÏŞÃû³Æ
+		 * æƒé™åç§°
 		 */
 		public static final String RightName = "UserRightName";
-		
+
 		/**
-		 *  È¨ÏŞ´úÂë
+		 * æƒé™ä»£ç 
 		 */
 		public static final String RightCode = "UserRightCode";
 		private int mRightCode;
 		private String mRightName;
-		
+
 		/**
-		 * È¨ÏŞÃ¶¾Ù¶ÔÏóµÄ¹¹Ôìº¯Êı
+		 * æƒé™æšä¸¾å¯¹è±¡çš„æ„é€ å‡½æ•°
+		 * 
 		 * @param code
 		 * @param name
 		 */
-		private EnumUserRight(int code,String name){
+		private EnumUserRight(int code, String name) {
 			this.mRightCode = code;
 			this.mRightName = name;
 		}
-		
-		
+
 		/**
-		 * ¸ù¾İÈ¨ÏŞ´úÂë»ñÈ¡¸ÃÈ¨ÏŞµÄ Ã¶¾Ù¶ÔÏó
+		 * æ ¹æ®æƒé™ä»£ç è·å–è¯¥æƒé™çš„ æšä¸¾å¯¹è±¡
+		 * 
 		 * @param code
 		 * @return
 		 */
@@ -64,15 +65,19 @@ public class EnumList {
 			}
 			return null;
 		}
-		
+
 		/**
-		 * ·µ»ØÈ¨ÏŞ´úÂë
+		 * è¿”å›æƒé™ä»£ç 
+		 * 
 		 * @return
 		 */
 		public int getCode() {
-	        return this.mRightCode;
-	    }
-		/**·µ»ØÈ¨ÏŞÃû³Æ
+			return this.mRightCode;
+		}
+
+		/**
+		 * è¿”å›æƒé™åç§°
+		 * 
 		 * @return
 		 */
 		public String getName() {

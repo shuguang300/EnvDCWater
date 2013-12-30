@@ -51,34 +51,27 @@ public class MachineManage extends Fragment implements OnClickListener{
 	}
 
 	
-	//设置每个按钮的单击事件
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.machinemanage_add:
-			Toast.makeText(getActivity().getApplicationContext(), "添加", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.machinemanage_more:
-			Toast.makeText(getActivity().getApplicationContext(), "点击查看详情", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.machinemanage_update:
-			Toast.makeText(getActivity().getApplicationContext(), "点击修改", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.machinemanage_delete:
-			Toast.makeText(getActivity().getApplicationContext(), "点击删除", Toast.LENGTH_SHORT).show();
 			break;
 		}
 	}
 	
 	
-	//创建fragment时首先触发的事件
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 	}
 	
 	/**
-	 * 显示设备的基础信息
 	 * @param data
 	 */
 	public void setData(HashMap<String, String> data){

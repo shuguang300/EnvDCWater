@@ -22,8 +22,12 @@ import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.UserRigthGroupView;
 import com.env.dcwater.javabean.EnumList;
 
+/**
+ * ç™»å½•åçš„ä¸»ç•Œé¢ï¼Œä¸»è¦åŒ…å«2å¤§åŒºåŸŸï¼Œå·¦è¾¹çš„æ˜¯åŠŸèƒ½æ¨¡å—åŒº
+ * å³è¾¹çš„æ˜¯appå¸¸ç”¨è®¾ç½®ç•Œé¢
+ * @author sk
+ */
 public class MainActivity extends NfcActivity{
-	
 	private ViewPager viewPager;
 	private ImageView imageView0,imageView1;
 	private View userRigthView,configView;
@@ -43,7 +47,7 @@ public class MainActivity extends NfcActivity{
 	}
 	
 	/**
-	 * ³õÊ¼»¯actionbar
+	 *  åˆå§‹åŒ–actionbar
 	 */
 	private void iniActionBar(){
 		mActionBar = getActionBar();
@@ -53,7 +57,7 @@ public class MainActivity extends NfcActivity{
 	}
 	
 	/**
-	 *   ²âÊÔÊı¾İ
+	 *   åˆå§‹åŒ–æ•°æ®
 	 */
 	private void iniData(){
 		data = new ArrayList<HashMap<String,String>>();
@@ -80,15 +84,15 @@ public class MainActivity extends NfcActivity{
 	
 	
 	/**
-	 * ³õÊ¼»¯²¼¾Ö¿Ø¼ş
+	 * åˆå§‹åŒ–ç•Œé¢
 	 */
 	private void ini(){
 		viewPager = (ViewPager)findViewById(R.id.activity_main_container);
 		imageView0 = (ImageView)findViewById(R.id.activity_main_page0);
 		imageView1 = (ImageView)findViewById(R.id.activity_main_page1);
-		//×¢²áÓÃ»§È¨ÏŞ½çÃæ
+		//æ³¨å†Œæƒé™ç•Œé¢
 		userRigthView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_userright, null);
-		//×¢²áÓÃ»§ÉèÖÃ½çÃæ
+		//æ³¨å†Œè®¾ç½®ç•Œé¢
 		configView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_config, null);
 		iniUserRight();
 		iniConfig();
@@ -100,7 +104,7 @@ public class MainActivity extends NfcActivity{
 	}
 	
 	/**
-	 *  ³õÊ¼»¯ÓÃ»§È¨ÏŞ¿ØÖÆ½çÃæ
+	 *  åˆå§‹åŒ–æƒé™æ§åˆ¶
 	 */
 	private void iniUserRight(){
 		userRightContainer = (LinearLayout)userRigthView.findViewById(R.id.activity_userright_container);
@@ -109,7 +113,7 @@ public class MainActivity extends NfcActivity{
 	}
 	
 	/**
-	 *  ³õÊ¼»¯ÅäÖÃ½çÃæ
+	 *  åˆå§‹åŒ–é…ç½®ç•Œé¢
 	 */
 	private void iniConfig(){
 		
@@ -154,7 +158,6 @@ public class MainActivity extends NfcActivity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			Toast.makeText(this, "×¢Ïú", Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;
@@ -165,7 +168,7 @@ public class MainActivity extends NfcActivity{
 	@Override
 	public void onBackPressed() {
 		if(System.currentTimeMillis()-lastExitTime>2000){
-			Toast.makeText(MainActivity.this, "ÔÙ°´Ò»´Î·µ»Ø¼üÍË³ö³ÌĞò", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, "å†æŒ‰ä¸€æ¬¡è¿”å›é”®é€€å‡ºç¨‹åº", Toast.LENGTH_SHORT).show();
 		}else {
 			finish();
 		}
@@ -173,7 +176,7 @@ public class MainActivity extends NfcActivity{
 	}
 	
 	
-	class MainOnPageChangeListener implements OnPageChangeListener{
+	private class MainOnPageChangeListener implements OnPageChangeListener{
 		@Override
 		public void onPageScrollStateChanged(int arg0) {}
 		@Override
@@ -195,7 +198,7 @@ public class MainActivity extends NfcActivity{
 		}
 	}
 	
-	class MainPageAdapter extends PagerAdapter{
+	private class MainPageAdapter extends PagerAdapter{
 		private ArrayList<View> mViews;
 		public MainPageAdapter(ArrayList<View> views){
 			mViews = views;

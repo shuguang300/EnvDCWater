@@ -83,7 +83,7 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 		mHeaderView = new PullToRefreshHeadView(context);
 		mHeaderViewContent = (RelativeLayout) mHeaderView.findViewById(R.id.xlistview_header_content);
 		mHeaderTimeView = (TextView) mHeaderView.findViewById(R.id.xlistview_header_time);
-		mHeaderTimeView.setText("¸Õ¸Õ");
+		mHeaderTimeView.setText("åˆšåˆš");
 		addHeaderView(mHeaderView);
 
 //		// init footer view
@@ -186,7 +186,7 @@ public class PullToRefreshView extends ListView implements OnScrollListener{
 
 	private void updateHeaderHeight(float delta) {
 		mHeaderView.setVisiableHeight((int) delta + mHeaderView.getVisiableHeight());
-		if (mEnablePullRefresh && !mPullRefreshing) { // Î´´¦ÓÚË¢ÐÂ×´Ì¬£¬¸üÐÂ¼ýÍ·
+		if (mEnablePullRefresh && !mPullRefreshing) { //  æœªå¤„äºŽåˆ·æ–°çŠ¶æ€ï¼Œæ›´æ–°ç®­å¤´
 			if (mHeaderView.getVisiableHeight() > mHeaderViewHeight) {
 				mHeaderView.setState(PullToRefreshHeadView.STATE_READY);
 			} else {
