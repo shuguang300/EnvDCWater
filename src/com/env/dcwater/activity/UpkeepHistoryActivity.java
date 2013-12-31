@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
@@ -116,6 +117,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_upkeephistory, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 	@Override
@@ -123,6 +125,9 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			onBackPressed();
+			break;
+		case R.id.menu_upkeephistory_refresh:
+			Toast.makeText(UpkeepHistoryActivity.this, "刷新", Toast.LENGTH_SHORT).show();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -174,6 +179,11 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 			if(convertView==null){
 				convertView = LayoutInflater.from(UpkeepHistoryActivity.this).inflate(R.layout.item_upkeephistory, null);
 			}
+			HashMap<String, Object> map = getItem(position);
+			TextView name = (TextView)convertView.findViewById(R.id.item_upkeephistory_name);
+			TextView state = (TextView)convertView.findViewById(R.id.item_upkeephistory_state);
+			name.setText(map.get("Name").toString());
+			state.setText(map.get("State").toString());
 			return convertView;
 		}
 	}

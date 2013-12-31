@@ -2,9 +2,10 @@ package com.env.dcwater.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
-
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,11 +19,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.PullToRefreshView;
@@ -32,11 +30,16 @@ import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
  * 报修管理
  * @author sk
  */
-public class RepairManageActivity extends NfcActivity implements IXListViewListener,OnItemClickListener,OnItemLongClickListener{
+public class RepairManageActivity extends NfcActivity implements IXListViewListener,OnItemClickListener{
+	public static final int REPAIRMANAGE_ADD_INTEGER = 0;
+	public static final int REPAIRMANAGE_UPDATE_INTEGER = 1;
+	public static final int REPAIRMANAGE_DETAIL_INTEGER = 2;
 	private ActionBar mActionBar;
 	private PullToRefreshView mListView;
 	private RepairManageItemAdapter mListViewAdapter;
 	private ArrayList<HashMap<String, String>> mData;
+	private AlertDialog.Builder mDeleteConfirm ;
+	private Intent sendedIntent;
 	private Handler mHandler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			mListView.stopRefresh();
@@ -68,14 +71,13 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private void iniData(){
 		mData = new ArrayList<HashMap<String,String>>();
 		HashMap<String, String> map =null;
-		Random random = new Random();
 		for (int i = 0; i < 10; i++) {
 			map = new HashMap<String, String>();
-			map.put("ID", "���"+random.nextInt(10));
-			map.put("Time", "ʱ��"+random.nextInt(10));
-			map.put("State", "���ϱ�"+random.nextInt(10));
-			map.put("Name", "λ��"+random.nextInt(10));
-			map.put("Info", "������Ϣ"+random.nextInt(10));
+			map.put("ID", i+"");
+			map.put("Time", i+"");
+			map.put("State", i+"");
+			map.put("Name", i+"");
+			map.put("Info", i+"");
 			mData.add(map);
 		}
 	}
@@ -89,8 +91,24 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		mListView.setAdapter(mListViewAdapter);
 		mListView.setXListViewListener(this);
 		mListView.setOnItemClickListener(this);
-//		mListView.setOnItemLongClickListener(this);
+//		mListView.setOnItemLongClickListener(this); //长按事件与上下文菜单冲突，二者只能选其一
 		registerForContextMenu(mListView);
+	}
+	
+	private void sendIntent(int code,HashMap<String, String> data){
+		sendedIntent = new Intent(RepairManageActivity.this, RepairManageItemActivity.class);
+		sendedIntent.putExtra("RequestCode", code);
+		switch (code) {
+		case REPAIRMANAGE_ADD_INTEGER:
+			break;
+		case REPAIRMANAGE_DETAIL_INTEGER:
+			sendedIntent.putExtra("Data", data);
+			break;
+		case REPAIRMANAGE_UPDATE_INTEGER:
+			sendedIntent.putExtra("Data", data);
+			break;
+		}
+		startActivityForResult(sendedIntent, code);
 	}
 	
 	@Override
@@ -99,27 +117,22 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	}
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 	}
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
 	}
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
 		super.onStop();
 	}
 	@Override
 	protected void onNewIntent(Intent intent) {
-		// TODO Auto-generated method stub
 		super.onNewIntent(intent);
 	}
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
 	@Override
@@ -134,6 +147,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			onBackPressed();
 			break;
 		case R.id.menu_repairmanage_add:
+			sendIntent(REPAIRMANAGE_ADD_INTEGER,null);
 			break;
 		case R.id.menu_repairmanage_refresh:
 			break;
@@ -144,21 +158,38 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		getMenuInflater().inflate(R.menu.contextmenu_repairmanage, menu);
-		menu.setHeaderTitle("��๦��");  
+		//不需要为headerview注册上下文菜单，所以进行判断
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+		if(info.position!=0){
+			getMenuInflater().inflate(R.menu.contextmenu_repairmanage, menu);
+			menu.setHeaderTitle("更多");  
+		}
 	}
+	
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		//获得contextmenu的触发控件
 		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
-		int selectedPos = info.position;
+		final int selectedPos = info.position-1;
 		switch (item.getItemId()) {
 		case R.id.contextmenu_repairmanage_update:
-			Toast.makeText(this, "�޸�"+selectedPos, Toast.LENGTH_SHORT).show();
+			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos));
 			break;
 		case R.id.contextmenu_repairmanage_delete:
-			Toast.makeText(this, "ɾ��"+selectedPos, Toast.LENGTH_SHORT).show();
+			if(mDeleteConfirm==null){
+				mDeleteConfirm = new AlertDialog.Builder(RepairManageActivity.this);
+			}
+			mDeleteConfirm.setTitle("确认").setMessage("确认删除吗？"+selectedPos);
+			mDeleteConfirm.setPositiveButton("确定", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					mData.remove(selectedPos);
+					mListViewAdapter.notifyDataSetChanged();
+				}
+			}).setNegativeButton("取消", null);
+			mDeleteConfirm.create();
+			mDeleteConfirm.show();
 			break;
 		}
 		return super.onContextItemSelected(item);
@@ -187,13 +218,10 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	}
 
 	@Override
-	public boolean onItemLongClick(AdapterView<?> parent, View view,int position, long id) {
-		return true;
-	}
-
-	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		Toast.makeText(this, "��ϸ��Ϣ", Toast.LENGTH_SHORT).show();
+		if(position!=0){
+			sendIntent(REPAIRMANAGE_DETAIL_INTEGER,mData.get(position-1));
+		}
 	}
 	
 	private class RepairManageItemAdapter extends BaseAdapter{

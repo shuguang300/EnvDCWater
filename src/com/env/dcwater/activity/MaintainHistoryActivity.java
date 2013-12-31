@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.env.dcwater.R;
@@ -119,6 +120,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_maintainhistory, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 	@Override
@@ -127,6 +129,8 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		case android.R.id.home:
 			onBackPressed();
 			break;
+		case R.id.menu_maintainhistory_refresh:
+			Toast.makeText(MaintainHistoryActivity.this, "刷新", Toast.LENGTH_SHORT).show();
 		}
 		return super.onOptionsItemSelected(item);
 	}

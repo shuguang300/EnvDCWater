@@ -42,6 +42,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar" >
+        
+        <!-- 启动界面 -->
         <activity
             android:name="com.env.dcwater.activity.StartupActivity"
             android:configChanges="orientation"
@@ -59,12 +61,16 @@
                 android:name="android.nfc.action.TECH_DISCOVERED"  
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
+        
+        <!-- 登陆界面 -->
         <activity
             android:name="com.env.dcwater.activity.LoginActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
+        
+        <!-- 主界面-->
         <activity
             android:name="com.env.dcwater.activity.MainActivity"
             android:configChanges="orientation"
@@ -73,6 +79,8 @@
             android:theme="@style/CustomActionBarTheme"
             android:icon="@drawable/ic_launcher" >
         </activity>
+        
+        <!-- 设备信息查看界面 -->
         <activity
             android:name="com.env.dcwater.activity.MachineInfoActivity"
             android:configChanges="orientation"
@@ -81,6 +89,8 @@
             android:theme="@style/CustomActionBarTheme"
             android:icon="@drawable/ic_launcher">
         </activity>
+        
+        <!-- 报修管理界面 -->
         <activity
             android:name="com.env.dcwater.activity.RepairManageActivity"
             android:configChanges="orientation"
@@ -90,6 +100,18 @@
             android:label="@string/activity_userright_item_repairmanage"
             android:icon="@drawable/ic_launcher" >
         </activity>
+        
+        <!-- 报修管理查看详细界面 -->
+        <activity
+            android:name="com.env.dcwater.activity.RepairManageItemActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/ic_launcher" >
+        </activity>
+        
+        <!-- 维修历史记录界面 -->
         <activity
             android:name="com.env.dcwater.activity.MaintainHistoryActivity"
             android:configChanges="orientation"
@@ -99,6 +121,8 @@
             android:label="@string/activity_userright_item_maintainhistory"
             android:icon="@drawable/ic_launcher" >
         </activity>
+        
+        <!-- 保养历史记录 -->
         <activity
             android:name="com.env.dcwater.activity.UpkeepHistoryActivity"
             android:configChanges="orientation"
@@ -108,12 +132,7 @@
             android:label="@string/activity_userright_item_upkeephistory"
             android:icon="@drawable/ic_launcher" >
         </activity>
-        <activity
-            android:name="com.env.dcwater.activity.MachineManageActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-        </activity>
+        
     </application>
 
 </manifest>

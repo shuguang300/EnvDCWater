@@ -1,8 +1,6 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import android.R.anim;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,13 +18,10 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
-import com.env.dcwater.util.CustomMethod;
 
 /**
  * 设备信息查看
@@ -87,8 +82,8 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 		HashMap<String, String> map=null;
 		for(int i=0;i<10;i++){
 			map = new HashMap<String, String>();
-			map.put("Key",mSelectedMachine+"����"+i);
-			map.put("Value","ֵ:"+Math.random()*10);
+			map.put("Key",mSelectedMachine+"参数"+i++);
+			map.put("Value","值是"+Math.random()*10);
 			mMachine.add(map);
 		}
 	}
@@ -101,8 +96,8 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 		HashMap<String, String> map=null;
 		for(int i=0;i<10;i++){
 			map = new HashMap<String, String>();
-			map.put("Key",mSelectedMachine+"����"+i);
-			map.put("Value","ֵ:"+Math.random()*10);
+			map.put("Key",mSelectedMachine+"参数"+i++);
+			map.put("Value","值是"+Math.random()*10);
 			mMachine.add(map);
 		}
 	}
@@ -119,6 +114,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 		infoListViewAdapter =  new MachineInfoItemAdapter();
 		infoListView.setAdapter(infoListViewAdapter);
 		infoListView.setXListViewListener(this);
+		infoListView.setOnItemClickListener(this);
 	}
 	
 	/**
@@ -163,11 +159,15 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		mDrawerLayout.closeDrawer(Gravity.LEFT);
-		mSelectedMachine = machineArray[position];
-		mActionBar.setTitle(mSelectedMachine);
-		setData();
-		infoListViewAdapter.notifyDataSetChanged();
+		if(parent.equals(mListView)){
+			mDrawerLayout.closeDrawer(Gravity.LEFT);
+			mSelectedMachine = machineArray[position];
+			mActionBar.setTitle(mSelectedMachine);
+			setData();
+			infoListViewAdapter.notifyDataSetChanged();
+		}else if (parent.equals(infoListView)) {
+		}
+		
 	}
 	
 	@Override
@@ -237,10 +237,11 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 			if(convertView ==null){
 				convertView = LayoutInflater.from(MachineInfoActivity.this).inflate(R.layout.item_machineinfo, null);
 			}
+			HashMap<String, String> map = getItem(position);
 			TextView keyTextView = (TextView)convertView.findViewById(R.id.item_machineinfo_key);
 			TextView valueTextView = (TextView)convertView.findViewById(R.id.item_machineinfo_value);
-			keyTextView.setText(getItem(position).get("Key"));
-			valueTextView.setText(getItem(position).get("Value"));
+			keyTextView.setText(map.get("Key"));
+			valueTextView.setText(map.get("Value"));
 			return convertView;
 		}
 	}
