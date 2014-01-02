@@ -31,9 +31,19 @@ import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
  * @author sk
  */
 public class RepairManageActivity extends NfcActivity implements IXListViewListener,OnItemClickListener{
+	/**
+	 * 新增模式
+	 */
 	public static final int REPAIRMANAGE_ADD_INTEGER = 0;
+	/**
+	 * 修改模式
+	 */
 	public static final int REPAIRMANAGE_UPDATE_INTEGER = 1;
+	/**
+	 * 浏览模式
+	 */
 	public static final int REPAIRMANAGE_DETAIL_INTEGER = 2;
+	
 	private ActionBar mActionBar;
 	private PullToRefreshView mListView;
 	private RepairManageItemAdapter mListViewAdapter;
@@ -50,8 +60,8 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_repairmanage);
-		iniActionBar();
 		iniData();
+		iniActionBar();
 		iniView();
 	}
 	
@@ -73,11 +83,11 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		HashMap<String, String> map =null;
 		for (int i = 0; i < 10; i++) {
 			map = new HashMap<String, String>();
-			map.put("ID", i+"");
-			map.put("Time", i+"");
-			map.put("State", i+"");
-			map.put("Name", i+"");
-			map.put("Info", i+"");
+			map.put("ID", "J/6.3-061219");
+			map.put("Time", "2014-01-02 17:50:49");
+			map.put("State", "已上报");
+			map.put("Name", "设备名字");
+			map.put("Info", "电机过热");
 			mData.add(map);
 		}
 	}

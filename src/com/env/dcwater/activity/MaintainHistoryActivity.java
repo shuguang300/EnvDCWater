@@ -33,6 +33,8 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	private PullToRefreshView mHistoryList;
 	private ArrayList<HashMap<String, Object>> mHistories; 
 	private MaintainHistoryItemAdapter mAdapter;
+	private Intent receivedIntent;
+	private String receivedAction;
 	private Handler mHandler = new Handler(){
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -47,8 +49,8 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_maintainhistory);
-		iniActionBar();
 		iniData();
+		iniActionBar();
 		iniView();
 	}
 	
@@ -60,6 +62,11 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setDisplayShowTitleEnabled(true);
+		if(receivedAction.equals(MainActivity.ACTION_STRING)){
+			mActionBar.setTitle("维修历史总览");
+		}else if (receivedAction.equals(MachineInfoActivity.ACTION_STRING)) {
+			mActionBar.setTitle(receivedIntent.getExtras().getString("data")+"维修历史");
+		}
 	}
 	
 	/**
@@ -78,6 +85,8 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	 * 初始化测试数据
 	 */
 	private void iniData() {
+		receivedIntent = getIntent();
+		receivedAction = receivedIntent.getExtras().getString("action");
 		mHistories = new ArrayList<HashMap<String,Object>>();
 		HashMap<String, Object> history = null;
 		for(int i =0;i<10;i++){

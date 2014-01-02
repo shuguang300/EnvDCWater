@@ -28,6 +28,9 @@ import com.env.dcwater.javabean.EnumList;
  * @author sk
  */
 public class MainActivity extends NfcActivity{
+	
+	public static final String ACTION_STRING = "MainActivity";
+	
 	private ViewPager viewPager;
 	private ImageView imageView0,imageView1;
 	private View userRigthView,configView;

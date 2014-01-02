@@ -1,131 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:fillViewport="true"
+    android:background="@color/white" >
 
-    <TextView
-        android:id="@+id/activity_repairmanageitem_state"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:orientation="vertical" >
-		<TextView
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:text="@string/activity_repairmanageitem_basic"/>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:orientation="horizontal"
-            android:background="@drawable/inforitem_withnoconner_blue_bg">
-            <TextView 
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/activity_repairmanageitem_name"
-            	android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/activity_repairmanageitem_name" 
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:inputType="text"
-            	android:layout_height="wrap_content"/>
-        </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:background="@drawable/inforitem_withnoconner_blue_bg" >
-            <TextView 
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/activity_repairmanageitem_type"
-            	android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/activity_repairmanageitem_type" 
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:inputType="text"
-            	android:layout_height="wrap_content"/>
-        </TableRow>
+        <TableLayout
+            style="@style/activity_repairmanageitem_tablelayout" >
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:background="@drawable/inforitem_withnoconner_blue_bg" >
-            <TextView 
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/activity_repairmanageitem_sn"
-            	android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/activity_repairmanageitem_sn" 
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:inputType="text"
-            	android:layout_height="wrap_content"/>
-        </TableRow>
+            <TextView
+                style="@style/activity_repairmanageitem_textview_group"
+                android:text="@string/activity_repairmanageitem_basic" />
+            
+            <TextView style="@style/item_divide" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:background="@drawable/inforitem_withnoconner_blue_bg" >
-            <TextView 
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/activity_repairmanageitem_position"
-            	android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/activity_repairmanageitem_position" 
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:inputType="text"
-            	android:layout_height="wrap_content"/>
-        </TableRow>
+            <TableRow
+                android:id="@+id/activity_repairmanageitem_name_tr" 
+                style="@style/activity_repairmanageitem_tablerow" >
+
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_item"
+                    android:text="@string/activity_repairmanageitem_name" />
+
+                <TextView
+                    android:id="@+id/activity_repairmanageitem_name"
+                    style="@style/activity_repairmanageitem_textview"/>
+            </TableRow>
+            
+			<TextView style="@style/item_divide" />
+			
+            <TableRow 
+                android:id="@+id/activity_repairmanageitem_type_tr"
+                style="@style/activity_repairmanageitem_tablerow" >
+
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_item"
+                    android:text="@string/activity_repairmanageitem_type" />
+
+                <TextView
+                    android:id="@+id/activity_repairmanageitem_type"
+                    style="@style/activity_repairmanageitem_textview" />
+            </TableRow>
+			
+            <TextView style="@style/item_divide" />
+            
+            <TableRow 
+                style="@style/activity_repairmanageitem_tablerow"
+                android:id="@+id/activity_repairmanageitem_sn_tr" >
+
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_item"
+                    android:text="@string/activity_repairmanageitem_sn" />
+
+                <TextView
+                    android:id="@+id/activity_repairmanageitem_sn"
+                    style="@style/activity_repairmanageitem_textview" />
+            </TableRow>
+
+            <TextView style="@style/item_divide" />
+            
+            <TableRow 
+                android:id="@+id/activity_repairmanageitem_position_tr"
+                style="@style/activity_repairmanageitem_tablerow" >
+
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_item"
+                    android:text="@string/activity_repairmanageitem_position" />
+
+                <TextView
+                    android:id="@+id/activity_repairmanageitem_position"
+                    style="@style/activity_repairmanageitem_textview" />
+            </TableRow>
+
+            <TextView style="@style/item_divide" />
+            
+            <TableRow 
+                android:id="@+id/activity_repairmanageitem_starttime_tr"
+                style="@style/activity_repairmanageitem_tablerow" >
+
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_item"
+                    android:text="@string/activity_repairmanageitem_starttime" />
+
+                <TextView
+                    android:id="@+id/activity_repairmanageitem_starttime"
+                    style="@style/activity_repairmanageitem_textview" />
+            </TableRow>
+            
+            <TextView style="@style/item_divide" />
+
+            <TableRow 
+                android:id="@+id/activity_repairmanageitem_manufacturer_tr"
+                style="@style/activity_repairmanageitem_tablerow">
+
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_item"
+                    android:text="@string/activity_repairmanageitem_manufacturer" />
+
+                <TextView
+                    android:id="@+id/activity_repairmanageitem_manufacturer"
+                    style="@style/activity_repairmanageitem_textview" />
+            </TableRow>
+        </TableLayout>
         
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:background="@drawable/inforitem_withnoconner_blue_bg" >
-            <TextView 
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/activity_repairmanageitem_starttime"
-            	android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/activity_repairmanageitem_starttime" 
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:inputType="text"
-            	android:layout_height="wrap_content"/>
-        </TableRow>
         
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:background="@drawable/inforitem_withnoconner_blue_bg" >
-            <TextView 
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/activity_repairmanageitem_manufacturer"
-            	android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/activity_repairmanageitem_manufacturer" 
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:inputType="text"
-            	android:layout_height="wrap_content"/>
-        </TableRow>
-    </TableLayout>
+        
+        <TableLayout
+            style="@style/activity_repairmanageitem_tablelayout" >
 
-</LinearLayout>
+            <TextView
+                style="@style/activity_repairmanageitem_textview_group"
+                android:text="@string/activity_repairmanageitem_fault" />
+            
+            <TextView style="@style/item_divide" />
+
+            <TableRow 
+                android:id="@+id/activity_repairmanageitem_faulttime_tr"
+                style="@style/activity_repairmanageitem_tablerow" >
+
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_item"
+                    android:text="@string/activity_repairmanageitem_faulttime" />
+
+                <TextView
+                    android:id="@+id/activity_repairmanageitem_faulttime"
+                    style="@style/activity_repairmanageitem_textview"/>
+            </TableRow>
+            
+			<TextView style="@style/item_divide" />
+			
+            <TableRow 
+                android:id="@+id/activity_repairmanageitem_faultphenomenon_tr"
+                style="@style/activity_repairmanageitem_tablerow" >
+
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_item"
+                    android:text="@string/activity_repairmanageitem_faultphenomenon" />
+
+                <TextView
+                    android:id="@+id/activity_repairmanageitem_faultphenomenon"
+                    style="@style/activity_repairmanageitem_textview" />
+            </TableRow>
+			
+            <TextView style="@style/item_divide" />
+            
+            <TableRow 
+                android:id="@+id/activity_repairmanageitem_handlestep_tr"
+                style="@style/activity_repairmanageitem_tablerow" >
+
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_item"
+                    android:text="@string/activity_repairmanageitem_handlestep" />
+
+                <TextView
+                    android:id="@+id/activity_repairmanageitem_handlestep"
+                    style="@style/activity_repairmanageitem_textview" />
+            </TableRow>
+
+            <TextView style="@style/item_divide" />
+            
+            <TableRow 
+                android:id="@+id/activity_repairmanageitem_otherstep_tr"
+                style="@style/activity_repairmanageitem_tablerow" >
+
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_item"
+                    android:text="@string/activity_repairmanageitem_otherstep" />
+
+                <TextView
+                    android:id="@+id/activity_repairmanageitem_otherstep"
+                    style="@style/activity_repairmanageitem_textview" />
+            </TableRow>
+
+        </TableLayout>
+        
+        
+        <TableLayout
+            style="@style/activity_repairmanageitem_tablelayout" >
+
+            <TextView
+                style="@style/activity_repairmanageitem_textview_group"
+                android:text="@string/activity_repairmanageitem_people" />
+            
+            <TextView style="@style/item_divide" />
+
+            <TableRow 
+                android:id="@+id/activity_repairmanageitem_taskpeople_tr"
+                style="@style/activity_repairmanageitem_tablerow" >
+
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_item"
+                    android:text="@string/activity_repairmanageitem_taskpeople" />
+
+                <TextView
+                    android:id="@+id/activity_repairmanageitem_taskpeople"
+                    style="@style/activity_repairmanageitem_textview"/>
+            </TableRow>
+            
+        </TableLayout>
+    </LinearLayout>
+
+</ScrollView>

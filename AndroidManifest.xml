@@ -106,7 +106,7 @@
             android:name="com.env.dcwater.activity.RepairManageItemActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:theme="@style/CustomActionBarTheme"
             android:icon="@drawable/ic_launcher" >
         </activity>
@@ -118,7 +118,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:label="@string/activity_userright_item_maintainhistory"
             android:icon="@drawable/ic_launcher" >
         </activity>
         
@@ -129,7 +128,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:label="@string/activity_userright_item_upkeephistory"
             android:icon="@drawable/ic_launcher" >
         </activity>
         

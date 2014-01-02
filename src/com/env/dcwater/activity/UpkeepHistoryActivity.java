@@ -32,6 +32,8 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	private PullToRefreshView mHistoryList;
 	private UpkeepHistoryItemAdapter mAdapter;
 	private ArrayList<HashMap<String, Object>> mData;
+	private Intent receivedIntent;
+	private String receivedAction;
 	private Handler mHandler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -45,8 +47,8 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_upkeephistory);
-		iniActionBar();
 		iniData();
+		iniActionBar();
 		iniView();
 	}
 	
@@ -58,6 +60,11 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setDisplayShowTitleEnabled(true);
+		if(receivedAction.equals(MainActivity.ACTION_STRING)){
+			mActionBar.setTitle("保养历史总览");
+		}else if (receivedAction.equals(MachineInfoActivity.ACTION_STRING)) {
+			mActionBar.setTitle(receivedIntent.getExtras().getString("data")+"保养历史");
+		}
 	}
 	
 	/**
@@ -75,6 +82,8 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	 * 初始化数据
 	 */
 	private void iniData(){
+		receivedIntent = getIntent();
+		receivedAction = receivedIntent.getExtras().getString("action");
 		mData = new ArrayList<HashMap<String,Object>>();
 		HashMap<String, Object> map = null;
 		for(int i =0;i<30;i++){

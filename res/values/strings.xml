@@ -36,6 +36,8 @@
     
     
     
+    <string name="activity_repairmanageitem_people">人员信息</string>
+    <string name="activity_repairmanageitem_fault">故障信息</string>
     <string name="activity_repairmanageitem_basic">基本信息</string>
     <string name="activity_repairmanageitem_name">设备名称</string>
     <string name="activity_repairmanageitem_position">安装位置</string>
@@ -43,6 +45,11 @@
     <string name="activity_repairmanageitem_type">设备型号</string>
     <string name="activity_repairmanageitem_sn">设备编号</string>
     <string name="activity_repairmanageitem_manufacturer">厂商</string>
+    <string name="activity_repairmanageitem_faulttime">故障发生时间</string>
+    <string name="activity_repairmanageitem_faultphenomenon">故障现象</string>
+    <string name="activity_repairmanageitem_handlestep">应急措施选择</string>
+    <string name="activity_repairmanageitem_otherstep">其他措施</string>
+    <string name="activity_repairmanageitem_taskpeople">巡检员</string>
     
     
     

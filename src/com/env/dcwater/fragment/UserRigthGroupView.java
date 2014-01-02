@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.env.dcwater.R;
 import com.env.dcwater.activity.MachineInfoActivity;
+import com.env.dcwater.activity.MainActivity;
 import com.env.dcwater.activity.MaintainHistoryActivity;
 import com.env.dcwater.activity.RepairManageActivity;
 import com.env.dcwater.activity.UpkeepHistoryActivity;
@@ -51,6 +52,7 @@ public class UserRigthGroupView extends LinearLayout implements OnItemClickListe
 	private void startRightActivity(int pos){
 		int code = Integer.valueOf(mRightLists.get(pos).get(EnumList.EnumUserRight.RightCode));
 		Intent intent = new Intent();
+		intent.putExtra("action", MainActivity.ACTION_STRING);
 		switch (code) {
 		case 0:
 			intent.setClass(mContext, MachineInfoActivity.class);
@@ -67,7 +69,6 @@ public class UserRigthGroupView extends LinearLayout implements OnItemClickListe
 		}
 		mContext.startActivity(intent);
 	}
-	
 	public void setGroupTitle(String str){
 		title.setText(str);
 	}

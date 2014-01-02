@@ -1,24 +1,38 @@
 package com.env.dcwater.activity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodInfo;
+import android.widget.EditText;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.component.SystemParams;
 
-public class RepairManageItemActivity extends NfcActivity{
+public class RepairManageItemActivity extends NfcActivity implements OnClickListener{
 	private ActionBar mActionBar;
 	private HashMap<String, String> receivedData;
 	private Intent receivedIntent;
-	private TextView mStateTextView;
 	private int mRequestCode;
+	private TextView etName,etType,etSN,etPosition,etStartTime,etManufacture,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep;
+	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trPeople;
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,19 +42,31 @@ public class RepairManageItemActivity extends NfcActivity{
 		findAndIniView();
 	}
 	
+	/**
+	 * 
+	 */
 	private void iniActionbar(){
 		mActionBar = getActionBar();
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setDisplayShowTitleEnabled(true);
-		if(mRequestCode==RepairManageActivity.REPAIRMANAGE_ADD_INTEGER){
-			mActionBar.setTitle("新增");
-		}else {
-			mActionBar.setTitle(receivedData.get("ID"));
-		}
 		
+		switch (mRequestCode) {
+		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER:
+			mActionBar.setTitle("上报故障");
+			break;
+		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
+			mActionBar.setTitle(receivedData.get("ID")+"详情");
+			break;
+		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
+			mActionBar.setTitle(receivedData.get("ID")+"修改");
+			break;
+		}
 	}
 	
+	/**
+	 * 
+	 */
 	@SuppressWarnings("unchecked")
 	private void iniData(){
 		receivedIntent = getIntent();
@@ -57,25 +83,104 @@ public class RepairManageItemActivity extends NfcActivity{
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	private void findAndIniView(){
-		mStateTextView = (TextView)findViewById(R.id.activity_repairmanageitem_state);
 		
-		setView(mRequestCode);
+		etName = (TextView)findViewById(R.id.activity_repairmanageitem_name);
+		trName = (TableRow)findViewById(R.id.activity_repairmanageitem_name_tr);
+		
+		etType = (TextView)findViewById(R.id.activity_repairmanageitem_type);
+		
+		etSN = (TextView)findViewById(R.id.activity_repairmanageitem_sn);
+		
+		etPosition = (TextView)findViewById(R.id.activity_repairmanageitem_position);
+		
+		etStartTime = (TextView)findViewById(R.id.activity_repairmanageitem_starttime);
+		
+		etManufacture = (TextView)findViewById(R.id.activity_repairmanageitem_manufacturer);
+		
+		etFaultTime = (TextView)findViewById(R.id.activity_repairmanageitem_faulttime);
+		trFaultTime = (TableRow)findViewById(R.id.activity_repairmanageitem_faulttime_tr);
+		
+		etFaultPhenomenon = (TextView)findViewById(R.id.activity_repairmanageitem_faultphenomenon);
+		trFaultPhenomenon = (TableRow)findViewById(R.id.activity_repairmanageitem_faultphenomenon_tr);
+		
+		etHandleStep = (TextView)findViewById(R.id.activity_repairmanageitem_handlestep);
+		trHandleStep = (TableRow)findViewById(R.id.activity_repairmanageitem_handlestep_tr);
+		
+		etOtherStep = (TextView)findViewById(R.id.activity_repairmanageitem_otherstep);
+		trOtherStep = (TableRow)findViewById(R.id.activity_repairmanageitem_otherstep_tr);
+		
+		etPeople = (TextView)findViewById(R.id.activity_repairmanageitem_taskpeople);
+		trPeople = (TableRow)findViewById(R.id.activity_repairmanageitem_taskpeople_tr);
+		
+		setViewState(mRequestCode);
+		fillViewData(mRequestCode);
 	}
 	
-	private void setView( int code){
+	/**
+	 * 根据不同的状态设置各个空间的电机事件
+	 * @param code
+	 */
+	private void setViewState( int code){
 		switch (code) {
 		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER:
-			mStateTextView.setText("新增模式");
+			trName.setOnClickListener(this);
+			trFaultTime.setOnClickListener(this);
+			trFaultPhenomenon.setOnClickListener(this);
+			trHandleStep.setOnClickListener(this);
+			trOtherStep.setOnClickListener(this);
+			trPeople.setOnClickListener(this);
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
-			mStateTextView.setText("编辑模式");
+			trName.setOnClickListener(this);
+			trFaultTime.setOnClickListener(this);
+			trFaultPhenomenon.setOnClickListener(this);
+			trHandleStep.setOnClickListener(this);
+			trOtherStep.setOnClickListener(this);
+			trPeople.setOnClickListener(this);
 			break;
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
-			mStateTextView.setText("浏览模式");
+			trName.setOnClickListener(null);
+			trFaultTime.setOnClickListener(null);
+			trFaultPhenomenon.setOnClickListener(null);
+			trHandleStep.setOnClickListener(null);
+			trOtherStep.setOnClickListener(null);
+			trPeople.setOnClickListener(null);
 			break;
 		}
 	}
+	
+	private void fillViewData(int code){
+		switch (code) {
+		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER:
+			etName.setText("");
+			etSN.setText("");
+			etType.setText("");
+			etPosition.setText("");
+			etStartTime.setText("");
+			etManufacture.setText("");
+			etFaultTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(new Date()));
+			etFaultPhenomenon.setText("");
+			etHandleStep.setText("");
+			etOtherStep.setText("");
+			etPeople.setText("");
+			break;
+		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
+			etName.setText(receivedData.get("Name"));
+			etFaultTime.setText(receivedData.get("Time"));
+			etFaultPhenomenon.setText(receivedData.get("Info"));
+			break;
+		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
+			etName.setText(receivedData.get("Name"));
+			etFaultTime.setText(receivedData.get("Time"));
+			etFaultPhenomenon.setText(receivedData.get("Info"));
+			break;
+		}
+	}
+	
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -102,5 +207,28 @@ public class RepairManageItemActivity extends NfcActivity{
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.activity_repairmanageitem_name_tr:
+			
+			break;
+		case R.id.activity_repairmanageitem_faulttime_tr:
+			
+			break;
+		case R.id.activity_repairmanageitem_faultphenomenon_tr:
+			
+			break;
+		case R.id.activity_repairmanageitem_handlestep_tr:
+			
+			break;
+		case R.id.activity_repairmanageitem_otherstep_tr:
+			
+			break;
+		case R.id.activity_repairmanageitem_taskpeople_tr:
+			
+			break;
+		}
+	}
 }

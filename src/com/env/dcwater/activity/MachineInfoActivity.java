@@ -1,6 +1,7 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.PullToRefreshView;
@@ -28,14 +30,18 @@ import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
  * @author sk
  */
 public class MachineInfoActivity extends NfcActivity implements OnItemClickListener,IXListViewListener{
+	
+	public static final String ACTION_STRING = "MachineInfoActivity";
+	
+	private ArrayAdapter<String> deviceAdapter;
 	private DrawerLayout mDrawerLayout;
 	private ListView mListView;
 	private PullToRefreshView infoListView;
 	private ArrayList<HashMap<String, String>> mMachine;
 	private String [] machineArray;
-	private String mSelectedMachine;
 	private MachineInfoItemAdapter infoListViewAdapter;
 	private ActionBar mActionBar;
+	private int mSelectedPosition =0;
 	private Handler mHandler =  new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			infoListView.stopRefresh();
@@ -46,8 +52,9 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_machineinfo);
+		machineArray = getResources().getStringArray(R.array.machineinfo);
 		iniActionBar();
-		iniData();
+		setData();
 		iniView();
 	}
 	
@@ -59,6 +66,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setDisplayShowTitleEnabled(true);
+		mActionBar.setTitle(machineArray[mSelectedPosition]);
 	}
 	
 	/**
@@ -72,31 +80,14 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	}
 	
 	/**
-	 * 初始化数据
-	 */
-	private void iniData(){
-		machineArray = getResources().getStringArray(R.array.machineinfo);
-		mSelectedMachine = machineArray[0];
-		mActionBar.setTitle(mSelectedMachine);
-		mMachine = new ArrayList<HashMap<String,String>>();
-		HashMap<String, String> map=null;
-		for(int i=0;i<10;i++){
-			map = new HashMap<String, String>();
-			map.put("Key",mSelectedMachine+"参数"+i++);
-			map.put("Value","值是"+Math.random()*10);
-			mMachine.add(map);
-		}
-	}
-	
-	/**
-	 * 填充数据
+	 * 设置数据
 	 */
 	private void setData(){
 		mMachine = new ArrayList<HashMap<String,String>>();
 		HashMap<String, String> map=null;
 		for(int i=0;i<10;i++){
 			map = new HashMap<String, String>();
-			map.put("Key",mSelectedMachine+"参数"+i++);
+			map.put("Key",machineArray[mSelectedPosition]+"参数"+i++);
 			map.put("Value","值是"+Math.random()*10);
 			mMachine.add(map);
 		}
@@ -107,8 +98,8 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	 * 初始化 listview
 	 */
 	private void iniListView(){
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(MachineInfoActivity.this, android.R.layout.simple_list_item_1,machineArray);
-		mListView.setAdapter(adapter);
+		deviceAdapter = new ArrayAdapter<String>(MachineInfoActivity.this, android.R.layout.simple_list_item_1,machineArray);
+		mListView.setAdapter(deviceAdapter);
 		mListView.setOnItemClickListener(this);
 		
 		infoListViewAdapter =  new MachineInfoItemAdapter();
@@ -122,6 +113,8 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	 */
 	private void startMaintainHistoryActivity(){
 		Intent intent = new Intent(this, MaintainHistoryActivity.class);
+		intent.putExtra("action", ACTION_STRING);
+		intent.putExtra("data",machineArray[mSelectedPosition]);
 		startActivity(intent);
 	}
 	/**
@@ -129,6 +122,8 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	 */
 	private void startUpkeepHistoryActivity(){
 		Intent intent = new Intent(this, UpkeepHistoryActivity.class);
+		intent.putExtra("action", ACTION_STRING);
+		intent.putExtra("data",machineArray[mSelectedPosition]);
 		startActivity(intent);
 	}
 	
@@ -161,8 +156,8 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 		if(parent.equals(mListView)){
 			mDrawerLayout.closeDrawer(Gravity.LEFT);
-			mSelectedMachine = machineArray[position];
-			mActionBar.setTitle(mSelectedMachine);
+			mSelectedPosition = position;
+			mActionBar.setTitle(machineArray[position]);
 			setData();
 			infoListViewAdapter.notifyDataSetChanged();
 		}else if (parent.equals(infoListView)) {
