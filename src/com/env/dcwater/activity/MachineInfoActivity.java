@@ -154,13 +154,13 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		if(parent.equals(mListView)){
+		if(parent.equals(mListView)){ //选取设备的 listview
 			mDrawerLayout.closeDrawer(Gravity.LEFT);
 			mSelectedPosition = position;
 			mActionBar.setTitle(machineArray[position]);
 			setData();
 			infoListViewAdapter.notifyDataSetChanged();
-		}else if (parent.equals(infoListView)) {
+		}else if (parent.equals(infoListView)) {//设备参数的listview
 		}
 		
 	}
@@ -184,6 +184,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 			startUpkeepHistoryActivity();
 			break;
 		case R.id.menu_machineinfo_refresh:
+			onRefresh();
 			break;
 		}
 		return super.onOptionsItemSelected(item);

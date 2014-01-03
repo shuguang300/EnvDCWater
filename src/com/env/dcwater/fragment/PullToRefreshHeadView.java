@@ -94,7 +94,6 @@ public class PullToRefreshHeadView extends LinearLayout{
 		case STATE_REFRESHING:
 			mHintTextView.setText(R.string.xlistview_header_hint_loading);
 			break;
-			default:
 		}
 		mState = state;
 	}
