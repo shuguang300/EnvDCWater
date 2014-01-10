@@ -1,5 +1,5 @@
 package com.env.dcwater.component;
-import com.env.dcwater.util.NfcUtil;
+import com.env.dcwater.util.NfcHelper;
 import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
@@ -29,7 +29,7 @@ public class NfcActivity extends Activity{
 		nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 		if(nfcAdapter!=null){
 			if(nfcAdapter.isEnabled()){
-				nfcAdapter.enableForegroundDispatch(this, NfcUtil.NFCPendingIntent(this), NfcUtil.intentFilters, NfcUtil.techList);
+				nfcAdapter.enableForegroundDispatch(this, NfcHelper.NFCPendingIntent(this), NfcHelper.intentFilters, NfcHelper.techList);
 			}
 		}
 	}

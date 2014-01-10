@@ -14,8 +14,8 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Parcelable;
 
-public class NfcUtil {
-        private NfcUtil() {
+public class NfcHelper {
+        private NfcHelper() {
 
         }
 
@@ -63,7 +63,7 @@ public class NfcUtil {
         
         public static boolean writeToNDEF(NdefMessage message,Intent intent){
                 boolean ok = false;
-                for(String intentfilter : NfcUtil.intentActions){
+                for(String intentfilter : NfcHelper.intentActions){
                         if (intent.getAction().equals(intentfilter)) {
                                 Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);                                                
                                 Ndef ndef = Ndef.get(tag);
@@ -110,14 +110,14 @@ public class NfcUtil {
         
         public static boolean writeToBlock(String arg0,Intent intent){
                 boolean ok = false;
-                for(String intentfilter : NfcUtil.intentActions){
+                for(String intentfilter : NfcHelper.intentActions){
                         if (intent.getAction().equals(intentfilter)) {
                                 Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);                                                
                                 MifareClassic mfc = MifareClassic.get(tag);
                                 try {
                                         mfc.connect();
                                         if (mfc.authenticateSectorWithKeyA(1, MifareClassic.KEY_NFC_FORUM)) {
-                                                mfc.writeBlock(4, NfcUtil.StringToBytes(arg0));
+                                                mfc.writeBlock(4, NfcHelper.StringToBytes(arg0));
                                                 ok = true;
                                         }else {
                                                 ok = false;
@@ -140,7 +140,7 @@ public class NfcUtil {
                 try {
                         // Enable I/O operations to the tag from this TagTechnology object.
                         mfc.connect();
-                        String tagID = NfcUtil.bytesToHexString(tagFromIntent.getId());
+                        String tagID = NfcHelper.bytesToHexString(tagFromIntent.getId());
                         int type = mfc.getType();// 获取TAG的类型
                         int sectorCount = mfc.getSectorCount();// 获取TAG中包含的扇区数
                         String typeS = "";
@@ -191,7 +191,7 @@ public class NfcUtil {
         public static String getTagID(Intent intent){
                 String tagID = "";
                 Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-                tagID = NfcUtil.bytesToHexString(tagFromIntent.getId());
+                tagID = NfcHelper.bytesToHexString(tagFromIntent.getId());
                 return tagID;
         }
         

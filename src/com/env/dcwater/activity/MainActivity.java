@@ -65,23 +65,23 @@ public class MainActivity extends NfcActivity{
 	private void iniData(){
 		data = new ArrayList<HashMap<String,String>>();
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put(EnumList.EnumUserRight.RightName, EnumList.EnumUserRight.MACHINEINFO.getName());
-		map.put(EnumList.EnumUserRight.RightCode, EnumList.EnumUserRight.MACHINEINFO.getCode()+"");
+		map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
+		map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
 		data.add(map);
 		
 		map = new HashMap<String, String>();
-		map.put(EnumList.EnumUserRight.RightName, EnumList.EnumUserRight.REPAIRMANAGE.getName());
-		map.put(EnumList.EnumUserRight.RightCode, EnumList.EnumUserRight.REPAIRMANAGE.getCode()+"");
+		map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
+		map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
 		data.add(map);
 		
 		map = new HashMap<String, String>();
-		map.put(EnumList.EnumUserRight.RightName, EnumList.EnumUserRight.MAINTAINHISTORY.getName());
-		map.put(EnumList.EnumUserRight.RightCode, EnumList.EnumUserRight.MAINTAINHISTORY.getCode()+"");
+		map.put(EnumList.UserRight.RightName, EnumList.UserRight.MAINTAINHISTORY.getName());
+		map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MAINTAINHISTORY.getCode()+"");
 		data.add(map);
 		
 		map = new HashMap<String, String>();
-		map.put(EnumList.EnumUserRight.RightName, EnumList.EnumUserRight.UPKEEPHISTORY.getName());
-		map.put(EnumList.EnumUserRight.RightCode, EnumList.EnumUserRight.UPKEEPHISTORY.getCode()+"");
+		map.put(EnumList.UserRight.RightName, EnumList.UserRight.UPKEEPHISTORY.getName());
+		map.put(EnumList.UserRight.RightCode, EnumList.UserRight.UPKEEPHISTORY.getCode()+"");
 		data.add(map);
 	}
 	

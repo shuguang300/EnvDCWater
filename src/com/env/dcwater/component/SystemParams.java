@@ -1,5 +1,8 @@
 package com.env.dcwater.component;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class SystemParams {
 	
 	public static final String STANDARDTIME_PATTERN_STRING = "yyyy-MM-dd HH:mm:ss";
@@ -15,6 +18,21 @@ public class SystemParams {
 	}
 
 	private SystemParams() {
-
 	}
+	
+	
+	private ArrayList<HashMap<String, String>> mMachineList;
+	/**
+	 * @return the mMachineList
+	 */
+	public ArrayList<HashMap<String, String>> getMachineList() {
+		return mMachineList;
+	}
+	/**
+	 * @param mMachineList the mMachineList to set
+	 */
+	public void setmMachineList(ArrayList<HashMap<String, String>> machineList) {
+		mMachineList = machineList;
+	}
+	
 }

@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
@@ -31,9 +30,10 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	private ActionBar mActionBar;
 	private PullToRefreshView mHistoryList;
 	private UpkeepHistoryItemAdapter mAdapter;
-	private ArrayList<HashMap<String, Object>> mData;
+	private ArrayList<HashMap<String, String>> mData;
 	private Intent receivedIntent;
 	private String receivedAction;
+	private HashMap<String, String> receivedData;
 	private Handler mHandler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -63,7 +63,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		if(receivedAction.equals(MainActivity.ACTION_STRING)){
 			mActionBar.setTitle("保养历史总览");
 		}else if (receivedAction.equals(MachineInfoActivity.ACTION_STRING)) {
-			mActionBar.setTitle(receivedIntent.getExtras().getString("data")+"保养历史");
+			mActionBar.setTitle(receivedData.get("DeviceName")+"保养历史");
 		}
 	}
 	
@@ -81,13 +81,15 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	/**
 	 * 初始化数据
 	 */
+	@SuppressWarnings("unchecked")
 	private void iniData(){
 		receivedIntent = getIntent();
 		receivedAction = receivedIntent.getExtras().getString("action");
-		mData = new ArrayList<HashMap<String,Object>>();
-		HashMap<String, Object> map = null;
+		receivedData = (HashMap<String, String>)receivedIntent.getExtras().getSerializable("data");
+		mData = new ArrayList<HashMap<String,String>>();
+		HashMap<String, String> map = null;
 		for(int i =0;i<30;i++){
-			map = new HashMap<String, Object>();
+			map = new HashMap<String, String>();
 			map.put("Name", "Name"+i);
 			map.put("State", "State"+i);
 			mData.add(map);
@@ -135,9 +137,6 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		case android.R.id.home:
 			onBackPressed();
 			break;
-		case R.id.menu_upkeephistory_refresh:
-			Toast.makeText(UpkeepHistoryActivity.this, "刷新", Toast.LENGTH_SHORT).show();
-			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -174,7 +173,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		}
 
 		@Override
-		public HashMap<String, Object> getItem(int position) {
+		public HashMap<String, String> getItem(int position) {
 			return mData.get(position);
 		}
 
@@ -188,7 +187,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 			if(convertView==null){
 				convertView = LayoutInflater.from(UpkeepHistoryActivity.this).inflate(R.layout.item_upkeephistory, null);
 			}
-			HashMap<String, Object> map = getItem(position);
+			HashMap<String, String> map = getItem(position);
 			TextView name = (TextView)convertView.findViewById(R.id.item_upkeephistory_name);
 			TextView state = (TextView)convertView.findViewById(R.id.item_upkeephistory_state);
 			name.setText(map.get("Name").toString());

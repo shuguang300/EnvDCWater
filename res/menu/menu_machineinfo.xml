@@ -11,10 +11,11 @@
         android:title="@string/menu_machineinfo_upkeephistory"
         android:showAsAction="always|withText"
         android:icon="@drawable/ic_launcher"/>
+    <!--
     <item
         android:id="@+id/menu_machineinfo_refresh"
         android:title="@string/menu_machineinfo_refresh"
         android:showAsAction="always|withText"
         android:icon="@drawable/ic_launcher"/>
-
+  -->
 </menu>

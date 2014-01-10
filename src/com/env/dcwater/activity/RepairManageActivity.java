@@ -1,12 +1,20 @@
 package com.env.dcwater.activity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.http.client.ClientProtocolException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
@@ -21,10 +29,13 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
+import com.env.dcwater.javabean.EnumList;
+import com.env.dcwater.util.DataCenterHelper;
 
 /**
  * 报修管理
@@ -50,12 +61,8 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private ArrayList<HashMap<String, String>> mData;
 	private AlertDialog.Builder mDeleteConfirm ;
 	private Intent sendedIntent;
-	private Handler mHandler = new Handler(){
-		public void handleMessage(android.os.Message msg) {
-			mListView.stopRefresh();
-			mListViewAdapter.notifyDataSetChanged();
-		}
-	};
+	private GetServerData getServerData;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,6 +70,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		iniData();
 		iniActionBar();
 		iniView();
+		getServerData();
 	}
 	
 	/**
@@ -80,16 +88,11 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	 */
 	private void iniData(){
 		mData = new ArrayList<HashMap<String,String>>();
-		HashMap<String, String> map =null;
-		for (int i = 0; i < 10; i++) {
-			map = new HashMap<String, String>();
-			map.put("ID", "J/6.3-061219");
-			map.put("Time", "2014-01-02 17:50:49");
-			map.put("State", "已上报");
-			map.put("Name", "设备名字");
-			map.put("Info", "电机过热");
-			mData.add(map);
-		}
+	}
+	
+	private void getServerData(){
+		getServerData = new GetServerData();
+		getServerData.execute("");
 	}
 	
 	/**
@@ -159,8 +162,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		case R.id.menu_repairmanage_add:
 			sendIntent(REPAIRMANAGE_ADD_INTEGER,null);
 			break;
-		case R.id.menu_repairmanage_refresh:
-			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -213,18 +214,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 
 	@Override
 	public void onRefresh() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(5000);
-					iniData();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				mHandler.sendEmptyMessage(0);
-			}
-		}).start();
+		getServerData();
 	}
 
 	@Override
@@ -254,17 +244,81 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			}
 			HashMap<String, String> map = getItem(position);
 			TextView id = (TextView)convertView.findViewById(R.id.item_repairmanage_id);
-			id.setText(map.get("ID"));
+			id.setText(map.get("FaultReportSN"));
 			TextView time = (TextView)convertView.findViewById(R.id.item_repairmanage_time);
-			time.setText(map.get("Time"));
+			time.setText(map.get("AccidentOccurTime"));
 			TextView state = (TextView)convertView.findViewById(R.id.item_repairmanage_state);
-			state.setText(map.get("State"));
+			state.setText(map.get("StateDescription"));
 			TextView name = (TextView)convertView.findViewById(R.id.item_repairmanage_name);
-			name.setText(map.get("Name"));
+			name.setText(map.get("DeviceName"));
 			TextView info = (TextView)convertView.findViewById(R.id.item_repairmanage_info);
-			info.setText(map.get("Info"));
+			info.setText(map.get("AccidentDetail"));
 			return convertView;
 		}
+	}
+	
+	class GetServerData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
+
+		@Override
+		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
+			JSONObject object = new JSONObject();
+			ArrayList<HashMap<String, String>> data = null;
+			try {
+				object.put("PlantID", 1);
+				String result = DataCenterHelper.HttpPostData("GetReportInfoList", object);
+				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
+					JSONObject jsonObject = new JSONObject(result);
+					JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
+					JSONObject report = null;
+					HashMap<String, String> map = null;
+					data = new ArrayList<HashMap<String,String>>();
+					for(int i =0;i<jsonArray.length();i++){
+						report = jsonArray.getJSONObject(i);
+						map = new HashMap<String, String>();
+						if(Integer.valueOf(report.get("State").toString())!=EnumList.RepairState.HASBEENREPORTED.getState()){
+							continue;
+						}
+						map.put("RepairTaskID", report.get("RepairTaskID").toString());
+						map.put("FaultReportSN", report.get("FaultReportSN").toString());
+						map.put("AccidentOccurTime", report.get("AccidentOccurTime").toString());
+						map.put("DeviceName", report.get("DeviceName").toString());
+						map.put("InstallPosition", report.get("InstallPosition").toString());
+						map.put("RepairedTime", report.get("RepairedTime").toString());
+						map.put("ReportPerson", report.get("ReportPerson").toString());
+						map.put("State", report.get("State").toString());
+						map.put("StateDescription", report.get("State").toString());
+						map.put("AccidentDetail", report.get("AccidentDetail").toString());
+						data.add(map);
+					}
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+				data = null;
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+				data = null;
+			} catch (IOException e) {
+				e.printStackTrace();
+				data = null;
+			}
+			return data;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+		
+		@Override
+		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
+			super.onPostExecute(result);
+			if(result!=null){
+				mData = result;
+				mListViewAdapter.notifyDataSetChanged();
+			}
+			mListView.stopRefresh();
+		}
+		
 	}
 	
 }

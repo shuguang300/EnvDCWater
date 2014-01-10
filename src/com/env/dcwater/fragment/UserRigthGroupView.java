@@ -50,7 +50,7 @@ public class UserRigthGroupView extends LinearLayout implements OnItemClickListe
 	}
 	
 	private void startRightActivity(int pos){
-		int code = Integer.valueOf(mRightLists.get(pos).get(EnumList.EnumUserRight.RightCode));
+		int code = Integer.valueOf(mRightLists.get(pos).get(EnumList.UserRight.RightCode));
 		Intent intent = new Intent();
 		intent.putExtra("action", MainActivity.ACTION_STRING);
 		switch (code) {
@@ -100,7 +100,7 @@ public class UserRigthGroupView extends LinearLayout implements OnItemClickListe
 			convertView = inflate(mContext, R.layout.view_userright_item, null);
 			TextView view = (TextView)convertView.findViewById(R.id.view_userright_right_item);
 			view.setCompoundDrawablesRelativeWithIntrinsicBounds(null, drawable, null, null);
-			view.setText(mRightLists.get(position).get(EnumList.EnumUserRight.RightName));
+			view.setText(mRightLists.get(position).get(EnumList.UserRight.RightName));
 			return convertView;
 		}
 		

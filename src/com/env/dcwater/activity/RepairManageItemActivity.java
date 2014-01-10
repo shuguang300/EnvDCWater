@@ -17,6 +17,11 @@ import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 
+/**
+ * 单个报修工单界面，该界面可查看，编辑
+ * @author sk
+ *
+ */
 public class RepairManageItemActivity extends NfcActivity implements OnClickListener{
 	private ActionBar mActionBar;
 	private HashMap<String, String> receivedData;
@@ -47,10 +52,10 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			mActionBar.setTitle("上报故障");
 			break;
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
-			mActionBar.setTitle(receivedData.get("ID")+"详情");
+			mActionBar.setTitle(receivedData.get("FaultReportSN")+"详情");
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
-			mActionBar.setTitle(receivedData.get("ID")+"修改");
+			mActionBar.setTitle(receivedData.get("FaultReportSN")+"修改");
 			break;
 		}
 	}
@@ -160,13 +165,13 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			etPeople.setText("");
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
-			etName.setText(receivedData.get("Name"));
-			etFaultTime.setText(receivedData.get("Time"));
+			etName.setText(receivedData.get("DeviceName"));
+			etFaultTime.setText(receivedData.get("AccidentOccurTime"));
 			etFaultPhenomenon.setText(receivedData.get("Info"));
 			break;
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
-			etName.setText(receivedData.get("Name"));
-			etFaultTime.setText(receivedData.get("Time"));
+			etName.setText(receivedData.get("DeviceName"));
+			etFaultTime.setText(receivedData.get("AccidentOccurTime"));
 			etFaultPhenomenon.setText(receivedData.get("Info"));
 			break;
 		}

@@ -4,7 +4,7 @@ public class EnumList {
 	/**
 	 * @author Administrator 用户权限枚举
 	 */
-	public enum EnumUserRight {
+	public enum UserRight {
 
 		/**
 		 * 设备信息枚举对象
@@ -41,7 +41,7 @@ public class EnumList {
 		 * @param code
 		 * @param name
 		 */
-		private EnumUserRight(int code, String name) {
+		private UserRight(int code, String name) {
 			this.mRightCode = code;
 			this.mRightName = name;
 		}
@@ -52,16 +52,16 @@ public class EnumList {
 		 * @param code
 		 * @return
 		 */
-		public static EnumUserRight getEnumUserRight(int code) {
+		public static UserRight getEnumUserRight(int code) {
 			switch (code) {
 			case 0:
-				return EnumUserRight.MACHINEINFO;
+				return UserRight.MACHINEINFO;
 			case 1:
-				return EnumUserRight.REPAIRMANAGE;
+				return UserRight.REPAIRMANAGE;
 			case 2:
-				return EnumUserRight.MAINTAINHISTORY;
+				return UserRight.MAINTAINHISTORY;
 			case 3:
-				return EnumUserRight.UPKEEPHISTORY;
+				return UserRight.UPKEEPHISTORY;
 			}
 			return null;
 		}
@@ -82,6 +82,78 @@ public class EnumList {
 		 */
 		public String getName() {
 			return this.mRightName;
+		}
+	}
+	
+	
+	/**
+	 * 一个描述流程进度的enum集合
+	 * @author sk
+	 *
+	 */
+	public enum RepairState {
+		/**
+		 * 已上报
+		 */
+		HASBEENREPORTED(0,"已上报"),
+		/**
+		 * 已确认
+		 */
+		HASBEENCONFIRMED(1,"已确认"),
+		/**
+		 * 已派发
+		 */
+		HASBEENDISTRIBUTED(2,"已派发"),
+		/**
+		 * 正在维修
+		 */
+		BEENINGREPAIRED(3,"正在维修"),
+		/**
+		 * 维修完成
+		 */
+		HASBEENREPAIRED(4,"维修完成"),
+		/**
+		 * 返回修改
+		 */
+		FORCORRECTION(5,"返回修改"),
+		/**
+		 * 设备科长审核通过
+		 */
+		DEVICETHROUGH(6,"设备科长审核通过"),
+		/**
+		 * 生产科长已确认
+		 */
+		PRODUCTIONTHROUGH(7,"生产科长已确认"),
+		/**
+		 * 厂长已确认
+		 */
+		DIRECTORTHROUGH(8,"厂长已确认");
+		
+		private int mState;
+		private String mStateDescription;
+		/**
+		 * @return the mStateDescription
+		 */
+		public String getStateDescription() {
+			return mStateDescription;
+		}
+		/**
+		 * @param mStateDescription the mStateDescription to set
+		 */
+		public void setStateDescription(String stateDescription) {
+			mStateDescription = stateDescription;
+		}
+		/**
+		 * @param state
+		 */
+		private RepairState(int state,String stateDescription){
+			mState = state;
+		}
+		/**
+		 * @return 获取当前状态
+		 */
+		public int getState(){
+			return mState;
 		}
 	}
 }
