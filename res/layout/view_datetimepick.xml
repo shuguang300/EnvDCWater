@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content">
+        <Button 
+            android:id="@+id/view_datetimepick_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/view_datetimepick_ok"/>
+        <Button 
+            android:id="@+id/view_datetimepick_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/view_datetimepick_cancel"/>
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal">
+        <kankan.wheel.widget.WheelView 
+            android:id="@+id/view_datetimepick_year"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"/>
+        <kankan.wheel.widget.WheelView 
+            android:id="@+id/view_datetimepick_month"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1" />
+        <kankan.wheel.widget.WheelView 
+            android:id="@+id/view_datetimepick_day"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1" />
+        <kankan.wheel.widget.WheelView 
+            android:id="@+id/view_datetimepick_hour"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"/>
+        <kankan.wheel.widget.WheelView 
+            android:id="@+id/view_datetimepick_minute"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</LinearLayout>

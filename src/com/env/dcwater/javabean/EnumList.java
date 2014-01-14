@@ -13,7 +13,7 @@ public class EnumList {
 		/**
 		 * 报修枚举对象
 		 */
-		REPAIRMANAGE(1, "报修管理"),
+		REPAIRMANAGE(1, "设备维修管理"),
 		/**
 		 * 维修记录枚举对象
 		 */
@@ -131,29 +131,56 @@ public class EnumList {
 		
 		private int mState;
 		private String mStateDescription;
+		
+		/**
+		 * 任务状态的枚举类型的构造函数
+		 * @param state
+		 * @param stateDescription
+		 */
+		private RepairState(int state,String stateDescription){
+			mState = state;
+			mStateDescription = stateDescription;
+		}
+		
 		/**
 		 * @return the mStateDescription
 		 */
 		public String getStateDescription() {
 			return mStateDescription;
 		}
-		/**
-		 * @param mStateDescription the mStateDescription to set
-		 */
-		public void setStateDescription(String stateDescription) {
-			mStateDescription = stateDescription;
-		}
-		/**
-		 * @param state
-		 */
-		private RepairState(int state,String stateDescription){
-			mState = state;
-		}
+		
 		/**
 		 * @return 获取当前状态
 		 */
 		public int getState(){
 			return mState;
+		}
+		/**
+		 * @param code
+		 * @return 根据state获取任务状态的枚举类型
+		 */
+		public static RepairState getEnumRepairState(int code) {
+			switch (code) {
+			case 0:
+				return RepairState.HASBEENREPORTED;
+			case 1:
+				return RepairState.HASBEENCONFIRMED;
+			case 2:
+				return RepairState.HASBEENDISTRIBUTED;
+			case 3:
+				return RepairState.BEENINGREPAIRED;
+			case 4:
+				return RepairState.HASBEENREPAIRED;
+			case 5:
+				return RepairState.FORCORRECTION;
+			case 6:
+				return RepairState.DEVICETHROUGH;
+			case 7:
+				return RepairState.PRODUCTIONTHROUGH;
+			case 8:
+				return RepairState.DIRECTORTHROUGH;
+			}
+			return null;
 		}
 	}
 }

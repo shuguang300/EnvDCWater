@@ -367,11 +367,11 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 						map.put("FixedAssets", device.get("FixedAssets").toString());
 						map.put("InstallPosition", device.get("InstallPosition").toString());
 						map.put("Price", device.get("Price").toString());
-						map.put("FilingTime", device.get("FilingTime").toString());
-						map.put("InstallTime", device.get("InstallTime").toString());
-						map.put("StartUseTime", device.get("StartUseTime").toString());
-						map.put("StopUseTime", device.get("StopUseTime").toString());
-						map.put("ScrapTime", device.get("ScrapTime").toString());
+						map.put("FilingTime", device.get("FilingTime").toString().replace("T", " "));
+						map.put("InstallTime", device.get("InstallTime").toString().replace("T", " "));
+						map.put("StartUseTime", device.get("StartUseTime").toString().replace("T", " "));
+						map.put("StopUseTime", device.get("StopUseTime").toString().replace("T", " "));
+						map.put("ScrapTime", device.get("ScrapTime").toString().replace("T", " "));
 						map.put("DepreciationPeriod", device.get("DepreciationPeriod").toString());
 						map.put("DeviceClassType", device.get("DeviceClassType").toString());
 						map.put("Department", device.get("Department").toString());

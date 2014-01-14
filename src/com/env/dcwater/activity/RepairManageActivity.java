@@ -38,7 +38,7 @@ import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
 
 /**
- * 报修管理
+ * 设备维修管理
  * @author sk
  */
 public class RepairManageActivity extends NfcActivity implements IXListViewListener,OnItemClickListener{
@@ -280,13 +280,13 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 						}
 						map.put("RepairTaskID", report.get("RepairTaskID").toString());
 						map.put("FaultReportSN", report.get("FaultReportSN").toString());
-						map.put("AccidentOccurTime", report.get("AccidentOccurTime").toString());
+						map.put("AccidentOccurTime", report.get("AccidentOccurTime").toString().replace("T", " "));
 						map.put("DeviceName", report.get("DeviceName").toString());
 						map.put("InstallPosition", report.get("InstallPosition").toString());
-						map.put("RepairedTime", report.get("RepairedTime").toString());
+						map.put("RepairedTime", report.get("RepairedTime").toString().replace("T", " "));
 						map.put("ReportPerson", report.get("ReportPerson").toString());
 						map.put("State", report.get("State").toString());
-						map.put("StateDescription", report.get("State").toString());
+						map.put("StateDescription", EnumList.RepairState.getEnumRepairState(Integer.valueOf(report.get("State").toString())).getStateDescription());
 						map.put("AccidentDetail", report.get("AccidentDetail").toString());
 						data.add(map);
 					}

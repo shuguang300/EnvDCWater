@@ -30,7 +30,7 @@
     <string name="activity_userright_title">功能导航区</string>
     <string name="activity_userright_group_machinemanage">设备管理</string>
     <string name="activity_userright_item_machineinfo">设备信息查看</string>
-    <string name="activity_userright_item_repairmanage">报修管理</string>
+    <string name="activity_userright_item_repairmanage">设备维修管理</string>
     <string name="activity_userright_item_maintainhistory">维修历史记录</string>
     <string name="activity_userright_item_upkeephistory">保养历史记录</string>
     
@@ -52,13 +52,15 @@
     <string name="activity_repairmanageitem_taskpeople">巡检员</string>
     
     
-    
+    <string name="view_datetimepick_ok">确定</string>
+    <string name="view_datetimepick_cancel">取消</string>
     
     <string name="menu_machineinfo_maintainhistory">维修历史</string>
     <string name="menu_machineinfo_upkeephistory">保养历史</string>
     <string name="menu_machineinfo_refresh">刷新</string>
     <string name="menu_repairmanage_add">故障上报</string>
     <string name="menu_repairmanage_refresh">刷新</string>
+    <string name="menu_repairmanageitem_refresh">刷新</string>
     <string name="menu_upkeephistory_refresh">刷新</string>
     <string name="menu_maintainhistory_refresh">刷新</string>
     

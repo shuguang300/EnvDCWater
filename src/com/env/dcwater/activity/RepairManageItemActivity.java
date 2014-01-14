@@ -1,21 +1,29 @@
 package com.env.dcwater.activity;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
+import com.env.dcwater.fragment.DateTimePickerView;
 
 /**
  * 单个报修工单界面，该界面可查看，编辑
@@ -27,6 +35,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	private HashMap<String, String> receivedData;
 	private Intent receivedIntent;
 	private int mRequestCode;
+	private DateTimePickerView dateTimePickerView;
+	private String [] handleStepContent = {"尝试手动启动","关闭主电源","拍下急停按钮","悬挂警示标识牌","关闭故障设备工艺段进水"};
 	private TextView etName,etType,etSN,etPosition,etStartTime,etManufacture,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep;
 	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trPeople;
 	@Override 
@@ -167,12 +177,14 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
 			etName.setText(receivedData.get("DeviceName"));
 			etFaultTime.setText(receivedData.get("AccidentOccurTime"));
-			etFaultPhenomenon.setText(receivedData.get("Info"));
+			etFaultPhenomenon.setText(receivedData.get("AccidentDetail"));
+			etPeople.setText(receivedData.get("ReportPerson").toString());
 			break;
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
 			etName.setText(receivedData.get("DeviceName"));
 			etFaultTime.setText(receivedData.get("AccidentOccurTime"));
-			etFaultPhenomenon.setText(receivedData.get("Info"));
+			etFaultPhenomenon.setText(receivedData.get("AccidentDetail"));
+			etPeople.setText(receivedData.get("ReportPerson").toString());
 			break;
 		}
 	}
@@ -190,6 +202,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_repairmanageitem, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -199,6 +212,9 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		case android.R.id.home:
 			setResult(RESULT_CANCELED);
 			finish();
+			break;
+		case R.id.menu_repairmanageitem_refresh:
+			
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -211,13 +227,14 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			
 			break;
 		case R.id.activity_repairmanageitem_faulttime_tr:
-			
+			dateTimePickerView = new DateTimePickerView(RepairManageItemActivity.this);
+			dateTimePickerView.iniWheelView(Calendar.getInstance());
+			dateTimePickerView.showAtLocation(LayoutInflater.from(RepairManageItemActivity.this).inflate(R.layout.activity_repairmanageitem, null), Gravity.BOTTOM, 0, 0);
 			break;
 		case R.id.activity_repairmanageitem_faultphenomenon_tr:
 			
 			break;
 		case R.id.activity_repairmanageitem_handlestep_tr:
-			
 			break;
 		case R.id.activity_repairmanageitem_otherstep_tr:
 			
