@@ -108,6 +108,11 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		registerForContextMenu(mListView);
 	}
 	
+	/**
+	 * 根据code进行activity的跳转，并携带该报修单的信息
+	 * @param code
+	 * @param data
+	 */
 	private void sendIntent(int code,HashMap<String, String> data){
 		sendedIntent = new Intent(RepairManageActivity.this, RepairManageItemActivity.class);
 		sendedIntent.putExtra("RequestCode", code);

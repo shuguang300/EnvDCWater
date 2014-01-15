@@ -162,8 +162,6 @@ public class MainActivity extends NfcActivity{
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			break;
-		default:
-			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

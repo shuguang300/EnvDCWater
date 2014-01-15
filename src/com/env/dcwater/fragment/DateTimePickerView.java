@@ -2,6 +2,7 @@ package com.env.dcwater.fragment;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import kankan.wheel.widget.OnWheelChangedListener;
@@ -13,7 +14,10 @@ import com.env.dcwater.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Button;
 import android.widget.PopupWindow;
 
 /**
@@ -26,6 +30,7 @@ public class DateTimePickerView extends PopupWindow{
 	public static final int MAX_YEAR_INTEGER = 2100;
 	private Context mContext;
 	private View mView;
+	private Button mSubmit,mCancel,mReset;
 	private WheelView yearWheelView,monthWheelView,dayWheelView,hourWheelView,minuteWheelView;
 	/**
 	 * 构造函数
@@ -42,7 +47,11 @@ public class DateTimePickerView extends PopupWindow{
 	private void iniView(){
 		setWidth(LayoutParams.MATCH_PARENT);
 		setHeight(LayoutParams.MATCH_PARENT);
+		setBackgroundDrawable(null);
 		setAnimationStyle(R.style.popupwindow_anim);
+		mSubmit = (Button)mView.findViewById(R.id.view_datetimepick_ok);
+		mCancel = (Button)mView.findViewById(R.id.view_datetimepick_cancel);
+		mReset = (Button)mView.findViewById(R.id.view_datetimepick_reset);
 		yearWheelView = (WheelView)mView.findViewById(R.id.view_datetimepick_year);
 		monthWheelView = (WheelView)mView.findViewById(R.id.view_datetimepick_month);
 		dayWheelView = (WheelView)mView.findViewById(R.id.view_datetimepick_day);
@@ -66,10 +75,12 @@ public class DateTimePickerView extends PopupWindow{
 		yearWheelView.setViewAdapter(new NumericWheelAdapter(mContext,MIN_YEAR_INTEGER,MAX_YEAR_INTEGER));// 
 		yearWheelView.setCyclic(true);
 		yearWheelView.setCurrentItem(year - MIN_YEAR_INTEGER);
+		yearWheelView.setInterpolator(new AnticipateOvershootInterpolator());
 		
 		monthWheelView.setViewAdapter(new NumericWheelAdapter(mContext,1, 12));
 		monthWheelView.setCyclic(true);
 		monthWheelView.setCurrentItem(month);
+		monthWheelView.setInterpolator(new AnticipateOvershootInterpolator());
 		
 		dayWheelView.setCyclic(true);
 		if (list_big.contains(String.valueOf(month + 1))) {
@@ -83,14 +94,17 @@ public class DateTimePickerView extends PopupWindow{
 				dayWheelView.setViewAdapter(new NumericWheelAdapter(mContext,1, 28,"%02d"));
 		}
 		dayWheelView.setCurrentItem(day - 1);
+		dayWheelView.setInterpolator(new AnticipateOvershootInterpolator());
 		
 		hourWheelView.setViewAdapter(new NumericWheelAdapter(mContext,0, 23,"%02d"));
 		hourWheelView.setCyclic(true);
 		hourWheelView.setCurrentItem(hour);
+		hourWheelView.setInterpolator(new AnticipateOvershootInterpolator());
 
 		minuteWheelView.setViewAdapter(new NumericWheelAdapter(mContext,0,59,"%02d"));
 		minuteWheelView.setCyclic(true);
 		minuteWheelView.setCurrentItem(minute);
+		minuteWheelView.setInterpolator(new AnticipateOvershootInterpolator());
 		
 		OnWheelChangedListener wheelListener_year = new OnWheelChangedListener() {
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
@@ -124,5 +138,22 @@ public class DateTimePickerView extends PopupWindow{
 		};
 		yearWheelView.addChangingListener(wheelListener_year);
 		monthWheelView.addChangingListener(wheelListener_month);
+		
+	}
+	
+	public void setButtonClickEvent(OnClickListener submit,OnClickListener cancel,OnClickListener reset){
+		mSubmit.setOnClickListener(submit);
+		mCancel.setOnClickListener(cancel);
+		mReset.setOnClickListener(reset);
+	}
+	
+	public Date getSelectedDate(){
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, yearWheelView.getCurrentItem()+MIN_YEAR_INTEGER);
+		calendar.set(Calendar.MONTH, monthWheelView.getCurrentItem());
+		calendar.set(Calendar.DATE, dayWheelView.getCurrentItem()+1);
+		calendar.set(Calendar.HOUR_OF_DAY, hourWheelView.getCurrentItem());
+		calendar.set(Calendar.MINUTE, minuteWheelView.getCurrentItem());
+		return calendar.getTime();
 	}
 }

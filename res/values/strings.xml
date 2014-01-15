@@ -54,6 +54,7 @@
     
     <string name="view_datetimepick_ok">确定</string>
     <string name="view_datetimepick_cancel">取消</string>
+    <string name="view_datetimepick_reset">重置</string>
     
     <string name="menu_machineinfo_maintainhistory">维修历史</string>
     <string name="menu_machineinfo_upkeephistory">保养历史</string>
