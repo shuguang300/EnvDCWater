@@ -58,7 +58,9 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	private MachineListItemAdapter mMachineListAdapter;
 	private ArrayList<HashMap<String, String>> mMachine;
 	private DateTimePickerView dateTimePickerView;
+	private String mOtherStep="",mHandleStep="";
 	private String [] handleStepContent = {"尝试手动启动","关闭主电源","拍下急停按钮","悬挂警示标识牌","关闭故障设备工艺段进水"};
+	private boolean [] handleStepSelected = {false,false,false,false,false};
 	private TextView etName,etType,etSN,etPosition,etStartTime,etManufacture,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep;
 	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trPeople;
 	@Override 
@@ -104,6 +106,19 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
 			receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("Data");
+			String [] handle1 = receivedData.get("EmergencyMeasures").split(",");
+			try {
+				for(int i=0;i<handle1.length;i++){
+					if(handle1[i].endsWith("(an)")) mOtherStep = handle1[i].replace("(an)", "");
+					else {
+						mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle1[i])-1] + (i==handle1.length-1?"":"\n");
+						handleStepSelected[Integer.parseInt(handle1[i])-1] = true;
+					}
+				}
+			} catch (Exception e) {
+				mOtherStep = "";
+				mHandleStep ="";
+			}
 			try {
 				mDate = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(receivedData.get("AccidentOccurTime").toString());
 			} catch (Exception e) {
@@ -112,6 +127,19 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			break;
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
 			receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("Data");
+			String [] handle2 = receivedData.get("EmergencyMeasures").split(",");
+			try {
+				for(int i=0;i<handle2.length;i++){
+					if(handle2[i].endsWith("(an)")) mOtherStep = handle2[i].replace("(an)", "");
+					else {
+						mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle2[i])-1] + (i==handle2.length-1?"":"\n");
+						handleStepSelected[Integer.parseInt(handle2[i])-1] = true;
+					}
+				}
+			} catch (Exception e) {
+				mOtherStep = "";
+				mHandleStep ="";
+			}
 			try {
 				mDate = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(receivedData.get("AccidentOccurTime").toString());
 			} catch (Exception e) {
@@ -221,17 +249,29 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
 			getServerData();
 			etName.setText(receivedData.get("DeviceName"));
+			etType.setText(receivedData.get("Specification"));
+			etSN.setText(receivedData.get("DeviceSN"));
+			etStartTime.setText(receivedData.get("StartUseTime"));
+			etManufacture.setText(receivedData.get("Manufacturer"));
 			etPosition.setText(receivedData.get("InstallPosition"));
 			etFaultTime.setText(receivedData.get("AccidentOccurTime"));
 			etFaultPhenomenon.setText(receivedData.get("AccidentDetail"));
 			etPeople.setText(receivedData.get("ReportPerson").toString());
+			etHandleStep.setText(mHandleStep);
+			etOtherStep.setText(mOtherStep);
 			break;
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
 			etName.setText(receivedData.get("DeviceName"));
+			etType.setText(receivedData.get("Specification"));
+			etSN.setText(receivedData.get("DeviceSN"));
+			etStartTime.setText(receivedData.get("StartUseTime"));
+			etManufacture.setText(receivedData.get("Manufacturer"));
 			etPosition.setText(receivedData.get("InstallPosition"));
 			etFaultTime.setText(receivedData.get("AccidentOccurTime"));
 			etFaultPhenomenon.setText(receivedData.get("AccidentDetail"));
 			etPeople.setText(receivedData.get("ReportPerson").toString());
+			etHandleStep.setText(mHandleStep);
+			etOtherStep.setText(mOtherStep);
 			break;
 		}
 	}
@@ -331,6 +371,13 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		mDrawerLayout.closeDrawer(Gravity.LEFT);
+		HashMap<String, String> map = mMachine.get(position);
+		etName.setText(map.get("DeviceName"));
+		etType.setText(map.get("Specification"));
+		etSN.setText(map.get("DeviceSN"));
+		etStartTime.setText(map.get("StartUseTime"));
+		etManufacture.setText(map.get("Manufacturer"));
+		etPosition.setText(map.get("InstallPosition"));
 	}
 	
 	private class MachineListItemAdapter extends BaseAdapter {

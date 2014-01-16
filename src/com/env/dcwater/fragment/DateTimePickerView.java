@@ -12,9 +12,13 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
 import com.env.dcwater.R;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Button;
@@ -47,8 +51,8 @@ public class DateTimePickerView extends PopupWindow{
 	private void iniView(){
 		setWidth(LayoutParams.MATCH_PARENT);
 		setHeight(LayoutParams.MATCH_PARENT);
-		setBackgroundDrawable(null);
 		setAnimationStyle(R.style.popupwindow_anim);
+		setBackgroundDrawable(null);
 		mSubmit = (Button)mView.findViewById(R.id.view_datetimepick_ok);
 		mCancel = (Button)mView.findViewById(R.id.view_datetimepick_cancel);
 		mReset = (Button)mView.findViewById(R.id.view_datetimepick_reset);
@@ -57,6 +61,17 @@ public class DateTimePickerView extends PopupWindow{
 		dayWheelView = (WheelView)mView.findViewById(R.id.view_datetimepick_day);
 		hourWheelView = (WheelView)mView.findViewById(R.id.view_datetimepick_hour);
 		minuteWheelView = (WheelView)mView.findViewById(R.id.view_datetimepick_minute);
+		mView.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				int top = mView.findViewById(R.id.view_datetimepick_command).getTop();
+				int Y = (int)event.getY();
+				if(event.getAction()==MotionEvent.ACTION_UP&&Y<top){
+					dismiss();
+				}
+				return true;
+			}
+		});
 	}
 	
 	public void iniWheelView(Calendar calendar){

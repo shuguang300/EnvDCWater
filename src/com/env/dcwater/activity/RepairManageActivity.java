@@ -284,6 +284,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 							continue;
 						}
 						map.put("RepairTaskID", report.get("RepairTaskID").toString());
+						map.put("DeviceID", report.get("DeviceID").toString());
 						map.put("FaultReportSN", report.get("FaultReportSN").toString());
 						map.put("AccidentOccurTime", report.get("AccidentOccurTime").toString().replace("T", " "));
 						map.put("DeviceName", report.get("DeviceName").toString());
@@ -293,6 +294,11 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 						map.put("State", report.get("State").toString());
 						map.put("StateDescription", EnumList.RepairState.getEnumRepairState(Integer.valueOf(report.get("State").toString())).getStateDescription());
 						map.put("AccidentDetail", report.get("AccidentDetail").toString());
+						map.put("Manufacturer", report.get("Manufacturer").toString());
+						map.put("Specification", report.get("Specification").toString());
+						map.put("DeviceSN", report.get("DeviceSN").toString());
+						map.put("StartUseTime", report.get("StartUseTime").toString().toString().replace("T", " "));
+						map.put("EmergencyMeasures", report.get("EmergencyMeasures").toString());
 						data.add(map);
 					}
 				}

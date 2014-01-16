@@ -7,7 +7,9 @@
     
     <RelativeLayout
         android:layout_width="match_parent"
-    	android:layout_height="wrap_content">
+    	android:layout_height="wrap_content"
+    	android:background="@color/blue"
+    	android:id="@+id/view_datetimepick_command">
         <Button 
             android:id="@+id/view_datetimepick_ok"
             android:layout_width="wrap_content"
@@ -20,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/view_datetimepick_reset"/>
-        <Button 
+        <Button
             android:id="@+id/view_datetimepick_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
