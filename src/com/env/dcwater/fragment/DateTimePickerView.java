@@ -48,6 +48,9 @@ public class DateTimePickerView extends PopupWindow{
 		iniView();
 	}
 	
+	/**
+	 * 初始化参数和控件
+	 */
 	private void iniView(){
 		setWidth(LayoutParams.MATCH_PARENT);
 		setHeight(LayoutParams.MATCH_PARENT);
@@ -74,6 +77,10 @@ public class DateTimePickerView extends PopupWindow{
 		});
 	}
 	
+	/**
+	 * 设置控件的日期和时间
+	 * @param calendar
+	 */
 	public void iniWheelView(Calendar calendar){
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH);
@@ -90,12 +97,10 @@ public class DateTimePickerView extends PopupWindow{
 		yearWheelView.setViewAdapter(new NumericWheelAdapter(mContext,MIN_YEAR_INTEGER,MAX_YEAR_INTEGER));// 
 		yearWheelView.setCyclic(true);
 		yearWheelView.setCurrentItem(year - MIN_YEAR_INTEGER);
-		yearWheelView.setInterpolator(new AnticipateOvershootInterpolator());
 		
 		monthWheelView.setViewAdapter(new NumericWheelAdapter(mContext,1, 12));
 		monthWheelView.setCyclic(true);
 		monthWheelView.setCurrentItem(month);
-		monthWheelView.setInterpolator(new AnticipateOvershootInterpolator());
 		
 		dayWheelView.setCyclic(true);
 		if (list_big.contains(String.valueOf(month + 1))) {
@@ -109,18 +114,16 @@ public class DateTimePickerView extends PopupWindow{
 				dayWheelView.setViewAdapter(new NumericWheelAdapter(mContext,1, 28,"%02d"));
 		}
 		dayWheelView.setCurrentItem(day - 1);
-		dayWheelView.setInterpolator(new AnticipateOvershootInterpolator());
 		
 		hourWheelView.setViewAdapter(new NumericWheelAdapter(mContext,0, 23,"%02d"));
 		hourWheelView.setCyclic(true);
 		hourWheelView.setCurrentItem(hour);
-		hourWheelView.setInterpolator(new AnticipateOvershootInterpolator());
 
 		minuteWheelView.setViewAdapter(new NumericWheelAdapter(mContext,0,59,"%02d"));
 		minuteWheelView.setCyclic(true);
 		minuteWheelView.setCurrentItem(minute);
-		minuteWheelView.setInterpolator(new AnticipateOvershootInterpolator());
 		
+		//添加年份滑动事件
 		OnWheelChangedListener wheelListener_year = new OnWheelChangedListener() {
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
 				int year_num = newValue + MIN_YEAR_INTEGER;
@@ -136,6 +139,9 @@ public class DateTimePickerView extends PopupWindow{
 				}
 			}
 		};
+		yearWheelView.addChangingListener(wheelListener_year);
+		
+		//添加月份的滑动事件
 		OnWheelChangedListener wheelListener_month = new OnWheelChangedListener() {
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
 				int month_num = newValue + 1;
@@ -151,17 +157,24 @@ public class DateTimePickerView extends PopupWindow{
 				}
 			}
 		};
-		yearWheelView.addChangingListener(wheelListener_year);
 		monthWheelView.addChangingListener(wheelListener_month);
 		
 	}
 	
+	/**
+	 * @param submit 确定事件
+	 * @param cancel 取消事件
+	 * @param reset  重置事件
+	 */
 	public void setButtonClickEvent(OnClickListener submit,OnClickListener cancel,OnClickListener reset){
 		mSubmit.setOnClickListener(submit);
 		mCancel.setOnClickListener(cancel);
 		mReset.setOnClickListener(reset);
 	}
 	
+	/**
+	 * @return 返回选择的日期和时间 
+	 */
 	public Date getSelectedDate(){
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.YEAR, yearWheelView.getCurrentItem()+MIN_YEAR_INTEGER);

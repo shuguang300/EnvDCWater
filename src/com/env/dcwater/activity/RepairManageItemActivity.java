@@ -6,13 +6,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
+import android.app.Activity;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface.OnMultiChoiceClickListener;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,7 +33,6 @@ import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -55,12 +56,13 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	private GetServerData mGetServerData;
 	private DrawerLayout mDrawerLayout;
 	private ListView mMachineListView;
+	private Builder mHandleContent;
 	private MachineListItemAdapter mMachineListAdapter;
 	private ArrayList<HashMap<String, String>> mMachine;
 	private DateTimePickerView dateTimePickerView;
 	private String mOtherStep="",mHandleStep="";
 	private String [] handleStepContent = {"尝试手动启动","关闭主电源","拍下急停按钮","悬挂警示标识牌","关闭故障设备工艺段进水"};
-	private boolean [] handleStepSelected = {false,false,false,false,false};
+	private boolean [] handleStepSelected = {false,false,false,false,false},tempStepSelected;
 	private TextView etName,etType,etSN,etPosition,etStartTime,etManufacture,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep;
 	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trPeople;
 	@Override 
@@ -111,10 +113,11 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				for(int i=0;i<handle1.length;i++){
 					if(handle1[i].endsWith("(an)")) mOtherStep = handle1[i].replace("(an)", "");
 					else {
-						mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle1[i])-1] + (i==handle1.length-1?"":"\n");
+						mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle1[i])-1] + "\n";
 						handleStepSelected[Integer.parseInt(handle1[i])-1] = true;
 					}
 				}
+				copyHandleStepSelected();
 			} catch (Exception e) {
 				mOtherStep = "";
 				mHandleStep ="";
@@ -132,10 +135,11 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				for(int i=0;i<handle2.length;i++){
 					if(handle2[i].endsWith("(an)")) mOtherStep = handle2[i].replace("(an)", "");
 					else {
-						mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle2[i])-1] + (i==handle2.length-1?"":"\n");
+						mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle2[i])-1] + "\n";
 						handleStepSelected[Integer.parseInt(handle2[i])-1] = true;
 					}
 				}
+				copyHandleStepSelected();
 			} catch (Exception e) {
 				mOtherStep = "";
 				mHandleStep ="";
@@ -285,6 +289,19 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		mGetServerData.execute("");
 	}
 	
+	private void copyHandleStepSelected(){
+		tempStepSelected = new boolean [5];
+		for(int i = 0;i<handleStepSelected.length;i++){
+			tempStepSelected[i] = handleStepSelected[i];
+		}
+	}
+	
+	private void copyTempStepSelected(){
+		for(int i = 0;i<tempStepSelected.length;i++){
+			handleStepSelected[i] = tempStepSelected[i];
+		}
+	}
+	
 	@Override
 	public void onBackPressed() {
 		if(dateTimePickerView!=null&&dateTimePickerView.isShowing()){
@@ -320,7 +337,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
+ 		switch (v.getId()) {
 		case R.id.activity_repairmanageitem_name_tr:
 			mDrawerLayout.openDrawer(Gravity.LEFT);
 			break;
@@ -357,13 +374,42 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			Toast.makeText(RepairManageItemActivity.this, "故障现象", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.activity_repairmanageitem_handlestep_tr:
-			Toast.makeText(RepairManageItemActivity.this, "应急措施", Toast.LENGTH_SHORT).show();
+			if(mHandleContent == null){
+				mHandleContent = new Builder(RepairManageItemActivity.this);
+				mHandleContent.setTitle("应急措施选择").setCancelable(false);
+				mHandleContent.setPositiveButton("取消", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						copyHandleStepSelected();
+					}
+				}).setNegativeButton("确定", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						copyTempStepSelected();
+						mHandleStep = "";
+						for(int i = 0;i<handleStepSelected.length;i++){
+							if(handleStepSelected[i]){
+								mHandleStep = mHandleStep + handleStepContent[i] + "\n";
+							}
+						}
+						etHandleStep.setText(mHandleStep);
+					}
+				});
+			}
+			mHandleContent.setMultiChoiceItems(handleStepContent, tempStepSelected, 
+					new OnMultiChoiceClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+				}
+			});
+			mHandleContent.create();
+			mHandleContent.show();
 			break;
 		case R.id.activity_repairmanageitem_otherstep_tr:
-			Toast.makeText(RepairManageItemActivity.this, "其他措施", Toast.LENGTH_SHORT).show();
+			
 			break;
 		case R.id.activity_repairmanageitem_taskpeople_tr:
-			Toast.makeText(RepairManageItemActivity.this, "巡检人员", Toast.LENGTH_SHORT).show();
+			
 			break;
 		}
 	}
@@ -380,6 +426,18 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		etPosition.setText(map.get("InstallPosition"));
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode==Activity.RESULT_OK){
+			
+		}
+	}
+	
+	/**
+	 * 自定义的设备列表的adapter
+	 * @author sk
+	 */
 	private class MachineListItemAdapter extends BaseAdapter {
 		@Override
 		public int getCount() {
@@ -404,6 +462,10 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		}
 	}
 	
+	/**
+	 * 获取远端数据的异步方法
+	 * @author sk
+	 */
 	private class GetServerData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {

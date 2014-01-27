@@ -90,6 +90,9 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		mData = new ArrayList<HashMap<String,String>>();
 	}
 	
+	/**
+	 * 从服务器上获取数据
+	 */
 	private void getServerData(){
 		getServerData = new GetServerData();
 		getServerData.execute("");
@@ -149,15 +152,18 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 	}
+	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_repairmanage, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

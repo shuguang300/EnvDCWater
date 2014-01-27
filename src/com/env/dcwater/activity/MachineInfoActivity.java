@@ -293,6 +293,10 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 		getServerData();
 	}
 	
+	/**
+	 * 自定义设备参数列表的adapter
+	 * @author sk
+	 */
 	private class MachineInfoItemAdapter extends BaseAdapter{
 		@Override
 		public int getCount() {
@@ -320,6 +324,10 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 		}
 	}
 	
+	/**
+	 * 自定义设备列表的adapter
+	 * @author sk
+	 */
 	private class MachineListItemAdapter extends BaseAdapter {
 		@Override
 		public int getCount() {
@@ -344,6 +352,10 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 		}
 	}
 	
+	/**
+	 * 调用webservice获取数据的异步方法
+	 * @author sk
+	 */
 	private class GetServerData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
@@ -382,6 +394,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 						data.add(map);
 					}
 					mMachine = data;
+					//获取到设备列表后，将设备列表数据暂存到程序变量中，方便其他地方调用
 					SystemParams.getInstance().setmMachineList(mMachine);
 					setMachineParams(mMachine.get(mSelectedPosition));
 				}

@@ -6,6 +6,12 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
+/**
+ * 让activity继承该界面，可实现nfc的前台调度系统
+ * 避免在程序中，使用其他nfc支持程序
+ * @author sk
+ *
+ */
 public class NfcActivity extends Activity{
 	private NfcAdapter nfcAdapter;
 	@Override

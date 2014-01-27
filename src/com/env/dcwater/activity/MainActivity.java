@@ -177,6 +177,10 @@ public class MainActivity extends NfcActivity{
 	}
 	
 	
+	/**
+	 * viewpage的滑动事件
+	 * @author sk
+	 */
 	private class MainOnPageChangeListener implements OnPageChangeListener{
 		@Override
 		public void onPageScrollStateChanged(int arg0) {}
@@ -199,6 +203,10 @@ public class MainActivity extends NfcActivity{
 		}
 	}
 	
+	/**
+	 * 主界面功能模块的自定义adapter，目前只有2个：用户权限，设置
+	 * @author sk
+	 */
 	private class MainPageAdapter extends PagerAdapter{
 		private ArrayList<View> mViews;
 		public MainPageAdapter(ArrayList<View> views){

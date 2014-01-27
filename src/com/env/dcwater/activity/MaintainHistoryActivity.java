@@ -55,6 +55,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setDisplayShowTitleEnabled(true);
+		//判断是否是所有设备的维修历史
 		if(receivedAction.equals(MainActivity.ACTION_STRING)){
 			mActionBar.setTitle("维修历史总览");
 		}else if (receivedAction.equals(MachineInfoActivity.ACTION_STRING)) {
@@ -92,6 +93,9 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		}
 	}
 	
+	/**
+	 * 调用webservice的异步方法
+	 */
 	private void getServerData(){
 		
 	}
@@ -157,6 +161,10 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		
 	}
 	
+	/**
+	 * 维修历史的自定义adapter
+	 * @author sk
+	 */
 	private class MaintainHistoryItemAdapter extends BaseAdapter{
 		@Override
 		public int getCount() {
@@ -184,6 +192,11 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		}
 	}
 	
+	
+	/**
+	 * 获取数据的异步调用方法AsyncTask
+	 * @author sk
+	 */
 	private class GetServerData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 
 		@Override

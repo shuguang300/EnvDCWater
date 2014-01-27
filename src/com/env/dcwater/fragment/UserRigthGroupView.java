@@ -24,6 +24,9 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * @author sk
+ */
 public class UserRigthGroupView extends LinearLayout implements OnItemClickListener{
 	private TextView title;
 	private Context mContext;

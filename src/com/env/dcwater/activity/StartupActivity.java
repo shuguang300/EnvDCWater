@@ -9,6 +9,10 @@ import com.env.dcwater.R;
 import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.NfcActivity;
 
+/**
+ * 初始化界面
+ * @author sk
+ */
 public class StartupActivity extends NfcActivity{
 	private Intent loginIntent;
 	@Override

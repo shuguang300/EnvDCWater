@@ -12,7 +12,6 @@ import com.env.dcwater.component.NfcActivity;
 /**
  * 登录窗口
  * @author sk
- *
  */
 public class LoginActivity extends NfcActivity implements OnClickListener{
 	private Button loginButton;
@@ -60,11 +59,17 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 		super.onNewIntent(intent);
 	}
 	
+	/**
+	 * 初始化控件，设置控件的点击事件和数据
+	 */
 	private void ini(){
 		loginButton = (Button)findViewById(R.id.activity_login_submit);
 		loginButton.setOnClickListener(this);
 	}
 	
+	/**
+	 * 登录方法 登录到MainActivity界面
+	 */
 	private void startLogin(){
 		userRightIntent = new Intent(LoginActivity.this, MainActivity.class);
 		startActivity(userRightIntent);

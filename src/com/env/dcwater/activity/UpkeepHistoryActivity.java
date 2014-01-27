@@ -166,6 +166,10 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		
 	}
 	
+	/**
+	 * 保养记录的自定义adapter 
+	 * @author sk
+	 */
 	private class UpkeepHistoryItemAdapter extends BaseAdapter{
 		@Override
 		public int getCount() {
