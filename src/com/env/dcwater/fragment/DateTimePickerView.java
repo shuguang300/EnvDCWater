@@ -158,7 +158,14 @@ public class DateTimePickerView extends PopupWindow{
 			}
 		};
 		monthWheelView.addChangingListener(wheelListener_month);
-		
+	}
+	
+	/**
+	 * 设置短日期格式
+	 */
+	public void setShortDateView(){
+		hourWheelView.setVisibility(View.GONE);
+		minuteWheelView.setVisibility(View.GONE);
 	}
 	
 	/**

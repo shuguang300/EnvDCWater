@@ -6,10 +6,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
@@ -33,6 +35,7 @@ import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -100,20 +103,31 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	 */
 	@SuppressWarnings("unchecked")
 	private void iniData(){
+		//获取到设备维修管理界面传过来的intent
 		receivedIntent = getIntent();
+		//获取请求码
 		mRequestCode = receivedIntent.getExtras().getInt("RequestCode");
 		switch (mRequestCode) {
-		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER:
+		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER://新增维修单
 			mDate = new Date();
+			copyHandleStepSelected();
 			break;
-		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
+		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER://修改维修单
 			receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("Data");
-			String [] handle1 = receivedData.get("EmergencyMeasures").split(",");
+			String [] handle1;
+			if(receivedData.get("EmergencyMeasures").equals("null")){ 
+				handle1 = new String [0]; 
+			}else {
+				handle1 = receivedData.get("EmergencyMeasures").split(",");
+			}
 			try {
 				for(int i=0;i<handle1.length;i++){
-					if(handle1[i].endsWith("(an)")) mOtherStep = handle1[i].replace("(an)", "");
-					else {
+					if(handle1[i].endsWith("(an)")){ 
+						//应急措施和措施放在一个字段里面了，带有（an）结尾的是措施，数字的是紧急措施
+						mOtherStep = handle1[i].replace("(an)", "");
+					} else {
 						mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle1[i])-1] + "\n";
+						//得到初始化的 应急措施
 						handleStepSelected[Integer.parseInt(handle1[i])-1] = true;
 					}
 				}
@@ -123,19 +137,28 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				mHandleStep ="";
 			}
 			try {
+				//得到该表单的故障发生时间
 				mDate = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(receivedData.get("AccidentOccurTime").toString());
 			} catch (Exception e) {
 				mDate = new Date();
 			}
 			break;
-		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
+		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER://查看维修单的详细情况
 			receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("Data");
-			String [] handle2 = receivedData.get("EmergencyMeasures").split(",");
+			String [] handle2;
+			if(receivedData.get("EmergencyMeasures").equals("null")){
+				handle2 = new String [0]; 
+			}else {
+				handle2 = receivedData.get("EmergencyMeasures").split(",");
+			}
 			try {
 				for(int i=0;i<handle2.length;i++){
-					if(handle2[i].endsWith("(an)")) mOtherStep = handle2[i].replace("(an)", "");
-					else {
+					if(handle2[i].endsWith("(an)")) {
+						//应急措施和措施放在一个字段里面了，带有（an）结尾的是措施，数字的是紧急措施	
+						mOtherStep = handle2[i].replace("(an)", "");
+					}else {
 						mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle2[i])-1] + "\n";
+						//得到初始化的 应急措施
 						handleStepSelected[Integer.parseInt(handle2[i])-1] = true;
 					}
 				}
@@ -145,6 +168,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				mHandleStep ="";
 			}
 			try {
+				//得到该表单的故障发生时间
 				mDate = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(receivedData.get("AccidentOccurTime").toString());
 			} catch (Exception e) {
 				mDate = new Date();
@@ -289,6 +313,9 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		mGetServerData.execute("");
 	}
 	
+	/**
+	 * 创建一个缓存对象，并且把初始选择的 应急措施 存储到该对象
+	 */
 	private void copyHandleStepSelected(){
 		tempStepSelected = new boolean [5];
 		for(int i = 0;i<handleStepSelected.length;i++){
@@ -296,6 +323,9 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		}
 	}
 	
+	/**
+	 * 如果选择取消，则将初始的 应急措施 重新赋值给 非缓存对象
+	 */
 	private void copyTempStepSelected(){
 		for(int i = 0;i<tempStepSelected.length;i++){
 			handleStepSelected[i] = tempStepSelected[i];

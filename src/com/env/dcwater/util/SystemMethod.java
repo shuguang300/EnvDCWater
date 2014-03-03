@@ -5,12 +5,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 /**
- * 封装一些常用的方法
+ * 一个用于存储 android系统常用方法 的类
  * @author sk
  *
  */
-public class CustomMethod {
-	
+public class SystemMethod {
+	public static final String TAG_STRING = "CustomMethod";
 	/**
 	 * 无网络连接
 	 */
@@ -47,5 +47,7 @@ public class CustomMethod {
 			else return NONETWORK_INTEGER;
 		}
 	} 
+	
+	
 	
 }

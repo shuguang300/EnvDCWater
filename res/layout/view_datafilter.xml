@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow 
+            android:id="@+id/view_datafilter_tablerow_fasttime"
+            style="@style/view_datafilter_tablerow" >
+
+            <TextView
+                android:layout_weight="1"
+                android:text="@string/view_datafilter_time" />
+
+            <TextView
+                android:id="@+id/view_datafilter_tv_fasttime"
+                android:layout_weight="1"
+                android:text="@string/view_datafilter_fasttime" />
+        </TableRow>
+        
+        <TextView style="@style/item_divide"/>
+
+        <TableRow 
+            android:id="@+id/view_datafilter_tablerow_starttime"
+            style="@style/view_datafilter_tablerow" >
+
+            <TextView
+                android:layout_weight="1"
+                android:text="@string/view_datafilter_starttime" />
+
+            <TextView 
+                android:id="@+id/view_datafilter_tv_starttime"
+                android:layout_weight="1" />
+        </TableRow>
+        
+        <TextView style="@style/item_divide"/>
+
+        <TableRow 
+            android:id="@+id/view_datafilter_tablerow_endtime"
+            style="@style/view_datafilter_tablerow" >
+
+            <TextView
+                android:layout_weight="1"
+                android:text="@string/view_datafilter_endtime" />
+
+            <TextView 
+                android:id="@+id/view_datafilter_tv_endtime"
+                android:layout_weight="1" />
+        </TableRow>
+        
+        <TextView style="@style/item_divide"/>
+
+        <TableRow 
+            android:id="@+id/view_datafilter_tablerow_pos"
+            style="@style/view_datafilter_tablerow" >
+
+            <TextView
+                android:layout_weight="1"
+                android:text="@string/view_datafilter_pos" />
+
+            <TextView 
+                android:id="@+id/view_datafilter_tv_pos"
+                android:layout_weight="1" />
+            
+        </TableRow>
+
+        <TextView style="@style/item_divide"/>
+        
+
+        <TableRow 
+            android:id="@+id/view_datafilter_tablerow_state"
+            style="@style/view_datafilter_tablerow" >
+
+            <TextView
+                android:layout_weight="1"
+                android:text="@string/view_datafilter_state" />
+
+            <TextView 
+                android:id="@+id/view_datafilter_tv_state"
+                android:layout_weight="1" />
+            
+        </TableRow>
+        
+        <TextView style="@style/item_divide"/>
+        
+    </TableLayout>
+
+    <Button
+        android:id="@+id/view_datafilter_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/view_datafilter_ok" />
+
+</LinearLayout>

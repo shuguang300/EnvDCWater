@@ -2,7 +2,7 @@ package com.env.dcwater.javabean;
 
 public class EnumList {
 	/**
-	 * @author Administrator 用户权限枚举
+	 * @author sk 用户权限枚举
 	 */
 	public enum UserRight {
 

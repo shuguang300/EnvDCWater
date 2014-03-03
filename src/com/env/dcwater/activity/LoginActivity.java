@@ -14,6 +14,9 @@ import com.env.dcwater.component.NfcActivity;
  * @author sk
  */
 public class LoginActivity extends NfcActivity implements OnClickListener{
+	
+	public static final String TAG_STRING = "LoginActivity";
+	
 	private Button loginButton;
 	private Intent userRightIntent;
 	@Override

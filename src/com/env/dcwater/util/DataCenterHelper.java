@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -26,6 +27,7 @@ import org.xmlpull.v1.XmlPullParserException;
  * @see
  */
 public class DataCenterHelper {
+	public static final String TAG_STRING = "DataCenterHelper";
 	/**
 	 * 使用soap协议请求数据时的namespace
 	 */

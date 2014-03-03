@@ -14,6 +14,9 @@ import com.env.dcwater.component.NfcActivity;
  * @author sk
  */
 public class StartupActivity extends NfcActivity{
+	
+	public static final String TAG_STRING = "StartupActivity";
+	
 	private Intent loginIntent;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

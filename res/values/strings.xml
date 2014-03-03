@@ -78,6 +78,46 @@
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
     
+    <string name="view_datafilter_fasttime">快速选择</string>
+    <string name="view_datafilter_time">时间选择</string>
+    <string name="view_datafilter_starttime">开始时间</string>
+    <string name="view_datafilter_endtime">结束时间</string>
+    <string name="view_datafilter_pos">安装位置</string>
+    <string name="view_datafilter_state">工单状态</string>
+    <string name="view_datafilter_name">设备名称</string>
+    <string name="view_datafilter_ok">确定</string>
+    
+    <string-array name="view_datafilter_fasttimelist">
+        <item>请选择</item>
+        <item>今天</item>
+        <item>本月</item>
+        <item>上月</item>
+        <item>今年</item>
+        <item>去年</item>
+        <item>最近7天</item>
+        <item>最近1月</item>
+    </string-array>
+    
+    <string-array name="view_datafilter_statelist">
+        <item >不限</item>
+        <item >已派发工单</item>
+        <item >已回单</item>
+        <item >审核通过</item>
+        <item >审核未通过</item>
+        <item >已填写待上报</item>
+    </string-array>
+    
+    <string-array name="view_datafilter_poslist">
+        <item >不限</item>
+        <item >位置1</item>
+        <item >位置2</item>
+        <item >位置3</item>
+        <item >位置4</item>
+        <item >位置5</item>
+        <item >位置6</item>
+    </string-array>
+    
+    
     <string name="fragment_machineinfo"></string>
     
     <string-array name="machinemanage">

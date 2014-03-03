@@ -5,5 +5,7 @@ package com.env.dcwater.component;
  * @author sk
  */
 public class TheadPool {
+	
+	public static final String TAG_STRING = "TheadPool";
 
 }

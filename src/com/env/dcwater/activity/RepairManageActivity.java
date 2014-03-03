@@ -42,6 +42,9 @@ import com.env.dcwater.util.DataCenterHelper;
  * @author sk
  */
 public class RepairManageActivity extends NfcActivity implements IXListViewListener,OnItemClickListener{
+	
+	public static final String TAG_STRING = "RepairManageActivity";
+	
 	/**
 	 * 新增模式
 	 */
@@ -268,6 +271,10 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		}
 	}
 	
+	/**
+	 * 获取服务器端的数据，并将数据放入 arraylist中
+	 * @author sk
+	 */
 	class GetServerData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 
 		@Override

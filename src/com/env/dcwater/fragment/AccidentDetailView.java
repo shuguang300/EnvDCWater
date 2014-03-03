@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
  */
 public class AccidentDetailView extends RelativeLayout{
 	
+	public static final String TAG_STRING = "AccidentDetailView";
+	
 	private View mView;
 	
 	public AccidentDetailView (Context context){

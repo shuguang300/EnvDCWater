@@ -1,6 +1,9 @@
 package com.env.dcwater.javabean;
 
 public class Machine {
+	
+	public static final String TAG_STRING = "Machine";
+	
 	private String name;
 
 	/**

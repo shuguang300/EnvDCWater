@@ -1,5 +1,6 @@
 package com.env.dcwater.component;
 import com.env.dcwater.util.NfcHelper;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
@@ -13,6 +14,9 @@ import android.view.KeyEvent;
  *
  */
 public class NfcActivity extends Activity{
+	
+	public static final String TAG_STRING = "NfcActivity";
+	
 	private NfcAdapter nfcAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

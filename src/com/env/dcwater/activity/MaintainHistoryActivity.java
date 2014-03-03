@@ -7,8 +7,9 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,9 +19,10 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-
+import android.widget.Toast;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.fragment.DataFilterView;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 
@@ -29,7 +31,12 @@ import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
  * @author sk
  */
 public class MaintainHistoryActivity extends NfcActivity implements IXListViewListener,OnItemClickListener{
+	
+	public static final String ACTION_STRING = "MaintainHistoryActivity";
+	
 	private ActionBar mActionBar;
+	private DrawerLayout mDrawerLayout;
+	private DataFilterView mDataFilterView;
 	private PullToRefreshView mHistoryList;
 	private ArrayList<HashMap<String, String>> mHistories; 
 	private MaintainHistoryItemAdapter mAdapter;
@@ -72,6 +79,31 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		mHistoryList.setAdapter(mAdapter);
 		mHistoryList.setOnItemClickListener(this);
 		mHistoryList.setXListViewListener(this);
+		mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_maintainhistory_drawlayout);
+		mDataFilterView = (DataFilterView)findViewById(R.id.activity_maintainhistory_datafilter);
+		mDataFilterView.setStateList(getResources().getStringArray(R.array.view_datafilter_statelist));
+		mDataFilterView.setPosList(getResources().getStringArray(R.array.view_datafilter_poslist));
+		mDrawerLayout.setDrawerListener(new DrawerListener() {
+			@Override
+			public void onDrawerStateChanged(int arg0) {
+			}
+			@Override
+			public void onDrawerSlide(View arg0, float arg1) {
+			}
+			@Override
+			public void onDrawerOpened(View arg0) {
+				mHistoryList.setEnabled(false);
+				mHistoryList.setPullRefreshEnable(false);
+			}
+			@Override
+			public void onDrawerClosed(View arg0) {
+				mHistoryList.setEnabled(true);
+				mHistoryList.setPullRefreshEnable(true);
+				if(mDataFilterView.isDateTimePickerShowing()){
+					mDataFilterView.hideDateTimePicker();
+				}
+			}
+		});
 	}
 	
 	
@@ -147,18 +179,23 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
-		this.finish();
+		if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+			mDrawerLayout.closeDrawer(Gravity.LEFT);
+		}else {
+			super.onBackPressed();
+			this.finish();
+		}
+		
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		
+		Toast.makeText(MaintainHistoryActivity.this, "aa", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onRefresh() {
-		
+		mHistoryList.stopRefresh();
 	}
 	
 	/**
