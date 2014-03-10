@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
@@ -19,6 +20,7 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	
 	private Button loginButton;
 	private Intent userRightIntent;
+	private EditText accountView,passwordView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,6 +70,8 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	private void ini(){
 		loginButton = (Button)findViewById(R.id.activity_login_submit);
 		loginButton.setOnClickListener(this);
+		accountView = (EditText)findViewById(R.id.activity_login_account);
+		passwordView = (EditText)findViewById(R.id.activity_login_password);
 	}
 	
 	/**
