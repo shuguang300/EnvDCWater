@@ -28,22 +28,32 @@ import org.xmlpull.v1.XmlPullParserException;
  */
 public class DataCenterHelper {
 	public static final String TAG_STRING = "DataCenterHelper";
+	
 	/**
 	 * 使用soap协议请求数据时的namespace
 	 */
 	public static final String SOAP_NAMESPACE_STRING = "http://tempuri.org/";
+	
 	/**
 	 * webservice数据中心地址
 	 */
 	public static final String URL_STRING = "http://192.168.200.50/dcwater/MobileDataCenter.asmx";
+	
+	/**
+	 * 登录验证用户名和秘法的方法
+	 */
+	public static final String METHOD_LOGIN_STRING = "GetUserByNamePwd";
+	
 	/**
 	 * 连接超时
 	 */
 	public static final int CONNECTION_TIMEOUT_INTEGER = 60000;
+	
 	/**
 	 * 读取超时
 	 */
 	public static final int SO_TIMEOUT_INTEGER = 90000;
+	
 	/**
 	 * 请求错误
 	 */
@@ -81,7 +91,7 @@ public class DataCenterHelper {
 	 * @throws IOException
 	 * @throws XmlPullParserException
 	 */
-	public static SoapObject SoapRequest(String method,HashMap<String, Object> params) throws HttpResponseException, IOException, XmlPullParserException{
+	public static SoapObject SoapRequest(String method,HashMap<String, String> params) throws HttpResponseException, IOException, XmlPullParserException{
 		SoapObject request = new SoapObject(SOAP_NAMESPACE_STRING, method);
 		if(params!=null){
 			Iterator iterator = params.entrySet().iterator();

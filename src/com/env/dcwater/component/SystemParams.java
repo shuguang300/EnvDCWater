@@ -42,4 +42,20 @@ public class SystemParams {
 		mMachineList = machineList;
 	}
 	
+	private HashMap<String, String> mLoggedUserInfo;
+
+	/**
+	 * @return the mLoggedUserInfo
+	 */
+	public HashMap<String, String> getLoggedUserInfo() {
+		return mLoggedUserInfo;
+	}
+
+	/**
+	 * @param mLoggedUserInfo the mLoggedUserInfo to set
+	 */
+	public void setmLoggedUserInfo(HashMap<String, String> LoggedUserInfo) {
+		mLoggedUserInfo = LoggedUserInfo;
+	}
+	
 }

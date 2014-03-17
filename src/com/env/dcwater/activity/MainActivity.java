@@ -12,23 +12,28 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.fragment.UserRigthGroupView;
 import com.env.dcwater.javabean.EnumList;
+import com.env.dcwater.util.OperationMethod;
 
 /**
  * 登录后的主界面，主要包含2大区域，左边的是功能模块区
  * 右边的是app常用设置界面
  * @author sk
  */
-public class MainActivity extends NfcActivity{
+public class MainActivity extends NfcActivity implements OnClickListener{
 	
+	public static final String TAG_STRING = "MainActivity";
 	public static final String ACTION_STRING = "MainActivity";
 	
 	private ViewPager viewPager;
@@ -40,6 +45,7 @@ public class MainActivity extends NfcActivity{
 	private UserRigthGroupView machineManageGroup;
 	private ArrayList<HashMap<String, String>> data;
 	private ActionBar mActionBar;
+	private Button mLogout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,26 +69,7 @@ public class MainActivity extends NfcActivity{
 	 *   初始化数据
 	 */
 	private void iniData(){
-		data = new ArrayList<HashMap<String,String>>();
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
-		map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
-		map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put(EnumList.UserRight.RightName, EnumList.UserRight.MAINTAINHISTORY.getName());
-		map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MAINTAINHISTORY.getCode()+"");
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put(EnumList.UserRight.RightName, EnumList.UserRight.UPKEEPHISTORY.getName());
-		map.put(EnumList.UserRight.RightCode, EnumList.UserRight.UPKEEPHISTORY.getCode()+"");
-		data.add(map);
+		data = OperationMethod.getViewByUserRole(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID")));
 	}
 	
 	
@@ -93,12 +80,15 @@ public class MainActivity extends NfcActivity{
 		viewPager = (ViewPager)findViewById(R.id.activity_main_container);
 		imageView0 = (ImageView)findViewById(R.id.activity_main_page0);
 		imageView1 = (ImageView)findViewById(R.id.activity_main_page1);
+		
 		//注册权限界面
-		userRigthView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_userright, null);
+		userRigthView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_userright, null);                 
 		//注册设置界面
 		configView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_config, null);
-		iniUserRight();
+		
+		iniUserRight();                                                                                                                                                                                                                                                                                                                                                                                                         
 		iniConfig();
+		
 		views = new ArrayList<View>();
 		views.add(userRigthView);
 		views.add(configView);
@@ -110,7 +100,7 @@ public class MainActivity extends NfcActivity{
 	 *  初始化权限控制
 	 */
 	private void iniUserRight(){
-		userRightContainer = (LinearLayout)userRigthView.findViewById(R.id.activity_userright_container);
+		userRightContainer = (LinearLayout)userRigthView.findViewById(R.id.view_userright_container);
 		machineManageGroup = new UserRigthGroupView(MainActivity.this,getResources().getString(R.string.activity_userright_group_machinemanage),data);
 		userRightContainer.addView(machineManageGroup);
 	}
@@ -119,7 +109,17 @@ public class MainActivity extends NfcActivity{
 	 *  初始化配置界面
 	 */
 	private void iniConfig(){
-		
+		mLogout = (Button)configView.findViewById(R.id.view_config_logout);
+		mLogout.setOnClickListener(this);
+	}
+	
+	/**
+	 * 登出，类似微信的登出
+	 */
+	private void logout(){
+		Intent intent = new Intent();
+		intent.setClass(this, LoginActivity.class);
+		startActivity(intent);
 	}
 	
 	@Override
@@ -176,6 +176,16 @@ public class MainActivity extends NfcActivity{
 		lastExitTime = System.currentTimeMillis();	
 	}
 	
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.view_config_logout:
+			logout();
+			break;
+
+		}
+		
+	}
 	
 	/**
 	 * viewpage的滑动事件
@@ -230,5 +240,7 @@ public class MainActivity extends NfcActivity{
 		}
 		
 	}
+
+	
 
 }

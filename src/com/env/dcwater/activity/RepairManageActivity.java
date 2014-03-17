@@ -32,10 +32,12 @@ import android.widget.TextView;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
+import com.env.dcwater.util.OperationMethod;
 
 /**
  * 设备维修管理
@@ -65,6 +67,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private AlertDialog.Builder mDeleteConfirm ;
 	private Intent sendedIntent;
 	private GetServerData getServerData;
+	private boolean isFilter = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -176,6 +179,15 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		case R.id.menu_repairmanage_add:
 			sendIntent(REPAIRMANAGE_ADD_INTEGER,null);
 			break;
+		case R.id.menu_repairmanage_filter:
+			isFilter = !isFilter;
+			if (isFilter) {
+				item.setTitle(getResources().getString(R.string.menu_repairmanage_filter));
+			}else {
+				item.setTitle(getResources().getString(R.string.menu_repairmanage_nofilter));
+			}
+			getServerData();
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -185,7 +197,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		super.onCreateContextMenu(menu, v, menuInfo);
 		//不需要为headerview注册上下文菜单，所以进行判断
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-		if(info.position!=0){
+		if(info.position!=0&&mData.get(info.position-1).get("CanUpdate").equals("true")){
 			getMenuInflater().inflate(R.menu.contextmenu_repairmanage, menu);
 			menu.setHeaderTitle("更多");  
 		}
@@ -289,13 +301,20 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 					JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
 					JSONObject report = null;
 					HashMap<String, String> map = null;
+					int rolePositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+					boolean canUpdate = false;
 					data = new ArrayList<HashMap<String,String>>();
 					for(int i =0;i<jsonArray.length();i++){
 						report = jsonArray.getJSONObject(i);
 						map = new HashMap<String, String>();
-						if(Integer.valueOf(report.get("State").toString())!=EnumList.RepairState.HASBEENREPORTED.getState()){
+//						if(Integer.valueOf(report.get("State").toString())!=EnumList.RepairState.HASBEENREPORTED.getState()){
+//							continue;
+//						}
+						canUpdate = OperationMethod.CanTaskUpdated(rolePositionID, Integer.valueOf(report.get("State").toString()));
+						if(isFilter&&!canUpdate){
 							continue;
 						}
+						map.put("CanUpdate", canUpdate?"true":"false");
 						map.put("RepairTaskID", report.get("RepairTaskID").toString());
 						map.put("DeviceID", report.get("DeviceID").toString());
 						map.put("FaultReportSN", report.get("FaultReportSN").toString());

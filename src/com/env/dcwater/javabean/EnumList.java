@@ -183,4 +183,55 @@ public class EnumList {
 			return null;
 		}
 	}
+	
+	public enum UserRole {
+		
+		
+		/**
+		 * 设备操作工
+		 */
+		MACHINEOPERATION(9);
+		
+		public static final int USERROLEMACHINEOPERATION = 9;
+		private int mPositionID;
+		
+		/**
+		 * 
+		 * @param positionID
+		 */
+		private UserRole(int positionID){
+			mPositionID = positionID;
+		}
+		
+		/**
+		 * @return 获取角色代码
+		 */
+		public int getState(){
+			return mPositionID;
+		}
+		/**
+		 * @return 获取角色代码所代表的名称
+		 */
+		public String getStateName(){
+			switch (mPositionID) {
+			case 9:
+				return "设备科操作工";
+			}
+			return null;
+		}
+		
+		/**
+		 * 根据postionid获取该角色的枚举类型
+		 * @param positionID
+		 * @return
+		 */
+		public static UserRole getUserRole(int positionID){
+			switch (positionID) {
+			case 9:
+				return UserRole.MACHINEOPERATION;
+			}
+			return null;
+		}
+		
+	}
 }
