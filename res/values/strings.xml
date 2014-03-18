@@ -44,6 +44,7 @@
     <string name="activity_repairmanageitem_starttime">投入使用日期</string>
     <string name="activity_repairmanageitem_type">设备型号</string>
     <string name="activity_repairmanageitem_sn">设备编号</string>
+    <string name="activity_repairmanageitem_submit">提交</string>
     <string name="activity_repairmanageitem_manufacturer">厂商</string>
     <string name="activity_repairmanageitem_faulttime">故障发生时间</string>
     <string name="activity_repairmanageitem_faultphenomenon">故障现象</string>
@@ -107,11 +108,14 @@
     
     <string-array name="view_datafilter_statelist">
         <item >不限</item>
-        <item >已派发工单</item>
-        <item >已回单</item>
-        <item >审核通过</item>
-        <item >审核未通过</item>
-        <item >已填写待上报</item>
+        <item >保修单已上报</item>
+        <item >保修单已确认</item>
+        <item >维修单已派发</item>
+        <item >维修单填写中</item>
+        <item >维修单已上报</item>
+        <item >维修单返回修改</item>
+        <item >设备科长审核通过</item>
+        <item >生产科长已确认</item>
     </string-array>
     
     <string-array name="view_datafilter_poslist">

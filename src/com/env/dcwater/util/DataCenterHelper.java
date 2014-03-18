@@ -45,6 +45,11 @@ public class DataCenterHelper {
 	public static final String METHOD_LOGIN_STRING = "GetUserByNamePwd";
 	
 	/**
+	 * 插入工单的方法
+	 */
+	public static final String METHOD_INSERTTASK_STRING = "InsertRepairTaskData";
+	
+	/**
 	 * 连接超时
 	 */
 	public static final int CONNECTION_TIMEOUT_INTEGER = 60000;

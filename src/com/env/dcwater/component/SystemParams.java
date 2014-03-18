@@ -10,9 +10,8 @@ import java.util.HashMap;
  *
  */
 public class SystemParams {
-	
 	public static final String TAG_STRING = "SystemParams";
-	
+	public static final int PLANTID_INT = 1; 
 	public static final String STANDARDTIME_PATTERN_STRING = "yyyy-MM-dd HH:mm:ss";
 	public static final String SHORTDATE_PATTERN_STRING = "yyyy-MM-dd";
 	

@@ -215,6 +215,15 @@ public class DataFilterView extends LinearLayout{
 	}
 	
 	/**
+	 * 隐藏时间选择，有可能不需要
+	 */
+	public void hideTimeSelectionPart(){
+		trFastTime.setVisibility(View.GONE);
+		trStartTime.setVisibility(View.GONE);
+		trEndTime.setVisibility(View.GONE);
+	}
+	
+	/**
 	 * 获取条件过滤控件中用户所选取的条件
 	 * @return String Array 
 	 * 0:开始时间;1:结束时间;2:安装位置;3:工单状态

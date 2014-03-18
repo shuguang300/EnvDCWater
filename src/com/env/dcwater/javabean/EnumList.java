@@ -32,6 +32,7 @@ public class EnumList {
 		 * 权限代码
 		 */
 		public static final String RightCode = "UserRightCode";
+		
 		private int mRightCode;
 		private String mRightName;
 
@@ -42,8 +43,8 @@ public class EnumList {
 		 * @param name
 		 */
 		private UserRight(int code, String name) {
-			this.mRightCode = code;
-			this.mRightName = name;
+			mRightCode = code;
+			mRightName = name;
 		}
 
 		/**
@@ -72,7 +73,7 @@ public class EnumList {
 		 * @return
 		 */
 		public int getCode() {
-			return this.mRightCode;
+			return mRightCode;
 		}
 
 		/**
@@ -81,7 +82,7 @@ public class EnumList {
 		 * @return
 		 */
 		public String getName() {
-			return this.mRightName;
+			return mRightName;
 		}
 	}
 	
@@ -185,22 +186,28 @@ public class EnumList {
 	}
 	
 	public enum UserRole {
-		
-		
+
 		/**
-		 * 设备操作工
+		 * 生产科操作工
 		 */
-		MACHINEOPERATION(9);
+		PRODUCTIONOPERATION(7,"生产科操作工"),
+
+		/**
+		 * 设备科操作工
+		 */
+		EQUIPMENTOPERATION(9,"设备科操作工");
 		
-		public static final int USERROLEMACHINEOPERATION = 9;
+		public static final int USERROLEEQUIPMENTOPERATION = 9;
 		private int mPositionID;
+		private String mPostionName;
 		
 		/**
 		 * 
 		 * @param positionID
 		 */
-		private UserRole(int positionID){
+		private UserRole(int positionID,String postionName){
 			mPositionID = positionID;
+			mPostionName = postionName;
 		}
 		
 		/**
@@ -213,11 +220,7 @@ public class EnumList {
 		 * @return 获取角色代码所代表的名称
 		 */
 		public String getStateName(){
-			switch (mPositionID) {
-			case 9:
-				return "设备科操作工";
-			}
-			return null;
+			return mPostionName;
 		}
 		
 		/**
@@ -228,10 +231,54 @@ public class EnumList {
 		public static UserRole getUserRole(int positionID){
 			switch (positionID) {
 			case 9:
-				return UserRole.MACHINEOPERATION;
+				return UserRole.EQUIPMENTOPERATION;
+			case 7:
+				return UserRole.PRODUCTIONOPERATION;
+			}
+			return null;
+		}
+	}
+	
+	/**
+	 * 维修单种类
+	 * @author sk
+	 */
+	public enum RepairTaskType{ 
+		
+		/**
+		 * 生产科类型
+		 */
+		PRODUCTIONSECTION(1,"生产科"),
+		/**
+		 * 设备科类型
+		 */
+		EQUIPMENTSECTION(2,"设备科");
+		
+		private int mType;
+		private String mTypeName;
+		
+		private RepairTaskType(int type,String typeName){
+			mType = type;
+			mTypeName = typeName;
+		}
+		
+		public static RepairTaskType getRepairTaskType(int type){
+			switch (type) {
+			case 1:
+				return PRODUCTIONSECTION;
+
+			case 2:
+				return EQUIPMENTSECTION;
 			}
 			return null;
 		}
 		
+		public int getType(){
+			return mType;
+		}
+		
+		public String getTypeName(){
+			return mTypeName;
+		}
 	}
 }

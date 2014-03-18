@@ -234,7 +234,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	 * 获取数据的异步调用方法AsyncTask
 	 * @author sk
 	 */
-	private class GetServerData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
+	class GetServerData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {

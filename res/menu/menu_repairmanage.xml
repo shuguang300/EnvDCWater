@@ -9,7 +9,8 @@
     <item 
         android:id="@+id/menu_repairmanage_filter"
         android:title="@string/menu_repairmanage_filter"
-        android:showAsAction="always|withText" />
+        android:showAsAction="always|withText"
+        android:icon="@drawable/ic_launcher" />
     <!-- 
     
     <item

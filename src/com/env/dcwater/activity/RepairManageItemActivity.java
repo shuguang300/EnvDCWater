@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
+import android.app.ProgressDialog;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -40,6 +42,7 @@ import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.fragment.DateTimePickerView;
+import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
 
 /**
@@ -50,13 +53,15 @@ import com.env.dcwater.util.DataCenterHelper;
 public class RepairManageItemActivity extends NfcActivity implements OnClickListener,OnItemClickListener{
 	
 	public static final String ACTION_STRING = "RepairManageItemActivity";
-	
+	private ProgressDialog mProgressDialog;
 	private ActionBar mActionBar;
-	private HashMap<String, String> receivedData;
+	private HashMap<String, String> receivedData,selectedData;
 	private Intent receivedIntent;
 	private int mRequestCode;
 	private Date mDate;
+	private Button mSubmitButton;
 	private GetServerData mGetServerData;
+	private InsertTask mInsertTask;
 	private DrawerLayout mDrawerLayout;
 	private ListView mMachineListView;
 	private Builder mHandleContent;
@@ -114,6 +119,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER://修改维修单
 			receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("Data");
+			selectedData = receivedData;
 			String [] handle1;
 			if(receivedData.get("EmergencyMeasures").equals("null")){ 
 				handle1 = new String [0]; 
@@ -145,6 +151,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			break;
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER://查看维修单的详细情况
 			receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("Data");
+			selectedData = receivedData;
 			String [] handle2;
 			if(receivedData.get("EmergencyMeasures").equals("null")){
 				handle2 = new String [0]; 
@@ -214,6 +221,9 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		etPeople = (TextView)findViewById(R.id.activity_repairmanageitem_taskpeople);
 		trPeople = (TableRow)findViewById(R.id.activity_repairmanageitem_taskpeople_tr);
 		
+		mSubmitButton = (Button)findViewById(R.id.activity_repairmanageitem_submit);
+		mSubmitButton.setOnClickListener(this);
+		
 		fillViewData(mRequestCode);
 		setViewState(mRequestCode);
 		
@@ -250,6 +260,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			trHandleStep.setOnClickListener(null);
 			trOtherStep.setOnClickListener(null);
 			trPeople.setOnClickListener(null);
+			mSubmitButton.setVisibility(View.GONE);
 			break;
 		}
 	}
@@ -272,7 +283,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			etFaultPhenomenon.setText("");
 			etHandleStep.setText("");
 			etOtherStep.setText("");
-			etPeople.setText("");
+			etPeople.setText(SystemParams.getInstance().getLoggedUserInfo().get("UserName"));
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
 			getServerData();
@@ -311,6 +322,32 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	private void getServerData(){
 		mGetServerData = new GetServerData();
 		mGetServerData.execute("");
+	}
+	/**
+	 * 使用asynctask异步提交工单
+	 */
+	private void insertServerTask(){
+		if(selectedData==null){
+			Toast.makeText(this, "未选择设备", Toast.LENGTH_SHORT).show();
+		}else {
+			mInsertTask = new InsertTask();
+			mInsertTask.execute("");
+		}
+		
+	}
+	
+	/**
+	 * 提交数据时，弹出进度对话框
+	 */
+	private void showProgressDialog(){
+		if(mProgressDialog==null){
+			mProgressDialog = new ProgressDialog(RepairManageItemActivity.this);
+			mProgressDialog.setTitle("获取数据中");
+			mProgressDialog.setMessage("正在努力加载数据，请稍后");
+			mProgressDialog.setCanceledOnTouchOutside(false);
+			mProgressDialog.setCancelable(false);
+		}
+		mProgressDialog.show();
 	}
 	
 	/**
@@ -358,9 +395,9 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				finish();
 			}
 			break;
-		case R.id.menu_repairmanageitem_refresh:
-			getServerData();
-			break;
+//		case R.id.menu_repairmanageitem_refresh:
+//			getServerData();
+//			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -441,27 +478,27 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		case R.id.activity_repairmanageitem_taskpeople_tr:
 			
 			break;
+		case R.id.activity_repairmanageitem_submit:
+			insertServerTask();
+			break;
 		}
 	}
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		mDrawerLayout.closeDrawer(Gravity.LEFT);
-		HashMap<String, String> map = mMachine.get(position);
-		etName.setText(map.get("DeviceName"));
-		etType.setText(map.get("Specification"));
-		etSN.setText(map.get("DeviceSN"));
-		etStartTime.setText(map.get("StartUseTime"));
-		etManufacture.setText(map.get("Manufacturer"));
-		etPosition.setText(map.get("InstallPosition"));
+		selectedData = mMachine.get(position);
+		etName.setText(selectedData.get("DeviceName"));
+		etType.setText(selectedData.get("Specification"));
+		etSN.setText(selectedData.get("DeviceSN"));
+		etStartTime.setText(selectedData.get("StartUseTime"));
+		etManufacture.setText(selectedData.get("Manufacturer"));
+		etPosition.setText(selectedData.get("InstallPosition"));
 	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode==Activity.RESULT_OK){
-			
-		}
 	}
 	
 	/**
@@ -496,7 +533,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	 * 获取远端数据的异步方法
 	 * @author sk
 	 */
-	private class GetServerData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
+	class GetServerData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
 			JSONObject object = new JSONObject();
@@ -561,6 +598,81 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				mMachineListView.setAdapter(mMachineListAdapter);
 			}
 		}
+	}
+	
+	/**
+	 * 填报一个单子
+	 * @author sk
+	 */
+	class InsertTask extends AsyncTask<String, String, String>{
+		@Override
+		protected String doInBackground(String... params) {
+			JSONObject param = new JSONObject();
+			JSONObject repairDataString = new JSONObject();
+			String result = "";
+			try {
+				param.put("PlantID", SystemParams.PLANTID_INT);
+				
+				if(mRequestCode==RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER){
+					param.put("RepairTaskID", Integer.valueOf(selectedData.get("RepairTaskID")));
+				}else {
+					param.put("RepairTaskID","");
+				}
+				
+				int postionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+				if(postionID==EnumList.UserRole.PRODUCTIONOPERATION.getState()){
+					repairDataString.put("RepairTaskType", EnumList.RepairTaskType.PRODUCTIONSECTION.getType());
+				}else if (postionID==EnumList.UserRole.EQUIPMENTOPERATION.getState()) {
+					repairDataString.put("RepairTaskType", EnumList.RepairTaskType.EQUIPMENTSECTION.getType());
+				}
+				repairDataString.put("DeviceID", selectedData.get("DeviceID"));
+				repairDataString.put("EmergencyMeasures", etHandleStep.getText().toString()+","+etOtherStep.getText().toString()+"(an)");
+				repairDataString.put("AccidentOccurTime", etFaultTime.getText().toString());
+				repairDataString.put("AccidentDetail",etFaultPhenomenon.getText().toString());
+				repairDataString.put("ReportPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+				param.put("RepairDataString", repairDataString.toString());
+				result = DataCenterHelper.HttpPostData(DataCenterHelper.METHOD_INSERTTASK_STRING, param);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				result = DataCenterHelper.RESPONSE_FALSE_STRING;
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+				result = DataCenterHelper.RESPONSE_FALSE_STRING;
+			} catch (IOException e) {
+				e.printStackTrace();
+				result = DataCenterHelper.RESPONSE_FALSE_STRING;
+			}
+			return result;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			showProgressDialog();
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			mProgressDialog.cancel();
+			if(result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
+				Toast.makeText(RepairManageItemActivity.this, "提交失败", Toast.LENGTH_SHORT).show();
+			}else {
+				try {
+					JSONObject jsonObject = new JSONObject(result);
+					if(jsonObject.getBoolean("d")){
+						setResult(Activity.RESULT_OK);
+						finish();
+					}else {
+						Toast.makeText(RepairManageItemActivity.this, "提交失败", Toast.LENGTH_SHORT).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		
 	}
 
 }

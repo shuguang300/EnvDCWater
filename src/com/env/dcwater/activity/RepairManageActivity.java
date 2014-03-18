@@ -10,15 +10,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,10 +33,12 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
+import com.env.dcwater.fragment.DataFilterView;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.javabean.EnumList;
@@ -62,12 +68,15 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	
 	private ActionBar mActionBar;
 	private PullToRefreshView mListView;
+	private DrawerLayout mDrawerLayout;
+	private DataFilterView mDataFilterView;
 	private RepairManageItemAdapter mListViewAdapter;
 	private ArrayList<HashMap<String, String>> mData;
 	private AlertDialog.Builder mDeleteConfirm ;
 	private Intent sendedIntent;
 	private GetServerData getServerData;
-	private boolean isFilter = true;
+	private boolean isFilter = true,isRfresh = false;
+	private ProgressDialog mProgressDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +109,33 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	 * 从服务器上获取数据
 	 */
 	private void getServerData(){
-		getServerData = new GetServerData();
-		getServerData.execute("");
+		if(!isRfresh){
+			getServerData = new GetServerData();
+			getServerData.execute("");
+		}
+	}
+	
+	/**
+	 * 获取数据时，弹出进度对话框
+	 */
+	private void showProgressDialog(){
+		if(mProgressDialog==null){
+			mProgressDialog = new ProgressDialog(RepairManageActivity.this);
+			mProgressDialog.setTitle("提交中");
+			mProgressDialog.setMessage("正在向服务器提交，请稍后");
+			mProgressDialog.setCanceledOnTouchOutside(false);
+			mProgressDialog.setCancelable(true);
+		}
+		mProgressDialog.show();
+	}
+	
+	/**
+	 * 取消时，退出对话框
+	 */
+	private void hideProgressDialog(){
+		if(mProgressDialog!=null){
+			mProgressDialog.cancel();
+		}
 	}
 	
 	/**
@@ -109,10 +143,41 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	 */
 	private void iniView(){
 		mListView = (PullToRefreshView)findViewById(R.id.activity_repairmanage_info);
+		mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_repairmanage_drawlayout);
+		mDataFilterView = (DataFilterView)findViewById(R.id.activity_repairmanage_datafilter);
+		
+		mDataFilterView.hideTimeSelectionPart();
+		
 		mListViewAdapter = new RepairManageItemAdapter();
 		mListView.setAdapter(mListViewAdapter);
 		mListView.setXListViewListener(this);
 		mListView.setOnItemClickListener(this);
+		
+		mDataFilterView.setStateList(getResources().getStringArray(R.array.view_datafilter_statelist));
+		mDataFilterView.setPosList(getResources().getStringArray(R.array.view_datafilter_poslist));
+		mDrawerLayout.setDrawerListener(new DrawerListener() {
+			@Override
+			public void onDrawerStateChanged(int arg0) {
+			}
+			@Override
+			public void onDrawerSlide(View arg0, float arg1) {
+			}
+			@Override
+			public void onDrawerOpened(View arg0) {
+				mListView.setEnabled(false);
+				mListView.setPullRefreshEnable(false);
+			}
+			@Override
+			public void onDrawerClosed(View arg0) {
+				mListView.setEnabled(true);
+				mListView.setPullRefreshEnable(true);
+				if(mDataFilterView.isDateTimePickerShowing()){
+					mDataFilterView.hideDateTimePicker();
+				}
+			}
+		});
+		
+		
 //		mListView.setOnItemLongClickListener(this); //长按事件与上下文菜单冲突，二者只能选其一
 		registerForContextMenu(mListView);
 	}
@@ -136,6 +201,15 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			break;
 		}
 		startActivityForResult(sendedIntent, code);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode==Activity.RESULT_OK){
+			getServerData();
+		}
+		
 	}
 	
 	@Override
@@ -234,8 +308,12 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
-		this.finish();
+		if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+			mDrawerLayout.closeDrawer(Gravity.LEFT);
+		}else {
+			this.finish();
+		}
+		
 	}
 
 	@Override
@@ -291,10 +369,12 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
+			isRfresh = true;
 			JSONObject object = new JSONObject();
 			ArrayList<HashMap<String, String>> data = null;
 			try {
-				object.put("PlantID", 1);
+				object.put("PlantID", SystemParams.PLANTID_INT);
+				object.put("UserRole", Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("UserRole")));
 				String result = DataCenterHelper.HttpPostData("GetReportInfoList", object);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
@@ -310,7 +390,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 //						if(Integer.valueOf(report.get("State").toString())!=EnumList.RepairState.HASBEENREPORTED.getState()){
 //							continue;
 //						}
-						canUpdate = OperationMethod.CanTaskUpdated(rolePositionID, Integer.valueOf(report.get("State").toString()));
+						canUpdate = OperationMethod.canTaskUpdated(rolePositionID, Integer.valueOf(report.get("State").toString()));
 						if(isFilter&&!canUpdate){
 							continue;
 						}
@@ -350,6 +430,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			showProgressDialog();
 		}
 		
 		@Override
@@ -358,8 +439,12 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			if(result!=null){
 				mData = result;
 				mListViewAdapter.notifyDataSetChanged();
+			}else {
+				Toast.makeText(RepairManageActivity.this, "获取数据失败，请重试", Toast.LENGTH_SHORT).show();
 			}
 			mListView.stopRefresh();
+			isRfresh = false;
+			hideProgressDialog();
 		}
 		
 	}

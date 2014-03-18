@@ -11,12 +11,8 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,8 +24,7 @@ import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.util.DataCenterHelper;
-import com.env.dcwater.util.LogicMethod;
-import com.env.dcwater.util.SystemMethod;
+import com.env.dcwater.util.OperationMethod;
 
 /**
  * 登录窗口
@@ -163,10 +158,12 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 			map = new HashMap<String, String>();
 			map.put("UserName", mAccount);
 			map.put("UserPassword", mPassword);
+			map.put("UserRole", OperationMethod.getUserRole(jsonObject.getString("UserRole")));
+			map.put("UserID", jsonObject.getString("UserID"));
 			map.put("PlantID", jsonObject.getString("PlantID"));
 			map.put("PlantName", jsonObject.getString("PlantName"));
 			map.put("PlantType", jsonObject.getString("PlantType"));
-			map.put("RealUserName", jsonObject.getString("PlantType"));
+			map.put("RealUserName", jsonObject.getString("RealUserName"));
 			map.put("AccountState", jsonObject.getString("AccountState"));
 			map.put("PositionID", jsonObject.getString("PositionID"));
 			map.put("PositionName", jsonObject.getString("PositionName"));
