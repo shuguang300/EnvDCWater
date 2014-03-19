@@ -5,7 +5,7 @@ package com.env.dcwater.util;
  * @author sk
  */
 public class LogicMethod {
-	
+	public static final String TAG_STRING = "LogicMethod";
 	public static final double EARTH_RADIUS = 6378137.0;
 	
 	/**
@@ -45,6 +45,18 @@ public class LogicMethod {
 		return s;
 	}
 	
+	/**
+	 * 接收一个字符串，如果字符串为null则返回""，否则返回原值
+	 * @param arg0
+	 * @return
+	 */
+	public static String getRightString(String arg0){
+		if (arg0.toLowerCase().equals("null")) {
+			return "";
+		}else {
+			return arg0;
+		}
+	}
 	
 	 
 }

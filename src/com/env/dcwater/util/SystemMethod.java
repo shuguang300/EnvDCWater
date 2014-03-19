@@ -72,9 +72,6 @@ public class SystemMethod {
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeSpan, 0, listener);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeSpan, 0, listener);
         Location location = locationManager.getLastKnownLocation(provider);
-//        if(location==null){
-//        	location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//        }
         return location;
 	}
 	
@@ -84,20 +81,8 @@ public class SystemMethod {
 	 */
 	public static Location getLocalInfo(Context context,String provider,long timeSpan,LocationListener listener){
 		LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-//		Criteria criteria = new Criteria();
-//		criteria.setAccuracy(Criteria.ACCURACY_FINE); //精度要求：ACCURACY_FINE(高)ACCURACY_COARSE(低)
-//		criteria.setAltitudeRequired(false);              // 不要求海拔信息
-//		criteria.setBearingAccuracy(Criteria.ACCURACY_HIGH); //方位信息的精度要求：ACCURACY_HIGH(高)ACCURACY_LOW(低)
-//		criteria.setBearingRequired(false);             // 不要求方位信息
-//		criteria.setCostAllowed(true);                     // 是否允许付费
-//		criteria.setPowerRequirement(Criteria.POWER_LOW); // 对电量的要求  (HIGH、MEDIUM)
-//		String provider=locationManager.getBestProvider(criteria,true);//根据criteria的条件获取最合适的provider。第二个参数是指是否只返回当前处于激活状态的provider。
-//		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeSpan, 0, listener);
 		locationManager.requestLocationUpdates(provider, timeSpan, 0, listener);
 		Location location = locationManager.getLastKnownLocation(provider);
-//        if(location==null){
-//        	location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//        }
 		return location;
 	}
 	

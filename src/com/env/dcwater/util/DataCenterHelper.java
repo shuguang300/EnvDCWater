@@ -50,6 +50,11 @@ public class DataCenterHelper {
 	public static final String METHOD_INSERTTASK_STRING = "InsertRepairTaskData";
 	
 	/**
+	 * 删除工单的方法
+	 */
+	public static final String METHOD_DELETETASK_STRING = "RemoveRepairTask";
+	
+	/**
 	 * 连接超时
 	 */
 	public static final int CONNECTION_TIMEOUT_INTEGER = 60000;

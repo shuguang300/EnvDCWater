@@ -132,9 +132,11 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 						//应急措施和措施放在一个字段里面了，带有（an）结尾的是措施，数字的是紧急措施
 						mOtherStep = handle1[i].replace("(an)", "");
 					} else {
-						mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle1[i])-1] + "\n";
-						//得到初始化的 应急措施
-						handleStepSelected[Integer.parseInt(handle1[i])-1] = true;
+						if(!handle1[i].equals("")){
+							mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle1[i])-1] + "\n";
+							//得到初始化的 应急措施
+							handleStepSelected[Integer.parseInt(handle1[i])-1] = true;
+						}
 					}
 				}
 				copyHandleStepSelected();
@@ -164,9 +166,11 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 						//应急措施和措施放在一个字段里面了，带有（an）结尾的是措施，数字的是紧急措施	
 						mOtherStep = handle2[i].replace("(an)", "");
 					}else {
-						mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle2[i])-1] + "\n";
-						//得到初始化的 应急措施
-						handleStepSelected[Integer.parseInt(handle2[i])-1] = true;
+						if(!handle2[i].equals("")){
+							mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle2[i])-1] + "\n";
+							//得到初始化的 应急措施
+							handleStepSelected[Integer.parseInt(handle2[i])-1] = true;
+						}
 					}
 				}
 				copyHandleStepSelected();
@@ -283,7 +287,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			etFaultPhenomenon.setText("");
 			etHandleStep.setText("");
 			etOtherStep.setText("");
-			etPeople.setText(SystemParams.getInstance().getLoggedUserInfo().get("UserName"));
+			etPeople.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
 			getServerData();
@@ -295,7 +299,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			etPosition.setText(receivedData.get("InstallPosition"));
 			etFaultTime.setText(receivedData.get("AccidentOccurTime"));
 			etFaultPhenomenon.setText(receivedData.get("AccidentDetail"));
-			etPeople.setText(receivedData.get("ReportPerson").toString());
+			etPeople.setText(receivedData.get("ReportPersonRealName").toString());
 			etHandleStep.setText(mHandleStep);
 			etOtherStep.setText(mOtherStep);
 			break;
@@ -308,7 +312,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			etPosition.setText(receivedData.get("InstallPosition"));
 			etFaultTime.setText(receivedData.get("AccidentOccurTime"));
 			etFaultPhenomenon.setText(receivedData.get("AccidentDetail"));
-			etPeople.setText(receivedData.get("ReportPerson").toString());
+			etPeople.setText(receivedData.get("ReportPersonRealName").toString());
 			etHandleStep.setText(mHandleStep);
 			etOtherStep.setText(mOtherStep);
 			break;
@@ -609,28 +613,46 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		protected String doInBackground(String... params) {
 			JSONObject param = new JSONObject();
 			JSONObject repairDataString = new JSONObject();
-			String result = "";
+			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
 			try {
 				param.put("PlantID", SystemParams.PLANTID_INT);
 				
+				//是否有RepairTaskID，如果有，则添加，视为更新，没有的话则是插入
 				if(mRequestCode==RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER){
 					param.put("RepairTaskID", Integer.valueOf(selectedData.get("RepairTaskID")));
 				}else {
 					param.put("RepairTaskID","");
 				}
 				
+				//填报工单时，根据登录的用户，选择该工单是何种类型的工单
 				int postionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
 				if(postionID==EnumList.UserRole.PRODUCTIONOPERATION.getState()){
 					repairDataString.put("RepairTaskType", EnumList.RepairTaskType.PRODUCTIONSECTION.getType());
 				}else if (postionID==EnumList.UserRole.EQUIPMENTOPERATION.getState()) {
 					repairDataString.put("RepairTaskType", EnumList.RepairTaskType.EQUIPMENTSECTION.getType());
 				}
+				
+				//填报工单时，应急措施和其他措施的组合，应急措施为 1,2,3,4,5,其他措施为......(an)结尾，2种措施用,分割开来
+				String EmergencyMeasures = "";
+				for(int i = 0;i<handleStepSelected.length;i++){
+					if (handleStepSelected[i]) {
+						EmergencyMeasures = EmergencyMeasures + String.valueOf(i+1) + ",";
+					}
+				}
+				if(EmergencyMeasures.equals("")&&!etOtherStep.getText().toString().equals("")){
+					EmergencyMeasures = "," + etOtherStep.getText().toString()+"(an)";
+				}else if (!EmergencyMeasures.equals("")&&!etOtherStep.getText().toString().equals("")) {
+					EmergencyMeasures = EmergencyMeasures + etOtherStep.getText().toString()+"(an)";
+				}
+				
 				repairDataString.put("DeviceID", selectedData.get("DeviceID"));
-				repairDataString.put("EmergencyMeasures", etHandleStep.getText().toString()+","+etOtherStep.getText().toString()+"(an)");
+				repairDataString.put("EmergencyMeasures", EmergencyMeasures);
 				repairDataString.put("AccidentOccurTime", etFaultTime.getText().toString());
 				repairDataString.put("AccidentDetail",etFaultPhenomenon.getText().toString());
 				repairDataString.put("ReportPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+				
 				param.put("RepairDataString", repairDataString.toString());
+				
 				result = DataCenterHelper.HttpPostData(DataCenterHelper.METHOD_INSERTTASK_STRING, param);
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -670,7 +692,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					e.printStackTrace();
 				}
 			}
-			
 		}
 		
 	}

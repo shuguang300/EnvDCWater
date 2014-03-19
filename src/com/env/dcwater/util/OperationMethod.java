@@ -5,17 +5,15 @@ import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.env.dcwater.javabean.EnumList;
-import com.google.gson.JsonArray;
 
 /**
  * 一个用于存储 污水厂业务逻辑方法 的类
  * @author sk
  */
 public class OperationMethod {
-	
+	public static final String TAG_STRING = "OperationMethod";
 	/**
 	 * 根据用户的userroleid来动态生成权限界面
 	 * @param PositionID
@@ -38,8 +36,52 @@ public class OperationMethod {
 			map.put(EnumList.UserRight.RightName, EnumList.UserRight.UPKEEPHISTORY.getName());
 			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.UPKEEPHISTORY.getCode()+"");
 			data.add(map);
+		}else if (PositionID == EnumList.UserRole.PRODUCTIONOPERATION.getState()) {
+			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
+			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
+			data.add(map);
+			
+			map = new HashMap<String, String>();
+			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
+			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
+			data.add(map);
+			
+			map = new HashMap<String, String>();
+			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MAINTAINHISTORY.getName());
+			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MAINTAINHISTORY.getCode()+"");
+			data.add(map);
+			
+			map = new HashMap<String, String>();
+			map.put(EnumList.UserRight.RightName, EnumList.UserRight.UPKEEPHISTORY.getName());
+			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.UPKEEPHISTORY.getCode()+"");
+			data.add(map);
 		}
 		return data;
+		
+	}
+	
+	public static int getTaskStateByStateName(String stateName){
+		if(stateName.equals(EnumList.RepairState.HASBEENREPORTED.getStateDescription())){
+			return EnumList.RepairState.HASBEENREPORTED.getState();
+		}else if (stateName.equals(EnumList.RepairState.HASBEENCONFIRMED.getStateDescription())) {
+			return EnumList.RepairState.HASBEENCONFIRMED.getState();
+		}else if(stateName.equals(EnumList.RepairState.HASBEENDISTRIBUTED.getStateDescription())){
+			return EnumList.RepairState.HASBEENDISTRIBUTED.getState();
+		}else if(stateName.equals(EnumList.RepairState.BEENINGREPAIRED.getStateDescription())){
+			return EnumList.RepairState.BEENINGREPAIRED.getState();
+		}else if(stateName.equals(EnumList.RepairState.HASBEENREPAIRED.getStateDescription())){
+			return EnumList.RepairState.HASBEENREPAIRED.getState();
+		}else if(stateName.equals(EnumList.RepairState.FORCORRECTION.getStateDescription())){
+			return EnumList.RepairState.FORCORRECTION.getState();
+		}else if(stateName.equals(EnumList.RepairState.DEVICETHROUGH.getStateDescription())){
+			return EnumList.RepairState.DEVICETHROUGH.getState();
+		}else if(stateName.equals(EnumList.RepairState.PRODUCTIONTHROUGH.getStateDescription())){
+			return EnumList.RepairState.PRODUCTIONTHROUGH.getState();
+		}else if(stateName.equals(EnumList.RepairState.DIRECTORTHROUGH.getStateDescription())){
+			return EnumList.RepairState.DIRECTORTHROUGH.getState();
+		}else {
+			return -1;
+		}
 		
 	}
 	
@@ -53,7 +95,12 @@ public class OperationMethod {
 		boolean arg = false;
 		switch (rolePositionID) {
 		case EnumList.UserRole.USERROLEEQUIPMENTOPERATION:
-			if (taskState<1) {
+			if (taskState==0) {
+				arg = true;
+			}
+			break;
+		case EnumList.UserRole.USERROLEPRODUCTIONOPERATION:
+			if(taskState==0){
 				arg = true;
 			}
 			break;
@@ -81,7 +128,7 @@ public class OperationMethod {
 		}
 		if(data!=null){
 			if (data.contains("ReportRepairJobInput(DepProduct)")) {
-				 //UserRole:1为生产科填报权限
+				//UserRole:1为生产科填报权限
 				userRoleString = "1";
 			}else if (data.contains("ReportRepairJobInput(DepEquipment)")) {
 				//userrole:2为设备科填报权限

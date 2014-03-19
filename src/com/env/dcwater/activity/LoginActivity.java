@@ -188,16 +188,20 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if(keyCode == KeyEvent.KEYCODE_BACK){
-			if(mLoginAsyncTask!=null&&mLoginAsyncTask.getStatus()==AsyncTask.Status.RUNNING){
-				mLoginAsyncTask.cancel(true);
-			}else {
-				this.finish();
-			}
+			onBackPressed();
 			return true;
 		}else {
 			return super.onKeyDown(keyCode, event);
 		}
-		
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if(mLoginAsyncTask!=null&&mLoginAsyncTask.getStatus()==AsyncTask.Status.RUNNING){
+			mLoginAsyncTask.cancel(true);
+		}else {
+			this.finish();
+		}
 	}
 	
 	/**

@@ -43,6 +43,7 @@ import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
+import com.env.dcwater.util.LogicMethod;
 import com.env.dcwater.util.OperationMethod;
 
 /**
@@ -77,7 +78,9 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private GetServerData getServerData;
 	private boolean isFilter = true,isRfresh = false;
 	private ProgressDialog mProgressDialog;
-	
+	private DeleteServerData deleteServerData;
+	private int selectedPos;
+	private String [] dateFilters;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -116,16 +119,25 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	}
 	
 	/**
-	 * 获取数据时，弹出进度对话框
+	 * 删除工单
 	 */
-	private void showProgressDialog(){
+	private void deleteServerData(){
+		deleteServerData = new DeleteServerData();
+		deleteServerData.execute("");
+	}
+	
+	/**
+	 * 获取数据时，弹出进度对话框
+	 * @param cancelable 是否能被取消的操作
+	 */
+	private void showProgressDialog(boolean cancelable){
 		if(mProgressDialog==null){
 			mProgressDialog = new ProgressDialog(RepairManageActivity.this);
 			mProgressDialog.setTitle("提交中");
 			mProgressDialog.setMessage("正在向服务器提交，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
-			mProgressDialog.setCancelable(true);
 		}
+		mProgressDialog.setCancelable(cancelable);
 		mProgressDialog.show();
 	}
 	
@@ -146,6 +158,13 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_repairmanage_drawlayout);
 		mDataFilterView = (DataFilterView)findViewById(R.id.activity_repairmanage_datafilter);
 		
+		mDataFilterView.setSubmitEvent(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getServerData();
+			}
+		});
+		
 		mDataFilterView.hideTimeSelectionPart();
 		
 		mListViewAdapter = new RepairManageItemAdapter();
@@ -153,8 +172,8 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		mListView.setXListViewListener(this);
 		mListView.setOnItemClickListener(this);
 		
-		mDataFilterView.setStateList(getResources().getStringArray(R.array.view_datafilter_statelist));
-		mDataFilterView.setPosList(getResources().getStringArray(R.array.view_datafilter_poslist));
+		mDataFilterView.setStateList(getResources().getStringArray(R.array.view_datafilter_statelist),1);
+		mDataFilterView.setPosList(getResources().getStringArray(R.array.view_datafilter_poslist),1);
 		mDrawerLayout.setDrawerListener(new DrawerListener() {
 			@Override
 			public void onDrawerStateChanged(int arg0) {
@@ -282,7 +301,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	public boolean onContextItemSelected(MenuItem item) {
 		//获得contextmenu的触发控件
 		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
-		final int selectedPos = info.position-1;
+		selectedPos = info.position-1;
 		switch (item.getItemId()) {
 		case R.id.contextmenu_repairmanage_update:
 			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos));
@@ -295,8 +314,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			mDeleteConfirm.setPositiveButton("确定", new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mData.remove(selectedPos);
-					mListViewAdapter.notifyDataSetChanged();
+					deleteServerData();
 				}
 			}).setNegativeButton("取消", null);
 			mDeleteConfirm.create();
@@ -383,15 +401,18 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 					HashMap<String, String> map = null;
 					int rolePositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
 					boolean canUpdate = false;
+					dateFilters = mDataFilterView.getSelectCondition();
+					int taskState = OperationMethod.getTaskStateByStateName(dateFilters[3]);
 					data = new ArrayList<HashMap<String,String>>();
 					for(int i =0;i<jsonArray.length();i++){
 						report = jsonArray.getJSONObject(i);
 						map = new HashMap<String, String>();
-//						if(Integer.valueOf(report.get("State").toString())!=EnumList.RepairState.HASBEENREPORTED.getState()){
-//							continue;
-//						}
+						
 						canUpdate = OperationMethod.canTaskUpdated(rolePositionID, Integer.valueOf(report.get("State").toString()));
 						if(isFilter&&!canUpdate){
+							continue;
+						}
+						if(taskState!=-1&&taskState!=Integer.valueOf(report.get("State").toString())){
 							continue;
 						}
 						map.put("CanUpdate", canUpdate?"true":"false");
@@ -400,17 +421,18 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 						map.put("FaultReportSN", report.get("FaultReportSN").toString());
 						map.put("AccidentOccurTime", report.get("AccidentOccurTime").toString().replace("T", " "));
 						map.put("DeviceName", report.get("DeviceName").toString());
-						map.put("InstallPosition", report.get("InstallPosition").toString());
+						map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
 						map.put("RepairedTime", report.get("RepairedTime").toString().replace("T", " "));
-						map.put("ReportPerson", report.get("ReportPerson").toString());
+						map.put("ReportPersonID", report.get("ReportPersonID").toString());
+						map.put("ReportPersonRealName", report.get("ReportPersonRealName").toString());
 						map.put("State", report.get("State").toString());
 						map.put("StateDescription", EnumList.RepairState.getEnumRepairState(Integer.valueOf(report.get("State").toString())).getStateDescription());
-						map.put("AccidentDetail", report.get("AccidentDetail").toString());
-						map.put("Manufacturer", report.get("Manufacturer").toString());
-						map.put("Specification", report.get("Specification").toString());
+						map.put("AccidentDetail",LogicMethod.getRightString(report.get("AccidentDetail").toString()));
+						map.put("Manufacturer",LogicMethod.getRightString(report.get("Manufacturer").toString()));
+						map.put("Specification",LogicMethod.getRightString(report.get("Specification").toString()));
 						map.put("DeviceSN", report.get("DeviceSN").toString());
-						map.put("StartUseTime", report.get("StartUseTime").toString().toString().replace("T", " "));
-						map.put("EmergencyMeasures", report.get("EmergencyMeasures").toString());
+						map.put("StartUseTime",LogicMethod.getRightString(report.get("StartUseTime").toString().toString().replace("T", " ")));
+						map.put("EmergencyMeasures",LogicMethod.getRightString(report.get("EmergencyMeasures").toString()));
 						data.add(map);
 					}
 				}
@@ -430,7 +452,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			showProgressDialog();
+			showProgressDialog(true);
 		}
 		
 		@Override
@@ -447,6 +469,54 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			hideProgressDialog();
 		}
 		
+	}
+	
+	class DeleteServerData extends AsyncTask<String, String, String>{
+		@Override
+		protected String doInBackground(String... params) {
+			JSONObject param = new JSONObject();
+			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
+			try {
+				param.put("RepairTaskID", Integer.valueOf(mData.get(selectedPos).get("RepairTaskID")));
+				result = DataCenterHelper.HttpPostData(DataCenterHelper.METHOD_DELETETASK_STRING, param);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return result;
+		}
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			showProgressDialog(false);
+		}
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			hideProgressDialog();
+			if(result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
+				Toast.makeText(RepairManageActivity.this, "提交失败", Toast.LENGTH_SHORT).show();
+			}else {
+				JSONObject object;
+				try {
+					object = new JSONObject(result);
+					if(object.getBoolean("d")){
+						mData.remove(selectedPos);
+						mListViewAdapter.notifyDataSetChanged();
+					}else {
+						Toast.makeText(RepairManageActivity.this, "提交失败", Toast.LENGTH_SHORT).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+					Toast.makeText(RepairManageActivity.this, "提交失败", Toast.LENGTH_SHORT).show();
+				}
+			}
+		}
 	}
 	
 }

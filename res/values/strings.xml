@@ -108,8 +108,8 @@
     
     <string-array name="view_datafilter_statelist">
         <item >不限</item>
-        <item >保修单已上报</item>
-        <item >保修单已确认</item>
+        <item >报修单已上报</item>
+        <item >报修单已确认</item>
         <item >维修单已派发</item>
         <item >维修单填写中</item>
         <item >维修单已上报</item>

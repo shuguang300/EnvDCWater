@@ -81,8 +81,8 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		mHistoryList.setXListViewListener(this);
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_maintainhistory_drawlayout);
 		mDataFilterView = (DataFilterView)findViewById(R.id.activity_maintainhistory_datafilter);
-		mDataFilterView.setStateList(getResources().getStringArray(R.array.view_datafilter_statelist));
-		mDataFilterView.setPosList(getResources().getStringArray(R.array.view_datafilter_poslist));
+		mDataFilterView.setStateList(getResources().getStringArray(R.array.view_datafilter_statelist),0);
+		mDataFilterView.setPosList(getResources().getStringArray(R.array.view_datafilter_poslist),0);
 		mDrawerLayout.setDrawerListener(new DrawerListener() {
 			@Override
 			public void onDrawerStateChanged(int arg0) {

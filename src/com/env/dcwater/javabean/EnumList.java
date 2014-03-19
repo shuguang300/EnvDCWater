@@ -94,29 +94,29 @@ public class EnumList {
 	 */
 	public enum RepairState {
 		/**
-		 * 已上报
+		 * 报修单已上报
 		 */
-		HASBEENREPORTED(0,"已上报"),
+		HASBEENREPORTED(0,"报修单已上报"),
 		/**
-		 * 已确认
+		 * 报修单已确认
 		 */
-		HASBEENCONFIRMED(1,"已确认"),
+		HASBEENCONFIRMED(1,"报修单已确认"),
 		/**
-		 * 已派发
+		 * 维修单已派发
 		 */
-		HASBEENDISTRIBUTED(2,"已派发"),
+		HASBEENDISTRIBUTED(2,"维修单已派发"),
 		/**
-		 * 正在维修
+		 * 维修单填写中
 		 */
-		BEENINGREPAIRED(3,"正在维修"),
+		BEENINGREPAIRED(3,"维修单填写中"),
 		/**
-		 * 维修完成
+		 * 维修单已上报
 		 */
-		HASBEENREPAIRED(4,"维修完成"),
+		HASBEENREPAIRED(4,"维修单已上报"),
 		/**
-		 * 返回修改
+		 * 维修单返回修改
 		 */
-		FORCORRECTION(5,"返回修改"),
+		FORCORRECTION(5,"维修单返回修改"),
 		/**
 		 * 设备科长审核通过
 		 */
@@ -198,6 +198,9 @@ public class EnumList {
 		EQUIPMENTOPERATION(9,"设备科操作工");
 		
 		public static final int USERROLEEQUIPMENTOPERATION = 9;
+		
+		public static final int USERROLEPRODUCTIONOPERATION = 7;
+		
 		private int mPositionID;
 		private String mPostionName;
 		

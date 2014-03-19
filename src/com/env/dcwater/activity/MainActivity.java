@@ -57,7 +57,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	 */
 	private void iniActionBar(){
 		mActionBar = getActionBar();
-		mActionBar.setTitle(R.string.activity_userright_title);
+		mActionBar.setTitle(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setHomeButtonEnabled(true);
 	}
@@ -68,7 +68,6 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	private void iniData(){
 		data = OperationMethod.getViewByUserRole(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID")));
 	}
-	
 	
 	/**
 	 * 初始化界面
@@ -117,6 +116,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		Intent intent = new Intent();
 		intent.setClass(this, LoginActivity.class);
 		startActivity(intent);
+		finish();
 	}
 	
 	@Override
@@ -179,7 +179,6 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		case R.id.view_config_logout:
 			logout();
 			break;
-
 		}
 		
 	}

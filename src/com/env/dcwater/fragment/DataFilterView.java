@@ -98,8 +98,8 @@ public class DataFilterView extends LinearLayout{
 		tvFastTime.setText(mFastTimeList[selectFastTimePos].toString());
 		tvStartTime.setText(new SimpleDateFormat(SystemParams.SHORTDATE_PATTERN_STRING, Locale.CHINA).format(mStartTime.getTime()));
 		tvEndTime.setText(new SimpleDateFormat(SystemParams.SHORTDATE_PATTERN_STRING, Locale.CHINA).format(mEndTime.getTime()));
-		tvState.setText("不限");
-		tvPos.setText("不限");
+		
+		
 		
 		//设置控件的单击事件
 		trFastTime.setOnClickListener(mClickListen);
@@ -194,17 +194,23 @@ public class DataFilterView extends LinearLayout{
 	/**
 	 * 设置工单状态列表
 	 * @param stateList 工单状态列表
+	 * @param defaultPos 默认值
 	 */
-	public void setStateList(String [] stateList){
+	public void setStateList(String [] stateList, int defaultPos){
 		mStateList = stateList;
+		selectStatePos  =defaultPos ;
+		tvState.setText(mStateList[selectStatePos]);
 	}
 	
 	/**
 	 * 设置设备位置列表
 	 * @param stateList 工单状态列表
+	 * @param defaultPos 默认值
 	 */
-	public void setPosList(String [] posList){
+	public void setPosList(String [] posList,int defaultPos){
 		mPosList = posList;
+		selectPosPos = defaultPos;
+		tvPos.setText(mPosList[selectPosPos]);
 	}
 	
 	/**
@@ -221,6 +227,20 @@ public class DataFilterView extends LinearLayout{
 		trFastTime.setVisibility(View.GONE);
 		trStartTime.setVisibility(View.GONE);
 		trEndTime.setVisibility(View.GONE);
+	}
+	
+	/**
+	 * 隐藏设备安装位置过滤条件，有可能不需要
+	 */
+	public void hideDevicePositionPicker(){
+		trPos.setVisibility(View.GONE);
+	}
+	
+	/**
+	 * 隐藏工单状态过滤额条件，有可能不需要
+	 */
+	public void hideTaskStatePicker(){
+		trState.setVisibility(View.GONE);
 	}
 	
 	/**

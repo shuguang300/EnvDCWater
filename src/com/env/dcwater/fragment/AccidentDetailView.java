@@ -2,7 +2,6 @@ package com.env.dcwater.fragment;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 /**
@@ -15,7 +14,7 @@ public class AccidentDetailView extends RelativeLayout{
 	
 	public static final String TAG_STRING = "AccidentDetailView";
 	
-	private View mView;
+//	private View mView;
 	
 	public AccidentDetailView (Context context){
 		super(context);
