@@ -59,6 +59,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		mActionBar = getActionBar();
 		mActionBar.setTitle(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
 		mActionBar.setDisplayShowHomeEnabled(true);
+		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setHomeButtonEnabled(true);
 	}
 	

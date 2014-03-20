@@ -36,6 +36,8 @@
     
     
     
+    <string name="activity_repairmanageitem_verify">审核信息</string>
+    <string name="activity_repairmanageitem_repair">维修信息</string>
     <string name="activity_repairmanageitem_people">人员信息</string>
     <string name="activity_repairmanageitem_fault">故障信息</string>
     <string name="activity_repairmanageitem_basic">基本信息</string>
@@ -51,6 +53,22 @@
     <string name="activity_repairmanageitem_handlestep">应急措施选择</string>
     <string name="activity_repairmanageitem_otherstep">其他措施</string>
     <string name="activity_repairmanageitem_taskpeople">巡检员</string>
+    <string name="activity_repairmanageitem_repairsttime">工单派发时间</string>
+    <string name="activity_repairmanageitem_repairendtime">修理完成时间</string>
+    <string name="activity_repairmanageitem_repairsender">工单派发人</string>
+    <string name="activity_repairmanageitem_repairtimecost">所需工时</string>
+    <string name="activity_repairmanageitem_repaircontent">维修内容及要求</string>
+    <string name="activity_repairmanageitem_repairresult">工作完成情况及处理措施</string>
+    <string name="activity_repairmanageitem_repairthingcost">备品备件使用情况</string>
+    <string name="activity_repairmanageitem_verifysucceed">审核通过</string>
+    <string name="activity_repairmanageitem_verifyfailed">审核未通过</string>
+    <string name="activity_repairmanageitem_verifypeople">审核人</string>
+    <string name="activity_repairmanageitem_equipmentopinion">设备科意见</string>
+    <string name="activity_repairmanageitem_plantopinion">厂领导意见</string>
+    
+    
+    
+    
     
     
     <string name="view_datetimepick_ok">确定</string>
@@ -62,8 +80,8 @@
     <string name="menu_machineinfo_refresh">刷新</string>
     <string name="menu_repairmanage_add">故障上报</string>
     <string name="menu_repairmanage_refresh">刷新</string>
-    <string name="menu_repairmanage_nofilter">显示所有任务</string>
-    <string name="menu_repairmanage_filter">显示可操作任务</string>
+    <string name="menu_repairmanage_nofilter">所有任务</string>
+    <string name="menu_repairmanage_filter">可操作任务</string>
     <string name="menu_repairmanageitem_refresh">刷新</string>
     <string name="menu_upkeephistory_refresh">刷新</string>
     <string name="menu_maintainhistory_refresh">刷新</string>

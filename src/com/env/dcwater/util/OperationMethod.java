@@ -27,15 +27,6 @@ public class OperationMethod {
 			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
 			data.add(map);
 			
-			map = new HashMap<String, String>();
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MAINTAINHISTORY.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MAINTAINHISTORY.getCode()+"");
-			data.add(map);
-			
-			map = new HashMap<String, String>();
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.UPKEEPHISTORY.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.UPKEEPHISTORY.getCode()+"");
-			data.add(map);
 		}else if (PositionID == EnumList.UserRole.PRODUCTIONOPERATION.getState()) {
 			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
 			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
@@ -45,17 +36,21 @@ public class OperationMethod {
 			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
 			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
 			data.add(map);
-			
-			map = new HashMap<String, String>();
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MAINTAINHISTORY.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MAINTAINHISTORY.getCode()+"");
-			data.add(map);
-			
-			map = new HashMap<String, String>();
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.UPKEEPHISTORY.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.UPKEEPHISTORY.getCode()+"");
+		}else if (PositionID == EnumList.UserRole.EQUIPMENTCHIEF.getState()){
+			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
+			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
 			data.add(map);
 		}
+		
+		map = new HashMap<String, String>();
+		map.put(EnumList.UserRight.RightName, EnumList.UserRight.MAINTAINHISTORY.getName());
+		map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MAINTAINHISTORY.getCode()+"");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put(EnumList.UserRight.RightName, EnumList.UserRight.UPKEEPHISTORY.getName());
+		map.put(EnumList.UserRight.RightCode, EnumList.UserRight.UPKEEPHISTORY.getCode()+"");
+		data.add(map);
 		return data;
 		
 	}

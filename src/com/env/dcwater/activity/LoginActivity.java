@@ -239,32 +239,34 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 		@Override
 		protected void onPostExecute(SoapObject result) {
 			super.onPostExecute(result);
-			if(result==null){
-				Toast.makeText(LoginActivity.this, "网络连接失败，请重试", Toast.LENGTH_SHORT).show();
-			}else {
-				if(result.getPropertyAsString(0).equals("1")){
-					Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
-				}else if(result.getPropertyAsString(0).equals("2")){
-					Toast.makeText(LoginActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+			if(mLoginProgressDialog.isShowing()){
+				if(result==null){
+					Toast.makeText(LoginActivity.this, "网络连接失败，请重试", Toast.LENGTH_SHORT).show();
 				}else {
-					HashMap<String, String> map = null;
-					try {
-						map = parseSoapObject(new JSONObject(result.getPropertyAsString(0)));
-					} catch (JSONException e) {
-						map = null;
-						e.printStackTrace();
-					}
-					if(map==null){
+					if(result.getPropertyAsString(0).equals("1")){
+						Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
+					}else if(result.getPropertyAsString(0).equals("2")){
 						Toast.makeText(LoginActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
 					}else {
-//						if(map.get("AccountState").toString().equals("0")){
-//							Toast.makeText(LoginActivity.this, "您的账号未启用", Toast.LENGTH_SHORT).show();
-//						}else {
-//							SystemParams.getInstance().setmLoggedUserInfo(map);
-//							entranceMainActivity();
-//						}
-						SystemParams.getInstance().setmLoggedUserInfo(map);
-						entranceMainActivity();
+						HashMap<String, String> map = null;
+						try {
+							map = parseSoapObject(new JSONObject(result.getPropertyAsString(0)));
+						} catch (JSONException e) {
+							map = null;
+							e.printStackTrace();
+						}
+						if(map==null){
+							Toast.makeText(LoginActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+						}else {
+//							if(map.get("AccountState").toString().equals("0")){
+//								Toast.makeText(LoginActivity.this, "您的账号未启用", Toast.LENGTH_SHORT).show();
+//							}else {
+//								SystemParams.getInstance().setmLoggedUserInfo(map);
+//								entranceMainActivity();
+//							}
+							SystemParams.getInstance().setmLoggedUserInfo(map);
+							entranceMainActivity();
+						}
 					}
 				}
 			}

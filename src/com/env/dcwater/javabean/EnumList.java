@@ -191,15 +191,24 @@ public class EnumList {
 		 * 生产科操作工
 		 */
 		PRODUCTIONOPERATION(7,"生产科操作工"),
+		
+		/**
+		 * 设备科长
+		 */
+		EQUIPMENTCHIEF(8,"设备科长"),
 
 		/**
 		 * 设备科操作工
 		 */
 		EQUIPMENTOPERATION(9,"设备科操作工");
 		
+		public static final int USERROLEPRODUCTIONOPERATION = 7;
+		
+		public static final int USERROLEEQUIPMENTCHIEF = 8;
+		
 		public static final int USERROLEEQUIPMENTOPERATION = 9;
 		
-		public static final int USERROLEPRODUCTIONOPERATION = 7;
+		
 		
 		private int mPositionID;
 		private String mPostionName;
