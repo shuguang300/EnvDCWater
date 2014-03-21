@@ -60,11 +60,13 @@
     <string name="activity_repairmanageitem_repaircontent">维修内容及要求</string>
     <string name="activity_repairmanageitem_repairresult">工作完成情况及处理措施</string>
     <string name="activity_repairmanageitem_repairthingcost">备品备件使用情况</string>
+    <string name="activity_repairmanageitem_verifyresult">审核结果</string>
     <string name="activity_repairmanageitem_verifysucceed">审核通过</string>
     <string name="activity_repairmanageitem_verifyfailed">审核未通过</string>
     <string name="activity_repairmanageitem_verifypeople">审核人</string>
     <string name="activity_repairmanageitem_equipmentopinion">设备科意见</string>
     <string name="activity_repairmanageitem_plantopinion">厂领导意见</string>
+    <string name="activity_repairmanageitem_repairmoneycost">维修金额</string>
     
     
     

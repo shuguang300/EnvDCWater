@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/activity_repairmanageitem_tablelayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        style="@style/activity_repairmanageitem_textview_group"
+        android:text="@string/activity_repairmanageitem_verify" />
+
+    <TextView style="@style/item_divide" />
+
+    <TableRow
+        android:id="@+id/activity_repairmanageitem_verifyresult_tr"
+        style="@style/activity_repairmanageitem_tablerow" >
+
+        <TextView
+            style="@style/activity_repairmanageitem_textview_item"
+            android:text="@string/activity_repairmanageitem_verifyresult" />
+
+        <TextView
+            android:id="@+id/activity_repairmanageitem_verifyresult"
+            style="@style/activity_repairmanageitem_textview" />
+    </TableRow>
+
+    <TextView style="@style/item_divide" />
+
+    <TableRow
+        android:id="@+id/activity_repairmanageitem_verifypeople_tr"
+        style="@style/activity_repairmanageitem_tablerow" >
+
+        <TextView
+            style="@style/activity_repairmanageitem_textview_item"
+            android:text="@string/activity_repairmanageitem_verifypeople" />
+
+        <TextView
+            android:id="@+id/activity_repairmanageitem_verifypeople"
+            style="@style/activity_repairmanageitem_textview" />
+    </TableRow>
+
+    <TextView style="@style/item_divide" />
+
+    <TableRow
+        android:id="@+id/activity_repairmanageitem_equipmentopinion_tr"
+        style="@style/activity_repairmanageitem_tablerow" >
+
+        <TextView
+            style="@style/activity_repairmanageitem_textview_item"
+            android:text="@string/activity_repairmanageitem_equipmentopinion" />
+
+        <TextView
+            android:id="@+id/activity_repairmanageitem_equipmentopinion"
+            style="@style/activity_repairmanageitem_textview" />
+    </TableRow>
+
+    <TextView style="@style/item_divide" />
+
+    <TableRow
+        android:id="@+id/activity_repairmanageitem_plantopinion_tr"
+        style="@style/activity_repairmanageitem_tablerow" >
+
+        <TextView
+            style="@style/activity_repairmanageitem_textview_item"
+            android:text="@string/activity_repairmanageitem_plantopinion" />
+
+        <TextView
+            android:id="@+id/activity_repairmanageitem_plantopinion"
+            style="@style/activity_repairmanageitem_textview" />
+    </TableRow>
+
+</TableLayout>

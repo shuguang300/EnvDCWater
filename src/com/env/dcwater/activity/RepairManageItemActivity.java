@@ -34,6 +34,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,12 +68,13 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	private Builder mHandleContent;
 	private MachineListItemAdapter mMachineListAdapter;
 	private ArrayList<HashMap<String, String>> mMachine;
+	private TableLayout mGroupBasic,mGroupFault,mGroupPeople,mGroupInfo,mGroupVerify;
 	private DateTimePickerView dateTimePickerView;
 	private String mOtherStep="",mHandleStep="";
 	private String [] handleStepContent = {"尝试手动启动","关闭主电源","拍下急停按钮","悬挂警示标识牌","关闭故障设备工艺段进水"};
 	private boolean [] handleStepSelected = {false,false,false,false,false},tempStepSelected;
 	private TextView etName,etType,etSN,etPosition,etStartTime,etManufacture,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep;
-	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trPeople;
+	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep;
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -197,6 +199,12 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		
 		mMachineListView = (ListView)findViewById(R.id.activity_repairmanageitem_machinelist);
 		
+		mGroupBasic = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgroupbasic);
+		mGroupFault = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgroupfault);
+		mGroupPeople = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgrouppeople);
+		mGroupInfo = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgroupinfo);
+		mGroupVerify = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgroupverify);
+		
 		etName = (TextView)findViewById(R.id.activity_repairmanageitem_name);
 		trName = (TableRow)findViewById(R.id.activity_repairmanageitem_name_tr);
 		
@@ -223,7 +231,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		trOtherStep = (TableRow)findViewById(R.id.activity_repairmanageitem_otherstep_tr);
 		
 		etPeople = (TextView)findViewById(R.id.activity_repairmanageitem_taskpeople);
-		trPeople = (TableRow)findViewById(R.id.activity_repairmanageitem_taskpeople_tr);
+//		trPeople = (TableRow)findViewById(R.id.activity_repairmanageitem_taskpeople_tr);
 		
 		mSubmitButton = (Button)findViewById(R.id.activity_repairmanageitem_submit);
 		mSubmitButton.setOnClickListener(this);
@@ -246,7 +254,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			trFaultPhenomenon.setOnClickListener(this);
 			trHandleStep.setOnClickListener(this);
 			trOtherStep.setOnClickListener(this);
-			trPeople.setOnClickListener(this);
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
 			trName.setOnClickListener(this);
@@ -254,7 +261,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			trFaultPhenomenon.setOnClickListener(this);
 			trHandleStep.setOnClickListener(this);
 			trOtherStep.setOnClickListener(this);
-			trPeople.setOnClickListener(this);
 			break;
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
 			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -263,7 +269,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			trFaultPhenomenon.setOnClickListener(null);
 			trHandleStep.setOnClickListener(null);
 			trOtherStep.setOnClickListener(null);
-			trPeople.setOnClickListener(null);
 			mSubmitButton.setVisibility(View.GONE);
 			break;
 		}
@@ -477,9 +482,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			mHandleContent.show();
 			break;
 		case R.id.activity_repairmanageitem_otherstep_tr:
-			
-			break;
-		case R.id.activity_repairmanageitem_taskpeople_tr:
 			
 			break;
 		case R.id.activity_repairmanageitem_submit:

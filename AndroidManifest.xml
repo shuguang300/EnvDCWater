@@ -57,12 +57,14 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        <!--  该代码添加 nfc卡片的调度系统
             <intent-filter>  
                 <action android:name="android.nfc.action.TECH_DISCOVERED" /> 
             </intent-filter>  
             <meta-data  
                 android:name="android.nfc.action.TECH_DISCOVERED"  
                 android:resource="@xml/nfc_tech_filter" />
+         -->            
         </activity>
         
         <!-- 登陆界面 -->

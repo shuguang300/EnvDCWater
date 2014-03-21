@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/activity_repairmanageitem_tablelayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        style="@style/activity_repairmanageitem_textview_group"
+        android:text="@string/activity_repairmanageitem_people" />
+
+    <TextView style="@style/item_divide" />
+
+    <TableRow
+        android:id="@+id/activity_repairmanageitem_taskpeople_tr"
+        style="@style/activity_repairmanageitem_tablerow" >
+
+        <TextView
+            style="@style/activity_repairmanageitem_textview_item"
+            android:text="@string/activity_repairmanageitem_taskpeople" />
+
+        <TextView
+            android:id="@+id/activity_repairmanageitem_taskpeople"
+            style="@style/activity_repairmanageitem_textview" />
+    </TableRow>
+
+</TableLayout>
