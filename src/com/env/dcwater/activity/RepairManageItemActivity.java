@@ -45,6 +45,7 @@ import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.fragment.DateTimePickerView;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
+import com.env.dcwater.util.OperationMethod;
 
 /**
  * 单个报修工单界面，该界面可查看，编辑
@@ -335,16 +336,16 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	
 	/**
 	 * 设置设备信息的数据
-	 * @param code
+	 * @param isEmpty
 	 */
 	private void setGroupBasicData(boolean isEmpty){
 		if(isEmpty){
-			etName.setText(selectedData.get(""));
-			etType.setText(selectedData.get(""));
-			etSN.setText(selectedData.get(""));
-			etStartTime.setText(selectedData.get(""));
-			etManufacture.setText(selectedData.get(""));
-			etPosition.setText(selectedData.get(""));
+			etName.setText("");
+			etType.setText("");
+			etSN.setText("");
+			etStartTime.setText("");
+			etManufacture.setText("");
+			etPosition.setText("");
 		}else {
 			etName.setText(selectedData.get("DeviceName"));
 			etType.setText(selectedData.get("Specification"));
@@ -357,7 +358,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	
 	/**
 	 * 设置故障信息的数据
-	 * @param code
+	 * @param isEmpty
 	 */
 	private void setGroupFaultData(boolean isEmpty){
 		if(isEmpty){
@@ -570,12 +571,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		mDrawerLayout.closeDrawer(Gravity.LEFT);
 		selectedData = mMachine.get(position);
-		etName.setText(selectedData.get("DeviceName"));
-		etType.setText(selectedData.get("Specification"));
-		etSN.setText(selectedData.get("DeviceSN"));
-		etStartTime.setText(selectedData.get("StartUseTime"));
-		etManufacture.setText(selectedData.get("Manufacturer"));
-		etPosition.setText(selectedData.get("InstallPosition"));
+		setGroupBasicData(false);
 	}
 	
 	@Override
@@ -625,33 +621,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				String result = DataCenterHelper.HttpPostData("GetDeviceInfoList", object);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
-					JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
-					JSONObject device = null;
-					HashMap<String, String> map = null;
-					data = new ArrayList<HashMap<String,String>>();
-					for(int i =0;i<jsonArray.length();i++){
-						device = jsonArray.getJSONObject(i);
-						map = new HashMap<String, String>();
-						map.put("DeviceID", device.get("DeviceID").toString());
-						map.put("DeviceSN", device.get("DeviceSN").toString());
-						map.put("DeviceName", device.get("DeviceName").toString());
-						map.put("FixedAssets", device.get("FixedAssets").toString());
-						map.put("InstallPosition", device.get("InstallPosition").toString());
-						map.put("Price", device.get("Price").toString());
-						map.put("FilingTime", device.get("FilingTime").toString().replace("T", " "));
-						map.put("InstallTime", device.get("InstallTime").toString().replace("T", " "));
-						map.put("StartUseTime", device.get("StartUseTime").toString().replace("T", " "));
-						map.put("StopUseTime", device.get("StopUseTime").toString().replace("T", " "));
-						map.put("ScrapTime", device.get("ScrapTime").toString().replace("T", " "));
-						map.put("DepreciationPeriod", device.get("DepreciationPeriod").toString());
-						map.put("DeviceClassType", device.get("DeviceClassType").toString());
-						map.put("Department", device.get("Department").toString());
-						map.put("Specification", device.get("Specification").toString());
-						map.put("Manufacturer", device.get("Manufacturer").toString());
-						map.put("Quality", device.get("Quality").toString());
-						map.put("AccessoryInfo", device.get("AccessoryInfo").toString());
-						data.add(map);
-					}
+					data = OperationMethod.parseDeviceListToArray(jsonObject);
 					mMachine = data;
 				}
 			} catch (ClientProtocolException e) {

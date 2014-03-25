@@ -260,6 +260,12 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_repairmanage, menu);
+		int positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+		if(positionID == EnumList.UserRole.USERROLEEQUIPMENTOPERATION||positionID==EnumList.UserRole.USERROLEPRODUCTIONOPERATION){
+			menu.getItem(0).setVisible(true);
+		}else {
+			menu.getItem(0).setVisible(false);
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -396,45 +402,10 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 				String result = DataCenterHelper.HttpPostData("GetReportInfoList", object);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
-					JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
-					JSONObject report = null;
-					HashMap<String, String> map = null;
 					int rolePositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
-					boolean canUpdate = false;
 					dateFilters = mDataFilterView.getSelectCondition();
 					int taskState = OperationMethod.getTaskStateByStateName(dateFilters[3]);
-					data = new ArrayList<HashMap<String,String>>();
-					for(int i =0;i<jsonArray.length();i++){
-						report = jsonArray.getJSONObject(i);
-						map = new HashMap<String, String>();
-						
-						canUpdate = OperationMethod.canTaskUpdated(rolePositionID, Integer.valueOf(report.get("State").toString()));
-						if(isFilter&&!canUpdate){
-							continue;
-						}
-						if(taskState!=-1&&taskState!=Integer.valueOf(report.get("State").toString())){
-							continue;
-						}
-						map.put("CanUpdate", canUpdate?"true":"false");
-						map.put("RepairTaskID", report.get("RepairTaskID").toString());
-						map.put("DeviceID", report.get("DeviceID").toString());
-						map.put("FaultReportSN", report.get("FaultReportSN").toString());
-						map.put("AccidentOccurTime", report.get("AccidentOccurTime").toString().replace("T", " "));
-						map.put("DeviceName", report.get("DeviceName").toString());
-						map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
-						map.put("RepairedTime", report.get("RepairedTime").toString().replace("T", " "));
-						map.put("ReportPersonID", report.get("ReportPersonID").toString());
-						map.put("ReportPersonRealName", report.get("ReportPersonRealName").toString());
-						map.put("State", report.get("State").toString());
-						map.put("StateDescription", EnumList.RepairState.getEnumRepairState(Integer.valueOf(report.get("State").toString())).getStateDescription());
-						map.put("AccidentDetail",LogicMethod.getRightString(report.get("AccidentDetail").toString()));
-						map.put("Manufacturer",LogicMethod.getRightString(report.get("Manufacturer").toString()));
-						map.put("Specification",LogicMethod.getRightString(report.get("Specification").toString()));
-						map.put("DeviceSN", report.get("DeviceSN").toString());
-						map.put("StartUseTime",LogicMethod.getRightString(report.get("StartUseTime").toString().toString().replace("T", " ")));
-						map.put("EmergencyMeasures",LogicMethod.getRightString(report.get("EmergencyMeasures").toString()));
-						data.add(map);
-					}
+					data = OperationMethod.parseRepairTaskToArray(rolePositionID, jsonObject, taskState, isFilter);
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();

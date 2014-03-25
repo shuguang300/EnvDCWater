@@ -32,6 +32,7 @@ import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.LogicMethod;
+import com.env.dcwater.util.OperationMethod;
 
 /**
  * 设备信息查看
@@ -367,33 +368,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 				String result = DataCenterHelper.HttpPostData("GetDeviceInfoList", object);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
-					JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
-					JSONObject device = null;
-					HashMap<String, String> map = null;
-					data = new ArrayList<HashMap<String,String>>();
-					for(int i =0;i<jsonArray.length();i++){
-						device = jsonArray.getJSONObject(i);
-						map = new HashMap<String, String>();
-						map.put("DeviceID", device.get("DeviceID").toString());
-						map.put("DeviceSN", device.get("DeviceSN").toString());
-						map.put("DeviceName", device.get("DeviceName").toString());
-						map.put("FixedAssets", LogicMethod.getRightString(device.get("FixedAssets").toString()));
-						map.put("InstallPosition",LogicMethod.getRightString( device.get("InstallPosition").toString()));
-						map.put("Price", LogicMethod.getRightString(device.get("Price").toString()));
-						map.put("FilingTime",LogicMethod.getRightString( device.get("FilingTime").toString().replace("T", " ")));
-						map.put("InstallTime",LogicMethod.getRightString( device.get("InstallTime").toString().replace("T", " ")));
-						map.put("StartUseTime",LogicMethod.getRightString( device.get("StartUseTime").toString().replace("T", " ")));
-						map.put("StopUseTime",LogicMethod.getRightString( device.get("StopUseTime").toString().replace("T", " ")));
-						map.put("ScrapTime", LogicMethod.getRightString(device.get("ScrapTime").toString().replace("T", " ")));
-						map.put("DepreciationPeriod", LogicMethod.getRightString(device.get("DepreciationPeriod").toString()));
-						map.put("DeviceClassType", LogicMethod.getRightString(device.get("DeviceClassType").toString()));
-						map.put("Department", LogicMethod.getRightString(device.get("Department").toString()));
-						map.put("Specification", LogicMethod.getRightString(device.get("Specification").toString()));
-						map.put("Manufacturer", LogicMethod.getRightString(device.get("Manufacturer").toString()));
-						map.put("Quality", LogicMethod.getRightString(device.get("Quality").toString()));
-						map.put("AccessoryInfo", LogicMethod.getRightString(device.get("AccessoryInfo").toString()));
-						data.add(map);
-					}
+					data = OperationMethod.parseDeviceListToArray(jsonObject);
 					mMachine = data;
 					//获取到设备列表后，将设备列表数据暂存到程序变量中，方便其他地方调用
 					SystemParams.getInstance().setmMachineList(mMachine);

@@ -147,34 +147,6 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 		}
 	}
 	
-	/**
-	 * 将得到的用户信息的soapobject解析成为hashmap，并存储在本机中
-	 * @param soapObject
-	 * @return 返回用户信息
-	 */
-	private HashMap<String, String> parseSoapObject (JSONObject jsonObject){
-		HashMap<String, String> map = null;
-		try {
-			map = new HashMap<String, String>();
-			map.put("UserName", mAccount);
-			map.put("UserPassword", mPassword);
-			map.put("UserRole", OperationMethod.getUserRole(jsonObject.getString("UserRole")));
-			map.put("UserID", jsonObject.getString("UserID"));
-			map.put("PlantID", jsonObject.getString("PlantID"));
-			map.put("PlantName", jsonObject.getString("PlantName"));
-			map.put("PlantType", jsonObject.getString("PlantType"));
-			map.put("RealUserName", jsonObject.getString("RealUserName"));
-			map.put("AccountState", jsonObject.getString("AccountState"));
-			map.put("PositionID", jsonObject.getString("PositionID"));
-			map.put("PositionName", jsonObject.getString("PositionName"));
-		} catch (Exception e) {
-			map = null;
-		} finally{
-			
-		}
-		return map;
-		
-	}
 
 	@Override
 	public void onClick(View v) {
@@ -250,7 +222,7 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 					}else {
 						HashMap<String, String> map = null;
 						try {
-							map = parseSoapObject(new JSONObject(result.getPropertyAsString(0)));
+							map = OperationMethod.parseSoapObject(new JSONObject(result.getPropertyAsString(0)),mAccount,mPassword);
 						} catch (JSONException e) {
 							map = null;
 							e.printStackTrace();

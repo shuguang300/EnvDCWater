@@ -1,5 +1,7 @@
 package com.env.dcwater.javabean;
 
+import android.location.GpsStatus.NmeaListener;
+
 public class EnumList {
 	/**
 	 * @author sk 用户权限枚举
@@ -242,9 +244,11 @@ public class EnumList {
 		 */
 		public static UserRole getUserRole(int positionID){
 			switch (positionID) {
-			case 9:
+			case USERROLEEQUIPMENTOPERATION:
 				return UserRole.EQUIPMENTOPERATION;
-			case 7:
+			case USERROLEEQUIPMENTCHIEF:
+				return UserRole.EQUIPMENTCHIEF;
+			case USERROLEPRODUCTIONOPERATION:
 				return UserRole.PRODUCTIONOPERATION;
 			}
 			return null;
@@ -291,6 +295,39 @@ public class EnumList {
 		
 		public String getTypeName(){
 			return mTypeName;
+		}
+	}
+	
+	/**
+	 * 设备类型
+	 * @author sk
+	 */
+	public enum DeviceClassType{
+		Type1(1,"一类"),
+		Type2(2,"二类"),
+		Type3(3,"三类");
+		private int mCode;
+		private String mName;
+		private DeviceClassType(int code,String name){
+			mCode = code;
+			mName = name;
+		}
+		public static DeviceClassType getDeviceClassType(int code){
+			switch (code) {
+			case 1:
+				return Type1;
+			case 2:
+				return Type2;
+			case 3:
+				return Type3;
+			}
+			return null;
+		}
+		public String getCodeName(){
+			return mName;
+		}
+		public int getCode(){
+			return mCode;
 		}
 	}
 }
