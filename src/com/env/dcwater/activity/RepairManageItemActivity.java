@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.IllegalFormatCodePointException;
 import java.util.Locale;
 
 import org.apache.http.client.ClientProtocolException;
@@ -59,7 +60,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	private ActionBar mActionBar;
 	private HashMap<String, String> receivedData,selectedData;
 	private Intent receivedIntent;
-	private int mRequestCode;
+	private int mRequestCode,taskState;
 	private Date mDate;
 	private Button mSubmitButton;
 	private GetServerData mGetServerData;
@@ -119,10 +120,12 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER://新增维修单
 			mDate = new Date();
 			copyHandleStepSelected();
+			taskState = -1;
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER://修改维修单
 			receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("Data");
 			selectedData = receivedData;
+			taskState = Integer.valueOf(selectedData.get("State"));
 			String [] handle1;
 			if(receivedData.get("EmergencyMeasures").equals("null")){ 
 				handle1 = new String [0]; 
@@ -157,6 +160,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER://查看维修单的详细情况
 			receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("Data");
 			selectedData = receivedData;
+			taskState = Integer.valueOf(selectedData.get("State"));
 			String [] handle2;
 			if(receivedData.get("EmergencyMeasures").equals("null")){
 				handle2 = new String [0]; 
@@ -286,29 +290,26 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		mMachineListView.setOnItemClickListener(this);
 		switch (code) {
 		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER:
-			trName.setOnClickListener(this);
-			trFaultTime.setOnClickListener(this);
-			trFaultPhenomenon.setOnClickListener(this);
-			trHandleStep.setOnClickListener(this);
-			trOtherStep.setOnClickListener(this);
+			setGroupBasicAndFaultEnable(true);
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
-			trName.setOnClickListener(this);
-			trFaultTime.setOnClickListener(this);
-			trFaultPhenomenon.setOnClickListener(this);
-			trHandleStep.setOnClickListener(this);
-			trOtherStep.setOnClickListener(this);
+			setGroupBasicAndFaultEnable(true);
 			break;
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
 			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-			trName.setOnClickListener(null);
-			trFaultTime.setOnClickListener(null);
-			trFaultPhenomenon.setOnClickListener(null);
-			trHandleStep.setOnClickListener(null);
-			trOtherStep.setOnClickListener(null);
+			setGroupBasicAndFaultEnable(false);
 			mSubmitButton.setVisibility(View.GONE);
 			break;
 		}
+//		int userPositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+//		switch (userPositionID) {
+//		case EnumList.UserRole.USERROLEEQUIPMENTOPERATION:
+//			
+//			break;
+//		case EnumList.UserRole.USERROLEPRODUCTIONOPERATION:
+//			
+//			break;
+//		}
 	}
 	
 	/**
@@ -357,6 +358,25 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * @param isShow
+	 */
+	private void setGroupBasicShow(boolean isShow){
+		
+	}
+	
+	/**
+	 * 设置是否能点击
+	 * @param enable
+	 */
+	private void setGroupBasicAndFaultEnable(boolean enable){
+		trName.setOnClickListener(enable?this:null);
+		trFaultTime.setOnClickListener(enable?this:null);
+		trFaultPhenomenon.setOnClickListener(enable?this:null);
+		trHandleStep.setOnClickListener(enable?this:null);
+		trOtherStep.setOnClickListener(enable?this:null);
+	}
+	
+	/**
 	 * 设置故障信息的数据
 	 * @param isEmpty
 	 */
@@ -377,6 +397,13 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * @param isShow
+	 */
+	private void setGroupFaultShow(boolean isShow){
+		
+	}
+	
+	/**
 	 * 设置维修信息的数据
 	 */
 	private void setGroupRepairData(boolean isEmpty){
@@ -390,6 +417,13 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		}
 	}
 	
+	/**
+	 * @param isShow
+	 */
+	private void setGroupRepairShow(boolean isShow){
+		mGroupInfo.setVisibility(isShow?View.VISIBLE:View.GONE);
+	}
+	
 	
 	/**
 	 * 设置审核信息的数据
@@ -401,6 +435,14 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			
 		}
 	}
+	
+	/**
+	 * @param isShow
+	 */
+	private void setGroupVerifyShow(boolean isShow){
+		mGroupVerify.setVisibility(isShow?View.VISIBLE:View.GONE);
+	}
+	
 	
 	/**
 	 * 使用asynctask异步获取服务器上的数据
