@@ -94,6 +94,10 @@ public class EnumList {
 	 * @author sk
 	 *
 	 */
+	/**
+	 * @author Administrator
+	 *
+	 */
 	public enum RepairState {
 		/**
 		 * 报修单已上报
@@ -131,6 +135,43 @@ public class EnumList {
 		 * 厂长已确认
 		 */
 		DIRECTORTHROUGH(8,"厂长已确认");
+		
+		/**
+		 * 报修单已上报
+		 */
+		public static final int STATEHASBEENREPORTED = 0;
+		/**
+		 * 报修单已确认
+		 */
+		public static final int STATEHASBEENCONFIRMED = 1;
+		/**
+		 * 维修单已派发
+		 */
+		public static final int STATEHASBEENDISTRIBUTED = 2;
+		/**
+		 * 维修单填写中
+		 */
+		public static final int STATEBEENINGREPAIRED = 3;
+		/**
+		 * 维修单已上报
+		 */
+		public static final int STATEHASBEENREPAIRED = 4;
+		/**
+		 * 维修单返回修改
+		 */
+		public static final int STATEFORCORRECTION = 5;
+		/**
+		 * 设备科长审核通过
+		 */
+		public static final int STATEDEVICETHROUGH = 6;
+		/**
+		 * 生产科长已确认
+		 */
+		public static final int STATEPRODUCTIONTHROUGH = 7;
+		/**
+		 * 厂长已确认
+		 */
+		public static final int STATEDIRECTORTHROUGH = 8;
 		
 		private int mState;
 		private String mStateDescription;

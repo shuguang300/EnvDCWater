@@ -38,9 +38,16 @@ public class OperationMethod {
 			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
 			data.add(map);
 		}else if (PositionID == EnumList.UserRole.EQUIPMENTCHIEF.getState()){
+			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
+			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
+			data.add(map);
+			
+			map = new HashMap<String, String>();
 			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
 			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
 			data.add(map);
+			
+			
 		}
 		
 		map = new HashMap<String, String>();
@@ -108,7 +115,8 @@ public class OperationMethod {
 		case EnumList.UserRole.USERROLEEQUIPMENTCHIEF:
 			if(taskState==EnumList.RepairState.HASBEENREPORTED.getState()||
 			taskState==EnumList.RepairState.HASBEENDISTRIBUTED.getState()||
-			taskState==EnumList.RepairState.HASBEENREPAIRED.getState()){
+			taskState==EnumList.RepairState.HASBEENREPAIRED.getState()||
+			taskState==EnumList.RepairState.HASBEENCONFIRMED.getState()){
 				arg = true;
 			}
 			break;
@@ -182,7 +190,7 @@ public class OperationMethod {
 			
 			map.put("PlantID", device.get("PlantID").toString());
 			
-			map.put("DepartMent", LogicMethod.getRightString(device.get("DepartMent").toString()));
+			map.put("Department", LogicMethod.getRightString(device.get("Department").toString()));
 			
 			map.put("FixedAssets", LogicMethod.getRightString(device.get("FixedAssets").toString()));
 			

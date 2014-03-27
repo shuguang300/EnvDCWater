@@ -18,6 +18,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.renderscript.Type;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.ContextMenu;
@@ -45,6 +46,8 @@ import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.LogicMethod;
 import com.env.dcwater.util.OperationMethod;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * 设备维修管理

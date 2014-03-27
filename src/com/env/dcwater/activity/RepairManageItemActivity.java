@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.test.IsolatedContext;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,6 +46,7 @@ import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.fragment.DateTimePickerView;
 import com.env.dcwater.javabean.EnumList;
+import com.env.dcwater.javabean.EnumList.RepairState;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
 
@@ -288,28 +290,101 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	 */
 	private void setViewState( int code){
 		mMachineListView.setOnItemClickListener(this);
-		switch (code) {
-		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER:
-			setGroupBasicAndFaultEnable(true);
-			break;
-		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
-			setGroupBasicAndFaultEnable(true);
-			break;
-		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
-			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-			setGroupBasicAndFaultEnable(false);
+		if(code==RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER){
 			mSubmitButton.setVisibility(View.GONE);
+		}else {
+			mSubmitButton.setVisibility(View.VISIBLE);
+		}
+		int userPositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+		switch (userPositionID) {
+		case EnumList.UserRole.USERROLEEQUIPMENTOPERATION:
+		case EnumList.UserRole.USERROLEPRODUCTIONOPERATION:
+			switch (code) {
+			case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER:
+				setGroupBasicAndFaultEnable(true);
+				break;
+			case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
+				setGroupBasicAndFaultEnable(true);
+				break;
+			case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
+				setGroupBasicAndFaultEnable(false);
+				break;
+			}
+			break;
+		case EnumList.UserRole.USERROLEEQUIPMENTCHIEF:
+			switch (code) {
+			case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
+				setGroupBasicAndFaultEnable(false);
+				break;
+			case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
+				setGroupBasicAndFaultEnable(false);
+				break;
+			}
 			break;
 		}
-//		int userPositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
-//		switch (userPositionID) {
-//		case EnumList.UserRole.USERROLEEQUIPMENTOPERATION:
-//			
-//			break;
-//		case EnumList.UserRole.USERROLEPRODUCTIONOPERATION:
-//			
-//			break;
-//		}
+		if((taskState==0&&code==RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER)||taskState!=0){
+			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		}
+		setGroupBasicShow(true);
+		setGroupFaultShow(true);
+		switch (taskState) {
+		case -1:
+			setGroupRepairShow(false);
+			setGroupVerifyShow(false);
+			break;
+		case EnumList.RepairState.STATEHASBEENREPORTED:
+			setGroupRepairShow(false);
+			setGroupVerifyShow(false);
+			break;
+		case EnumList.RepairState.STATEHASBEENCONFIRMED:
+			setGroupSendTaskShow(true);
+			setGroupRepairTaskShow(false);
+			setGroupVerifyShow(false);
+			break;
+		case EnumList.RepairState.STATEHASBEENDISTRIBUTED:
+			setGroupRepairShow(true);
+			setGroupVerifyShow(false);
+			break;
+		case EnumList.RepairState.STATEBEENINGREPAIRED:
+			
+			break;
+		case EnumList.RepairState.STATEHASBEENREPAIRED:
+			
+			break;
+		case EnumList.RepairState.STATEFORCORRECTION:
+			
+			break;
+		case EnumList.RepairState.STATEDEVICETHROUGH:
+			
+			break;
+		case EnumList.RepairState.STATEPRODUCTIONTHROUGH:
+			
+			break;
+		case EnumList.RepairState.STATEDIRECTORTHROUGH:
+			setGroupRepairShow(true);
+			setGroupVerifyShow(true);
+			break;
+		}
+	}
+
+	/**
+	 * @param isShow
+	 */
+	private void setGroupSendTaskShow(boolean isShow) {
+		trSendTime.setVisibility(isShow?View.VISIBLE:View.GONE);
+		trSender.setVisibility(isShow?View.VISIBLE:View.GONE);
+		trTimeCost.setVisibility(isShow?View.VISIBLE:View.GONE);
+		trContent.setVisibility(isShow?View.VISIBLE:View.GONE);
+	}
+	
+	/**
+	 * @param isShow
+	 */
+	private void setGroupRepairTaskShow(boolean isShow) {
+		trResult.setVisibility(isShow?View.VISIBLE:View.GONE);
+		trFinishTime.setVisibility(isShow?View.VISIBLE:View.GONE);
+		trThingCost.setVisibility(isShow?View.VISIBLE:View.GONE);
+		trMoneyCost.setVisibility(isShow?View.VISIBLE:View.GONE);
 	}
 	
 	/**
@@ -327,10 +402,14 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			getServerData();
 			setGroupBasicData(false);
 			setGroupFaultData(false);
+			setGroupRepairData(false);
+			setGroupVerifyData(false);
 			break;
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
 			setGroupBasicData(false);
 			setGroupFaultData(false);
+			setGroupRepairData(false);
+			setGroupVerifyData(false);
 			break;
 		}
 	}
@@ -361,7 +440,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	 * @param isShow
 	 */
 	private void setGroupBasicShow(boolean isShow){
-		
+		mGroupBasic.setVisibility(isShow?View.VISIBLE:View.GONE);
 	}
 	
 	/**
@@ -400,7 +479,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	 * @param isShow
 	 */
 	private void setGroupFaultShow(boolean isShow){
-		
+		mGroupFault.setVisibility(isShow?View.VISIBLE:View.GONE);
+		mGroupPeople.setVisibility(isShow?View.VISIBLE:View.GONE);
 	}
 	
 	/**
@@ -412,8 +492,19 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			etSender.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
 			etTimeCost.setText("");
 			etContent.setText("");
+			etResult.setText("");
+			etFinishTime.setText("");
+			etThing.setText("");
+			etMoney.setText("");
 		}else {
-			
+			etSendTime.setText(selectedData.get("TaskCreateTime"));
+			etSender.setText(selectedData.get("CreatePersonRealName"));
+			etTimeCost.setText(selectedData.get("RequiredManHours"));
+			etContent.setText(selectedData.get("TaskDetail"));
+			etResult.setText(selectedData.get("RepairDetail"));
+			etFinishTime.setText(selectedData.get("RepairedTime"));
+			etThing.setText(selectedData.get("AccessoryUsed"));
+			etMoney.setText(selectedData.get("RepairCost"));
 		}
 	}
 	
@@ -430,9 +521,15 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	 */
 	private void setGroupVerifyData(boolean isEmpty){
 		if(isEmpty){
-			
+			etVerifyResult.setText("");
+			etVerifyPeople.setText("");
+			etEquipmentOpinion.setText("");
+			etPlantOpinion.setText("");
 		}else {
-			
+			etVerifyResult.setText(selectedData.get("ApproveResult"));
+			etVerifyPeople.setText(selectedData.get("ApprovePersonRealName"));
+			etEquipmentOpinion.setText(selectedData.get("DDOpinion"));
+			etPlantOpinion.setText(selectedData.get("PMOpinion"));
 		}
 	}
 	
