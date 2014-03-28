@@ -1,7 +1,4 @@
 package com.env.dcwater.javabean;
-
-import android.location.GpsStatus.NmeaListener;
-
 public class EnumList {
 	/**
 	 * @author sk 用户权限枚举
@@ -243,13 +240,52 @@ public class EnumList {
 		/**
 		 * 设备科操作工
 		 */
-		EQUIPMENTOPERATION(9,"设备科操作工");
+		EQUIPMENTOPERATION(9,"设备科操作工"),
 		
+		/**
+		 * 生产科长
+		 */
+		PRODUCTIONCHIEF(6,"生产科长"),
+		
+		/**
+		 * 厂长
+		 */
+		PLANTER(5,"厂长"),
+		
+		/**
+		 * 机修工
+		 */
+		REPAIRMAN(10,"机修工");
+		
+		/**
+		 * 生产科操作工
+		 */
 		public static final int USERROLEPRODUCTIONOPERATION = 7;
 		
+		/**
+		 * 设备科长
+		 */
 		public static final int USERROLEEQUIPMENTCHIEF = 8;
 		
+		/**
+		 * 设备科操作工
+		 */
 		public static final int USERROLEEQUIPMENTOPERATION = 9;
+		
+		/**
+		 * 生产科长
+		 */
+		public static final int USERROLEPRODUCTIONCHIEF = 6;
+		
+		/**
+		 * 机修工
+		 */
+		public static final int USERROLEREPAIRMAN = 10;
+		
+		/**
+		 * 厂长
+		 */
+		public static final int USERROLEPLANTER = 5;
 		
 		
 		
@@ -310,7 +346,14 @@ public class EnumList {
 		 * 设备科类型
 		 */
 		EQUIPMENTSECTION(2,"设备科");
-		
+		/**
+		 * 生产科工单
+		 */
+		public static final int TASKTYPE_PRODUCTION = 1;
+		/**
+		 * 设备科工单
+		 */
+		public static final int TASKTYPE_EQUIPMENT  = 2;
 		private int mType;
 		private String mTypeName;
 		

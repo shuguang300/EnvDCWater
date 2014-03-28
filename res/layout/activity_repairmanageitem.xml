@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <TableLayout
@@ -205,6 +205,7 @@
                     <TextView
                         android:id="@+id/activity_repairmanageitem_taskpeople"
                         style="@style/activity_repairmanageitem_textview" />
+
                 </TableRow>
             </TableLayout>
 
@@ -355,9 +356,12 @@
                         style="@style/activity_repairmanageitem_textview_item"
                         android:text="@string/activity_repairmanageitem_verifyresult" />
 
-                    <TextView
+                    <Switch
                         android:id="@+id/activity_repairmanageitem_verifyresult"
-                        style="@style/activity_repairmanageitem_textview" />
+                        android:textOff="审核未通过"
+                        android:textOn="审核通过"
+                        style="@style/activity_repairmanageitem_textview"/>
+                    
                 </TableRow>
 
                 <TextView style="@style/item_divide" />
@@ -387,6 +391,21 @@
 
                     <TextView
                         android:id="@+id/activity_repairmanageitem_equipmentopinion"
+                        style="@style/activity_repairmanageitem_textview" />
+                </TableRow>
+                
+                <TextView style="@style/item_divide" />
+
+                <TableRow
+                    android:id="@+id/activity_repairmanageitem_productionopinion_tr"
+                    style="@style/activity_repairmanageitem_tablerow" >
+
+                    <TextView
+                        style="@style/activity_repairmanageitem_textview_item"
+                        android:text="@string/activity_repairmanageitem_productionopinion" />
+
+                    <TextView
+                        android:id="@+id/activity_repairmanageitem_productionopinion"
                         style="@style/activity_repairmanageitem_textview" />
                 </TableRow>
 

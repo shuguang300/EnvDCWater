@@ -262,6 +262,8 @@ public class OperationMethod {
 			map.put("CanUpdate", canUpdate?"true":"false");
 			//保修单的ID
 			map.put("RepairTaskID", report.get("RepairTaskID").toString());
+			//维修单类型
+			map.put("RepairTaskType", LogicMethod.getRightString(report.get("RepairTaskType").toString()));
 			//厂名
 			map.put("PlantID", report.get("PlantID").toString());
 			//维修措施（紧急措施和其他措施）
@@ -303,7 +305,7 @@ public class OperationMethod {
 			//审核人ID
 			map.put("ApprovePersonID", LogicMethod.getRightString(report.get("ApprovePersonID").toString()));
 			//审核人名
-			map.put("ApprovePersonRealName", LogicMethod.getRightString(report.get("ApprovePersonID").toString()));
+			map.put("ApprovePersonRealName", LogicMethod.getRightString(report.get("ApprovePersonRealName").toString()));
 			//设备科意见
 			map.put("DDOpinion", LogicMethod.getRightString(report.get("DDOpinion").toString()));
 			//生产科意见

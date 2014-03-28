@@ -65,6 +65,7 @@
     <string name="activity_repairmanageitem_verifyfailed">审核未通过</string>
     <string name="activity_repairmanageitem_verifypeople">审核人</string>
     <string name="activity_repairmanageitem_equipmentopinion">设备科意见</string>
+    <string name="activity_repairmanageitem_productionopinion">生产科意见</string>
     <string name="activity_repairmanageitem_plantopinion">厂领导意见</string>
     <string name="activity_repairmanageitem_repairmoneycost">维修金额</string>
     
@@ -87,6 +88,7 @@
     <string name="menu_repairmanageitem_refresh">刷新</string>
     <string name="menu_upkeephistory_refresh">刷新</string>
     <string name="menu_maintainhistory_refresh">刷新</string>
+    <string name="menu_datainput_save">保存</string>
     
     
     <string name="contextmenu_repairmanage_update">修改</string>
