@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item 
+        android:id="@+id/cm_rm_rm_repair"
+        android:title="@string/contextmenu_repairmanage_rm_repair"
+        android:showAsAction="withText|always"/>
+</menu>

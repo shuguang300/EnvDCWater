@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:title="@string/contextmenu_repairmanage_pm_confirm"
+        android:showAsAction="withText|withText"
+        android:id="@+id/cm_rm_pm_confirm"/>
+
+</menu>

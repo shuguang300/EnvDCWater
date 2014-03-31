@@ -49,6 +49,24 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	
 	public static final String TAG_STRING = "RepairManageActivity";
 	
+	public static final String METHOD_ADD_STRING = "Add";
+	
+	public static final String METHOD_UPDATE_STRING = "Update";
+	
+	public static final String METHOD_DETAIL_STRING = "Detail";
+	
+	public static final String METHOD_SENDTASK_STRING = "SendTask";
+	
+	public static final String METHOD_REPAIRTASK_STRING = "RepairTask";
+	
+	public static final String METHOD_DDAPPROVE_STRING ="DDApprove";
+	
+	public static final String METHOD_PDCONFIRM_STRING = "PDConfirm";
+	
+	public static final String METHOD_PDAPPROVE_STRING ="PDApprove";
+	
+	public static final String METHOD_PMAPPROVE_STRING ="PMApprove";
+	
 	/**
 	 * 新增模式
 	 */
@@ -200,10 +218,12 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	 * 根据code进行activity的跳转，并携带该报修单的信息
 	 * @param code
 	 * @param data
+	 * @param methodName
 	 */
-	private void sendIntent(int code,HashMap<String, String> data){
+	private void sendIntent(int code,HashMap<String, String> data,String methodName){
 		sendedIntent = new Intent(RepairManageActivity.this, RepairManageItemActivity.class);
 		sendedIntent.putExtra("RequestCode", code);
+		sendedIntent.putExtra("MethodName", methodName);
 		switch (code) {
 		case REPAIRMANAGE_ADD_INTEGER:
 			break;
@@ -271,7 +291,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			onBackPressed();
 			break;
 		case R.id.menu_repairmanage_add:
-			sendIntent(REPAIRMANAGE_ADD_INTEGER,null);
+			sendIntent(REPAIRMANAGE_ADD_INTEGER,null,METHOD_ADD_STRING);
 			break;
 		case R.id.menu_repairmanage_filter:
 			isFilter = !isFilter;
@@ -291,9 +311,44 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		super.onCreateContextMenu(menu, v, menuInfo);
 		//不需要为headerview注册上下文菜单，所以进行判断
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+		
 		if(info.position!=0&&mData.get(info.position-1).get("CanUpdate").equals("true")){
-			getMenuInflater().inflate(R.menu.contextmenu_repairmanage, menu);
-			menu.setHeaderTitle("更多");  
+			int positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+			int taskState = Integer.valueOf(mData.get(info.position-1).get("State"));
+//			int taskType = Integer.valueOf(mData.get(info.position-1).get("RepairTaskType"));
+			switch (positionID) {
+			case EnumList.UserRole.USERROLEPLANTER:
+				getMenuInflater().inflate(R.menu.cm_rm_pm, menu);
+				break;
+			case EnumList.UserRole.USERROLEEQUIPMENTOPERATION:
+			case EnumList.UserRole.USERROLEPRODUCTIONOPERATION:
+				getMenuInflater().inflate(R.menu.cm_rm_op, menu);
+				break;
+			case EnumList.UserRole.USERROLEEQUIPMENTCHIEF:
+				getMenuInflater().inflate(R.menu.cm_rm_dd, menu);
+				if(taskState==EnumList.RepairState.STATEHASBEENCONFIRMED||taskState==EnumList.RepairState.STATEHASBEENREPORTED){
+					menu.getItem(0).setVisible(true);
+					menu.getItem(1).setVisible(false);
+				}else {
+					menu.getItem(0).setVisible(false);
+					menu.getItem(1).setVisible(true);
+				}
+				break;
+			case EnumList.UserRole.USERROLEPRODUCTIONCHIEF:
+				getMenuInflater().inflate(R.menu.cm_rm_pd, menu);
+				if(taskState==EnumList.RepairState.STATEHASBEENREPORTED){
+					menu.getItem(0).setVisible(true);
+					menu.getItem(1).setVisible(false);
+				}else {
+					menu.getItem(0).setVisible(false);
+					menu.getItem(1).setVisible(true);
+				}
+				break;
+			case EnumList.UserRole.USERROLEREPAIRMAN:
+				getMenuInflater().inflate(R.menu.cm_rm_rm, menu);
+				break;
+			}
+			menu.setHeaderTitle("更多操作");  
 		}
 	}
 	
@@ -304,10 +359,28 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
 		selectedPos = info.position-1;
 		switch (item.getItemId()) {
-		case R.id.contextmenu_repairmanage_update:
-			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos));
+		case R.id.cm_rm_op_update:
+			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_UPDATE_STRING);
 			break;
-		case R.id.contextmenu_repairmanage_delete:
+		case R.id.cm_rm_dd_send:
+			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_SENDTASK_STRING);
+			break;
+		case R.id.cm_rm_dd_approve:
+			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_DDAPPROVE_STRING);
+			break;
+		case R.id.cm_rm_pd_confirm:
+			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_PDCONFIRM_STRING);
+			break;
+		case R.id.cm_rm_pd_approve:
+			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_PDAPPROVE_STRING);
+			break;
+		case R.id.cm_rm_rm_repair:
+			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_REPAIRTASK_STRING);
+			break;
+		case R.id.cm_rm_pm_confirm:
+			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_PMAPPROVE_STRING);
+			break;
+		case R.id.cm_rm_op_delete:
 			if(mDeleteConfirm==null){
 				mDeleteConfirm = new AlertDialog.Builder(RepairManageActivity.this);
 			}
@@ -343,7 +416,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 		if(position!=0){
-			sendIntent(REPAIRMANAGE_DETAIL_INTEGER,mData.get(position-1));
+			sendIntent(REPAIRMANAGE_DETAIL_INTEGER,mData.get(position-1),METHOD_DETAIL_STRING);
 		}
 	}
 	

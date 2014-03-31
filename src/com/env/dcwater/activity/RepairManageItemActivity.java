@@ -330,9 +330,120 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				setGroupVerifyEnableByPlanter(false);
 			}else if (userPositionID==EnumList.UserRole.USERROLEEQUIPMENTCHIEF) {
 				if(taskType==EnumList.RepairTaskType.TASKTYPE_EQUIPMENT){
-					
+					switch (taskState) {
+					case EnumList.RepairState.STATEHASBEENREPORTED:
+						setGroupTaskSendEnable(true);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEHASBEENCONFIRMED:
+						break;
+					case EnumList.RepairState.STATEHASBEENDISTRIBUTED:
+						setGroupTaskSendEnable(true);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEBEENINGREPAIRED:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEHASBEENREPAIRED:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(true);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEFORCORRECTION:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEDEVICETHROUGH:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(true);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEPRODUCTIONTHROUGH:
+						break;
+					case EnumList.RepairState.STATEDIRECTORTHROUGH:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					}
 				}else if (taskType==EnumList.RepairTaskType.TASKTYPE_PRODUCTION) {
-					
+					switch (taskState) {
+					case EnumList.RepairState.STATEHASBEENREPORTED:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByProduction(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEHASBEENCONFIRMED:
+						setGroupTaskSendEnable(true);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByProduction(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEHASBEENDISTRIBUTED:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(true);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByProduction(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEBEENINGREPAIRED:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByProduction(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEHASBEENREPAIRED:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(true);
+						setGroupVerifyEnableByProduction(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEFORCORRECTION:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByProduction(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEDEVICETHROUGH:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(true);
+						setGroupVerifyEnableByProduction(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEPRODUCTIONTHROUGH:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByProduction(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEDIRECTORTHROUGH:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByProduction(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					}
 				}else {
 					setGroupBasicAndFaultEnable(false);
 					setGroupTaskSendEnable(false);
@@ -343,9 +454,35 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				}
 			}else if (userPositionID==EnumList.UserRole.USERROLEPRODUCTIONCHIEF) {
 				if(taskType==EnumList.RepairTaskType.TASKTYPE_EQUIPMENT){
-					
+					setGroupTaskSendEnable(false);
+					setGroupTaskRepairEnable(false);
+					setGroupVerifyEnableByEquipment(false);
+					setGroupVerifyEnableByProduction(false);
+					setGroupVerifyEnableByPlanter(false);
 				}else if (taskType==EnumList.RepairTaskType.TASKTYPE_PRODUCTION) {
-					
+					switch (taskState) {
+					case EnumList.RepairState.STATEHASBEENREPORTED:
+					case EnumList.RepairState.STATEHASBEENCONFIRMED:
+					case EnumList.RepairState.STATEHASBEENDISTRIBUTED:;
+					case EnumList.RepairState.STATEBEENINGREPAIRED:;
+					case EnumList.RepairState.STATEHASBEENREPAIRED:
+					case EnumList.RepairState.STATEFORCORRECTION:
+					case EnumList.RepairState.STATEDIRECTORTHROUGH:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByProduction(false);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					case EnumList.RepairState.STATEDEVICETHROUGH:
+					case EnumList.RepairState.STATEPRODUCTIONTHROUGH:
+						setGroupTaskSendEnable(false);
+						setGroupTaskRepairEnable(false);
+						setGroupVerifyEnableByEquipment(false);
+						setGroupVerifyEnableByProduction(true);
+						setGroupVerifyEnableByPlanter(false);
+						break;
+					}
 				}else {
 					setGroupBasicAndFaultEnable(false);
 					setGroupTaskSendEnable(false);
@@ -364,7 +501,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			}else if (userPositionID==EnumList.UserRole.USERROLEPLANTER) {
 				setGroupBasicAndFaultEnable(false);
 				setGroupTaskSendEnable(false);
-				setGroupTaskRepairEnable(true);
+				setGroupTaskRepairEnable(false);
 				setGroupVerifyEnableByEquipment(false);
 				setGroupVerifyEnableByProduction(false);
 				setGroupVerifyEnableByPlanter(true);
@@ -431,6 +568,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 
 	/**
+	 * 派发维修单的界面是否显示
 	 * @param isShow
 	 */
 	private void setGroupSendTaskShow(boolean isShow) {
@@ -441,6 +579,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * 填写维修单的界面是否显示
 	 * @param isShow
 	 */
 	private void setGroupRepairTaskShow(boolean isShow) {
@@ -500,6 +639,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * 填报单的设备基本信息是否显示
 	 * @param isShow
 	 */
 	private void setGroupBasicShow(boolean isShow){
@@ -507,7 +647,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
-	 * 设置是否能点击
+	 * 设置填报单的设备信息和故障西悉尼是否能点击
 	 * @param enable
 	 */
 	private void setGroupBasicAndFaultEnable(boolean enable){
@@ -519,6 +659,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * 设备科审核的能够点击
 	 * @param enable
 	 */
 	private void setGroupVerifyEnableByEquipment(boolean enable){
@@ -527,6 +668,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * 生产科审核的能否点击
 	 * @param enable
 	 */
 	private void setGroupVerifyEnableByProduction(boolean enable){
@@ -534,6 +676,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * 厂长审核能否点击
 	 * @param enable
 	 */
 	private void setGroupVerifyEnableByPlanter(boolean enable){
@@ -541,16 +684,18 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * 派发工单的能否点击
 	 * @param enable
 	 */
 	private void setGroupTaskSendEnable(boolean enable){
-		trSendTime.setOnClickListener(enable?this:null);
-		trSender.setOnClickListener(enable?this:null);
+//		trSendTime.setOnClickListener(enable?this:null);
+//		trSender.setOnClickListener(enable?this:null);
 		trTimeCost.setOnClickListener(enable?this:null);
 		trContent.setOnClickListener(enable?this:null);
 	}
 	
 	/**
+	 * 填写工单能否点击
 	 * @param enable
 	 */
 	private void setGroupTaskRepairEnable(boolean enable){
@@ -581,6 +726,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * 故障信息是否显示
 	 * @param isShow
 	 */
 	private void setGroupFaultShow(boolean isShow){
@@ -589,6 +735,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * 维修部分是否显示数据
 	 * 设置维修信息的数据
 	 */
 	private void setGroupRepairData(boolean isEmpty){
@@ -614,6 +761,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * 设置维修单维修部门是否显示
 	 * @param isShow
 	 */
 	private void setGroupRepairShow(boolean isShow){
@@ -622,6 +770,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	
 	/**
 	 * 设置审核信息的数据
+	 * @param isEmpty
 	 */
 	private void setGroupVerifyData(boolean isEmpty){
 		if(isEmpty){
@@ -644,6 +793,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * 审核部分是否显示
 	 * @param isShow
 	 */
 	private void setGroupVerifyShow(boolean isShow){
@@ -651,6 +801,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * 审核部分中设备科审核是否显示
 	 * @param isShow
 	 */
 	private void setGroupVerifyPMShow(boolean isShow){
@@ -658,6 +809,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
+	 * 审核部分中生产科审核是否显示
 	 * @param isShow
 	 */
 	private void setGroupVerifyPDShow(boolean isShow){
@@ -717,6 +869,10 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		}
 	}
 	
+	/**
+	 * 跳转 数据填报界面
+	 * @param data
+	 */
 	private void startDataInputActivity(HashMap<String, String> data){
 		Intent intent = new Intent(this,DataInputActivity.class);
 		intent.putExtra("data", data);
@@ -922,10 +1078,25 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			String key = temp.get("Key");
 			String value = temp.get("Value");
 			if (key.equals("AccidentDetail")) {
-				selectedData.put("AccidentDetail", value);
 				etFaultPhenomenon.setText(value);
 			}else if(key.equals("Otherstep")){
 				etOtherStep.setText(value);
+			}else if (key.equals("RequiredManHours")) {
+				etTimeCost.setText(value);
+			}else if (key.equals("TaskDetail")) {
+				etContent.setText(value);
+			}else if (key.equals("RepairDetail")){
+				etResult.setText(value);
+			}else if (key.equals("AccessoryUsed")) {
+				etThing.setText(value);
+			}else if (key.equals("RepairCost")) {
+				etMoney.setText(value);
+			}else if (key.equals("DDOpinion")) {
+				etEquipmentOpinion.setText(value);
+			}else if (key.equals("PDOpinion")) {
+				etProductionOpinion.setText(value);
+			}else if (key.equals("PMOpinion")) {
+				etPlantOpinion.setText(value);
 			}
 		}
 	}

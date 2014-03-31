@@ -327,6 +327,12 @@ public class EnumList {
 				return UserRole.EQUIPMENTCHIEF;
 			case USERROLEPRODUCTIONOPERATION:
 				return UserRole.PRODUCTIONOPERATION;
+			case USERROLEPRODUCTIONCHIEF:
+				return UserRole.PRODUCTIONCHIEF;
+			case USERROLEREPAIRMAN:
+				return UserRole.REPAIRMAN;
+			case USERROLEPLANTER:
+				return UserRole.PLANTER;
 			}
 			return null;
 		}

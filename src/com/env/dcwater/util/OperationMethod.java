@@ -46,8 +46,33 @@ public class OperationMethod {
 			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
 			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
 			data.add(map);
+		}else if (PositionID == EnumList.UserRole.PRODUCTIONCHIEF.getState()) {
+			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
+			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
+			data.add(map);
 			
+			map = new HashMap<String, String>();
+			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
+			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
+			data.add(map);
+		}else if (PositionID == EnumList.UserRole.REPAIRMAN.getState()) {
+			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
+			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
+			data.add(map);
 			
+			map = new HashMap<String, String>();
+			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
+			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
+			data.add(map);
+		}else if (PositionID == EnumList.UserRole.PLANTER.getState()) {
+			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
+			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
+			data.add(map);
+			
+			map = new HashMap<String, String>();
+			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
+			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
+			data.add(map);
 		}
 		
 		map = new HashMap<String, String>();
@@ -99,7 +124,7 @@ public class OperationMethod {
 	 * @param taskState
 	 * @return
 	 */
-	public static boolean canTaskUpdated(int rolePositionID,int taskState){
+	public static boolean canTaskUpdated(int rolePositionID,int taskState,int taskType){
 		boolean arg = false;
 		switch (rolePositionID) {
 		case EnumList.UserRole.USERROLEEQUIPMENTOPERATION:
@@ -113,11 +138,49 @@ public class OperationMethod {
 			}
 			break;
 		case EnumList.UserRole.USERROLEEQUIPMENTCHIEF:
-			if(taskState==EnumList.RepairState.HASBEENREPORTED.getState()||
-			taskState==EnumList.RepairState.HASBEENDISTRIBUTED.getState()||
-			taskState==EnumList.RepairState.HASBEENREPAIRED.getState()||
-			taskState==EnumList.RepairState.HASBEENCONFIRMED.getState()){
+			switch (taskType) {
+			case EnumList.RepairTaskType.TASKTYPE_EQUIPMENT:
+				if(taskState==EnumList.RepairState.STATEHASBEENREPORTED||
+				taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED||
+				taskState==EnumList.RepairState.STATEDEVICETHROUGH){
+					arg = true;
+				}
+				break;
+			case EnumList.RepairTaskType.TASKTYPE_PRODUCTION:
+				if(taskState==EnumList.RepairState.STATEHASBEENCONFIRMED||
+				taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED||
+				taskState==EnumList.RepairState.STATEDEVICETHROUGH){
+					arg = true;
+				}
+				break;
+			}
+			break;
+		case EnumList.UserRole.USERROLEPRODUCTIONCHIEF:
+			switch (taskType) {
+			case EnumList.RepairTaskType.TASKTYPE_PRODUCTION:
+				if(taskState==EnumList.RepairState.STATEHASBEENREPORTED||
+				taskState==EnumList.RepairState.STATEDEVICETHROUGH||
+				taskState==EnumList.RepairState.STATEPRODUCTIONTHROUGH){
+					arg=true;
+				}
+				break;
+			}
+			break;
+		case EnumList.UserRole.USERROLEREPAIRMAN:
+			if(taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED||
+			taskState==EnumList.RepairState.STATEBEENINGREPAIRED||
+			taskState==EnumList.RepairState.STATEFORCORRECTION){
 				arg = true;
+			}
+			break;
+		case EnumList.UserRole.USERROLEPLANTER:
+			switch (taskType) {
+			case EnumList.RepairTaskType.TASKTYPE_EQUIPMENT:
+				if(taskState==EnumList.RepairState.STATEDEVICETHROUGH)arg=true;
+				break;
+			case EnumList.RepairTaskType.TASKTYPE_PRODUCTION:
+				if(taskState==EnumList.RepairState.STATEPRODUCTIONTHROUGH)arg=true;
+				break;
 			}
 			break;
 		}
@@ -248,10 +311,16 @@ public class OperationMethod {
 		HashMap<String, String> map = null;
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
 		boolean canUpdate = false;
+		int taskType = 0;
 		for(int i =0;i<jsonArray.length();i++){
 			report = jsonArray.getJSONObject(i);
 			map = new HashMap<String, String>();
-			canUpdate = canTaskUpdated(rolePosition, Integer.valueOf(report.get("State").toString()));
+			try {
+				taskType = Integer.valueOf(report.get("RepairTaskType").toString());
+			} catch (Exception e) {
+				taskState = 0;
+			}
+			canUpdate = canTaskUpdated(rolePosition, Integer.valueOf(report.get("State").toString()),taskType);
 			if(isFilter&&!canUpdate){
 				continue;
 			}

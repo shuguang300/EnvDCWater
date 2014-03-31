@@ -90,9 +90,14 @@
     <string name="menu_maintainhistory_refresh">刷新</string>
     <string name="menu_datainput_save">保存</string>
     
-    
-    <string name="contextmenu_repairmanage_update">修改</string>
-    <string name="contextmenu_repairmanage_delete">删除</string>
+    <string name="contextmenu_repairmanage_op_update">修改</string>
+    <string name="contextmenu_repairmanage_op_delete">删除</string>
+    <string name="contextmenu_repairmanage_dd_send">派发工单</string>
+    <string name="contextmenu_repairmanage_dd_approve">审核意见</string>
+    <string name="contextmenu_repairmanage_pd_confirm">确认报修单</string>
+    <string name="contextmenu_repairmanage_pd_approve">审核意见</string>
+    <string name="contextmenu_repairmanage_rm_repair">填写工单</string>
+    <string name="contextmenu_repairmanage_pm_confirm">厂长确认</string>
     
     <string name="view_userright_group_performance">绩效管理</string>
     <string name="view_userright_group_analysis">生产统计分析</string>

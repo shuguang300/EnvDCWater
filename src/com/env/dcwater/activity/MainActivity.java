@@ -159,6 +159,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
+			finish();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -197,12 +198,10 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		public void onPageSelected(int arg0) {
 			switch (arg0) {
 			case 0:
-				mActionBar.setTitle(R.string.activity_userright_title);
 				imageView0.setImageDrawable(getResources().getDrawable(R.drawable.page_now));
 				imageView1.setImageDrawable(getResources().getDrawable(R.drawable.page));
 				break;
 			case 1:
-				mActionBar.setTitle(R.string.activity_config_title);
 				imageView0.setImageDrawable(getResources().getDrawable(R.drawable.page));
 				imageView1.setImageDrawable(getResources().getDrawable(R.drawable.page_now));
 				break;

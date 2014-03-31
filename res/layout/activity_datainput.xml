@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:selectAllOnFocus="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:gravity="top|left"
         android:minLines="1" >
         
