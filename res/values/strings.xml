@@ -96,6 +96,7 @@
     <string name="contextmenu_repairmanage_dd_approve">审核意见</string>
     <string name="contextmenu_repairmanage_pd_confirm">确认报修单</string>
     <string name="contextmenu_repairmanage_pd_approve">审核意见</string>
+    <string name="contextmenu_repairmanage_rm_receive">确认维修</string>
     <string name="contextmenu_repairmanage_rm_repair">填写工单</string>
     <string name="contextmenu_repairmanage_pm_confirm">厂长确认</string>
     

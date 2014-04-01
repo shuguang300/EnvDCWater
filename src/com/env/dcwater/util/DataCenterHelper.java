@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -40,21 +39,6 @@ public class DataCenterHelper {
 	public static final String URL_STRING = "http://192.168.200.50/dcwater/MobileDataCenter.asmx";
 	
 	/**
-	 * 登录验证用户名和秘法的方法
-	 */
-	public static final String METHOD_LOGIN_STRING = "GetUserByNamePwd";
-	
-	/**
-	 * 插入工单的方法
-	 */
-	public static final String METHOD_INSERTTASK_STRING = "InsertRepairTaskData";
-	
-	/**
-	 * 删除工单的方法
-	 */
-	public static final String METHOD_DELETETASK_STRING = "RemoveRepairTask";
-	
-	/**
 	 * 连接超时
 	 */
 	public static final int CONNECTION_TIMEOUT_INTEGER = 60000;
@@ -89,7 +73,7 @@ public class DataCenterHelper {
 		if(response.getStatusLine().getStatusCode()==200){
 			return EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
 		}else {
-			return "false";
+			return RESPONSE_FALSE_STRING;
 		}
 	}
 	

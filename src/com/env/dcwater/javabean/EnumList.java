@@ -1,4 +1,8 @@
 package com.env.dcwater.javabean;
+/**
+ * 常用数据集合
+ * @author sk
+ */
 public class EnumList {
 	/**
 	 * @author sk 用户权限枚举
@@ -393,31 +397,105 @@ public class EnumList {
 	 * @author sk
 	 */
 	public enum DeviceClassType{
-		Type1(1,"一类"),
-		Type2(2,"二类"),
-		Type3(3,"三类");
+		
+		TYPE1(1,"一类"),
+		
+		TYPE2(2,"二类"),
+		
+		TYPE3(3,"三类");
+		
 		private int mCode;
 		private String mName;
+		
 		private DeviceClassType(int code,String name){
 			mCode = code;
 			mName = name;
 		}
+		
 		public static DeviceClassType getDeviceClassType(int code){
 			switch (code) {
 			case 1:
-				return Type1;
+				return TYPE1;
 			case 2:
-				return Type2;
+				return TYPE2;
 			case 3:
-				return Type3;
+				return TYPE3;
 			}
 			return null;
 		}
+		
 		public String getCodeName(){
 			return mName;
 		}
+		
 		public int getCode(){
 			return mCode;
 		}
+	}
+	
+	/**
+	 * 请求webservice，返回的结果对应的意义
+	 * @author sk
+	 */
+	public enum DataCenterResult{
+		
+		SUCCESS(1,"更新成功"),
+		
+		SERVERERRO(2,"数据库错误"),
+		
+		OPERATIONERRO(3,"业务逻辑错误"),
+		
+		OTHERERRO(4,"服务器未知错误");
+		
+		/**
+		 * 更新成功
+		 */
+		public static final int CODE_SUCCESS = 1;
+		
+		/**
+		 * 数据库错误
+		 */
+		public static final int CODE_SERVERERRO = 2;
+		
+		/**
+		 * 业务逻辑错误(一般由于工单状态发生改变)
+		 */
+		public static final int CODE_OPERATIONERRO = 3;
+		
+		/**
+		 * 服务器未知错误
+		 */
+		public static final int CODE_OTHERERRO = 4;
+		
+		private int mCode;
+		private String mName;
+		
+		private DataCenterResult (int code,String name){
+			mCode = code;
+			mName = name;
+		}
+		
+		public static DataCenterResult getDataCenterResult(int code){
+			switch (code) {
+			case CODE_SUCCESS:
+				return SUCCESS;
+			case CODE_SERVERERRO:
+				return SERVERERRO;
+			case CODE_OPERATIONERRO:
+				return OPERATIONERRO;
+			case CODE_OTHERERRO:
+				return OTHERERRO;
+			}
+			return null;
+		}
+		
+		public String getName(){
+			return mName;
+		}
+		
+		public int getCode(){
+			return mCode;
+		}
+		
 	}
 }

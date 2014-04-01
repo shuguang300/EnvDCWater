@@ -57,6 +57,7 @@ public class DataInputActivity extends NfcActivity {
 	private void iniView(){
 		dataInputer = (EditText)findViewById(R.id.activity_datainput_data);
 		dataInputer.setText(data.get("Value"));
+		dataInputer.selectAll();
 	}
 	
 	/**

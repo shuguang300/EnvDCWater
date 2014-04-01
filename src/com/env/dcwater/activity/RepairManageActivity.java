@@ -49,22 +49,59 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	
 	public static final String TAG_STRING = "RepairManageActivity";
 	
+	/**
+	 * 操作工新增工单
+	 */
 	public static final String METHOD_ADD_STRING = "Add";
 	
+	/**
+	 * 操作工删除工单
+	 */
+	public static final String METHOD_DELETE_STRING = "Delete";
+	
+	/**
+	 * 操作工更新工单
+	 */
 	public static final String METHOD_UPDATE_STRING = "Update";
 	
+	/**
+	 * 查看工单详情
+	 */
 	public static final String METHOD_DETAIL_STRING = "Detail";
 	
+	/**
+	 * 设备科长发送维修单
+	 */
 	public static final String METHOD_SENDTASK_STRING = "SendTask";
 	
+	/**
+	 * 机修工确认接收报修单
+	 */
+	public static final String METHOD_RECEIVE_STRING = "ReceiveTask";
+	
+	/**
+	 * 机修工填写维修单
+	 */
 	public static final String METHOD_REPAIRTASK_STRING = "RepairTask";
 	
+	/**
+	 * 设备科长审核
+	 */
 	public static final String METHOD_DDAPPROVE_STRING ="DDApprove";
 	
+	/**
+	 * 生产科长确认报修单
+	 */
 	public static final String METHOD_PDCONFIRM_STRING = "PDConfirm";
 	
+	/**
+	 * 生产科长审核
+	 */
 	public static final String METHOD_PDAPPROVE_STRING ="PDApprove";
 	
+	/**
+	 * 厂长确认
+	 */
 	public static final String METHOD_PMAPPROVE_STRING ="PMApprove";
 	
 	/**
@@ -86,14 +123,15 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private DataFilterView mDataFilterView;
 	private RepairManageItemAdapter mListViewAdapter;
 	private ArrayList<HashMap<String, String>> mData;
-	private AlertDialog.Builder mDeleteConfirm ;
+	private AlertDialog.Builder mUpdateConfirm ;
 	private Intent sendedIntent;
 	private GetServerData getServerData;
 	private boolean isFilter = true,isRfresh = false;
 	private ProgressDialog mProgressDialog;
-	private DeleteServerData deleteServerData;
+	private UpdateServerData updateServerData;
 	private int selectedPos;
 	private String [] dateFilters;
+	private String mMethodName;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -132,11 +170,12 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	}
 	
 	/**
-	 * 删除工单
+	 * 更新服务器端数据
+	 * @param methodName
 	 */
-	private void deleteServerData(){
-		deleteServerData = new DeleteServerData();
-		deleteServerData.execute("");
+	private void updateServerData(String methodName){
+		updateServerData = new UpdateServerData();
+		updateServerData.execute(methodName);
 	}
 	
 	/**
@@ -346,6 +385,13 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 				break;
 			case EnumList.UserRole.USERROLEREPAIRMAN:
 				getMenuInflater().inflate(R.menu.cm_rm_rm, menu);
+				if(taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED){
+					menu.getItem(0).setVisible(true);
+					menu.getItem(1).setVisible(false);
+				}else {
+					menu.getItem(0).setVisible(false);
+					menu.getItem(1).setVisible(true);
+				}
 				break;
 			}
 			menu.setHeaderTitle("更多操作");  
@@ -368,9 +414,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		case R.id.cm_rm_dd_approve:
 			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_DDAPPROVE_STRING);
 			break;
-		case R.id.cm_rm_pd_confirm:
-			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_PDCONFIRM_STRING);
-			break;
 		case R.id.cm_rm_pd_approve:
 			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_PDAPPROVE_STRING);
 			break;
@@ -380,19 +423,47 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		case R.id.cm_rm_pm_confirm:
 			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_PMAPPROVE_STRING);
 			break;
-		case R.id.cm_rm_op_delete:
-			if(mDeleteConfirm==null){
-				mDeleteConfirm = new AlertDialog.Builder(RepairManageActivity.this);
+		case R.id.cm_rm_pd_confirm:
+			if(mUpdateConfirm==null){
+				mUpdateConfirm = new AlertDialog.Builder(RepairManageActivity.this);
 			}
-			mDeleteConfirm.setTitle("确认").setMessage("确认删除吗？"+selectedPos);
-			mDeleteConfirm.setPositiveButton("确定", new OnClickListener() {
+			mUpdateConfirm.setTitle("确认").setMessage("确认上报工单吗？");
+			mUpdateConfirm.setPositiveButton("确定", new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					deleteServerData();
+					updateServerData(METHOD_PDCONFIRM_STRING);
 				}
 			}).setNegativeButton("取消", null);
-			mDeleteConfirm.create();
-			mDeleteConfirm.show();
+			mUpdateConfirm.create();
+			mUpdateConfirm.show();
+			break;
+		case R.id.cm_rm_rm_receive:
+			if(mUpdateConfirm==null){
+				mUpdateConfirm = new AlertDialog.Builder(RepairManageActivity.this);
+			}
+			mUpdateConfirm.setTitle("确认").setMessage("确认维修吗？");
+			mUpdateConfirm.setPositiveButton("确定", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					updateServerData(METHOD_RECEIVE_STRING);
+				}
+			}).setNegativeButton("取消", null);
+			mUpdateConfirm.create();
+			mUpdateConfirm.show();
+			break;
+		case R.id.cm_rm_op_delete:
+			if(mUpdateConfirm==null){
+				mUpdateConfirm = new AlertDialog.Builder(RepairManageActivity.this);
+			}
+			mUpdateConfirm.setTitle("确认").setMessage("确认删除吗？");
+			mUpdateConfirm.setPositiveButton("确定", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					updateServerData(METHOD_DELETE_STRING);
+				}
+			}).setNegativeButton("取消", null);
+			mUpdateConfirm.create();
+			mUpdateConfirm.show();
 			break;
 		}
 		return super.onContextItemSelected(item);
@@ -510,14 +581,26 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		
 	}
 	
-	class DeleteServerData extends AsyncTask<String, String, String>{
+	class UpdateServerData extends AsyncTask<String, String, String>{
 		@Override
 		protected String doInBackground(String... params) {
+			mMethodName = params[0];
 			JSONObject param = new JSONObject();
 			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
 			try {
-				param.put("RepairTaskID", Integer.valueOf(mData.get(selectedPos).get("RepairTaskID")));
-				result = DataCenterHelper.HttpPostData(DataCenterHelper.METHOD_DELETETASK_STRING, param);
+				if(mMethodName.equals(METHOD_DELETE_STRING)){
+					param.put("RepairTaskID", Integer.valueOf(mData.get(selectedPos).get("RepairTaskID")));
+					result = DataCenterHelper.HttpPostData("RemoveRepairTask", param);
+				}else if (mMethodName.equals(METHOD_RECEIVE_STRING)) {
+					param.put("RepairTaskID", Integer.valueOf(mData.get(selectedPos).get("RepairTaskID")));
+					param.put("OldState", Integer.valueOf(mData.get(selectedPos).get("State")));
+					result = DataCenterHelper.HttpPostData("ConfirmRepair", param);
+				}else if (mMethodName.equals(METHOD_PDCONFIRM_STRING)) {
+					param.put("RepairTaskID", Integer.valueOf(mData.get(selectedPos).get("RepairTaskID")));
+					param.put("CheckPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					param.put("OldState", Integer.valueOf(mData.get(selectedPos).get("State")));
+					result = DataCenterHelper.HttpPostData("ValidationReport", param);
+				}
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (JSONException e) {
@@ -537,24 +620,43 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			hideProgressDialog();
 			if(result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
-				Toast.makeText(RepairManageActivity.this, "提交失败", Toast.LENGTH_SHORT).show();
+				Toast.makeText(RepairManageActivity.this, "提交失败,请检查您的网络设置", Toast.LENGTH_SHORT).show();
 			}else {
 				JSONObject object;
 				try {
 					object = new JSONObject(result);
-					if(object.getBoolean("d")){
-						mData.remove(selectedPos);
+					int code =object.getInt("d");
+					switch (code) {
+					case EnumList.DataCenterResult.CODE_SUCCESS:
+						if(mMethodName.equals(METHOD_DELETE_STRING)){
+							mData.remove(selectedPos);
+						}else if (mMethodName.equals(METHOD_RECEIVE_STRING)) {
+							mData.get(selectedPos).put("State",EnumList.RepairState.STATEBEENINGREPAIRED+"");
+							mData.get(selectedPos).put("StateDescription", EnumList.RepairState.BEENINGREPAIRED.getStateDescription());
+						}else if(mMethodName.equals(METHOD_PDCONFIRM_STRING)){
+							mData.get(selectedPos).put("State",EnumList.RepairState.STATEHASBEENCONFIRMED+"");
+							mData.get(selectedPos).put("StateDescription", EnumList.RepairState.HASBEENCONFIRMED.getStateDescription());
+							mData.get(selectedPos).put("CanUpdate", "false");
+						}
 						mListViewAdapter.notifyDataSetChanged();
-					}else {
-						Toast.makeText(RepairManageActivity.this, "提交失败", Toast.LENGTH_SHORT).show();
+						break;
+					case EnumList.DataCenterResult.CODE_SERVERERRO:
+						Toast.makeText(RepairManageActivity.this, "服务器数据更新失败", Toast.LENGTH_SHORT).show();
+						break;
+					case EnumList.DataCenterResult.CODE_OPERATIONERRO:
+						Toast.makeText(RepairManageActivity.this, "工单状态已发生改变，您无权更新", Toast.LENGTH_SHORT).show();
+						break;
+					case EnumList.DataCenterResult.CODE_OTHERERRO:
+						Toast.makeText(RepairManageActivity.this, "服务器未知错误", Toast.LENGTH_SHORT).show();
+						break;
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 					Toast.makeText(RepairManageActivity.this, "提交失败", Toast.LENGTH_SHORT).show();
 				}
 			}
+			hideProgressDialog();
 		}
 	}
 	

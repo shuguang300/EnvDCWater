@@ -189,7 +189,7 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 			param.put("UserName", mAccount);
 			param.put("Pwd", mPassword);
 			try {
-				soapObject = DataCenterHelper.SoapRequest(DataCenterHelper.METHOD_LOGIN_STRING, param);
+				soapObject = DataCenterHelper.SoapRequest("GetUserByNamePwd", param);
 			} catch (HttpResponseException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
