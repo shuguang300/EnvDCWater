@@ -10,6 +10,9 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 /**
  * 一个用于存储 android系统常用方法 的类
@@ -98,6 +101,28 @@ public class SystemMethod {
 		}else {
 			return false;
 		}
+	}
+	
+//	/**
+//	 * 输入法是否弹出
+//	 * @param window
+//	 * @return
+//	 */
+//	public static boolean isSoftInputShow(Window window){
+//		if(window.getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED){
+//			return true;
+//		}else {
+//			return false;
+//		}
+//	}
+//	
+	/**
+	 * 隐藏输入法
+	 * @param context
+	 */
+	public static void hideSoftInput(Context context){
+		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 	}
 	
 	/**

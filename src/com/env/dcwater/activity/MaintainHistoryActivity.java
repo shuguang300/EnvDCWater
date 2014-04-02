@@ -190,7 +190,6 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		Toast.makeText(MaintainHistoryActivity.this, "aa", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

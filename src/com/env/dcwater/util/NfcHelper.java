@@ -23,27 +23,25 @@ public class NfcHelper {
 
 	}
 
-	public static String[] intentActions = new String[] {
+	public static final String[] intentActions = new String[] {
 			NfcAdapter.ACTION_NDEF_DISCOVERED,
 			NfcAdapter.ACTION_TAG_DISCOVERED, NfcAdapter.ACTION_TECH_DISCOVERED };
-	public static String[][] techList = new String[][] { new String[] { MifareClassic.class
+	
+	public static final String[][] techList = new String[][] { new String[] { MifareClassic.class
 			.getName() } };
-	public static IntentFilter[] intentFilters = new IntentFilter[] {
+	
+	public static final IntentFilter[] intentFilters = new IntentFilter[] {
 			new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED),
 			new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED) };
 
 	public static NdefMessage StringToNDEF(String arg0) {
 		byte[] textBytes = arg0.getBytes();
-		NdefRecord textRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-				"text/plain".getBytes(), new byte[] {}, textBytes);
+		NdefRecord textRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,"text/plain".getBytes(), new byte[] {}, textBytes);
 		return new NdefMessage(new NdefRecord[] { textRecord });
 	}
 
 	public static PendingIntent NFCPendingIntent(Context context) {
-		return PendingIntent.getActivity(context, 0, new Intent(context,
-				context.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
-				0);
-
+		return PendingIntent.getActivity(context, 0, new Intent(context,context.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),0);
 	}
 
 	public static NdefMessage[] processNDEF(Intent intent) {

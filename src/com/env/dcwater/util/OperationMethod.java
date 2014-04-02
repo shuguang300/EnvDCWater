@@ -142,14 +142,16 @@ public class OperationMethod {
 			case EnumList.RepairTaskType.TASKTYPE_EQUIPMENT:
 				if(taskState==EnumList.RepairState.STATEHASBEENREPORTED||
 				taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED||
-				taskState==EnumList.RepairState.STATEDEVICETHROUGH){
+				taskState==EnumList.RepairState.STATEDEVICETHROUGH||
+				taskState==EnumList.RepairState.STATEHASBEENREPAIRED){
 					arg = true;
 				}
 				break;
 			case EnumList.RepairTaskType.TASKTYPE_PRODUCTION:
 				if(taskState==EnumList.RepairState.STATEHASBEENCONFIRMED||
 				taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED||
-				taskState==EnumList.RepairState.STATEDEVICETHROUGH){
+				taskState==EnumList.RepairState.STATEDEVICETHROUGH||
+				taskState==EnumList.RepairState.STATEHASBEENREPAIRED){
 					arg = true;
 				}
 				break;
@@ -169,7 +171,8 @@ public class OperationMethod {
 		case EnumList.UserRole.USERROLEREPAIRMAN:
 			if(taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED||
 			taskState==EnumList.RepairState.STATEBEENINGREPAIRED||
-			taskState==EnumList.RepairState.STATEFORCORRECTION){
+			taskState==EnumList.RepairState.STATEFORCORRECTION||
+			taskState==EnumList.RepairState.STATEHASBEENREPAIRED){
 				arg = true;
 			}
 			break;

@@ -202,7 +202,6 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		Toast.makeText(UpkeepHistoryActivity.this, "aa", Toast.LENGTH_SHORT).show();
 	}
 	
 	/**

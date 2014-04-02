@@ -3,15 +3,19 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,6 +35,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -126,11 +131,12 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private AlertDialog.Builder mUpdateConfirm ;
 	private Intent sendedIntent;
 	private GetServerData getServerData;
-	private boolean isFilter = true,isRfresh = false;
+	private boolean isFilter = true,isRfresh = false,actionChooseIsShow = false;;
 	private ProgressDialog mProgressDialog;
 	private UpdateServerData updateServerData;
-	private int selectedPos;
-	private String [] dateFilters;
+	private int selectedPos,userPositionID;
+	private String [] dateFilters,nfcCardAction = {"查看设备信息","设备故障上报"};
+	private AlertDialog.Builder actionChoose;
 	private String mMethodName;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +163,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	 */
 	private void iniData(){
 		mData = new ArrayList<HashMap<String,String>>();
+		userPositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
 	}
 	
 	/**
@@ -200,6 +207,40 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		if(mProgressDialog!=null){
 			mProgressDialog.cancel();
 		}
+	}
+	
+	/**
+	 * 弹出刷卡时的功能选择框
+	 */
+	private void showNfcActionChoose(){
+		if(actionChoose==null){
+			actionChoose = new AlertDialog.Builder(this);
+			actionChoose.setCancelable(true);
+			actionChoose.setTitle("请选择").setSingleChoiceItems(nfcCardAction, -1, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					switch (which) {
+					case 0:
+						
+						break;
+					case 1:
+						break;
+					}
+					dialog.dismiss();
+					actionChooseIsShow = false;
+					Toast.makeText(RepairManageActivity.this,nfcCardAction[which],Toast.LENGTH_SHORT).show();
+				}
+			});
+			actionChoose.setOnDismissListener(new OnDismissListener() {
+				@Override
+				public void onDismiss(DialogInterface dialog) {
+					actionChooseIsShow = false;
+				}
+			});
+			actionChoose.create();
+		}
+		actionChoose.show();
+		actionChooseIsShow = true;
 	}
 	
 	/**
@@ -282,7 +323,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		if(resultCode==Activity.RESULT_OK){
 			getServerData();
 		}
-		
 	}
 	
 	@Override
@@ -304,6 +344,13 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
+		if(userPositionID==EnumList.UserRole.USERROLEEQUIPMENTOPERATION||userPositionID==EnumList.UserRole.USERROLEPRODUCTIONOPERATION){
+			if(!actionChooseIsShow){
+				showNfcActionChoose();
+			}
+		}else {
+			
+		}
 	}
 	
 	@Override
@@ -365,7 +412,9 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 				break;
 			case EnumList.UserRole.USERROLEEQUIPMENTCHIEF:
 				getMenuInflater().inflate(R.menu.cm_rm_dd, menu);
-				if(taskState==EnumList.RepairState.STATEHASBEENCONFIRMED||taskState==EnumList.RepairState.STATEHASBEENREPORTED){
+				if(taskState==EnumList.RepairState.STATEHASBEENCONFIRMED||
+				taskState==EnumList.RepairState.STATEHASBEENREPORTED||
+				taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED){
 					menu.getItem(0).setVisible(true);
 					menu.getItem(1).setVisible(false);
 				}else {

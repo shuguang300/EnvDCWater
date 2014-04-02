@@ -1,17 +1,15 @@
 package com.env.dcwater.activity;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.R.bool;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
@@ -39,7 +37,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -61,7 +58,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	private HashMap<String, String> receivedData,selectedData;
 	private Intent receivedIntent;
 	private int mRequestCode,taskState,taskType;
-	private Date mDate;
+	private Date mFaultTime,mFinishTime;
 	private Button mSubmitButton;
 	private GetServerData mGetServerData;
 	private UpdateTask mUpdateTask;
@@ -120,7 +117,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		methodName = receivedIntent.getExtras().getString("MethodName");
 		switch (mRequestCode) {
 		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER://新增维修单
-			mDate = new Date();
+			mFaultTime = new Date();
 			copyHandleStepSelected();
 			taskState = -1;
 			break;
@@ -155,9 +152,9 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			try {
 				//得到故障维修时间
 				//得到该表单的故障发生时间
-				mDate = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(receivedData.get("AccidentOccurTime").toString());
+				mFaultTime = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(receivedData.get("AccidentOccurTime").toString());
 			} catch (Exception e) {
-				mDate = new Date();
+				mFaultTime = new Date();
 			}
 			break;
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER://查看维修单的详细情况
@@ -191,9 +188,9 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			try {
 				//得到故障维修时间
 				//得到该表单的故障发生时间
-				mDate = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(receivedData.get("AccidentOccurTime").toString());
+				mFaultTime = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(receivedData.get("AccidentOccurTime").toString());
 			} catch (Exception e) {
-				mDate = new Date();
+				mFaultTime = new Date();
 			}
 			break;
 		}
@@ -400,8 +397,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 						setGroupVerifyEnableByPlanter(false);
 						break;
 					case EnumList.RepairState.STATEHASBEENDISTRIBUTED:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(true);
+						setGroupTaskSendEnable(true);
+						setGroupTaskRepairEnable(false);
 						setGroupVerifyEnableByEquipment(false);
 						setGroupVerifyEnableByProduction(false);
 						setGroupVerifyEnableByPlanter(false);
@@ -595,16 +592,14 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
 			getServerData();
-			setGroupBasicData(false);
-			setGroupFaultData(false);
-			setGroupRepairData(false);
-			setGroupVerifyData(false);
-			break;
 		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
 			setGroupBasicData(false);
 			setGroupFaultData(false);
-			setGroupRepairData(false);
-			setGroupVerifyData(false);
+			setGroupTaskSendData(false);
+			setGroupTaskRepairData(false);
+			setVerifyDDData(false);
+			setVerifyPDData(false);
+			setVerifyPMData(false);
 			break;
 		}
 	}
@@ -738,38 +733,51 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			etTimeCost.setText("");
 			etContent.setText("");
 		}else {
-			etSendTime.setText(selectedData.get("TaskCreateTime"));
-			etSender.setText(selectedData.get("CreatePersonRealName"));
+			if(methodName.equals(RepairManageActivity.METHOD_SENDTASK_STRING)){
+				if(selectedData.get("TaskCreateTime").equals("")){
+					etSendTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(new Date()));
+				}else {
+					etSendTime.setText(selectedData.get("TaskCreateTime"));
+				}
+				if(selectedData.get("CreatePersonRealName").equals("")){
+					etSender.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+				}else {
+					etSender.setText(selectedData.get("CreatePersonRealName"));
+				}
+			}else {
+				etSendTime.setText(selectedData.get("TaskCreateTime"));
+				etSender.setText(selectedData.get("CreatePersonRealName"));
+			}
 			etTimeCost.setText(selectedData.get("RequiredManHours"));
 			etContent.setText(selectedData.get("TaskDetail"));
 		}
 	}
 	
-	/**
-	 * 维修部分是否显示数据
-	 * @param isEmpty
-	 */
-	private void setGroupRepairData (boolean isEmpty){
-		if(isEmpty){
-			etSendTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(new Date()));
-			etSender.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
-			etTimeCost.setText("");
-			etContent.setText("");
-			etResult.setText("");
-			etFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(new Date()));
-			etThing.setText("");
-			etMoney.setText("");
-		}else {
-			etSendTime.setText(selectedData.get("TaskCreateTime"));
-			etSender.setText(selectedData.get("CreatePersonRealName"));
-			etTimeCost.setText(selectedData.get("RequiredManHours"));
-			etContent.setText(selectedData.get("TaskDetail"));
-			etResult.setText(selectedData.get("RepairDetail"));
-			etFinishTime.setText(selectedData.get("RepairedTime"));
-			etThing.setText(selectedData.get("AccessoryUsed"));
-			etMoney.setText(selectedData.get("RepairCost"));
-		}
-	}
+//	/**
+//	 * 维修部分是否显示数据
+//	 * @param isEmpty
+//	 */
+//	private void setGroupRepairData (boolean isEmpty){
+//		if(isEmpty){
+//			etSendTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(new Date()));
+//			etSender.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+//			etTimeCost.setText("");
+//			etContent.setText("");
+//			etResult.setText("");
+//			etFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(new Date()));
+//			etThing.setText("");
+//			etMoney.setText("");
+//		}else {
+//			etSendTime.setText(selectedData.get("TaskCreateTime"));
+//			etSender.setText(selectedData.get("CreatePersonRealName"));
+//			etTimeCost.setText(selectedData.get("RequiredManHours"));
+//			etContent.setText(selectedData.get("TaskDetail"));
+//			etResult.setText(selectedData.get("RepairDetail"));
+//			etFinishTime.setText(selectedData.get("RepairedTime"));
+//			etThing.setText(selectedData.get("AccessoryUsed"));
+//			etMoney.setText(selectedData.get("RepairCost"));
+//		}
+//	}
 	
 	/**
 	 * 设置维修工单的数据
@@ -782,8 +790,16 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			etThing.setText("");
 			etMoney.setText("");
 		}else {
+			if(methodName.equals(RepairManageActivity.METHOD_REPAIRTASK_STRING)){
+				if(selectedData.get("RepairedTime").equals("")){
+					etFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(new Date()));
+				}else {
+					etFinishTime.setText(selectedData.get("RepairedTime"));
+				}
+			}else {
+				etFinishTime.setText(selectedData.get("RepairedTime"));
+			}
 			etResult.setText(selectedData.get("RepairDetail"));
-			etFinishTime.setText(selectedData.get("RepairedTime"));
 			etThing.setText(selectedData.get("AccessoryUsed"));
 			etMoney.setText(selectedData.get("RepairCost"));
 		}
@@ -797,30 +813,81 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		mGroupInfo.setVisibility(isShow?View.VISIBLE:View.GONE);
 	}
 	
+//	/**
+//	 * 设置审核信息的数据
+//	 * @param isEmpty
+//	 */
+//	private void setGroupVerifyData(boolean isEmpty){
+//		if(isEmpty){
+//			swVerifyResult.setChecked(false);
+//			etVerifyPeople.setText("");
+//			etEquipmentOpinion.setText("");
+//			etProductionOpinion.setText("");
+//			etPlantOpinion.setText("");
+//		}else {
+//			if(selectedData.get("ApproveResult").equals("1")){
+//				swVerifyResult.setChecked(true);
+//			}else {
+//				swVerifyResult.setChecked(false);
+//			}
+//			etVerifyPeople.setText(selectedData.get("ApprovePersonRealName"));
+//			etEquipmentOpinion.setText(selectedData.get("DDOpinion"));
+//			etProductionOpinion.setText(selectedData.get("PDOpinion"));
+//			etPlantOpinion.setText(selectedData.get("PMOpinion"));
+//		}
+//	}
+	
 	/**
-	 * 设置审核信息的数据
+	 * 设备科长审核意见的数据
 	 * @param isEmpty
 	 */
-	private void setGroupVerifyData(boolean isEmpty){
+	private void setVerifyDDData(boolean isEmpty){
 		if(isEmpty){
 			swVerifyResult.setChecked(false);
 			etVerifyPeople.setText("");
 			etEquipmentOpinion.setText("");
-			etProductionOpinion.setText("");
-			etPlantOpinion.setText("");
 		}else {
+			if(methodName.equals(RepairManageActivity.METHOD_DDAPPROVE_STRING)){
+				if(selectedData.get("ApprovePersonRealName").equals("")){
+					etVerifyPeople.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+				}else {
+					etVerifyPeople.setText(selectedData.get("ApprovePersonRealName"));
+				}
+			}else {
+				etVerifyPeople.setText(selectedData.get("ApprovePersonRealName"));
+			}
 			if(selectedData.get("ApproveResult").equals("1")){
 				swVerifyResult.setChecked(true);
 			}else {
 				swVerifyResult.setChecked(false);
 			}
-			etVerifyPeople.setText(selectedData.get("ApprovePersonRealName"));
 			etEquipmentOpinion.setText(selectedData.get("DDOpinion"));
-			etProductionOpinion.setText(selectedData.get("PDOpinion"));
-			etPlantOpinion.setText(selectedData.get("PMOpinion"));
 		}
 	}
 	
+	/**
+	 * 生产科长的审核意见
+	 * @param isEmpty
+	 */
+	private void setVerifyPDData(boolean isEmpty){
+		if(isEmpty){
+			etProductionOpinion.setText("");
+		}else {
+			etProductionOpinion.setText(selectedData.get("PDOpinion"));
+		}
+	}
+	
+	/**
+	 * 厂长的审核意见
+	 * @param isEmpty
+	 */
+	private void setVerifyPMData(boolean isEmpty){
+		if(isEmpty){
+			etPlantOpinion.setText("");
+		}else {
+			etPlantOpinion.setText(selectedData.get("PMOpinion"));
+		}
+	}
 	/**
 	 * 审核部分是否显示
 	 * @param isShow
@@ -989,8 +1056,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			dateTimePickerView.setButtonClickEvent(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					mDate = dateTimePickerView.getSelectedDate();
-					etFaultTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(mDate));
+					mFaultTime = dateTimePickerView.getSelectedDate();
+					etFaultTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(mFaultTime));
 					dateTimePickerView.dismiss();
 				}
 			}, new OnClickListener() {
@@ -1002,14 +1069,51 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				@Override
 				public void onClick(View v) {
 					Calendar calendar = Calendar.getInstance(Locale.CHINA);
-					calendar.setTime(mDate);
+					calendar.setTime(mFaultTime);
 					dateTimePickerView.iniWheelView(calendar);
 				}
 			});
-			Calendar calendar = Calendar.getInstance(Locale.CHINA);
-			calendar.setTime(mDate);
-			dateTimePickerView.iniWheelView(calendar);
+			Calendar fualtTimeCL = Calendar.getInstance(Locale.CHINA);
+			fualtTimeCL.setTime(mFaultTime);
+			dateTimePickerView.iniWheelView(fualtTimeCL);
 			dateTimePickerView.showAtLocation(findViewById(R.id.activity_repairmanageitem_main), Gravity.BOTTOM, 0, 0);
+			break;
+		case R.id.activity_repairmanageitem_repairendtime_tr:
+			if(!etFinishTime.getText().toString().equals("")){
+				try {
+					mFinishTime = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(etFinishTime.getText().toString());
+				} catch (ParseException e) {
+					e.printStackTrace();
+					mFinishTime = new Date();
+				}
+				if(dateTimePickerView==null){
+					dateTimePickerView = new DateTimePickerView(RepairManageItemActivity.this);
+				}
+				dateTimePickerView.setButtonClickEvent(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						mFinishTime = dateTimePickerView.getSelectedDate();
+						etFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(mFinishTime));
+						dateTimePickerView.dismiss();
+					}
+				}, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						dateTimePickerView.dismiss();
+					}
+				}, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Calendar calendar = Calendar.getInstance(Locale.CHINA);
+						calendar.setTime(mFinishTime);
+						dateTimePickerView.iniWheelView(calendar);
+					}
+				});
+				Calendar finishTimeCl = Calendar.getInstance(Locale.CHINA);
+				finishTimeCl.setTime(mFinishTime);
+				dateTimePickerView.iniWheelView(finishTimeCl);
+				dateTimePickerView.showAtLocation(findViewById(R.id.activity_repairmanageitem_main), Gravity.BOTTOM, 0, 0);
+			}
 			break;
 		case R.id.activity_repairmanageitem_faultphenomenon_tr:
 			HashMap<String, String> faultphenomenon = new HashMap<String, String>();
@@ -1078,11 +1182,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			repairresult.put("Value", selectedData.get("RepairDetail"));
 			startDataInputActivity(repairresult);
 			break;
-		case R.id.activity_repairmanageitem_repairendtime_tr:
-			
-			
-			
-			break;
 		case R.id.activity_repairmanageitem_repairthingcost_tr:
 			HashMap<String, String> repairthingcost = new HashMap<String, String>();
 			repairthingcost.put("Key", "AccessoryUsed");
@@ -1143,6 +1242,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				etFaultPhenomenon.setText(value);
 			}else if(key.equals("Otherstep")){
 				etOtherStep.setText(value);
+				selectedData.put("EmergencyMeasures", combineEmergencyMeasures());
 			}else if (key.equals("RequiredManHours")) {
 				etTimeCost.setText(value);
 			}else if (key.equals("TaskDetail")) {
@@ -1257,7 +1357,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					}else if (postionID==EnumList.UserRole.EQUIPMENTOPERATION.getState()) {
 						repairDataString.put("RepairTaskType", EnumList.RepairTaskType.EQUIPMENTSECTION.getType());
 					}
-					//填报工单时，应急措施和其他措施的组合，应急措施为 1,2,3,4,5,其他措施为......(an)结尾，2种措施用,分割开来
 					String EmergencyMeasures = combineEmergencyMeasures();
 					repairDataString.put("DeviceID", selectedData.get("DeviceID"));
 					repairDataString.put("EmergencyMeasures", EmergencyMeasures);
@@ -1265,111 +1364,89 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					repairDataString.put("AccidentDetail",etFaultPhenomenon.getText().toString());
 					repairDataString.put("ReportPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
 					param.put("RepairDataString", repairDataString.toString());
+					param.put("OldState", -1);
 					result = DataCenterHelper.HttpPostData("InsertRepairTaskData", param);
 				}else if (methodName.equals(RepairManageActivity.METHOD_UPDATE_STRING)) {
 					param.put("PlantID", SystemParams.PLANTID_INT);
 					param.put("RepairTaskID", Integer.valueOf(selectedData.get("RepairTaskID")));
 					JSONObject repairDataString = new JSONObject();
-					//填报工单时，应急措施和其他措施的组合，应急措施为 1,2,3,4,5,其他措施为......(an)结尾，2种措施用,分割开来
 					String EmergencyMeasures = combineEmergencyMeasures();
 					repairDataString.put("RepairTaskType", selectedData.get("RepairTaskType"));
 					repairDataString.put("DeviceID", selectedData.get("DeviceID"));
 					repairDataString.put("EmergencyMeasures", EmergencyMeasures);
 					repairDataString.put("AccidentOccurTime", etFaultTime.getText().toString());
 					repairDataString.put("AccidentDetail",etFaultPhenomenon.getText().toString());
-					repairDataString.put("ReportPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					if(selectedData.get("ReportPersonID").equals("")){
+						repairDataString.put("ReportPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					}else {
+						repairDataString.put("ReportPerson", selectedData.get("ReportPersonID"));
+					}
 					param.put("RepairDataString", repairDataString.toString());
+					param.put("OldState", selectedData.get("State"));
 					result = DataCenterHelper.HttpPostData("InsertRepairTaskData", param);
 				}else if (methodName.equals(RepairManageActivity.METHOD_SENDTASK_STRING)) {
 					param.put("PlantID", SystemParams.PLANTID_INT);
 					param.put("RepairTaskID", Integer.valueOf(selectedData.get("RepairTaskID")));
 					JSONObject repairDataString = new JSONObject();
-//					 ''  DecideNUll(cmd, RepairData("RepairTaskSN"), "@RepairTaskSN")
-//				        DecideNUll(cmd, RepairData("TaskCreateTime"), "@TaskCreateTime")
-//				        DecideNUll(cmd, RepairData("CreatePerson"), "@CreatePerson")
-//				        DecideNUll(cmd, RepairData("RequiredManHours"), "@RequiredManHours")
-//				        DecideNUll(cmd, RepairData("TaskDetail"), "@TaskDetail")
-//				        DecideNUll(cmd, RepairData("RepairDetail"), "@RepairDetail")
-//				        DecideNUll(cmd, RepairData("RepairedTime"), "@RepairedTime")
-//				        DecideNUll(cmd, RepairData("RepairPerson"), "@RepairPerson")
-//				        '' DecideNUll(cmd, RepairData("RepairCost"), "@RepairCost")
-//				        DecideNUll(cmd, RepairData("ApproveResult"), "@ApproveResult")
-//				        DecideNUll(cmd, RepairData("ApprovePerson"), "@ApprovePerson")
-//				        DecideNUll(cmd, RepairData("DDOpinion"), "@DDOpinion")
-//				        DecideNUll(cmd, RepairData("PDOpinion"), "@PDOpinion")
-//				        DecideNUll(cmd, RepairData("PMOpinion"), "@PMOpinion")
-//				        DecideNUll(cmd, RepairData("AccessoryUsed"), "@AccessoryUsed")
-					
+					repairDataString.put("TaskCreateTime", etSendTime.getText().toString());
+					if(selectedData.get("CreatePersonID").equals("")){
+						repairDataString.put("CreatePerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					}else {
+						repairDataString.put("CreatePerson",selectedData.get("CreatePersonID"));
+					}
+					repairDataString.put("RequiredManHours", etTimeCost.getText().toString());
+					repairDataString.put("TaskDetail", etContent.getText().toString());
 					param.put("RepairDataString", repairDataString.toString());
 					param.put("State", EnumList.RepairState.STATEHASBEENDISTRIBUTED);
 					param.put("OldState", selectedData.get("State"));
-					result = DataCenterHelper.HttpPostData("InsertRepairTaskData", param);
+					result = DataCenterHelper.HttpPostData("UpdateRepairDataforEdit", param);
 				}else if (methodName.equals(RepairManageActivity.METHOD_REPAIRTASK_STRING)) {
 					param.put("PlantID", SystemParams.PLANTID_INT);
 					param.put("RepairTaskID", Integer.valueOf(selectedData.get("RepairTaskID")));
 					JSONObject repairDataString = new JSONObject();
-//					 ''  DecideNUll(cmd, RepairData("RepairTaskSN"), "@RepairTaskSN")
-//				        DecideNUll(cmd, RepairData("TaskCreateTime"), "@TaskCreateTime")
-//				        DecideNUll(cmd, RepairData("CreatePerson"), "@CreatePerson")
-//				        DecideNUll(cmd, RepairData("RequiredManHours"), "@RequiredManHours")
-//				        DecideNUll(cmd, RepairData("TaskDetail"), "@TaskDetail")
-//				        DecideNUll(cmd, RepairData("RepairDetail"), "@RepairDetail")
-//				        DecideNUll(cmd, RepairData("RepairedTime"), "@RepairedTime")
-//				        DecideNUll(cmd, RepairData("RepairPerson"), "@RepairPerson")
-//				        '' DecideNUll(cmd, RepairData("RepairCost"), "@RepairCost")
-//				        DecideNUll(cmd, RepairData("ApproveResult"), "@ApproveResult")
-//				        DecideNUll(cmd, RepairData("ApprovePerson"), "@ApprovePerson")
-//				        DecideNUll(cmd, RepairData("DDOpinion"), "@DDOpinion")
-//				        DecideNUll(cmd, RepairData("PDOpinion"), "@PDOpinion")
-//				        DecideNUll(cmd, RepairData("PMOpinion"), "@PMOpinion")
-//				        DecideNUll(cmd, RepairData("AccessoryUsed"), "@AccessoryUsed")
-					
+					repairDataString.put("RepairDetail", etResult.getText().toString());
+					repairDataString.put("RepairedTime", etFinishTime.getText().toString());
+					repairDataString.put("AccessoryUsed", etThing.getText().toString());
+					repairDataString.put("RepairCost", etMoney.getText().toString());
+					if(selectedData.get("RepairPersonID").equals("")){
+						repairDataString.put("RepairPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					}else {
+						repairDataString.put("RepairPerson", selectedData.get("RepairPersonID"));
+					}
 					param.put("RepairDataString", repairDataString.toString());
 					param.put("State", EnumList.RepairState.STATEHASBEENREPAIRED);
 					param.put("OldState", selectedData.get("State"));
-					result = DataCenterHelper.HttpPostData("InsertRepairTaskData", param);
+					result = DataCenterHelper.HttpPostData("UpdateRepairDataforWrite", param);
 				}else if (methodName.equals(RepairManageActivity.METHOD_PDAPPROVE_STRING)) {
 					param.put("RepairTaskID", Integer.valueOf(selectedData.get("RepairTaskID")));
 					JSONObject repairDataString = new JSONObject();
-//					DecideNUll(cmd, RepairData("RepairCost"), "@RepairCost")
-//			        DecideNUll(cmd, RepairData("ApproveResult"), "@ApproveResult")
-//			        DecideNUll(cmd, RepairData("ApprovePerson"), "@ApprovePerson")
-//			        DecideNUll(cmd, RepairData("DDOpinion"), "@DDOpinion")
-//			        DecideNUll(cmd, RepairData("PDOpinion"), "@PDOpinion")
-//			        DecideNUll(cmd, RepairData("PMOpinion"), "@PMOpinion")
-					
+					repairDataString.put("PDOpinion", etProductionOpinion.getText().toString());
 					param.put("RepairDataString", repairDataString.toString());
 					param.put("State", EnumList.RepairState.STATEPRODUCTIONTHROUGH);
 					param.put("OldState", selectedData.get("State"));
-					result = DataCenterHelper.HttpPostData("InsertRepairTaskData", param);
+					result = DataCenterHelper.HttpPostData("UpdateAuditingRepairDataforUser2", param);
 				}else if (methodName.equals(RepairManageActivity.METHOD_PMAPPROVE_STRING)) {
 					param.put("RepairTaskID", Integer.valueOf(selectedData.get("RepairTaskID")));
 					JSONObject repairDataString = new JSONObject();
-//					DecideNUll(cmd, RepairData("RepairCost"), "@RepairCost")
-//			        DecideNUll(cmd, RepairData("ApproveResult"), "@ApproveResult")
-//			        DecideNUll(cmd, RepairData("ApprovePerson"), "@ApprovePerson")
-//			        DecideNUll(cmd, RepairData("DDOpinion"), "@DDOpinion")
-//			        DecideNUll(cmd, RepairData("PDOpinion"), "@PDOpinion")
-//			        DecideNUll(cmd, RepairData("PMOpinion"), "@PMOpinion")
-					
+					repairDataString.put("PMOpinion", etPlantOpinion.getText().toString());
 					param.put("RepairDataString", repairDataString.toString());
 					param.put("State", EnumList.RepairState.STATEDIRECTORTHROUGH);
 					param.put("OldState", selectedData.get("State"));
-					result = DataCenterHelper.HttpPostData("InsertRepairTaskData", param);
+					result = DataCenterHelper.HttpPostData("UpdateAuditingRepairDataforUser3", param);
 				}else if (methodName.equals(RepairManageActivity.METHOD_DDAPPROVE_STRING)) {
 					param.put("RepairTaskID", Integer.valueOf(selectedData.get("RepairTaskID")));
 					JSONObject repairDataString = new JSONObject();
-//					DecideNUll(cmd, RepairData("RepairCost"), "@RepairCost")
-//			        DecideNUll(cmd, RepairData("ApproveResult"), "@ApproveResult")
-//			        DecideNUll(cmd, RepairData("ApprovePerson"), "@ApprovePerson")
-//			        DecideNUll(cmd, RepairData("DDOpinion"), "@DDOpinion")
-//			        DecideNUll(cmd, RepairData("PDOpinion"), "@PDOpinion")
-//			        DecideNUll(cmd, RepairData("PMOpinion"), "@PMOpinion")
-					
+					repairDataString.put("ApproveResult", swVerifyResult.isChecked()?"1":"2");
+					if(selectedData.get("ApprovePersonID").equals("")){
+						repairDataString.put("ApprovePerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					}else {
+						repairDataString.put("ApprovePerson", selectedData.get("ApprovePersonID"));
+					}
+					repairDataString.put("DDOpinion", etEquipmentOpinion.getText().toString());
 					param.put("RepairDataString", repairDataString.toString());
-					param.put("State", EnumList.RepairState.STATEDEVICETHROUGH);
+					param.put("State", swVerifyResult.isChecked()?EnumList.RepairState.STATEDEVICETHROUGH:EnumList.RepairState.STATEFORCORRECTION);
 					param.put("OldState", selectedData.get("State"));
-					result = DataCenterHelper.HttpPostData("InsertRepairTaskData", param);
+					result = DataCenterHelper.HttpPostData("UpdateAuditingRepairDataforUser7", param);
 				}
 				
 			} catch (JSONException e) {

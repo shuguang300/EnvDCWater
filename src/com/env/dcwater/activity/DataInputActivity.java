@@ -3,24 +3,30 @@ package com.env.dcwater.activity;
 import java.util.HashMap;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.util.SystemMethod;
 
 /**
  * 填报数据的界面
  * @author sk
  */
-public class DataInputActivity extends NfcActivity {
+public class DataInputActivity extends NfcActivity implements OnClickListener {
 	private Intent getedIntend;
 	private HashMap<String, String> data;
 	private ActionBar mActionBar;
 	private EditText dataInputer;
+	private Button buttonAddMedia;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,11 @@ public class DataInputActivity extends NfcActivity {
 		dataInputer = (EditText)findViewById(R.id.activity_datainput_data);
 		dataInputer.setText(data.get("Value"));
 		dataInputer.selectAll();
+		buttonAddMedia = (Button)findViewById(R.id.activity_datainput_add);
+		buttonAddMedia.setOnClickListener(this);
+		if(data.get("Key").equals("RequiredManHours")||data.get("Key").equals("RepairCost")){
+			buttonAddMedia.setVisibility(View.GONE);
+		}
 	}
 	
 	/**
@@ -100,6 +111,15 @@ public class DataInputActivity extends NfcActivity {
 		super.onBackPressed();
 		setResult(RESULT_CANCELED);
 		finish();
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.activity_datainput_add:
+			SystemMethod.hideSoftInput(DataInputActivity.this);
+			break;
+		}
 	}
 	
 }
