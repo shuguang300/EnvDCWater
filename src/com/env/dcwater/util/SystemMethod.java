@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 /**
  * 一个用于存储 android系统常用方法 的类
@@ -123,6 +124,7 @@ public class SystemMethod {
 	public static void hideSoftInput(Context context){
 		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+//		imm.hideSoftInputFromInputMethod(et.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
 	}
 	
 	/**

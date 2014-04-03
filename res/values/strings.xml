@@ -3,10 +3,7 @@
     <string name="app_name">滇池水务</string>
     <string name="system_name">滇池智慧水务信息系统</string>
     
-    <string name="activity_machinemanage_radiogroup_machinemanage">设备信息管理</string>
-    <string name="activity_machinemanage_radiogroup_consmanage">构筑物管理</string>
-    <string name="activity_machinemanage_radiogroup_machineinfo">设备信息查看</string>
-    <string name="activity_machinemanage_radiogroup_planmanage">保养计划管理</string>
+   
     
     <string name="fragment_machinemanage_name">设备名称</string>
     <string name="fragment_machinemanage_pos">安装位置</string>
@@ -24,6 +21,13 @@
     <string name="fragment_consmanage_more">查看</string>
     <string name="fragment_consmanage_update">编辑</string>
     <string name="fragment_consmanage_delete">删除</string>
+    
+    
+    
+     <string name="activity_machinemanage_radiogroup_machinemanage">设备信息管理</string>
+    <string name="activity_machinemanage_radiogroup_consmanage">构筑物管理</string>
+    <string name="activity_machinemanage_radiogroup_machineinfo">设备信息查看</string>
+    <string name="activity_machinemanage_radiogroup_planmanage">保养计划管理</string>
     
     
     <string name="activity_config_title">设置</string>
@@ -70,35 +74,13 @@
     <string name="activity_repairmanageitem_repairmoneycost">维修金额</string>
     
     
-    
-    
-    
-    
     <string name="view_datetimepick_ok">确定</string>
     <string name="view_datetimepick_cancel">取消</string>
     <string name="view_datetimepick_reset">重置</string>
     
-    <string name="menu_machineinfo_maintainhistory">维修历史</string>
-    <string name="menu_machineinfo_upkeephistory">保养历史</string>
-    <string name="menu_machineinfo_refresh">刷新</string>
-    <string name="menu_repairmanage_add">故障上报</string>
-    <string name="menu_repairmanage_refresh">刷新</string>
-    <string name="menu_repairmanage_nofilter">所有任务</string>
-    <string name="menu_repairmanage_filter">可操作任务</string>
-    <string name="menu_repairmanageitem_refresh">刷新</string>
-    <string name="menu_upkeephistory_refresh">刷新</string>
-    <string name="menu_maintainhistory_refresh">刷新</string>
-    <string name="menu_datainput_save">保存</string>
-    
-    <string name="contextmenu_repairmanage_op_update">修改</string>
-    <string name="contextmenu_repairmanage_op_delete">删除</string>
-    <string name="contextmenu_repairmanage_dd_send">派发工单</string>
-    <string name="contextmenu_repairmanage_dd_approve">审核意见</string>
-    <string name="contextmenu_repairmanage_pd_confirm">确认报修单</string>
-    <string name="contextmenu_repairmanage_pd_approve">审核意见</string>
-    <string name="contextmenu_repairmanage_rm_receive">确认维修</string>
-    <string name="contextmenu_repairmanage_rm_repair">填写工单</string>
-    <string name="contextmenu_repairmanage_pm_confirm">厂长确认</string>
+    <string name="view_addmediafile_voice">录音</string>
+    <string name="view_addmediafile_img">图片</string>
+    <string name="view_addmediafile_location">位置</string>
     
     <string name="view_userright_group_performance">绩效管理</string>
     <string name="view_userright_group_analysis">生产统计分析</string>
@@ -156,41 +138,27 @@
         <item >位置6</item>
     </string-array>
     
+    <string name="menu_machineinfo_maintainhistory">维修历史</string>
+    <string name="menu_machineinfo_upkeephistory">保养历史</string>
+    <string name="menu_machineinfo_refresh">刷新</string>
+    <string name="menu_repairmanage_add">故障上报</string>
+    <string name="menu_repairmanage_refresh">刷新</string>
+    <string name="menu_repairmanage_nofilter">所有任务</string>
+    <string name="menu_repairmanage_filter">可操作任务</string>
+    <string name="menu_repairmanageitem_refresh">刷新</string>
+    <string name="menu_upkeephistory_refresh">刷新</string>
+    <string name="menu_maintainhistory_refresh">刷新</string>
+    <string name="menu_datainput_save">保存</string>
     
-    <string name="fragment_machineinfo"></string>
+    <string name="contextmenu_repairmanage_op_update">修改</string>
+    <string name="contextmenu_repairmanage_op_delete">删除</string>
+    <string name="contextmenu_repairmanage_dd_send">派发工单</string>
+    <string name="contextmenu_repairmanage_dd_approve">审核意见</string>
+    <string name="contextmenu_repairmanage_pd_confirm">确认报修单</string>
+    <string name="contextmenu_repairmanage_pd_approve">审核意见</string>
+    <string name="contextmenu_repairmanage_rm_receive">确认维修</string>
+    <string name="contextmenu_repairmanage_rm_repair">填写工单</string>
+    <string name="contextmenu_repairmanage_pm_confirm">厂长确认</string>
     
-    <string-array name="machinemanage">
-        <item>设备1</item>
-        <item>设备2</item>
-        <item>设备3</item>
-        <item>设备4</item>
-        <item>设备5</item>
-        <item>设备6</item>
-    </string-array>
-    
-    <string-array name="consmanage">
-        <item>构筑物1</item>
-        <item>构筑物2</item>
-        <item>构筑物3</item>
-        <item>构筑物4</item>
-        <item>构筑物5</item>
-        <item>构筑物6</item>
-    </string-array>
-    <string-array name="machineinfo">
-        <item>设备信息1</item>
-        <item>设备信息2</item>
-        <item>设备信息3</item>
-        <item>设备信息4</item>
-        <item>设备信息5</item>
-        <item>设备信息6</item>
-    </string-array>
-    <string-array name="planmanage">
-        <item>计划1</item>
-        <item>计划2</item>
-        <item>计划3</item>
-        <item>计划4</item>
-        <item>计划5</item>
-        <item>计划6</item>
-    </string-array>
     
 </resources>

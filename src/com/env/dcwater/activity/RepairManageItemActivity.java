@@ -120,6 +120,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			mFaultTime = new Date();
 			copyHandleStepSelected();
 			taskState = -1;
+			selectedData = new HashMap<String, String>();
+			selectedData.put("AccidentDetail", "");
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER://修改维修单
 			receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("Data");
@@ -1227,6 +1229,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		mDrawerLayout.closeDrawer(Gravity.LEFT);
 		selectedData = mMachine.get(position);
+		selectedData.put("AccidentDetail", etFaultPhenomenon.getText().toString());
 		setGroupBasicData(false);
 	}
 	

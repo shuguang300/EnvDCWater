@@ -1,9 +1,6 @@
 package com.env.dcwater.activity;
-
 import java.util.HashMap;
-
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.util.SystemMethod;
@@ -38,7 +34,7 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 	}
 	
 	/**
-	 * 
+	 * 初始化数据
 	 */
 	@SuppressWarnings("unchecked")
 	private void iniData(){
