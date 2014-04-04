@@ -20,6 +20,10 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 	private Context mContext;
 	private Button buttonVoice,buttonImg,buttonLocation;
 	
+	/**
+	 * 构造函数
+	 * @param context
+	 */
 	public AddMediaFileView(Context context){
 		super(context);
 		mContext = context;
@@ -31,6 +35,9 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 		super(context, attr);
 	}
 	
+	/**
+	 * 初始化控件
+	 */
 	private void iniView(){
 		buttonVoice = (Button)mView.findViewById(R.id.view_addmediafile_voice);
 		buttonImg = (Button)mView.findViewById(R.id.view_addmediafile_img);
