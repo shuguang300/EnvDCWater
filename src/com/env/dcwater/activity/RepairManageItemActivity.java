@@ -524,7 +524,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		}
 		
 //	
-		if((taskState==0&&code==RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER)||taskState!=0){
+		if((taskState==0||taskState==-1&&code==RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER)||taskState!=0){
 			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		}
 		
