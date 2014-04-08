@@ -129,6 +129,7 @@
         <item name="android:actionBarTabTextStyle">@style/MyActionBarTabText</item>  
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="android:actionBarDivider">@drawable/actionbar_item_divider</item>  
+        <item name="android:actionOverflowButtonStyle">@android:style/Widget.ActionButton.Overflow</item>
         <!-- ActionBar 的小箭头 -->  
      <!--    <item name="android:homeAsUpIndicator">@drawable/activity_machinemanage_arrowleft</item> -->
     </style>  

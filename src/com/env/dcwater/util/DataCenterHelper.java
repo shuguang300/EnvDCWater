@@ -22,7 +22,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 
 /**
- * @author lsg
+ * @author sk
  * @see
  */
 public class DataCenterHelper {

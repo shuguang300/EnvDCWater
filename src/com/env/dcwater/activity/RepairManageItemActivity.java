@@ -7,9 +7,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
@@ -37,6 +39,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -67,13 +70,14 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	private Builder mHandleContent;
 	private MachineListItemAdapter mMachineListAdapter;
 	private ArrayList<HashMap<String, String>> mMachine;
-	private TableLayout mGroupBasic,mGroupFault,mGroupPeople,mGroupInfo,mGroupVerify;
+//	private TableLayout mGroupBasic,mGroupFault,mGroupPeople;
+	private TableLayout mGroupInfo,mGroupVerify;
 	private DateTimePickerView dateTimePickerView;
 	private String mOtherStep="",mHandleStep="",methodName;
 	private String [] handleStepContent = {"尝试手动启动","关闭主电源","拍下急停按钮","悬挂警示标识牌","关闭故障设备工艺段进水"};
 	private boolean [] handleStepSelected = {false,false,false,false,false},tempStepSelected;
 	private TextView etName,etType,etSN,etPosition,etStartTime,etManufacture,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep,etSendTime,etSender,etTimeCost,etContent,etResult,etFinishTime,etThing,etMoney,etVerifyPeople,etEquipmentOpinion,etProductionOpinion,etPlantOpinion;
-	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trSendTime,trSender,trTimeCost,trContent,trResult,trFinishTime,trThingCost,trMoneyCost,trEquipmentOpinion,trProductionOpinion,trPlantOpinion;
+	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trTimeCost,trContent,trResult,trFinishTime,trThingCost,trMoneyCost,trEquipmentOpinion,trProductionOpinion,trPlantOpinion;
 	private Switch swVerifyResult;
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -240,10 +244,10 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		
 		etPeople = (TextView)findViewById(R.id.activity_repairmanageitem_taskpeople);
 
-		trSendTime = (TableRow)findViewById(R.id.activity_repairmanageitem_repairsttime_tr);
+//		trSendTime = (TableRow)findViewById(R.id.activity_repairmanageitem_repairsttime_tr);
 		etSendTime = (TextView)findViewById(R.id.activity_repairmanageitem_repairsttime);
 		
-		trSender = (TableRow)findViewById(R.id.activity_repairmanageitem_repairpeople_tr);
+//		trSender = (TableRow)findViewById(R.id.activity_repairmanageitem_repairpeople_tr);
 		etSender = (TextView)findViewById(R.id.activity_repairmanageitem_repairpeople);
 		
 		trTimeCost = (TableRow)findViewById(R.id.activity_repairmanageitem_repairtimecost_tr);
@@ -522,7 +526,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				setGroupVerifyEnableByPlanter(false);
 			}
 		}
-		
 //	
 		if((taskState==0||taskState==-1&&code==RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER)||taskState!=0){
 			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -535,24 +538,25 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			break;
 		case EnumList.RepairState.STATEHASBEENREPORTED:
 		case EnumList.RepairState.STATEHASBEENCONFIRMED:
-			setGroupRepairTaskShow(false);
+			setGroupRepairShow(false);
 			setGroupVerifyShow(false);
 			break;
 		case EnumList.RepairState.STATEHASBEENDISTRIBUTED:
-		case EnumList.RepairState.STATEBEENINGREPAIRED:
+			setGroupRepairTaskShow(false);
 			setGroupVerifyShow(false);
 			break;
+		case EnumList.RepairState.STATEBEENINGREPAIRED:
+			
 		case EnumList.RepairState.STATEHASBEENREPAIRED:
-			setGroupVerifyPDShow(false);
-			setGroupVerifyPMShow(false);
+			setGroupVerifyShow(false);
 			break;
 		case EnumList.RepairState.STATEFORCORRECTION:
 			setGroupVerifyPDShow(false);
 			setGroupVerifyPMShow(false);
 			break;
 		case EnumList.RepairState.STATEDEVICETHROUGH:
-			break;
 		case EnumList.RepairState.STATEPRODUCTIONTHROUGH:
+			setGroupVerifyPMShow(false);
 			break;
 		case EnumList.RepairState.STATEDIRECTORTHROUGH:
 			break;
@@ -1021,7 +1025,52 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu_repairmanageitem, menu);
+		if(!methodName.equals(RepairManageActivity.METHOD_ADD_STRING)&&receivedData.get("CanUpdate").equals("true")){
+			int positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+			int taskState = Integer.valueOf(receivedData.get("State"));
+//			int taskType = Integer.valueOf(mData.get(info.position-1).get("RepairTaskType"));
+			switch (positionID) {
+			case EnumList.UserRole.USERROLEPLANTER:
+				getMenuInflater().inflate(R.menu.cm_rm_pm, menu);
+				break;
+			case EnumList.UserRole.USERROLEEQUIPMENTOPERATION:
+			case EnumList.UserRole.USERROLEPRODUCTIONOPERATION:
+				getMenuInflater().inflate(R.menu.cm_rm_op, menu);
+				break;
+			case EnumList.UserRole.USERROLEEQUIPMENTCHIEF:
+				getMenuInflater().inflate(R.menu.cm_rm_dd, menu);
+				if(taskState==EnumList.RepairState.STATEHASBEENCONFIRMED||
+				taskState==EnumList.RepairState.STATEHASBEENREPORTED||
+				taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED){
+					menu.getItem(0).setVisible(true);
+					menu.getItem(1).setVisible(false);
+				}else {
+					menu.getItem(0).setVisible(false);
+					menu.getItem(1).setVisible(true);
+				}
+				break;
+			case EnumList.UserRole.USERROLEPRODUCTIONCHIEF:
+				getMenuInflater().inflate(R.menu.cm_rm_pd, menu);
+				if(taskState==EnumList.RepairState.STATEHASBEENREPORTED){
+					menu.getItem(0).setVisible(true);
+					menu.getItem(1).setVisible(false);
+				}else {
+					menu.getItem(0).setVisible(false);
+					menu.getItem(1).setVisible(true);
+				}
+				break;
+			case EnumList.UserRole.USERROLEREPAIRMAN:
+				getMenuInflater().inflate(R.menu.cm_rm_rm, menu);
+				if(taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED){
+					menu.getItem(0).setVisible(true);
+					menu.getItem(1).setVisible(false);
+				}else {
+					menu.getItem(0).setVisible(false);
+					menu.getItem(1).setVisible(true);
+				}
+				break;
+			}
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 	

@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item 
         android:id="@+id/cm_rm_pd_confirm"
-        android:title="@string/contextmenu_repairmanage_pd_confirm"/>
+        android:title="@string/cm_rm_pd_confirm"/>
     <item 
         android:id="@+id/cm_rm_pd_approve"
-        android:title="@string/contextmenu_repairmanage_pd_approve"/>
+        android:title="@string/cm_rm_pd_approve"/>
 
 </menu>

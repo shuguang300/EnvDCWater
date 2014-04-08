@@ -3,15 +3,12 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -35,7 +32,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -291,7 +287,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		
 		
 //		mListView.setOnItemLongClickListener(this); //长按事件与上下文菜单冲突，二者只能选其一
-		registerForContextMenu(mListView);
+//		registerForContextMenu(mListView);
 	}
 	
 	/**
@@ -369,6 +365,8 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
+	
+	
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
