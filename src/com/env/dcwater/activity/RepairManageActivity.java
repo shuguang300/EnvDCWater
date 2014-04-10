@@ -134,10 +134,9 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private boolean isFilter = true,isRfresh = false,actionChooseIsShow = false;;
 	private ProgressDialog mProgressDialog;
 //	private UpdateServerData updateServerData;
-	private int selectedPos,userPositionID;
+	private int userPositionID;
 	private String [] dateFilters,nfcCardAction = {"查看设备信息","设备故障上报"};
 	private AlertDialog.Builder actionChoose;
-	private String mMethodName;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -630,83 +629,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		
 	}
 	
-	class UpdateServerData extends AsyncTask<String, String, String>{
-		@Override
-		protected String doInBackground(String... params) {
-			mMethodName = params[0];
-			JSONObject param = new JSONObject();
-			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
-			try {
-				if(mMethodName.equals(METHOD_DELETE_STRING)){
-					param.put("RepairTaskID", Integer.valueOf(mData.get(selectedPos).get("RepairTaskID")));
-					result = DataCenterHelper.HttpPostData("RemoveRepairTask", param);
-				}else if (mMethodName.equals(METHOD_RECEIVE_STRING)) {
-					param.put("RepairTaskID", Integer.valueOf(mData.get(selectedPos).get("RepairTaskID")));
-					param.put("OldState", Integer.valueOf(mData.get(selectedPos).get("State")));
-					result = DataCenterHelper.HttpPostData("ConfirmRepair", param);
-				}else if (mMethodName.equals(METHOD_PDCONFIRM_STRING)) {
-					param.put("RepairTaskID", Integer.valueOf(mData.get(selectedPos).get("RepairTaskID")));
-					param.put("CheckPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
-					param.put("OldState", Integer.valueOf(mData.get(selectedPos).get("State")));
-					result = DataCenterHelper.HttpPostData("ValidationReport", param);
-				}
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return result;
-		}
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			showProgressDialog(false);
-		}
-		@Override
-		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
-			if(result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
-				Toast.makeText(RepairManageActivity.this, "提交失败,请检查您的网络设置", Toast.LENGTH_SHORT).show();
-			}else {
-				JSONObject object;
-				try {
-					object = new JSONObject(result);
-					int code =object.getInt("d");
-					switch (code) {
-					case EnumList.DataCenterResult.CODE_SUCCESS:
-						if(mMethodName.equals(METHOD_DELETE_STRING)){
-							mData.remove(selectedPos);
-						}else if (mMethodName.equals(METHOD_RECEIVE_STRING)) {
-							mData.get(selectedPos).put("State",EnumList.RepairState.STATEBEENINGREPAIRED+"");
-							mData.get(selectedPos).put("StateDescription", EnumList.RepairState.BEENINGREPAIRED.getStateDescription());
-						}else if(mMethodName.equals(METHOD_PDCONFIRM_STRING)){
-							mData.get(selectedPos).put("State",EnumList.RepairState.STATEHASBEENCONFIRMED+"");
-							mData.get(selectedPos).put("StateDescription", EnumList.RepairState.HASBEENCONFIRMED.getStateDescription());
-							mData.get(selectedPos).put("CanUpdate", "false");
-						}
-						mListViewAdapter.notifyDataSetChanged();
-						break;
-					case EnumList.DataCenterResult.CODE_SERVERERRO:
-						Toast.makeText(RepairManageActivity.this, "服务器数据更新失败", Toast.LENGTH_SHORT).show();
-						break;
-					case EnumList.DataCenterResult.CODE_OPERATIONERRO:
-						Toast.makeText(RepairManageActivity.this, "工单状态已发生改变，您无权更新", Toast.LENGTH_SHORT).show();
-						break;
-					case EnumList.DataCenterResult.CODE_OTHERERRO:
-						Toast.makeText(RepairManageActivity.this, "服务器未知错误", Toast.LENGTH_SHORT).show();
-						break;
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-					Toast.makeText(RepairManageActivity.this, "提交失败", Toast.LENGTH_SHORT).show();
-				}
-			}
-			hideProgressDialog();
-		}
-	}
+	
 	
 }

@@ -90,6 +90,7 @@
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:layout_weight">1</item>
 	    <item name="android:gravity">center_vertical</item>
+	    <item name="android:drawableLeft">@drawable/activity_machinemanage_arrowleft</item>
 	</style>
 	
 	<!-- 设备维修单个记录查看界面中的 三个大表单的描述信息 -->

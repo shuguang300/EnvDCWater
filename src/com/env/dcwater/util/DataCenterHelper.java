@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -36,7 +37,7 @@ public class DataCenterHelper {
 	/**
 	 * webservice数据中心地址
 	 */
-	public static final String URL_STRING = "http://192.168.200.50/dcwater/MobileDataCenter.asmx";
+	public static final String URL_STRING = "http://192.168.0.104/dcwater/MobileDataCenter.asmx";
 	
 	/**
 	 * 连接超时
@@ -88,8 +89,9 @@ public class DataCenterHelper {
 	public static SoapObject SoapRequest(String method,HashMap<String, String> params) throws HttpResponseException, IOException, XmlPullParserException{
 		SoapObject request = new SoapObject(SOAP_NAMESPACE_STRING, method);
 		if(params!=null){
-			Iterator iterator = params.entrySet().iterator();
+			Iterator<?> iterator = params.entrySet().iterator();
 			while (iterator.hasNext()) {
+				@SuppressWarnings("rawtypes")
 				Map.Entry entry = (Map.Entry) iterator.next();
 				request.addProperty(entry.getKey().toString(), entry.getValue());
 			}
