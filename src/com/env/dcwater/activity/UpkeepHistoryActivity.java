@@ -2,7 +2,6 @@ package com.env.dcwater.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,9 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.DataFilterView;

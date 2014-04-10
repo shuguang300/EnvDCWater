@@ -1,0 +1,602 @@
+package com.env.dcwater.activity;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+
+import org.apache.http.client.ClientProtocolException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.DialogInterface.OnMultiChoiceClickListener;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Switch;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+
+import com.env.dcwater.R;
+import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.component.SystemParams;
+import com.env.dcwater.fragment.DateTimePickerView;
+import com.env.dcwater.javabean.EnumList;
+import com.env.dcwater.util.DataCenterHelper;
+import com.env.dcwater.util.OperationMethod;
+
+/**
+ * 填写工单数据的一个页面
+ * @author sk
+ *
+ */
+public class RepairManageItemDataActivity extends NfcActivity implements OnClickListener{
+	
+	private Intent mIntent;
+	private AlertDialog.Builder mHandleContent;
+	private HashMap<String, String> repairData;
+	private DateTimePickerView dateTimePickerView;
+	private Date mFaultTime,mFinishTime;
+	private ActionBar mActionBar;
+//	private ArrayList<HashMap<String, String>> deviceDataArrayList;
+	private TableLayout taskBasicGroup,taskSendGroup,taskRepairGroup,taskDDVerifyGroup,taskPDVerifyGroup,taskPMVerifyGroup;
+	private TextView etName,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep,etSendTime,etSender,etTimeCost,etContent,etResult,etFinishTime,etThing,etMoney,etVerifyPeople,etEquipmentOpinion,etProductionOpinion,etPlantOpinion;
+	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trTimeCost,trContent,trResult,trFinishTime,trThingCost,trMoneyCost,trEquipmentOpinion,trProductionOpinion,trPlantOpinion;
+	private Switch swVerifyResult;
+	private boolean [] handleStepSelected = {false,false,false,false,false},tempStepSelected;
+	private String mOtherStep="",mHandleStep="",methodName="";
+	private String [] handleStepContent = {"尝试手动启动","关闭主电源","拍下急停按钮","悬挂警示标识牌","关闭故障设备工艺段进水"};
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_repairmanageitemdata);
+		initialData();
+		iniActionbar();
+		initialView();
+		setViewStateAndData();
+	}
+	
+	/**
+	 *   初始化数据
+	 */
+	@SuppressWarnings("unchecked")
+	private void initialData(){
+		mIntent = getIntent();
+		methodName = mIntent.getStringExtra("MethodName");
+		if(methodName.equals(RepairManageActivity.METHOD_ADD_STRING)){
+			mFaultTime = new Date();
+			repairData = new HashMap<String, String>();
+		}else {
+			repairData = (HashMap<String, String>)mIntent.getSerializableExtra("data");
+			if(methodName.equals(RepairManageActivity.METHOD_UPDATE_STRING)){
+				String [] handle1;
+				if(repairData.get("EmergencyMeasures").equals("null")){ 
+					handle1 = new String [0]; 
+				}else {
+					handle1 = repairData.get("EmergencyMeasures").split(",");
+				}
+				try {
+					for(int i=0;i<handle1.length;i++){
+						if(handle1[i].endsWith("(an)")){ 
+							//应急措施和措施放在一个字段里面了，带有（an）结尾的是措施，数字的是紧急措施
+							mOtherStep = handle1[i].replace("(an)", "");
+						} else {
+							if(!handle1[i].equals("")){
+								mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle1[i])-1] + "\n";
+								//得到初始化的 应急措施
+								handleStepSelected[Integer.parseInt(handle1[i])-1] = true;
+							}
+						}
+					}
+					copyHandleStepSelected();
+					mFaultTime = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(repairData.get("AccidentOccurTime").toString());
+				} catch (Exception e) {
+					mOtherStep = "";
+					mHandleStep ="";
+					mFaultTime = new Date();
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * 初始化actionbar
+	 */
+	private void iniActionbar(){
+		mActionBar = getActionBar();
+		mActionBar.setDisplayShowHomeEnabled(true);
+		mActionBar.setDisplayHomeAsUpEnabled(true);
+		mActionBar.setDisplayShowTitleEnabled(true);
+		mActionBar.setTitle(methodName);
+		
+	}
+	
+	/**
+	 * 寻找到控件
+	 */
+	private void initialView(){
+		taskBasicGroup = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgroupfault);
+		taskSendGroup = (TableLayout)findViewById(R.id.activity_repairmanageitem_tasksendgroup);
+		taskRepairGroup = (TableLayout)findViewById(R.id.activity_repairmanageitem_taskrepairgroup);
+		taskDDVerifyGroup = (TableLayout)findViewById(R.id.activity_repairmanageitem_ddverifygroup);
+		taskPDVerifyGroup = (TableLayout)findViewById(R.id.activity_repairmanageitem_pdverifygroup);
+		taskPMVerifyGroup = (TableLayout)findViewById(R.id.activity_repairmanageitem_pmverifygroup);
+		
+		
+		etName = (TextView)findViewById(R.id.activity_repairmanageitem_name);
+		trName = (TableRow)findViewById(R.id.activity_repairmanageitem_name_tr);
+		
+		etFaultTime = (TextView)findViewById(R.id.activity_repairmanageitem_faulttime);
+		trFaultTime = (TableRow)findViewById(R.id.activity_repairmanageitem_faulttime_tr);
+		
+		etFaultPhenomenon = (TextView)findViewById(R.id.activity_repairmanageitem_faultphenomenon);
+		trFaultPhenomenon = (TableRow)findViewById(R.id.activity_repairmanageitem_faultphenomenon_tr);
+		
+		etHandleStep = (TextView)findViewById(R.id.activity_repairmanageitem_handlestep);
+		trHandleStep = (TableRow)findViewById(R.id.activity_repairmanageitem_handlestep_tr);
+		
+		etOtherStep = (TextView)findViewById(R.id.activity_repairmanageitem_otherstep);
+		trOtherStep = (TableRow)findViewById(R.id.activity_repairmanageitem_otherstep_tr);
+		
+		etPeople = (TextView)findViewById(R.id.activity_repairmanageitem_taskpeople);
+
+		etSendTime = (TextView)findViewById(R.id.activity_repairmanageitem_repairsttime);
+		
+		etSender = (TextView)findViewById(R.id.activity_repairmanageitem_repairpeople);
+		
+		trTimeCost = (TableRow)findViewById(R.id.activity_repairmanageitem_repairtimecost_tr);
+		etTimeCost = (TextView)findViewById(R.id.activity_repairmanageitem_repairtimecost);
+		
+		trContent = (TableRow)findViewById(R.id.activity_repairmanageitem_repaircontent_tr);
+		etContent = (TextView)findViewById(R.id.activity_repairmanageitem_repaircontent);
+		
+		trResult = (TableRow)findViewById(R.id.activity_repairmanageitem_repairresult_tr);
+		etResult = (TextView)findViewById(R.id.activity_repairmanageitem_repairresult);
+		
+		trFinishTime = (TableRow)findViewById(R.id.activity_repairmanageitem_repairendtime_tr);
+		etFinishTime = (TextView)findViewById(R.id.activity_repairmanageitem_repairendtime);
+		
+		trThingCost = (TableRow)findViewById(R.id.activity_repairmanageitem_repairthingcost_tr);
+		etThing = (TextView)findViewById(R.id.activity_repairmanageitem_repairthingcost);
+		
+		trMoneyCost = (TableRow)findViewById(R.id.activity_repairmanageitem_repairmoneycost_tr);
+		etMoney = (TextView)findViewById(R.id.activity_repairmanageitem_repairmoneycost);
+		
+		swVerifyResult = (Switch)findViewById(R.id.activity_repairmanageitem_verifyresult);
+		
+		etVerifyPeople = (TextView)findViewById(R.id.activity_repairmanageitem_verifypeople);
+		
+		trEquipmentOpinion = (TableRow)findViewById(R.id.activity_repairmanageitem_equipmentopinion_tr);
+		etEquipmentOpinion = (TextView)findViewById(R.id.activity_repairmanageitem_equipmentopinion);
+		
+		etProductionOpinion = (TextView)findViewById(R.id.activity_repairmanageitem_productionopinion);
+		trProductionOpinion = (TableRow)findViewById(R.id.activity_repairmanageitem_productionopinion_tr);
+		
+		trPlantOpinion = (TableRow)findViewById(R.id.activity_repairmanageitem_plantopinion_tr);
+		etPlantOpinion = (TextView)findViewById(R.id.activity_repairmanageitem_plantopinion);
+	}
+	
+	/**
+	 * 给控制设置各种状态
+	 */
+	private void setViewStateAndData(){
+		trName.setOnClickListener(this);
+		trFaultTime.setOnClickListener(this);
+		trFaultPhenomenon.setOnClickListener(this);
+		trHandleStep.setOnClickListener(this);
+		trOtherStep.setOnClickListener(this);
+		trTimeCost.setOnClickListener(this);
+		trContent.setOnClickListener(this);
+		trResult.setOnClickListener(this);
+		trFinishTime.setOnClickListener(this);
+		trThingCost.setOnClickListener(this);
+		trMoneyCost.setOnClickListener(this);
+		trEquipmentOpinion.setOnClickListener(this);
+		trProductionOpinion.setOnClickListener(this);
+		trPlantOpinion.setOnClickListener(this);
+		if(methodName.equals(RepairManageActivity.METHOD_ADD_STRING)){
+			taskBasicGroup.setVisibility(View.VISIBLE);
+			
+			
+		}else if (methodName.equals(RepairManageActivity.METHOD_UPDATE_STRING)) {
+			taskBasicGroup.setVisibility(View.VISIBLE);
+			etName.setText(repairData.get("DeviceName"));
+			etFaultTime.setText(repairData.get("AccidentOccurTime"));
+			etFaultPhenomenon.setText(repairData.get("AccidentDetail"));
+			etPeople.setText(repairData.get("ReportPersonRealName").toString());
+			etHandleStep.setText(mHandleStep);
+			etOtherStep.setText(mOtherStep);
+			
+		}else if (methodName.equals(RepairManageActivity.METHOD_SENDTASK_STRING)) {
+			taskSendGroup.setVisibility(View.VISIBLE);
+			if(methodName.equals(RepairManageActivity.METHOD_SENDTASK_STRING)){
+				if(repairData.get("TaskCreateTime").equals("")){
+					etSendTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(new Date()));
+				}else {
+					etSendTime.setText(repairData.get("TaskCreateTime"));
+				}
+				if(repairData.get("CreatePersonRealName").equals("")){
+					etSender.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+				}else {
+					etSender.setText(repairData.get("CreatePersonRealName"));
+				}
+			}else {
+				etSendTime.setText(repairData.get("TaskCreateTime"));
+				etSender.setText(repairData.get("CreatePersonRealName"));
+			}
+			etTimeCost.setText(repairData.get("RequiredManHours"));
+			etContent.setText(repairData.get("TaskDetail"));
+			
+		}else if (methodName.equals(RepairManageActivity.METHOD_REPAIRTASK_STRING)) {
+			taskRepairGroup.setVisibility(View.VISIBLE);
+			if(repairData.get("RepairedTime").equals("")){
+				etFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(new Date()));
+			}else {
+				etFinishTime.setText(repairData.get("RepairedTime"));
+			}
+			etResult.setText(repairData.get("RepairDetail"));
+			etThing.setText(repairData.get("AccessoryUsed"));
+			etMoney.setText(repairData.get("RepairCost"));
+			
+		}else if (methodName.equals(RepairManageActivity.METHOD_PDAPPROVE_STRING)) {
+			taskPDVerifyGroup.setVisibility(View.VISIBLE);
+			etProductionOpinion.setText(repairData.get("PDOpinion"));
+			
+		}else if (methodName.equals(RepairManageActivity.METHOD_PMAPPROVE_STRING)) {
+			taskPMVerifyGroup.setVisibility(View.VISIBLE);
+			etPlantOpinion.setText(repairData.get("PMOpinion"));
+			
+		}else if (methodName.equals(RepairManageActivity.METHOD_DDAPPROVE_STRING)) {
+			taskDDVerifyGroup.setVisibility(View.VISIBLE);
+			if(repairData.get("ApprovePersonRealName").equals("")){
+				etVerifyPeople.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+			}else {
+				etVerifyPeople.setText(repairData.get("ApprovePersonRealName"));
+			}
+			if(repairData.get("ApproveResult").equals("1")){
+				swVerifyResult.setChecked(true);
+			}else {
+				swVerifyResult.setChecked(false);
+			}
+			etEquipmentOpinion.setText(repairData.get("DDOpinion"));
+		}
+	}
+	
+	
+	/**
+	 * 创建一个缓存对象，并且把初始选择的 应急措施 存储到该对象
+	 */
+	private void copyHandleStepSelected(){
+		tempStepSelected = new boolean [5];
+		for(int i = 0;i<handleStepSelected.length;i++){
+			tempStepSelected[i] = handleStepSelected[i];
+		}
+	}
+	/**
+	 * 如果选择取消，则将初始的 应急措施 重新赋值给 非缓存对象
+	 */
+	private void copyTempStepSelected(){
+		for(int i = 0;i<tempStepSelected.length;i++){
+			handleStepSelected[i] = tempStepSelected[i];
+		}
+	}
+	
+	/**
+	 * 跳转 数据填报界面
+	 * @param data
+	 */
+	private void startDataInputActivity(HashMap<String, String> data){
+		Intent intent = new Intent(this,DataInputActivity.class);
+		intent.putExtra("data", data);
+		startActivityForResult(intent, 0);
+	}
+	
+	/**
+	 * 完成紧急措施和其他措施的合并
+	 * @return
+	 */
+	private String combineEmergencyMeasures() {
+		String EmergencyMeasures = "";
+		for(int i = 0;i<handleStepSelected.length;i++){
+			if (handleStepSelected[i]) {
+				EmergencyMeasures = EmergencyMeasures + String.valueOf(i+1) + ",";
+			}
+		}
+		if(EmergencyMeasures.equals("")&&!etOtherStep.getText().toString().equals("")){
+			EmergencyMeasures = "," + etOtherStep.getText().toString()+"(an)";
+		}else if (!EmergencyMeasures.equals("")&&!etOtherStep.getText().toString().equals("")) {
+			EmergencyMeasures = EmergencyMeasures + etOtherStep.getText().toString()+"(an)";
+		}
+		return EmergencyMeasures;
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.activity_repairmanageitem_name_tr:
+			break;
+		case R.id.activity_repairmanageitem_faulttime_tr:
+			if(dateTimePickerView==null){
+				dateTimePickerView = new DateTimePickerView(RepairManageItemDataActivity.this);
+			}
+			dateTimePickerView.setButtonClickEvent(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mFaultTime = dateTimePickerView.getSelectedDate();
+					etFaultTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(mFaultTime));
+					dateTimePickerView.dismiss();
+				}
+			}, new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dateTimePickerView.dismiss();
+				}
+			}, new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Calendar calendar = Calendar.getInstance(Locale.CHINA);
+					calendar.setTime(mFaultTime);
+					dateTimePickerView.iniWheelView(calendar);
+				}
+			});
+			Calendar fualtTimeCL = Calendar.getInstance(Locale.CHINA);
+			fualtTimeCL.setTime(mFaultTime);
+			dateTimePickerView.iniWheelView(fualtTimeCL);
+			dateTimePickerView.showAtLocation(findViewById(R.id.activity_repairmanageitem_main), Gravity.BOTTOM, 0, 0);
+			break;
+		case R.id.activity_repairmanageitem_repairendtime_tr:
+			if(!etFinishTime.getText().toString().equals("")){
+				try {
+					mFinishTime = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(etFinishTime.getText().toString());
+				} catch (ParseException e) {
+					e.printStackTrace();
+					mFinishTime = new Date();
+				}
+				if(dateTimePickerView==null){
+					dateTimePickerView = new DateTimePickerView(RepairManageItemDataActivity.this);
+				}
+				dateTimePickerView.setButtonClickEvent(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						mFinishTime = dateTimePickerView.getSelectedDate();
+						etFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(mFinishTime));
+						dateTimePickerView.dismiss();
+					}
+				}, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						dateTimePickerView.dismiss();
+					}
+				}, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Calendar calendar = Calendar.getInstance(Locale.CHINA);
+						calendar.setTime(mFinishTime);
+						dateTimePickerView.iniWheelView(calendar);
+					}
+				});
+				Calendar finishTimeCl = Calendar.getInstance(Locale.CHINA);
+				finishTimeCl.setTime(mFinishTime);
+				dateTimePickerView.iniWheelView(finishTimeCl);
+				dateTimePickerView.showAtLocation(findViewById(R.id.activity_repairmanageitem_main), Gravity.BOTTOM, 0, 0);
+			}
+			break;
+		case R.id.activity_repairmanageitem_faultphenomenon_tr:
+			HashMap<String, String> faultphenomenon = new HashMap<String, String>();
+			faultphenomenon.put("Key", "AccidentDetail");
+			faultphenomenon.put("Name", "故障现象");
+			faultphenomenon.put("Value", repairData.get("AccidentDetail"));
+			startDataInputActivity(faultphenomenon);
+			break;
+		case R.id.activity_repairmanageitem_handlestep_tr:
+			if(mHandleContent == null){
+				mHandleContent = new Builder(RepairManageItemDataActivity.this);
+				mHandleContent.setTitle("应急措施选择").setCancelable(false);
+				mHandleContent.setPositiveButton("取消", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						copyHandleStepSelected();
+					}
+				}).setNegativeButton("确定", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						copyTempStepSelected();
+						mHandleStep = "";
+						for(int i = 0;i<handleStepSelected.length;i++){
+							if(handleStepSelected[i]){
+								mHandleStep = mHandleStep + handleStepContent[i] + "\n";
+							}
+						}
+						etHandleStep.setText(mHandleStep);
+					}
+				});
+			}
+			mHandleContent.setMultiChoiceItems(handleStepContent, tempStepSelected, 
+					new OnMultiChoiceClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+				}
+			});
+			mHandleContent.create();
+			mHandleContent.show();
+			break;
+		case R.id.activity_repairmanageitem_otherstep_tr:
+			HashMap<String, String> otherstep = new HashMap<String, String>();
+			otherstep.put("Key", "Otherstep");
+			otherstep.put("Name", "其他措施");
+			otherstep.put("Value", etOtherStep.getText().toString());
+			startDataInputActivity(otherstep);
+			break;
+		case R.id.activity_repairmanageitem_repairtimecost_tr:
+			HashMap<String, String> repairtimecost = new HashMap<String, String>();
+			repairtimecost.put("Key", "RequiredManHours");
+			repairtimecost.put("Name", "所需工时");
+			repairtimecost.put("Value", repairData.get("RequiredManHours"));
+			startDataInputActivity(repairtimecost);
+			break;
+		case R.id.activity_repairmanageitem_repaircontent_tr:
+			HashMap<String, String> repaircontent = new HashMap<String, String>();
+			repaircontent.put("Key", "TaskDetail");
+			repaircontent.put("Name", "维修内容及要求");
+			repaircontent.put("Value", repairData.get("TaskDetail"));
+			startDataInputActivity(repaircontent);
+			break;
+		case R.id.activity_repairmanageitem_repairresult_tr:
+			HashMap<String, String> repairresult = new HashMap<String, String>();
+			repairresult.put("Key", "RepairDetail");
+			repairresult.put("Name", "工作完成情况及处理措施");
+			repairresult.put("Value", repairData.get("RepairDetail"));
+			startDataInputActivity(repairresult);
+			break;
+		case R.id.activity_repairmanageitem_repairthingcost_tr:
+			HashMap<String, String> repairthingcost = new HashMap<String, String>();
+			repairthingcost.put("Key", "AccessoryUsed");
+			repairthingcost.put("Name", "物品备件使用情况");
+			repairthingcost.put("Value", repairData.get("AccessoryUsed"));
+			startDataInputActivity(repairthingcost);
+			break;
+		case R.id.activity_repairmanageitem_repairmoneycost_tr:
+			HashMap<String, String> repairmoneycost = new HashMap<String, String>();
+			repairmoneycost.put("Key", "RepairCost");
+			repairmoneycost.put("Name", "维修金额");
+			repairmoneycost.put("Value", repairData.get("RepairCost"));
+			startDataInputActivity(repairmoneycost);
+			break;
+		case R.id.activity_repairmanageitem_equipmentopinion_tr:
+			HashMap<String, String> equipmentopinion = new HashMap<String, String>();
+			equipmentopinion.put("Key", "DDOpinion");
+			equipmentopinion.put("Name", "设备科意见");
+			equipmentopinion.put("Value", repairData.get("DDOpinion"));
+			startDataInputActivity(equipmentopinion);
+			break;
+		case R.id.activity_repairmanageitem_productionopinion_tr:
+			HashMap<String, String> productionopinion = new HashMap<String, String>();
+			productionopinion.put("Key", "PDOpinion");
+			productionopinion.put("Name", "生产科意见");
+			productionopinion.put("Value", repairData.get("PDOpinion"));
+			startDataInputActivity(productionopinion);
+			break;
+		case R.id.activity_repairmanageitem_plantopinion_tr:
+			HashMap<String, String> plantopinion = new HashMap<String, String>();
+			plantopinion.put("Key", "PMOpinion");
+			plantopinion.put("Name", "厂领导意见");
+			plantopinion.put("Value", repairData.get("PMOpinion"));
+			startDataInputActivity(plantopinion);
+			break;
+		case R.id.activity_repairmanageitem_submit:
+			break;
+		
+		}
+		
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_repairmanageitemdata, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			break;
+		case R.id.menu_repairmanageitemdata_save:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode==RESULT_OK){
+			HashMap<String, String> temp = (HashMap<String, String>)data.getSerializableExtra("data");
+			String key = temp.get("Key");
+			String value = temp.get("Value");
+			if (key.equals("AccidentDetail")) {
+				etFaultPhenomenon.setText(value);
+			}else if(key.equals("Otherstep")){
+				etOtherStep.setText(value);
+				repairData.put("EmergencyMeasures", combineEmergencyMeasures());
+			}else if (key.equals("RequiredManHours")) {
+				etTimeCost.setText(value);
+			}else if (key.equals("TaskDetail")) {
+				etContent.setText(value);
+			}else if (key.equals("RepairDetail")){
+				etResult.setText(value);
+			}else if (key.equals("AccessoryUsed")) {
+				etThing.setText(value);
+			}else if (key.equals("RepairCost")) {
+				etMoney.setText(value);
+			}else if (key.equals("DDOpinion")) {
+				etEquipmentOpinion.setText(value);
+			}else if (key.equals("PDOpinion")) {
+				etProductionOpinion.setText(value);
+			}else if (key.equals("PMOpinion")) {
+				etPlantOpinion.setText(value);
+			}
+			repairData.put(key, value);
+		}
+	}
+	
+	
+	/**
+	 * 获取远端数据的异步方法
+	 * @author sk
+	 */
+	class GetServerDeviceData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
+		@Override
+		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
+			JSONObject object = new JSONObject();
+			ArrayList<HashMap<String, String>> data = null;
+			try {
+				object.put("PlantID", 1);
+				String result = DataCenterHelper.HttpPostData("GetDeviceInfoList", object);
+				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
+					JSONObject jsonObject = new JSONObject(result);
+					data = OperationMethod.parseDeviceListToArray(jsonObject);
+//					deviceDataArrayList = data;
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+				data = null;
+			} catch (IOException e) {
+				e.printStackTrace();
+				data = null;
+			} catch (JSONException e) {
+				e.printStackTrace();
+				data = null;
+			}
+			return data;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+		
+		@Override
+		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
+			super.onPostExecute(result);
+			if(result!=null){
+			}
+		}
+	}
+	
+}

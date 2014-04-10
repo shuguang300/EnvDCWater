@@ -23,7 +23,7 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 	private ActionBar mActionBar;
 	private EditText dataInputer;
 	private Button buttonAddMedia;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,7 +32,7 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 		iniActionBar();
 		iniView();
 	}
-	
+
 	/**
 	 * 初始化数据
 	 */
@@ -41,7 +41,7 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 		getedIntend = getIntent();
 		data = (HashMap<String, String>)getedIntend.getSerializableExtra("data");
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -52,7 +52,7 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 		mActionBar.setDisplayShowTitleEnabled(true);
 		mActionBar.setTitle(data.get("Name"));
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -66,7 +66,7 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 			buttonAddMedia.setVisibility(View.GONE);
 		}
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -76,18 +76,18 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 		intent.putExtra("data", data);
 		return intent;
 	}
-	
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_datainput, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -101,7 +101,7 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 		finish();
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
@@ -117,5 +117,5 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 			break;
 		}
 	}
-	
+
 }

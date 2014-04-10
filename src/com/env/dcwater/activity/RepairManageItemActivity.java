@@ -1,83 +1,55 @@
 package com.env.dcwater.activity;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog.Builder;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
-import com.env.dcwater.fragment.DateTimePickerView;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
-import com.env.dcwater.util.OperationMethod;
 
 /**
  * 单个报修工单界面，该界面可查看，编辑
  * @author sk
  *
  */
-public class RepairManageItemActivity extends NfcActivity implements OnClickListener,OnItemClickListener{
+public class RepairManageItemActivity extends NfcActivity{
 	
 	public static final String ACTION_STRING = "RepairManageItemActivity";
 	private ProgressDialog mProgressDialog;
+	private AlertDialog.Builder mUpdateConfirm;
 	private ActionBar mActionBar;
 	private HashMap<String, String> receivedData,selectedData;
 	private Intent receivedIntent;
 	private int mRequestCode,taskState,taskType;
-	private Date mFaultTime,mFinishTime;
-	private Button mSubmitButton;
-	private GetServerData mGetServerData;
 	private UpdateTask mUpdateTask;
-	private DrawerLayout mDrawerLayout;
-	private ListView mMachineListView;
-	private Builder mHandleContent;
-	private MachineListItemAdapter mMachineListAdapter;
-	private ArrayList<HashMap<String, String>> mMachine;
-//	private TableLayout mGroupBasic,mGroupFault,mGroupPeople;
 	private TableLayout mGroupInfo,mGroupVerify;
-	private DateTimePickerView dateTimePickerView;
-	private String mOtherStep="",mHandleStep="",methodName;
+	private String mOtherStep="",mHandleStep="",methodName="";
 	private String [] handleStepContent = {"尝试手动启动","关闭主电源","拍下急停按钮","悬挂警示标识牌","关闭故障设备工艺段进水"};
 	private boolean [] handleStepSelected = {false,false,false,false,false},tempStepSelected;
 	private TextView etName,etType,etSN,etPosition,etStartTime,etManufacture,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep,etSendTime,etSender,etTimeCost,etContent,etResult,etFinishTime,etThing,etMoney,etVerifyPeople,etEquipmentOpinion,etProductionOpinion,etPlantOpinion;
-	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trTimeCost,trContent,trResult,trFinishTime,trThingCost,trMoneyCost,trEquipmentOpinion,trProductionOpinion,trPlantOpinion;
+	private TableRow trResult,trFinishTime,trThingCost,trMoneyCost,trProductionOpinion,trPlantOpinion;
 	private Switch swVerifyResult;
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +72,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER:
 			mActionBar.setTitle("上报故障");
 			break;
-		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
+		case RepairManageActivity.REPAIRMANAGE_NORMAL_INTEGER:
 			mActionBar.setTitle(receivedData.get("FaultReportSN")+"详情");
-			break;
-		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
-			mActionBar.setTitle(receivedData.get("FaultReportSN")+"修改");
 			break;
 		}
 	}
@@ -118,16 +87,14 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		receivedIntent = getIntent();
 		//获取请求码
 		mRequestCode = receivedIntent.getExtras().getInt("RequestCode");
-		methodName = receivedIntent.getExtras().getString("MethodName");
 		switch (mRequestCode) {
 		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER://新增维修单
-			mFaultTime = new Date();
 			copyHandleStepSelected();
 			taskState = -1;
 			selectedData = new HashMap<String, String>();
 			selectedData.put("AccidentDetail", "");
 			break;
-		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER://修改维修单
+		case RepairManageActivity.REPAIRMANAGE_NORMAL_INTEGER://普通模式
 			receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("Data");
 			selectedData = receivedData;
 			taskState = Integer.valueOf(selectedData.get("State"));
@@ -155,49 +122,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				mOtherStep = "";
 				mHandleStep ="";
 			}
-			try {
-				//得到故障维修时间
-				//得到该表单的故障发生时间
-				mFaultTime = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(receivedData.get("AccidentOccurTime").toString());
-			} catch (Exception e) {
-				mFaultTime = new Date();
-			}
-			break;
-		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER://查看维修单的详细情况
-			receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("Data");
-			selectedData = receivedData;
-			taskState = Integer.valueOf(selectedData.get("State"));
-			String [] handle2;
-			if(receivedData.get("EmergencyMeasures").equals("null")){
-				handle2 = new String [0]; 
-			}else {
-				handle2 = receivedData.get("EmergencyMeasures").split(",");
-			}
-			try {
-				for(int i=0;i<handle2.length;i++){
-					if(handle2[i].endsWith("(an)")) {
-						//应急措施和措施放在一个字段里面了，带有（an）结尾的是措施，数字的是紧急措施	
-						mOtherStep = handle2[i].replace("(an)", "");
-					}else {
-						if(!handle2[i].equals("")){
-							mHandleStep = mHandleStep + handleStepContent[Integer.parseInt(handle2[i])-1] + "\n";
-							//得到初始化的 应急措施
-							handleStepSelected[Integer.parseInt(handle2[i])-1] = true;
-						}
-					}
-				}
-				copyHandleStepSelected();
-			} catch (Exception e) {
-				mOtherStep = "";
-				mHandleStep ="";
-			}
-			try {
-				//得到故障维修时间
-				//得到该表单的故障发生时间
-				mFaultTime = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(receivedData.get("AccidentOccurTime").toString());
-			} catch (Exception e) {
-				mFaultTime = new Date();
-			}
 			break;
 		}
 	}
@@ -207,18 +131,10 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	 */
 	private void findAndIniView(){
 		
-		mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_repairmanageitem_drawlayout);
-		
-		mMachineListView = (ListView)findViewById(R.id.activity_repairmanageitem_machinelist);
-		
-//		mGroupBasic = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgroupbasic);
-//		mGroupFault = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgroupfault);
-//		mGroupPeople = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgrouppeople);
 		mGroupInfo = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgroupinfo);
 		mGroupVerify = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgroupverify);
 		
 		etName = (TextView)findViewById(R.id.activity_repairmanageitem_name);
-		trName = (TableRow)findViewById(R.id.activity_repairmanageitem_name_tr);
 		
 		etType = (TextView)findViewById(R.id.activity_repairmanageitem_type);
 		
@@ -231,29 +147,20 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		etManufacture = (TextView)findViewById(R.id.activity_repairmanageitem_manufacturer);
 		
 		etFaultTime = (TextView)findViewById(R.id.activity_repairmanageitem_faulttime);
-		trFaultTime = (TableRow)findViewById(R.id.activity_repairmanageitem_faulttime_tr);
 		
 		etFaultPhenomenon = (TextView)findViewById(R.id.activity_repairmanageitem_faultphenomenon);
-		trFaultPhenomenon = (TableRow)findViewById(R.id.activity_repairmanageitem_faultphenomenon_tr);
 		
 		etHandleStep = (TextView)findViewById(R.id.activity_repairmanageitem_handlestep);
-		trHandleStep = (TableRow)findViewById(R.id.activity_repairmanageitem_handlestep_tr);
 		
 		etOtherStep = (TextView)findViewById(R.id.activity_repairmanageitem_otherstep);
-		trOtherStep = (TableRow)findViewById(R.id.activity_repairmanageitem_otherstep_tr);
 		
 		etPeople = (TextView)findViewById(R.id.activity_repairmanageitem_taskpeople);
 
-//		trSendTime = (TableRow)findViewById(R.id.activity_repairmanageitem_repairsttime_tr);
 		etSendTime = (TextView)findViewById(R.id.activity_repairmanageitem_repairsttime);
 		
-//		trSender = (TableRow)findViewById(R.id.activity_repairmanageitem_repairpeople_tr);
 		etSender = (TextView)findViewById(R.id.activity_repairmanageitem_repairpeople);
-		
-		trTimeCost = (TableRow)findViewById(R.id.activity_repairmanageitem_repairtimecost_tr);
 		etTimeCost = (TextView)findViewById(R.id.activity_repairmanageitem_repairtimecost);
 		
-		trContent = (TableRow)findViewById(R.id.activity_repairmanageitem_repaircontent_tr);
 		etContent = (TextView)findViewById(R.id.activity_repairmanageitem_repaircontent);
 		
 		trResult = (TableRow)findViewById(R.id.activity_repairmanageitem_repairresult_tr);
@@ -272,8 +179,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		
 		etVerifyPeople = (TextView)findViewById(R.id.activity_repairmanageitem_verifypeople);
 		
-		trEquipmentOpinion = (TableRow)mGroupVerify.findViewById(R.id.activity_repairmanageitem_equipmentopinion_tr);
-		etEquipmentOpinion = (TextView)mGroupVerify.findViewById(R.id.activity_repairmanageitem_equipmentopinion);
+		etEquipmentOpinion = (TextView)findViewById(R.id.activity_repairmanageitem_equipmentopinion);
 		
 		etProductionOpinion = (TextView)findViewById(R.id.activity_repairmanageitem_productionopinion);
 		trProductionOpinion = (TableRow)findViewById(R.id.activity_repairmanageitem_productionopinion_tr);
@@ -281,8 +187,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		trPlantOpinion = (TableRow)findViewById(R.id.activity_repairmanageitem_plantopinion_tr);
 		etPlantOpinion = (TextView)findViewById(R.id.activity_repairmanageitem_plantopinion);
 		
-		mSubmitButton = (Button)findViewById(R.id.activity_repairmanageitem_submit);
-		mSubmitButton.setOnClickListener(this);
+//		mSubmitButton = (Button)findViewById(R.id.activity_repairmanageitem_submit);
 		
 		fillViewData(mRequestCode);
 		setViewState(mRequestCode);
@@ -294,7 +199,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	 * @param code
 	 */
 	private void setViewState( int code){
-		mMachineListView.setOnItemClickListener(this);
 		int userPositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
 		if(userPositionID==EnumList.UserRole.USERROLEEQUIPMENTOPERATION){
 			taskType = EnumList.RepairTaskType.EQUIPMENTSECTION.getType();
@@ -309,8 +213,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		}
 		switch (taskType) {
 		case 0:
-			setGroupVerifyPDShow(false);
-			break;
 		case EnumList.RepairTaskType.TASKTYPE_EQUIPMENT:
 			setGroupVerifyPDShow(false);
 			break;
@@ -318,219 +220,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			setGroupVerifyPDShow(true);
 			break;
 		}
-		if(code==RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER){
-			mSubmitButton.setVisibility(View.GONE);
-			setGroupBasicAndFaultEnable(false);
-			setGroupTaskSendEnable(false);
-			setGroupTaskRepairEnable(false);
-			setGroupVerifyEnableByEquipment(false);
-			setGroupVerifyEnableByProduction(false);
-			setGroupVerifyEnableByPlanter(false);
-		}else {
-			mSubmitButton.setVisibility(View.VISIBLE);
-			if (userPositionID==EnumList.UserRole.USERROLEEQUIPMENTOPERATION||
-				userPositionID==EnumList.UserRole.USERROLEPRODUCTIONOPERATION) {
-				setGroupBasicAndFaultEnable(true);
-				setGroupTaskSendEnable(false);
-				setGroupTaskRepairEnable(false);
-				setGroupVerifyEnableByEquipment(false);
-				setGroupVerifyEnableByProduction(false);
-				setGroupVerifyEnableByPlanter(false);
-			}else if (userPositionID==EnumList.UserRole.USERROLEEQUIPMENTCHIEF) {
-				if(taskType==EnumList.RepairTaskType.TASKTYPE_EQUIPMENT){
-					switch (taskState) {
-					case EnumList.RepairState.STATEHASBEENREPORTED:
-						setGroupTaskSendEnable(true);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEHASBEENCONFIRMED:
-						break;
-					case EnumList.RepairState.STATEHASBEENDISTRIBUTED:
-						setGroupTaskSendEnable(true);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEBEENINGREPAIRED:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEHASBEENREPAIRED:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(true);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEFORCORRECTION:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEDEVICETHROUGH:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(true);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEPRODUCTIONTHROUGH:
-						break;
-					case EnumList.RepairState.STATEDIRECTORTHROUGH:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					}
-				}else if (taskType==EnumList.RepairTaskType.TASKTYPE_PRODUCTION) {
-					switch (taskState) {
-					case EnumList.RepairState.STATEHASBEENREPORTED:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByProduction(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEHASBEENCONFIRMED:
-						setGroupTaskSendEnable(true);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByProduction(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEHASBEENDISTRIBUTED:
-						setGroupTaskSendEnable(true);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByProduction(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEBEENINGREPAIRED:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByProduction(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEHASBEENREPAIRED:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(true);
-						setGroupVerifyEnableByProduction(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEFORCORRECTION:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByProduction(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEDEVICETHROUGH:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(true);
-						setGroupVerifyEnableByProduction(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEPRODUCTIONTHROUGH:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByProduction(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEDIRECTORTHROUGH:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByProduction(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					}
-				}else {
-					setGroupBasicAndFaultEnable(false);
-					setGroupTaskSendEnable(false);
-					setGroupTaskRepairEnable(false);
-					setGroupVerifyEnableByEquipment(false);
-					setGroupVerifyEnableByProduction(false);
-					setGroupVerifyEnableByPlanter(false);
-				}
-			}else if (userPositionID==EnumList.UserRole.USERROLEPRODUCTIONCHIEF) {
-				if(taskType==EnumList.RepairTaskType.TASKTYPE_EQUIPMENT){
-					setGroupTaskSendEnable(false);
-					setGroupTaskRepairEnable(false);
-					setGroupVerifyEnableByEquipment(false);
-					setGroupVerifyEnableByProduction(false);
-					setGroupVerifyEnableByPlanter(false);
-				}else if (taskType==EnumList.RepairTaskType.TASKTYPE_PRODUCTION) {
-					switch (taskState) {
-					case EnumList.RepairState.STATEHASBEENREPORTED:
-					case EnumList.RepairState.STATEHASBEENCONFIRMED:
-					case EnumList.RepairState.STATEHASBEENDISTRIBUTED:;
-					case EnumList.RepairState.STATEBEENINGREPAIRED:;
-					case EnumList.RepairState.STATEHASBEENREPAIRED:
-					case EnumList.RepairState.STATEFORCORRECTION:
-					case EnumList.RepairState.STATEDIRECTORTHROUGH:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByProduction(false);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					case EnumList.RepairState.STATEDEVICETHROUGH:
-					case EnumList.RepairState.STATEPRODUCTIONTHROUGH:
-						setGroupTaskSendEnable(false);
-						setGroupTaskRepairEnable(false);
-						setGroupVerifyEnableByEquipment(false);
-						setGroupVerifyEnableByProduction(true);
-						setGroupVerifyEnableByPlanter(false);
-						break;
-					}
-				}else {
-					setGroupBasicAndFaultEnable(false);
-					setGroupTaskSendEnable(false);
-					setGroupTaskRepairEnable(false);
-					setGroupVerifyEnableByEquipment(false);
-					setGroupVerifyEnableByProduction(false);
-					setGroupVerifyEnableByPlanter(false);
-				}
-			}else if (userPositionID==EnumList.UserRole.USERROLEREPAIRMAN) {
-				if(taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED){
-					setGroupTaskRepairEnable(false);
-				}else {
-					setGroupTaskRepairEnable(true);
-				}
-				setGroupBasicAndFaultEnable(false);
-				setGroupTaskSendEnable(false);
-				setGroupVerifyEnableByEquipment(false);
-				setGroupVerifyEnableByProduction(false);
-				setGroupVerifyEnableByPlanter(false);
-			}else if (userPositionID==EnumList.UserRole.USERROLEPLANTER) {
-				setGroupBasicAndFaultEnable(false);
-				setGroupTaskSendEnable(false);
-				setGroupTaskRepairEnable(false);
-				setGroupVerifyEnableByEquipment(false);
-				setGroupVerifyEnableByProduction(false);
-				setGroupVerifyEnableByPlanter(true);
-			}else {
-				setGroupBasicAndFaultEnable(false);
-				setGroupTaskSendEnable(false);
-				setGroupTaskRepairEnable(false);
-				setGroupVerifyEnableByEquipment(false);
-				setGroupVerifyEnableByProduction(false);
-				setGroupVerifyEnableByPlanter(false);
-			}
-		}
-//	
-		if((taskState==0||taskState==-1&&code==RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER)||taskState!=0){
-			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-		}
-		
 		switch (taskState) {
 		case -1:
 			setGroupRepairShow(false);
@@ -546,7 +235,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			setGroupVerifyShow(false);
 			break;
 		case EnumList.RepairState.STATEBEENINGREPAIRED:
-			
 		case EnumList.RepairState.STATEHASBEENREPAIRED:
 			setGroupVerifyShow(false);
 			break;
@@ -592,13 +280,11 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	private void fillViewData(int code){
 		switch (code) {
 		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER:
-			getServerData();
 			setGroupBasicData(true);
 			setGroupFaultData(true);
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
-			getServerData();
-		case RepairManageActivity.REPAIRMANAGE_DETAIL_INTEGER:
+		case RepairManageActivity.REPAIRMANAGE_NORMAL_INTEGER:
 			setGroupBasicData(false);
 			setGroupFaultData(false);
 			setGroupTaskSendData(false);
@@ -640,64 +326,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 //		mGroupBasic.setVisibility(isShow?View.VISIBLE:View.GONE);
 //	}
 	
-	/**
-	 * 设置填报单的设备信息和故障西悉尼是否能点击
-	 * @param enable
-	 */
-	private void setGroupBasicAndFaultEnable(boolean enable){
-		trName.setOnClickListener(enable?this:null);
-		trFaultTime.setOnClickListener(enable?this:null);
-		trFaultPhenomenon.setOnClickListener(enable?this:null);
-		trHandleStep.setOnClickListener(enable?this:null);
-		trOtherStep.setOnClickListener(enable?this:null);
-	}
-	
-	/**
-	 * 设备科审核的能够点击
-	 * @param enable
-	 */
-	private void setGroupVerifyEnableByEquipment(boolean enable){
-		swVerifyResult.setEnabled(enable);
-		trEquipmentOpinion.setOnClickListener(enable?this:null);
-	}
-	
-	/**
-	 * 生产科审核的能否点击
-	 * @param enable
-	 */
-	private void setGroupVerifyEnableByProduction(boolean enable){
-		trProductionOpinion.setOnClickListener(enable?this:null);
-	}
-	
-	/**
-	 * 厂长审核能否点击
-	 * @param enable
-	 */
-	private void setGroupVerifyEnableByPlanter(boolean enable){
-		trPlantOpinion.setOnClickListener(enable?this:null);
-	}
-	
-	/**
-	 * 派发工单的能否点击
-	 * @param enable
-	 */
-	private void setGroupTaskSendEnable(boolean enable){
-//		trSendTime.setOnClickListener(enable?this:null);
-//		trSender.setOnClickListener(enable?this:null);
-		trTimeCost.setOnClickListener(enable?this:null);
-		trContent.setOnClickListener(enable?this:null);
-	}
-	
-	/**
-	 * 填写工单能否点击
-	 * @param enable
-	 */
-	private void setGroupTaskRepairEnable(boolean enable){
-		trResult.setOnClickListener(enable?this:null);
-		trFinishTime.setOnClickListener(enable?this:null);
-		trThingCost.setOnClickListener(enable?this:null);
-		trMoneyCost.setOnClickListener(enable?this:null);
-	}
 	
 	/**
 	 * 设置故障信息的数据
@@ -927,29 +555,20 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
-	 * 使用asynctask异步获取服务器上的数据
-	 */
-	private void getServerData(){
-		mGetServerData = new GetServerData();
-		mGetServerData.execute("");
-	}
-	/**
 	 * 使用asynctask异步提交工单
 	 */
-	private void updateServerTask(){
-		if(methodName.equals(RepairManageActivity.METHOD_ADD_STRING)){
+	private void updateServerTask(String arg0){
+		if(arg0.equals(RepairManageActivity.METHOD_ADD_STRING)){
 			if(selectedData==null){
 				Toast.makeText(this, "未选择设备", Toast.LENGTH_SHORT).show();
 			}else {
 				mUpdateTask = new UpdateTask();
-				mUpdateTask.execute(methodName);
+				mUpdateTask.execute(arg0);
 			}
 		}else {
 			mUpdateTask = new UpdateTask();
-			mUpdateTask.execute(methodName);
+			mUpdateTask.execute(arg0);
 		}
-		
-		
 	}
 	
 	/**
@@ -977,21 +596,13 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
-	 * 如果选择取消，则将初始的 应急措施 重新赋值给 非缓存对象
-	 */
-	private void copyTempStepSelected(){
-		for(int i = 0;i<tempStepSelected.length;i++){
-			handleStepSelected[i] = tempStepSelected[i];
-		}
-	}
-	
-	/**
 	 * 跳转 数据填报界面
 	 * @param data
 	 */
-	private void startDataInputActivity(HashMap<String, String> data){
-		Intent intent = new Intent(this,DataInputActivity.class);
+	private void startItemDataActivity(HashMap<String, String> data,String methodName){
+		Intent intent = new Intent(this,RepairManageItemDataActivity.class);
 		intent.putExtra("data", data);
+		intent.putExtra("MethodName", methodName);
 		startActivityForResult(intent, 0);
 	}
 	
@@ -1014,14 +625,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		return EmergencyMeasures;
 	}
 	
-	@Override
-	public void onBackPressed() {
-		if(dateTimePickerView!=null&&dateTimePickerView.isShowing()){
-			dateTimePickerView.dismiss();
-		}else {
-			super.onBackPressed();
-		}
-	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -1078,209 +681,73 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
-				mDrawerLayout.closeDrawer(Gravity.LEFT);
-			}else {
-				setResult(RESULT_CANCELED);
-				finish();
-			}
+			setResult(RESULT_CANCELED);
+			finish();	
 			break;
-//		case R.id.menu_repairmanageitem_refresh:
-//			getServerData();
-//			break;
+		case R.id.cm_rm_op_update:
+			startItemDataActivity(selectedData,RepairManageActivity.METHOD_UPDATE_STRING);
+			break;
+		case R.id.cm_rm_dd_send:
+			startItemDataActivity(selectedData,RepairManageActivity.METHOD_SENDTASK_STRING);
+			break;
+		case R.id.cm_rm_dd_approve:
+			startItemDataActivity(selectedData,RepairManageActivity.METHOD_DDAPPROVE_STRING);
+			break;
+		case R.id.cm_rm_pd_approve:
+			startItemDataActivity(selectedData,RepairManageActivity.METHOD_PDAPPROVE_STRING);
+			break;
+		case R.id.cm_rm_rm_repair:
+			startItemDataActivity(selectedData,RepairManageActivity.METHOD_REPAIRTASK_STRING);
+			break;
+		case R.id.cm_rm_pm_confirm:
+			startItemDataActivity(selectedData,RepairManageActivity.METHOD_PMAPPROVE_STRING);
+			break;
+		case R.id.cm_rm_pd_confirm:
+			if(mUpdateConfirm==null){
+				mUpdateConfirm = new AlertDialog.Builder(RepairManageItemActivity.this);
+			}
+			mUpdateConfirm.setTitle("确认").setMessage("确认上报工单吗？");
+			mUpdateConfirm.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					updateServerTask(RepairManageActivity.METHOD_PDCONFIRM_STRING);
+				}
+			}).setNegativeButton("取消", null);
+			mUpdateConfirm.create();
+			mUpdateConfirm.show();
+			break;
+		case R.id.cm_rm_rm_receive:
+			if(mUpdateConfirm==null){
+				mUpdateConfirm = new AlertDialog.Builder(RepairManageItemActivity.this);
+			}
+			mUpdateConfirm.setTitle("确认").setMessage("确认维修吗？");
+			mUpdateConfirm.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					updateServerTask(RepairManageActivity.METHOD_RECEIVE_STRING);
+				}
+			}).setNegativeButton("取消", null);
+			mUpdateConfirm.create();
+			mUpdateConfirm.show();
+			break;
+		case R.id.cm_rm_op_delete:
+			if(mUpdateConfirm==null){
+				mUpdateConfirm = new AlertDialog.Builder(RepairManageItemActivity.this);
+			}
+			mUpdateConfirm.setTitle("确认").setMessage("确认删除吗？");
+			mUpdateConfirm.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					updateServerTask(RepairManageActivity.METHOD_DELETE_STRING);
+				}
+			}).setNegativeButton("取消", null);
+			mUpdateConfirm.create();
+			mUpdateConfirm.show();
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 	
-	
-	
-	@Override
-	public void onClick(View v) {
- 		switch (v.getId()) {
-		case R.id.activity_repairmanageitem_name_tr:
-			mDrawerLayout.openDrawer(Gravity.LEFT);
-			break;
-		case R.id.activity_repairmanageitem_faulttime_tr:
-			if(dateTimePickerView==null){
-				dateTimePickerView = new DateTimePickerView(RepairManageItemActivity.this);
-			}
-			dateTimePickerView.setButtonClickEvent(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					mFaultTime = dateTimePickerView.getSelectedDate();
-					etFaultTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(mFaultTime));
-					dateTimePickerView.dismiss();
-				}
-			}, new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					dateTimePickerView.dismiss();
-				}
-			}, new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Calendar calendar = Calendar.getInstance(Locale.CHINA);
-					calendar.setTime(mFaultTime);
-					dateTimePickerView.iniWheelView(calendar);
-				}
-			});
-			Calendar fualtTimeCL = Calendar.getInstance(Locale.CHINA);
-			fualtTimeCL.setTime(mFaultTime);
-			dateTimePickerView.iniWheelView(fualtTimeCL);
-			dateTimePickerView.showAtLocation(findViewById(R.id.activity_repairmanageitem_main), Gravity.BOTTOM, 0, 0);
-			break;
-		case R.id.activity_repairmanageitem_repairendtime_tr:
-			if(!etFinishTime.getText().toString().equals("")){
-				try {
-					mFinishTime = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(etFinishTime.getText().toString());
-				} catch (ParseException e) {
-					e.printStackTrace();
-					mFinishTime = new Date();
-				}
-				if(dateTimePickerView==null){
-					dateTimePickerView = new DateTimePickerView(RepairManageItemActivity.this);
-				}
-				dateTimePickerView.setButtonClickEvent(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						mFinishTime = dateTimePickerView.getSelectedDate();
-						etFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(mFinishTime));
-						dateTimePickerView.dismiss();
-					}
-				}, new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						dateTimePickerView.dismiss();
-					}
-				}, new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Calendar calendar = Calendar.getInstance(Locale.CHINA);
-						calendar.setTime(mFinishTime);
-						dateTimePickerView.iniWheelView(calendar);
-					}
-				});
-				Calendar finishTimeCl = Calendar.getInstance(Locale.CHINA);
-				finishTimeCl.setTime(mFinishTime);
-				dateTimePickerView.iniWheelView(finishTimeCl);
-				dateTimePickerView.showAtLocation(findViewById(R.id.activity_repairmanageitem_main), Gravity.BOTTOM, 0, 0);
-			}
-			break;
-		case R.id.activity_repairmanageitem_faultphenomenon_tr:
-			HashMap<String, String> faultphenomenon = new HashMap<String, String>();
-			faultphenomenon.put("Key", "AccidentDetail");
-			faultphenomenon.put("Name", "故障现象");
-			faultphenomenon.put("Value", selectedData.get("AccidentDetail"));
-			startDataInputActivity(faultphenomenon);
-			break;
-		case R.id.activity_repairmanageitem_handlestep_tr:
-			if(mHandleContent == null){
-				mHandleContent = new Builder(RepairManageItemActivity.this);
-				mHandleContent.setTitle("应急措施选择").setCancelable(false);
-				mHandleContent.setPositiveButton("取消", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						copyHandleStepSelected();
-					}
-				}).setNegativeButton("确定", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						copyTempStepSelected();
-						mHandleStep = "";
-						for(int i = 0;i<handleStepSelected.length;i++){
-							if(handleStepSelected[i]){
-								mHandleStep = mHandleStep + handleStepContent[i] + "\n";
-							}
-						}
-						etHandleStep.setText(mHandleStep);
-					}
-				});
-			}
-			mHandleContent.setMultiChoiceItems(handleStepContent, tempStepSelected, 
-					new OnMultiChoiceClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-				}
-			});
-			mHandleContent.create();
-			mHandleContent.show();
-			break;
-		case R.id.activity_repairmanageitem_otherstep_tr:
-			HashMap<String, String> otherstep = new HashMap<String, String>();
-			otherstep.put("Key", "Otherstep");
-			otherstep.put("Name", "其他措施");
-			otherstep.put("Value", etOtherStep.getText().toString());
-			startDataInputActivity(otherstep);
-			break;
-		case R.id.activity_repairmanageitem_repairtimecost_tr:
-			HashMap<String, String> repairtimecost = new HashMap<String, String>();
-			repairtimecost.put("Key", "RequiredManHours");
-			repairtimecost.put("Name", "所需工时");
-			repairtimecost.put("Value", selectedData.get("RequiredManHours"));
-			startDataInputActivity(repairtimecost);
-			break;
-		case R.id.activity_repairmanageitem_repaircontent_tr:
-			HashMap<String, String> repaircontent = new HashMap<String, String>();
-			repaircontent.put("Key", "TaskDetail");
-			repaircontent.put("Name", "维修内容及要求");
-			repaircontent.put("Value", selectedData.get("TaskDetail"));
-			startDataInputActivity(repaircontent);
-			break;
-		case R.id.activity_repairmanageitem_repairresult_tr:
-			HashMap<String, String> repairresult = new HashMap<String, String>();
-			repairresult.put("Key", "RepairDetail");
-			repairresult.put("Name", "工作完成情况及处理措施");
-			repairresult.put("Value", selectedData.get("RepairDetail"));
-			startDataInputActivity(repairresult);
-			break;
-		case R.id.activity_repairmanageitem_repairthingcost_tr:
-			HashMap<String, String> repairthingcost = new HashMap<String, String>();
-			repairthingcost.put("Key", "AccessoryUsed");
-			repairthingcost.put("Name", "物品备件使用情况");
-			repairthingcost.put("Value", selectedData.get("AccessoryUsed"));
-			startDataInputActivity(repairthingcost);
-			break;
-		case R.id.activity_repairmanageitem_repairmoneycost_tr:
-			HashMap<String, String> repairmoneycost = new HashMap<String, String>();
-			repairmoneycost.put("Key", "RepairCost");
-			repairmoneycost.put("Name", "维修金额");
-			repairmoneycost.put("Value", selectedData.get("RepairCost"));
-			startDataInputActivity(repairmoneycost);
-			break;
-		case R.id.activity_repairmanageitem_equipmentopinion_tr:
-			HashMap<String, String> equipmentopinion = new HashMap<String, String>();
-			equipmentopinion.put("Key", "DDOpinion");
-			equipmentopinion.put("Name", "设备科意见");
-			equipmentopinion.put("Value", selectedData.get("DDOpinion"));
-			startDataInputActivity(equipmentopinion);
-			break;
-		case R.id.activity_repairmanageitem_productionopinion_tr:
-			HashMap<String, String> productionopinion = new HashMap<String, String>();
-			productionopinion.put("Key", "PDOpinion");
-			productionopinion.put("Name", "生产科意见");
-			productionopinion.put("Value", selectedData.get("PDOpinion"));
-			startDataInputActivity(productionopinion);
-			break;
-		case R.id.activity_repairmanageitem_plantopinion_tr:
-			HashMap<String, String> plantopinion = new HashMap<String, String>();
-			plantopinion.put("Key", "PMOpinion");
-			plantopinion.put("Name", "厂领导意见");
-			plantopinion.put("Value", selectedData.get("PMOpinion"));
-			startDataInputActivity(plantopinion);
-			break;
-		case R.id.activity_repairmanageitem_submit:
-			updateServerTask();
-			break;
-		}
-	}
-	
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		mDrawerLayout.closeDrawer(Gravity.LEFT);
-		selectedData = mMachine.get(position);
-		selectedData.put("AccidentDetail", etFaultPhenomenon.getText().toString());
-		setGroupBasicData(false);
-	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1317,85 +784,13 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	}
 	
 	/**
-	 * 自定义的设备列表的adapter
-	 * @author sk
-	 */
-	private class MachineListItemAdapter extends BaseAdapter {
-		@Override
-		public int getCount() {
-			return mMachine.size();
-		}
-		@Override
-		public HashMap<String, String> getItem(int position) {
-			return mMachine.get(position);
-		}
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if(convertView ==null){
-				convertView = LayoutInflater.from(RepairManageItemActivity.this).inflate(R.layout.item_machinelist, null);
-			}
-			TextView nameTextView = (TextView)convertView.findViewById(R.id.item_machinelist_name);
-			nameTextView.setText(mMachine.get(position).get("DeviceName").toString());
-			return convertView;
-		}
-	}
-	
-	/**
-	 * 获取远端数据的异步方法
-	 * @author sk
-	 */
-	class GetServerData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
-		@Override
-		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
-			JSONObject object = new JSONObject();
-			ArrayList<HashMap<String, String>> data = null;
-			try {
-				object.put("PlantID", 1);
-				String result = DataCenterHelper.HttpPostData("GetDeviceInfoList", object);
-				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
-					JSONObject jsonObject = new JSONObject(result);
-					data = OperationMethod.parseDeviceListToArray(jsonObject);
-					mMachine = data;
-				}
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-				data = null;
-			} catch (IOException e) {
-				e.printStackTrace();
-				data = null;
-			} catch (JSONException e) {
-				e.printStackTrace();
-				data = null;
-			}
-			return data;
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-		
-		@Override
-		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
-			super.onPostExecute(result);
-			if(result!=null){
-				mMachineListAdapter = new MachineListItemAdapter();
-				mMachineListView.setAdapter(mMachineListAdapter);
-			}
-		}
-	}
-	
-	/**
 	 * 填报一个单子
 	 * @author sk
 	 */
 	class UpdateTask extends AsyncTask<String, String, String>{
 		@Override
 		protected String doInBackground(String... params) {
+			methodName = params[0];
 			JSONObject param = new JSONObject();
 			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
 			try {

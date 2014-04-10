@@ -12,14 +12,13 @@
         android:orientation="vertical" >
 
         <TableLayout
-            android:id="@+id/activity_repairmanageitem_repairgroupbasic"
-            style="@style/activity_repairmanageitem_tablelayout" >
+            android:id="@+id/activity_repairmanageitem_repairgroupfault"
+            style="@style/activity_repairmanageitem_tablelayout"
+            android:visibility="gone" >
 
             <TextView
                 style="@style/activity_repairmanageitem_textview_group"
-                android:text="@string/activity_repairmanageitem_basic" />
-
-            <TextView style="@style/item_divide" />
+                android:text="@string/activity_repairmanageitem_fault" />
 
             <TableRow
                 android:id="@+id/activity_repairmanageitem_name_tr"
@@ -33,90 +32,6 @@
                     android:id="@+id/activity_repairmanageitem_name"
                     style="@style/activity_repairmanageitem_textview" />
             </TableRow>
-
-            <TextView style="@style/item_divide" />
-
-            <TableRow
-                android:id="@+id/activity_repairmanageitem_type_tr"
-                style="@style/activity_repairmanageitem_tablerow" >
-
-                <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_type" />
-
-                <TextView
-                    android:id="@+id/activity_repairmanageitem_type"
-                    style="@style/activity_repairmanageitem_textview" />
-            </TableRow>
-
-            <TextView style="@style/item_divide" />
-
-            <TableRow
-                android:id="@+id/activity_repairmanageitem_sn_tr"
-                style="@style/activity_repairmanageitem_tablerow" >
-
-                <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_sn" />
-
-                <TextView
-                    android:id="@+id/activity_repairmanageitem_sn"
-                    style="@style/activity_repairmanageitem_textview" />
-            </TableRow>
-
-            <TextView style="@style/item_divide" />
-
-            <TableRow
-                android:id="@+id/activity_repairmanageitem_position_tr"
-                style="@style/activity_repairmanageitem_tablerow" >
-
-                <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_position" />
-
-                <TextView
-                    android:id="@+id/activity_repairmanageitem_position"
-                    style="@style/activity_repairmanageitem_textview" />
-            </TableRow>
-
-            <TextView style="@style/item_divide" />
-
-            <TableRow
-                android:id="@+id/activity_repairmanageitem_starttime_tr"
-                style="@style/activity_repairmanageitem_tablerow" >
-
-                <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_starttime" />
-
-                <TextView
-                    android:id="@+id/activity_repairmanageitem_starttime"
-                    style="@style/activity_repairmanageitem_textview" />
-            </TableRow>
-
-            <TextView style="@style/item_divide" />
-
-            <TableRow
-                android:id="@+id/activity_repairmanageitem_manufacturer_tr"
-                style="@style/activity_repairmanageitem_tablerow" >
-
-                <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_manufacturer" />
-
-                <TextView
-                    android:id="@+id/activity_repairmanageitem_manufacturer"
-                    style="@style/activity_repairmanageitem_textview" />
-            </TableRow>
-        </TableLayout>
-
-        <TableLayout
-            android:id="@+id/activity_repairmanageitem_repairgroupfault"
-            style="@style/activity_repairmanageitem_tablelayout" >
-
-            <TextView
-                style="@style/activity_repairmanageitem_textview_group"
-                android:text="@string/activity_repairmanageitem_fault" />
 
             <TextView style="@style/item_divide" />
 
@@ -177,15 +92,6 @@
                     android:id="@+id/activity_repairmanageitem_otherstep"
                     style="@style/activity_repairmanageitem_textview" />
             </TableRow>
-        </TableLayout>
-
-        <TableLayout
-            android:id="@+id/activity_repairmanageitem_repairgrouppeople"
-            style="@style/activity_repairmanageitem_tablelayout" >
-
-            <TextView
-                style="@style/activity_repairmanageitem_textview_group"
-                android:text="@string/activity_repairmanageitem_people" />
 
             <TextView style="@style/item_divide" />
 
@@ -199,13 +105,15 @@
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_taskpeople"
-                    style="@style/activity_repairmanageitem_textview" />
+                    style="@style/activity_repairmanageitem_textview"
+                    android:enabled="false" />
             </TableRow>
         </TableLayout>
 
         <TableLayout
-            android:id="@+id/activity_repairmanageitem_repairgroupinfo"
-            style="@style/activity_repairmanageitem_tablelayout" >
+            android:id="@+id/activity_repairmanageitem_tasksendgroup"
+            style="@style/activity_repairmanageitem_tablelayout"
+            android:visibility="gone" >
 
             <TextView
                 style="@style/activity_repairmanageitem_textview_group"
@@ -223,7 +131,8 @@
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_repairsttime"
-                    style="@style/activity_repairmanageitem_textview" />
+                    style="@style/activity_repairmanageitem_textview"
+                    android:enabled="false" />
             </TableRow>
 
             <TextView style="@style/item_divide" />
@@ -270,8 +179,16 @@
                     android:id="@+id/activity_repairmanageitem_repaircontent"
                     style="@style/activity_repairmanageitem_textview" />
             </TableRow>
+        </TableLayout>
 
-            <TextView style="@style/item_divide" />
+        <TableLayout
+            android:id="@+id/activity_repairmanageitem_taskrepairgroup"
+            style="@style/activity_repairmanageitem_tablelayout"
+            android:visibility="gone" >
+
+            <TextView
+                style="@style/activity_repairmanageitem_textview_group"
+                android:text="@string/activity_repairmanageitem_repair" />
 
             <TableRow
                 android:id="@+id/activity_repairmanageitem_repairresult_tr"
@@ -333,8 +250,9 @@
         </TableLayout>
 
         <TableLayout
-            android:id="@+id/activity_repairmanageitem_repairgroupverify"
-            style="@style/activity_repairmanageitem_tablelayout" >
+            android:id="@+id/activity_repairmanageitem_ddverifygroup"
+            style="@style/activity_repairmanageitem_tablelayout"
+            android:visibility="gone" >
 
             <TextView
                 style="@style/activity_repairmanageitem_textview_group"
@@ -353,7 +271,6 @@
                 <Switch
                     android:id="@+id/activity_repairmanageitem_verifyresult"
                     style="@style/activity_repairmanageitem_textview"
-                    android:enabled="false"
                     android:textOff="审核未通过"
                     android:textOn="审核通过" />
             </TableRow>
@@ -370,7 +287,8 @@
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_verifypeople"
-                    style="@style/activity_repairmanageitem_textview" />
+                    style="@style/activity_repairmanageitem_textview"
+                    android:enabled="false" />
             </TableRow>
 
             <TextView style="@style/item_divide" />
@@ -387,8 +305,16 @@
                     android:id="@+id/activity_repairmanageitem_equipmentopinion"
                     style="@style/activity_repairmanageitem_textview" />
             </TableRow>
+        </TableLayout>
 
-            <TextView style="@style/item_divide" />
+        <TableLayout
+            android:id="@+id/activity_repairmanageitem_pdverifygroup"
+            style="@style/activity_repairmanageitem_tablelayout"
+            android:visibility="gone" >
+
+            <TextView
+                style="@style/activity_repairmanageitem_textview_group"
+                android:text="@string/activity_repairmanageitem_verify" />
 
             <TableRow
                 android:id="@+id/activity_repairmanageitem_productionopinion_tr"
@@ -402,8 +328,16 @@
                     android:id="@+id/activity_repairmanageitem_productionopinion"
                     style="@style/activity_repairmanageitem_textview" />
             </TableRow>
+        </TableLayout>
 
-            <TextView style="@style/item_divide" />
+        <TableLayout
+            android:id="@+id/activity_repairmanageitem_pmverifygroup"
+            style="@style/activity_repairmanageitem_tablelayout"
+            android:visibility="gone" >
+
+            <TextView
+                style="@style/activity_repairmanageitem_textview_group"
+                android:text="@string/activity_repairmanageitem_verify" />
 
             <TableRow
                 android:id="@+id/activity_repairmanageitem_plantopinion_tr"
@@ -419,6 +353,12 @@
             </TableRow>
         </TableLayout>
 
+        <Button
+            android:id="@+id/activity_repairmanageitem_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_repairmanageitem_submit" />
+        
     </LinearLayout>
 
 </ScrollView>

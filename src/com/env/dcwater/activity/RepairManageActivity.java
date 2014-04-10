@@ -86,6 +86,11 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	public static final String METHOD_REPAIRTASK_STRING = "RepairTask";
 	
 	/**
+	 * 机修工返回修改维修单
+	 */
+	public static final String METHOD_REREPAIRTASK_STRING = "ReRepairTask";
+	
+	/**
 	 * 设备科长审核
 	 */
 	public static final String METHOD_DDAPPROVE_STRING ="DDApprove";
@@ -110,13 +115,13 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	 */
 	public static final int REPAIRMANAGE_ADD_INTEGER = 0;
 	/**
-	 * 修改模式
+	 * 一般模式
 	 */
-	public static final int REPAIRMANAGE_UPDATE_INTEGER = 1;
+	public static final int REPAIRMANAGE_NORMAL_INTEGER = 1;
 	/**
-	 * 浏览模式
+	 * 编辑模式
 	 */
-	public static final int REPAIRMANAGE_DETAIL_INTEGER = 2;
+	public static final int REPAIRMANAGE_UPDATE_INTEGER = 2;
 	
 	private ActionBar mActionBar;
 	private PullToRefreshView mListView;
@@ -124,12 +129,11 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private DataFilterView mDataFilterView;
 	private RepairManageItemAdapter mListViewAdapter;
 	private ArrayList<HashMap<String, String>> mData;
-	private AlertDialog.Builder mUpdateConfirm ;
 	private Intent sendedIntent;
 	private GetServerData getServerData;
 	private boolean isFilter = true,isRfresh = false,actionChooseIsShow = false;;
 	private ProgressDialog mProgressDialog;
-	private UpdateServerData updateServerData;
+//	private UpdateServerData updateServerData;
 	private int selectedPos,userPositionID;
 	private String [] dateFilters,nfcCardAction = {"查看设备信息","设备故障上报"};
 	private AlertDialog.Builder actionChoose;
@@ -172,14 +176,14 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		}
 	}
 	
-	/**
-	 * 更新服务器端数据
-	 * @param methodName
-	 */
-	private void updateServerData(String methodName){
-		updateServerData = new UpdateServerData();
-		updateServerData.execute(methodName);
-	}
+//	/**
+//	 * 更新服务器端数据
+//	 * @param methodName
+//	 */
+//	private void updateServerData(String methodName){
+//		updateServerData = new UpdateServerData();
+//		updateServerData.execute(methodName);
+//	}
 	
 	/**
 	 * 获取数据时，弹出进度对话框
@@ -296,17 +300,15 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	 * @param data
 	 * @param methodName
 	 */
-	private void sendIntent(int code,HashMap<String, String> data,String methodName){
-		sendedIntent = new Intent(RepairManageActivity.this, RepairManageItemActivity.class);
-		sendedIntent.putExtra("RequestCode", code);
-		sendedIntent.putExtra("MethodName", methodName);
+	private void sendIntent(int code,HashMap<String, String> data){
 		switch (code) {
 		case REPAIRMANAGE_ADD_INTEGER:
+			sendedIntent = new Intent(RepairManageActivity.this, RepairManageItemDataActivity.class);
+			sendedIntent.putExtra("MethodName", RepairManageActivity.METHOD_ADD_STRING);
 			break;
-		case REPAIRMANAGE_DETAIL_INTEGER:
-			sendedIntent.putExtra("Data", data);
-			break;
-		case REPAIRMANAGE_UPDATE_INTEGER:
+		case REPAIRMANAGE_NORMAL_INTEGER:
+			sendedIntent = new Intent(RepairManageActivity.this, RepairManageItemActivity.class);
+			sendedIntent.putExtra("RequestCode", code);
 			sendedIntent.putExtra("Data", data);
 			break;
 		}
@@ -375,7 +377,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			onBackPressed();
 			break;
 		case R.id.menu_repairmanage_add:
-			sendIntent(REPAIRMANAGE_ADD_INTEGER,null,METHOD_ADD_STRING);
+			sendIntent(REPAIRMANAGE_ADD_INTEGER,null);
 			break;
 		case R.id.menu_repairmanage_filter:
 			isFilter = !isFilter;
@@ -449,70 +451,70 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		//获得contextmenu的触发控件
-		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
-		selectedPos = info.position-1;
-		switch (item.getItemId()) {
-		case R.id.cm_rm_op_update:
-			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_UPDATE_STRING);
-			break;
-		case R.id.cm_rm_dd_send:
-			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_SENDTASK_STRING);
-			break;
-		case R.id.cm_rm_dd_approve:
-			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_DDAPPROVE_STRING);
-			break;
-		case R.id.cm_rm_pd_approve:
-			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_PDAPPROVE_STRING);
-			break;
-		case R.id.cm_rm_rm_repair:
-			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_REPAIRTASK_STRING);
-			break;
-		case R.id.cm_rm_pm_confirm:
-			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_PMAPPROVE_STRING);
-			break;
-		case R.id.cm_rm_pd_confirm:
-			if(mUpdateConfirm==null){
-				mUpdateConfirm = new AlertDialog.Builder(RepairManageActivity.this);
-			}
-			mUpdateConfirm.setTitle("确认").setMessage("确认上报工单吗？");
-			mUpdateConfirm.setPositiveButton("确定", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					updateServerData(METHOD_PDCONFIRM_STRING);
-				}
-			}).setNegativeButton("取消", null);
-			mUpdateConfirm.create();
-			mUpdateConfirm.show();
-			break;
-		case R.id.cm_rm_rm_receive:
-			if(mUpdateConfirm==null){
-				mUpdateConfirm = new AlertDialog.Builder(RepairManageActivity.this);
-			}
-			mUpdateConfirm.setTitle("确认").setMessage("确认维修吗？");
-			mUpdateConfirm.setPositiveButton("确定", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					updateServerData(METHOD_RECEIVE_STRING);
-				}
-			}).setNegativeButton("取消", null);
-			mUpdateConfirm.create();
-			mUpdateConfirm.show();
-			break;
-		case R.id.cm_rm_op_delete:
-			if(mUpdateConfirm==null){
-				mUpdateConfirm = new AlertDialog.Builder(RepairManageActivity.this);
-			}
-			mUpdateConfirm.setTitle("确认").setMessage("确认删除吗？");
-			mUpdateConfirm.setPositiveButton("确定", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					updateServerData(METHOD_DELETE_STRING);
-				}
-			}).setNegativeButton("取消", null);
-			mUpdateConfirm.create();
-			mUpdateConfirm.show();
-			break;
-		}
+//		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
+//		selectedPos = info.position-1;
+//		switch (item.getItemId()) {
+//		case R.id.cm_rm_op_update:
+//			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_UPDATE_STRING);
+//			break;
+//		case R.id.cm_rm_dd_send:
+//			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_SENDTASK_STRING);
+//			break;
+//		case R.id.cm_rm_dd_approve:
+//			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_DDAPPROVE_STRING);
+//			break;
+//		case R.id.cm_rm_pd_approve:
+//			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_PDAPPROVE_STRING);
+//			break;
+//		case R.id.cm_rm_rm_repair:
+//			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_REPAIRTASK_STRING);
+//			break;
+//		case R.id.cm_rm_pm_confirm:
+//			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_PMAPPROVE_STRING);
+//			break;
+//		case R.id.cm_rm_pd_confirm:
+//			if(mUpdateConfirm==null){
+//				mUpdateConfirm = new AlertDialog.Builder(RepairManageActivity.this);
+//			}
+//			mUpdateConfirm.setTitle("确认").setMessage("确认上报工单吗？");
+//			mUpdateConfirm.setPositiveButton("确定", new OnClickListener() {
+//				@Override
+//				public void onClick(DialogInterface dialog, int which) {
+//					updateServerData(METHOD_PDCONFIRM_STRING);
+//				}
+//			}).setNegativeButton("取消", null);
+//			mUpdateConfirm.create();
+//			mUpdateConfirm.show();
+//			break;
+//		case R.id.cm_rm_rm_receive:
+//			if(mUpdateConfirm==null){
+//				mUpdateConfirm = new AlertDialog.Builder(RepairManageActivity.this);
+//			}
+//			mUpdateConfirm.setTitle("确认").setMessage("确认维修吗？");
+//			mUpdateConfirm.setPositiveButton("确定", new OnClickListener() {
+//				@Override
+//				public void onClick(DialogInterface dialog, int which) {
+//					updateServerData(METHOD_RECEIVE_STRING);
+//				}
+//			}).setNegativeButton("取消", null);
+//			mUpdateConfirm.create();
+//			mUpdateConfirm.show();
+//			break;
+//		case R.id.cm_rm_op_delete:
+//			if(mUpdateConfirm==null){
+//				mUpdateConfirm = new AlertDialog.Builder(RepairManageActivity.this);
+//			}
+//			mUpdateConfirm.setTitle("确认").setMessage("确认删除吗？");
+//			mUpdateConfirm.setPositiveButton("确定", new OnClickListener() {
+//				@Override
+//				public void onClick(DialogInterface dialog, int which) {
+//					updateServerData(METHOD_DELETE_STRING);
+//				}
+//			}).setNegativeButton("取消", null);
+//			mUpdateConfirm.create();
+//			mUpdateConfirm.show();
+//			break;
+//		}
 		return super.onContextItemSelected(item);
 	}
 	
@@ -534,7 +536,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 		if(position!=0){
-			sendIntent(REPAIRMANAGE_DETAIL_INTEGER,mData.get(position-1),METHOD_DETAIL_STRING);
+			sendIntent(REPAIRMANAGE_NORMAL_INTEGER,mData.get(position-1));
 		}
 	}
 	
