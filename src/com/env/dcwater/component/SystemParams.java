@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * 单例模式，存储系统变量
- * 比如是否登录
+ * 单例模式，存储系统变量 比如是否登录
+ * 
  * @author sk
- *
+ * 
  */
 public class SystemParams {
 	public static final String TAG_STRING = "SystemParams";
-	public static final int PLANTID_INT = 1; 
+	public static final int PLANTID_INT = 1;
 	public static final String STANDARDTIME_PATTERN_STRING = "yyyy-MM-dd HH:mm:ss";
 	public static final String SHORTDATE_PATTERN_STRING = "yyyy-MM-dd";
-	
+
 	private static SystemParams Instance = new SystemParams();
 
 	public static SystemParams getInstance() {
@@ -24,23 +24,25 @@ public class SystemParams {
 		return Instance;
 	}
 
-	private SystemParams() {}
-	
-	
+	private SystemParams() {
+	}
+
 	private ArrayList<HashMap<String, String>> mMachineList;
+
 	/**
 	 * @return the mMachineList
 	 */
 	public ArrayList<HashMap<String, String>> getMachineList() {
 		return mMachineList;
 	}
+
 	/**
 	 * @param mMachineList the mMachineList to set
 	 */
-	public void setmMachineList(ArrayList<HashMap<String, String>> machineList) {
+	public void setMachineList(ArrayList<HashMap<String, String>> machineList) {
 		mMachineList = machineList;
 	}
-	
+
 	private HashMap<String, String> mLoggedUserInfo;
 
 	/**
@@ -51,10 +53,11 @@ public class SystemParams {
 	}
 
 	/**
-	 * @param mLoggedUserInfo the mLoggedUserInfo to set
+	 * @param mLoggedUserInfo
+	 *            the mLoggedUserInfo to set
 	 */
 	public void setmLoggedUserInfo(HashMap<String, String> LoggedUserInfo) {
 		mLoggedUserInfo = LoggedUserInfo;
 	}
-	
+
 }

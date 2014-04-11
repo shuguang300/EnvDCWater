@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:drawableLeft="@drawable/activity_machinemanage_arrowright"
+        android:id="@+id/activity_deviceselect_devicename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" >
+    </EditText>
+
+    <Spinner
+        android:id="@+id/activity_deviceselect_construction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:entries="@array/view_datafilter_poslist"
+        android:prompt="@string/activity_config_title" />
+    
+    <com.env.dcwater.fragment.PullToRefreshView
+        android:id="@+id/activity_deviceselect_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.env.dcwater.fragment.PullToRefreshView>
+
+</LinearLayout>

@@ -2,16 +2,13 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -57,7 +54,6 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 	private ProgressDialog mProgressDialog;
 	private ActionBar mActionBar;
 	private UpdateTask mUpdateTask;
-//	private ArrayList<HashMap<String, String>> deviceDataArrayList;
 	private TableLayout taskBasicGroup,taskSendGroup,taskRepairGroup,taskDDVerifyGroup,taskPDVerifyGroup,taskPMVerifyGroup;
 	private TextView etName,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep,etSendTime,etSender,etTimeCost,etContent,etResult,etFinishTime,etThing,etMoney,etVerifyPeople,etEquipmentOpinion,etProductionOpinion,etPlantOpinion;
 	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trTimeCost,trContent,trResult,trFinishTime,trThingCost,trMoneyCost,trEquipmentOpinion,trProductionOpinion,trPlantOpinion;
@@ -335,6 +331,15 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 	}
 	
 	/**
+	 * 跳转到选取设备列表的界面
+	 */
+	private void gotoSelectDevice(){
+		Intent intent = new Intent();
+		intent.setClass(this, DeviceSelectActivity.class);
+		startActivityForResult(intent, 1);
+	}
+	
+	/**
 	 * 完成紧急措施和其他措施的合并
 	 * @return
 	 */
@@ -383,11 +388,13 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 			mUpdateTask.execute(arg0);
 		}
 	}
+	
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.activity_repairmanageitem_name_tr:
+			gotoSelectDevice();
 			break;
 		case R.id.activity_repairmanageitem_faulttime_tr:
 			if(dateTimePickerView==null){
@@ -583,13 +590,12 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		setResult(RESULT_CANCELED);
 	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode==RESULT_OK){
+		if(requestCode==0&&resultCode==RESULT_OK){
 			@SuppressWarnings("unchecked")
 			HashMap<String, String> temp = (HashMap<String, String>)data.getSerializableExtra("data");
 			String key = temp.get("Key");
@@ -617,52 +623,11 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 				etPlantOpinion.setText(value);
 			}
 			repairData.put(key, value);
+		}else if (requestCode==1&&resultCode==RESULT_OK) {
+			
 		}
 	}
 	
-	
-	/**
-	 * 获取远端数据的异步方法
-	 * @author sk
-	 */
-	class GetServerDeviceData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
-		@Override
-		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
-			JSONObject object = new JSONObject();
-			ArrayList<HashMap<String, String>> data = null;
-			try {
-				object.put("PlantID", 1);
-				String result = DataCenterHelper.HttpPostData("GetDeviceInfoList", object);
-				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
-					JSONObject jsonObject = new JSONObject(result);
-					data = OperationMethod.parseDeviceListToArray(jsonObject);
-//					deviceDataArrayList = data;
-				}
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-				data = null;
-			} catch (IOException e) {
-				e.printStackTrace();
-				data = null;
-			} catch (JSONException e) {
-				e.printStackTrace();
-				data = null;
-			}
-			return data;
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-		
-		@Override
-		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
-			super.onPostExecute(result);
-			if(result!=null){
-			}
-		}
-	}
 	
 	/**
 	 * 填报一个单子
@@ -808,6 +773,7 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 					int code = jsonObject.getInt("d");
 					switch (code) {
 					case EnumList.DataCenterResult.CODE_SUCCESS:
+						Toast.makeText(RepairManageItemDataActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
 						setResult(Activity.RESULT_OK);
 						finish();
 						break;

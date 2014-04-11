@@ -146,6 +146,7 @@
                     android:text="@string/activity_repairmanageitem_repairsender" />
 
                 <TextView
+                    android:enabled="false"
                     android:id="@+id/activity_repairmanageitem_repairpeople"
                     style="@style/activity_repairmanageitem_textview" />
             </TableRow>

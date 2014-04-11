@@ -574,24 +574,6 @@ public class RepairManageItemActivity extends NfcActivity{
 		startActivityForResult(intent, 0);
 	}
 	
-	/**
-	 * 完成紧急措施和其他措施的合并
-	 * @return
-	 */
-	private String combineEmergencyMeasures() {
-		String EmergencyMeasures = "";
-		for(int i = 0;i<handleStepSelected.length;i++){
-			if (handleStepSelected[i]) {
-				EmergencyMeasures = EmergencyMeasures + String.valueOf(i+1) + ",";
-			}
-		}
-		if(EmergencyMeasures.equals("")&&!etOtherStep.getText().toString().equals("")){
-			EmergencyMeasures = "," + etOtherStep.getText().toString()+"(an)";
-		}else if (!EmergencyMeasures.equals("")&&!etOtherStep.getText().toString().equals("")) {
-			EmergencyMeasures = EmergencyMeasures + etOtherStep.getText().toString()+"(an)";
-		}
-		return EmergencyMeasures;
-	}
 	
 	/**
 	 * 获取数据时，弹出进度对话框
@@ -680,8 +662,7 @@ public class RepairManageItemActivity extends NfcActivity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			setResult(RESULT_CANCELED);
-			finish();	
+			onBackPressed();	
 			break;
 		case R.id.cm_rm_op_update:
 			startItemDataActivity(selectedData,RepairManageActivity.METHOD_UPDATE_STRING);
@@ -750,38 +731,17 @@ public class RepairManageItemActivity extends NfcActivity{
 		return super.onOptionsItemSelected(item);
 	}
 	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode==RESULT_OK){
-			HashMap<String, String> temp = (HashMap<String, String>)data.getSerializableExtra("data");
-			String key = temp.get("Key");
-			String value = temp.get("Value");
-			if (key.equals("AccidentDetail")) {
-				etFaultPhenomenon.setText(value);
-			}else if(key.equals("Otherstep")){
-				etOtherStep.setText(value);
-				selectedData.put("EmergencyMeasures", combineEmergencyMeasures());
-			}else if (key.equals("RequiredManHours")) {
-				etTimeCost.setText(value);
-			}else if (key.equals("TaskDetail")) {
-				etContent.setText(value);
-			}else if (key.equals("RepairDetail")){
-				etResult.setText(value);
-			}else if (key.equals("AccessoryUsed")) {
-				etThing.setText(value);
-			}else if (key.equals("RepairCost")) {
-				etMoney.setText(value);
-			}else if (key.equals("DDOpinion")) {
-				etEquipmentOpinion.setText(value);
-			}else if (key.equals("PDOpinion")) {
-				etProductionOpinion.setText(value);
-			}else if (key.equals("PMOpinion")) {
-				etPlantOpinion.setText(value);
-			}
-			selectedData.put(key, value);
+			setResult(RESULT_OK);
+			finish();
 		}
 	}
 	
@@ -833,6 +793,7 @@ public class RepairManageItemActivity extends NfcActivity{
 					int code =object.getInt("d");
 					switch (code) {
 					case EnumList.DataCenterResult.CODE_SUCCESS:
+						Toast.makeText(RepairManageItemActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
 						if(methodName.equals(RepairManageActivity.METHOD_DELETE_STRING)){
 						}else if (methodName.equals(RepairManageActivity.METHOD_RECEIVE_STRING)) {
 							selectedData.put("State",EnumList.RepairState.STATEBEENINGREPAIRED+"");
@@ -842,6 +803,8 @@ public class RepairManageItemActivity extends NfcActivity{
 							selectedData.put("StateDescription", EnumList.RepairState.HASBEENCONFIRMED.getStateDescription());
 							selectedData.put("CanUpdate", "false");
 						}
+						setResult(RESULT_OK);
+						finish();
 						break;
 					case EnumList.DataCenterResult.CODE_SERVERERRO:
 						Toast.makeText(RepairManageItemActivity.this, "服务器数据更新失败", Toast.LENGTH_SHORT).show();
