@@ -72,6 +72,8 @@
     <string name="activity_repairmanageitem_productionopinion">生产科意见</string>
     <string name="activity_repairmanageitem_plantopinion">厂领导意见</string>
     <string name="activity_repairmanageitem_repairmoneycost">维修金额</string>
+    <string name="activity_deviceselect_construction">构筑物列表</string>
+    <string name="activity_deviceselect_search">查询</string>
     
     
     <string name="view_datetimepick_ok">确定</string>
@@ -88,6 +90,8 @@
     <string name="view_config_logout">注销</string>
     
     <string name="activity_login_summit">登录</string>
+    
+    <string name="activity_datainput_add">添加</string>
     
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>

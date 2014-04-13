@@ -14,9 +14,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -32,7 +34,7 @@ import com.env.dcwater.util.OperationMethod;
  * @author sk
  *
  */
-public class DeviceSelectActivity extends NfcActivity implements IXListViewListener,OnItemClickListener{
+public class DeviceSelectActivity extends NfcActivity implements IXListViewListener,OnItemClickListener,OnClickListener{
 	
 	private ActionBar mActionBar;
 	private ArrayList<HashMap<String, String>> deviceDataArrayList;
@@ -41,6 +43,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	private PullToRefreshView mListView;
 	private EditText etDeviceName;
 	private Spinner spConstruction;
+	private Button btSearch;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +70,12 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		mListView = (PullToRefreshView)findViewById(R.id.activity_deviceselect_list);
 		etDeviceName = (EditText)findViewById(R.id.activity_deviceselect_devicename);
 		spConstruction = (Spinner)findViewById(R.id.activity_deviceselect_construction);
+		btSearch = (Button)findViewById(R.id.activity_deviceselect_submit);
+				
 		mListView.setXListViewListener(this);
 		mListView.setOnItemClickListener(this);
+		btSearch.setOnClickListener(this);
+		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, getResources().getStringArray(R.array.view_datafilter_poslist));
 		mListView.setAdapter(adapter);
 	}
@@ -99,7 +106,6 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			onBackPressed();
@@ -151,6 +157,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 			if(result!=null){
 			}
 			mProgressDialog.dismiss();
+			mListView.stopRefresh();
 		}
 	}
 
@@ -161,9 +168,14 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		Intent data = new Intent();
-		data.putExtra("data", deviceDataArrayList.get(position));
-		setResult(RESULT_OK, data);
-		finish();
+//		Intent data = new Intent();
+//		data.putExtra("data", deviceDataArrayList.get(position-1));
+//		setResult(RESULT_OK, data);
+//		finish();
+	}
+
+	@Override
+	public void onClick(View v) {
+		
 	}
 }
