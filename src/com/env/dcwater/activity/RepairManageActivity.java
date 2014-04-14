@@ -559,7 +559,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			}
 			HashMap<String, String> map = getItem(position);
 			TextView id = (TextView)convertView.findViewById(R.id.item_repairmanage_id);
-			id.setText(map.get("FaultReportSN"));
+			id.setText("工单SN码："+map.get("FaultReportSN"));
 			TextView time = (TextView)convertView.findViewById(R.id.item_repairmanage_time);
 			time.setText(map.get("AccidentOccurTime"));
 			TextView state = (TextView)convertView.findViewById(R.id.item_repairmanage_state);

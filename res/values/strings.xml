@@ -74,6 +74,8 @@
     <string name="activity_repairmanageitem_repairmoneycost">维修金额</string>
     <string name="activity_deviceselect_construction">构筑物列表</string>
     <string name="activity_deviceselect_search">查询</string>
+    <string name="activity_deviceselect_devicename">设备名称</string>
+    <string name="activity_deviceselect_consname">构筑物</string>
     
     
     <string name="view_datetimepick_ok">确定</string>

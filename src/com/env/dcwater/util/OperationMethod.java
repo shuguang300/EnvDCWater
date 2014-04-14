@@ -238,8 +238,40 @@ public class OperationMethod {
 		return userRoleString;
 	}
 	
+	/**
+	 * @param jsonObject
+	 * @return
+	 * @throws JSONException
+	 */
+	public static ArrayList<HashMap<String, String>> parseConsListToArray(JSONObject jsonObject) throws JSONException {
+		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
+		JSONObject cons = null;
+		HashMap<String, String> map = null;
+		for(int i =-1;i<jsonArray.length();i++){
+			if(i==-1){
+				map = new HashMap<String, String>();
+				map.put("StructureName", "全部");
+				map.put("StructureID", "全部");
+			}else {
+				cons = jsonArray.getJSONObject(i);
+				map = new HashMap<String, String>();
+				map.put("StructureName", cons.getString("StructureName"));
+				map.put("StructureID", cons.getInt("StructureID")+"");
+			}
+			data.add(map);
+		}
+		return data;
+	}
 	
-	public static ArrayList<HashMap<String, String>> parseDeviceListToArray(JSONObject jsonObject) throws JSONException{
+	/**
+	 * @param jsonObject
+	 * @param deviceName
+	 * @param consName
+	 * @return
+	 * @throws JSONException
+	 */
+	public static ArrayList<HashMap<String, String>> parseDeviceListToArray(JSONObject jsonObject ,String deviceName, String consName) throws JSONException{
 		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
 		JSONObject device = null;
@@ -248,11 +280,20 @@ public class OperationMethod {
 			device = jsonArray.getJSONObject(i);
 			map = new HashMap<String, String>();
 			
+			//添加过滤条件
+			if(!deviceName.equals("")&&!device.get("DeviceName").toString().contains(deviceName)){
+				continue;
+			}
+			if(!consName.equals("全部")&&!device.get("InstallPosition").toString().contains(consName)){
+				continue;
+			}
+			
 			map.put("DeviceID", device.get("DeviceID").toString());
 			
 			map.put("DeviceSN", device.get("DeviceSN").toString());
 			
 			map.put("DeviceName", device.get("DeviceName").toString());
+			
 			
 			map.put("PlantID", device.get("PlantID").toString());
 			
@@ -261,6 +302,8 @@ public class OperationMethod {
 			map.put("FixedAssets", LogicMethod.getRightString(device.get("FixedAssets").toString()));
 			
 			map.put("InstallPosition", LogicMethod.getRightString(device.get("InstallPosition").toString()));
+			
+			map.put("InstallPositionforMobile", LogicMethod.getRightString(device.get("InstallPositionforMobile").toString()));
 			
 			map.put("TechnicalParameter", LogicMethod.getRightString(device.get("TechnicalParameter").toString()));
 			

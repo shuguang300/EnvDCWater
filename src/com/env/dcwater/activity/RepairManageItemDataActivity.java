@@ -6,9 +6,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,6 +32,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -331,9 +334,9 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 	/**
 	 * 跳转到选取设备列表的界面
 	 */
-	private void gotoSelectDevice(){
-		Intent intent = new Intent();
-		intent.setClass(this, DeviceSelectActivity.class);
+	private void gotoSelectDevice(HashMap<String, String> data){
+		Intent intent = new Intent(this, DeviceSelectActivity.class);
+		intent.putExtra("data", data);
 		startActivityForResult(intent, 1);
 	}
 	
@@ -392,7 +395,7 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.activity_repairmanageitem_name_tr:
-			gotoSelectDevice();
+			gotoSelectDevice(repairData);
 			break;
 		case R.id.activity_repairmanageitem_faulttime_tr:
 			if(dateTimePickerView==null){
@@ -622,7 +625,11 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 			}
 			repairData.put(key, value);
 		}else if (requestCode==1&&resultCode==RESULT_OK) {
-			
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> temp = (HashMap<String, String>)data.getSerializableExtra("data");
+			repairData.put("DeviceID", temp.get("DeviceID"));
+			repairData.put("DeviceName", temp.get("DeviceName"));
+			etName.setText(repairData.get("DeviceName"));
 		}
 	}
 	

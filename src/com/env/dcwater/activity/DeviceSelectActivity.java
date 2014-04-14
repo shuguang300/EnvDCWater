@@ -2,26 +2,27 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
-
+import android.widget.TextView;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -29,6 +30,7 @@ import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
+import com.env.dcwater.util.SystemMethod;
 
 /**
  * @author sk
@@ -36,14 +38,20 @@ import com.env.dcwater.util.OperationMethod;
  */
 public class DeviceSelectActivity extends NfcActivity implements IXListViewListener,OnItemClickListener,OnClickListener{
 	
+	public static final String GET_DEVICE_STRING = "getDevice";
+	public static final String GET_CONS_STRING = "getCons";
 	private ActionBar mActionBar;
-	private ArrayList<HashMap<String, String>> deviceDataArrayList;
+	private ArrayList<HashMap<String, String>> deviceDataArrayList,consDataArrayList;
 	private ProgressDialog mProgressDialog;
 	private GetServerDeviceData getServerDeviceData;
+	private GetServerConsData getServerConsData;
 	private PullToRefreshView mListView;
 	private EditText etDeviceName;
 	private Spinner spConstruction;
 	private Button btSearch;
+	private ImageView btClear;
+	private ConstructionAdapter constructionAdapter;
+	private DeviceAdapter deviceAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,9 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		initialView();
 	}
 	
+	/**
+	 * 
+	 */
 	private void initialActionbar(){
 		mActionBar = getActionBar();
 		mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -62,27 +73,56 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		mActionBar.setTitle("设备列表");
 	};
 	
+	/**
+	 * 
+	 */
 	private void initialData(){
-		
+		deviceDataArrayList = new ArrayList<HashMap<String,String>>();
+		consDataArrayList = new ArrayList<HashMap<String,String>>();
+		constructionAdapter = new ConstructionAdapter();
+		deviceAdapter = new DeviceAdapter();
+		if(SystemParams.getInstance().getMachineList()==null){
+			getServerDeviceList("","");
+		}else {
+			deviceDataArrayList = SystemParams.getInstance().getMachineList();
+		}
+		getServerConsList();
 	}
 	
+	/**
+	 * 
+	 */
 	private void initialView(){
 		mListView = (PullToRefreshView)findViewById(R.id.activity_deviceselect_list);
 		etDeviceName = (EditText)findViewById(R.id.activity_deviceselect_devicename);
 		spConstruction = (Spinner)findViewById(R.id.activity_deviceselect_construction);
 		btSearch = (Button)findViewById(R.id.activity_deviceselect_submit);
-				
+		btClear = (ImageView)findViewById(R.id.activity_deviceselect_devicename_clear);
+		
 		mListView.setXListViewListener(this);
 		mListView.setOnItemClickListener(this);
-		btSearch.setOnClickListener(this);
 		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, getResources().getStringArray(R.array.view_datafilter_poslist));
-		mListView.setAdapter(adapter);
+		btSearch.setOnClickListener(this);
+		btClear.setOnClickListener(this);
+		
+		mListView.setAdapter(deviceAdapter);
+		spConstruction.setAdapter(constructionAdapter);
+		
 	}
 	
-	private void getServerDeviceList(){
+	/**
+	 * 获取设备列表
+	 */
+	private void getServerDeviceList(String deviceName,String consName){
 		getServerDeviceData = new GetServerDeviceData();
-		getServerDeviceData.execute("");
+		getServerDeviceData.execute(deviceName,consName);
+	}
+	/**
+	 * 获取构筑物列表
+	 */
+	private void getServerConsList(){
+		getServerConsData = new GetServerConsData();
+		getServerConsData.execute();
 	}
 	
 	/**
@@ -114,6 +154,100 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		return super.onOptionsItemSelected(item);
 	}
 	
+	@Override
+	public void onRefresh() {
+		getServerDeviceList(etDeviceName.getText().toString(),consDataArrayList.get(spConstruction.getSelectedItemPosition()).get("StructureName"));
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+		Intent data = new Intent();
+		data.putExtra("data", deviceDataArrayList.get(position-1));
+		setResult(RESULT_OK, data);
+		finish();
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.activity_deviceselect_devicename_clear:
+			etDeviceName.setText("");
+			SystemMethod.hideSoftInput(DeviceSelectActivity.this);
+			break;
+		case R.id.activity_deviceselect_submit:
+			onRefresh();
+			break;
+		}
+	}
+	
+	
+	/**
+	 * @author sk
+	 *
+	 */
+	class ConstructionAdapter extends BaseAdapter{
+
+		@Override
+		public int getCount() {
+			return consDataArrayList.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return consDataArrayList.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if(convertView==null){
+				convertView = LayoutInflater.from(DeviceSelectActivity.this).inflate(R.layout.item_consselect, null);
+			}
+			TextView name = (TextView)convertView.findViewById(R.id.item_consselect_consname);
+			name.setText(consDataArrayList.get(position).get("StructureName"));
+			return convertView;
+		}
+		
+	}
+	
+	/**
+	 * @author sk
+	 *
+	 */
+	class DeviceAdapter extends BaseAdapter{
+		
+		@Override
+		public int getCount() {
+			return deviceDataArrayList.size();
+		}
+		
+		@Override
+		public Object getItem(int position) {
+			return deviceDataArrayList.get(position);
+		}
+		
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if(convertView==null){
+				convertView = LayoutInflater.from(DeviceSelectActivity.this).inflate(R.layout.item_deviceselect, null);
+			}
+			TextView name = (TextView)convertView.findViewById(R.id.item_deviceselect_devicename);
+			TextView cons = (TextView)convertView.findViewById(R.id.item_deviceselect_devicecons);
+			name.setText("设备名称："+deviceDataArrayList.get(position).get("DeviceName"));
+			cons.setText("所属构筑物："+deviceDataArrayList.get(position).get("InstallPosition"));
+			return convertView;
+		}
+	}
+	
 	/**
 	 * 获取远端数据的异步方法
 	 * @author sk
@@ -121,6 +255,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	class GetServerDeviceData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
+			
 			JSONObject object = new JSONObject();
 			ArrayList<HashMap<String, String>> data = null;
 			try {
@@ -128,8 +263,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 				String result = DataCenterHelper.HttpPostData("GetDeviceInfoList", object);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
-					data = OperationMethod.parseDeviceListToArray(jsonObject);
-					SystemParams.getInstance().setMachineList(data);
+					data = OperationMethod.parseDeviceListToArray(jsonObject,params[0],params[1]);
 					deviceDataArrayList = data;
 				}
 			} catch (ClientProtocolException e) {
@@ -155,27 +289,55 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
 			super.onPostExecute(result);
 			if(result!=null){
+				deviceAdapter.notifyDataSetChanged();
 			}
 			mProgressDialog.dismiss();
 			mListView.stopRefresh();
 		}
 	}
-
-	@Override
-	public void onRefresh() {
-		getServerDeviceList();
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-//		Intent data = new Intent();
-//		data.putExtra("data", deviceDataArrayList.get(position-1));
-//		setResult(RESULT_OK, data);
-//		finish();
-	}
-
-	@Override
-	public void onClick(View v) {
+	
+	/**
+	 * 获取远端数据的异步方法
+	 * @author sk
+	 */
+	class GetServerConsData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
+		@Override
+		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
+			JSONObject object = new JSONObject();
+			ArrayList<HashMap<String, String>> data = null;
+			try {
+				object.put("PlantID", 1);
+				String result = DataCenterHelper.HttpPostData("GetStructureByPlantID", object);
+				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
+					JSONObject jsonObject = new JSONObject(result);
+					data = OperationMethod.parseConsListToArray(jsonObject);
+					consDataArrayList = data;
+				}
+				
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+				data = null;
+			} catch (IOException e) {
+				e.printStackTrace();
+				data = null;
+			} catch (JSONException e) {
+				e.printStackTrace();
+				data = null;
+			}
+			return data;
+		}
 		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+		
+		@Override
+		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
+			super.onPostExecute(result);
+			if(result!=null){
+				constructionAdapter.notifyDataSetChanged();
+			}
+		}
 	}
 }

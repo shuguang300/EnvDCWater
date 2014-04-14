@@ -363,7 +363,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 				String result = DataCenterHelper.HttpPostData("GetDeviceInfoList", object);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
-					data = OperationMethod.parseDeviceListToArray(jsonObject);
+					data = OperationMethod.parseDeviceListToArray(jsonObject,"","");
 					mMachine = data;
 					//获取到设备列表后，将设备列表数据暂存到程序变量中，方便其他地方调用
 					SystemParams.getInstance().setMachineList(mMachine);
