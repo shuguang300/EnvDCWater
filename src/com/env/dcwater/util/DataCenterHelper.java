@@ -104,5 +104,6 @@ public class DataCenterHelper {
 		ht.call(SOAP_NAMESPACE_STRING+method, envelope);
 		SoapObject soapObject = (SoapObject)envelope.bodyIn;
 		return soapObject;
+		
 	}
 }

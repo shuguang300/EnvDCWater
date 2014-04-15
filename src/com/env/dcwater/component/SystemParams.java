@@ -59,5 +59,21 @@ public class SystemParams {
 	public void setmLoggedUserInfo(HashMap<String, String> LoggedUserInfo) {
 		mLoggedUserInfo = LoggedUserInfo;
 	}
+	
+	private ArrayList<HashMap<String, String>> mConstructionList;
+
+	/**
+	 * @return the constructionList
+	 */
+	public ArrayList<HashMap<String, String>> getConstructionList() {
+		return mConstructionList;
+	}
+
+	/**
+	 * @param constructionList the constructionList to set
+	 */
+	public void setConstructionList(ArrayList<HashMap<String, String>> constructionList) {
+		mConstructionList = constructionList;
+	}
 
 }

@@ -1,13 +1,27 @@
 package com.env.dcwater.activity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.http.Header;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.params.ConnConnectionPNames;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,11 +32,15 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.component.SystemParams;
+import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.fragment.DataFilterView;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
+import com.env.dcwater.util.DataCenterHelper;
 
 /**
  * 维修历史记录
@@ -31,7 +49,7 @@ import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 public class MaintainHistoryActivity extends NfcActivity implements IXListViewListener,OnItemClickListener{
 	
 	public static final String ACTION_STRING = "MaintainHistoryActivity";
-	
+	private ThreadPool.GetServerConsData getServerConsData;
 	private ActionBar mActionBar;
 	private DrawerLayout mDrawerLayout;
 	private DataFilterView mDataFilterView;
@@ -127,7 +145,32 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	 * 调用webservice的异步方法
 	 */
 	private void getServerData(){
-		
+		if(SystemParams.getInstance().getConstructionList()==null){
+			getServerConsData = new ThreadPool.GetServerConsData() {
+				@Override
+				protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
+					if(result!=null){
+						String [] posList = new String [result.size()] ;
+						for(int i =0;i<result.size();i++){
+							posList[i] = result.get(i).get("StructureName");
+						}
+						mDataFilterView.setPosList(posList, 0);
+					}
+				}
+			};
+			getServerConsData.execute("");
+		}else {
+			ArrayList<HashMap<String, String>> result = SystemParams.getInstance().getConstructionList();
+			String [] posList = new String [result.size()] ;
+			for(int i =0;i<result.size();i++){
+				posList[i] = result.get(i).get("StructureName");
+			}
+			mDataFilterView.setPosList(posList, 0);
+		}
+//		if(!isRfresh){
+//			getServerData = new GetServerData();
+//			getServerData.execute("");
+//		}
 	}
 	
 	@Override
@@ -228,14 +271,34 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	
 	
 	/**
-	 * 获取数据的异步调用方法AsyncTask
+	 * 获取维修历史数据的异步调用方法AsyncTask
 	 * @author sk
 	 */
-	class GetServerData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
+	class GetServerTaskHistoryData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
-			return null;
+			JSONObject param = new JSONObject();
+			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
+			ArrayList<HashMap<String, String>> data = null;
+			try {
+				param.put("PlantID", params[0]);
+				param.put("StartTime", params[1]);
+				param.put("EndTime", params[2]);
+				param.put("DeviceID", params[3]);
+				result = DataCenterHelper.HttpPostData("GetReportInfoArraylist", param);
+				Log.v(TAG_STRING, result);
+			} catch (ClientProtocolException e) {
+				data = null;
+				e.printStackTrace();
+			} catch (IOException e) {
+				data = null;
+				e.printStackTrace();
+			} catch (JSONException e) {
+				data = null;				
+				e.printStackTrace();
+			}
+			return data;
 		}
 		
 		@Override
@@ -246,6 +309,9 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		@Override
 		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
 			super.onPostExecute(result);
+			if(result!=null){
+				mAdapter.notifyDataSetChanged();
+			}
 		}
 		
 	}

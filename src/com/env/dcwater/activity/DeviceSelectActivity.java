@@ -2,9 +2,11 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -23,9 +25,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
+import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
@@ -44,7 +48,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	private ArrayList<HashMap<String, String>> deviceDataArrayList,consDataArrayList;
 	private ProgressDialog mProgressDialog;
 	private GetServerDeviceData getServerDeviceData;
-	private GetServerConsData getServerConsData;
+	private ThreadPool.GetServerConsData getServerConsData;
 	private PullToRefreshView mListView;
 	private EditText etDeviceName;
 	private Spinner spConstruction;
@@ -86,7 +90,12 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		}else {
 			deviceDataArrayList = SystemParams.getInstance().getMachineList();
 		}
-		getServerConsList();
+		if(SystemParams.getInstance().getConstructionList()==null){
+			getServerConsList();
+		}else {
+			consDataArrayList = SystemParams.getInstance().getConstructionList();
+		}
+		
 	}
 	
 	/**
@@ -121,8 +130,16 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	 * 获取构筑物列表
 	 */
 	private void getServerConsList(){
-		getServerConsData = new GetServerConsData();
-		getServerConsData.execute();
+		getServerConsData = new ThreadPool.GetServerConsData (){
+			@Override
+			protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
+				if(result!=null){
+					consDataArrayList = result;
+					constructionAdapter.notifyDataSetChanged();
+				}
+			}
+		};
+		getServerConsData.execute("");
 	}
 	
 	/**
@@ -252,10 +269,9 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	 * 获取远端数据的异步方法
 	 * @author sk
 	 */
-	class GetServerDeviceData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
+	private class GetServerDeviceData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
-			
 			JSONObject object = new JSONObject();
 			ArrayList<HashMap<String, String>> data = null;
 			try {
@@ -293,51 +309,6 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 			}
 			mProgressDialog.dismiss();
 			mListView.stopRefresh();
-		}
-	}
-	
-	/**
-	 * 获取远端数据的异步方法
-	 * @author sk
-	 */
-	class GetServerConsData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
-		@Override
-		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
-			JSONObject object = new JSONObject();
-			ArrayList<HashMap<String, String>> data = null;
-			try {
-				object.put("PlantID", 1);
-				String result = DataCenterHelper.HttpPostData("GetStructureByPlantID", object);
-				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
-					JSONObject jsonObject = new JSONObject(result);
-					data = OperationMethod.parseConsListToArray(jsonObject);
-					consDataArrayList = data;
-				}
-				
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-				data = null;
-			} catch (IOException e) {
-				e.printStackTrace();
-				data = null;
-			} catch (JSONException e) {
-				e.printStackTrace();
-				data = null;
-			}
-			return data;
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-		
-		@Override
-		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
-			super.onPostExecute(result);
-			if(result!=null){
-				constructionAdapter.notifyDataSetChanged();
-			}
 		}
 	}
 }

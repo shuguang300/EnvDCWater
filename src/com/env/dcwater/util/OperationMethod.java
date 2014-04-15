@@ -284,8 +284,18 @@ public class OperationMethod {
 			if(!deviceName.equals("")&&!device.get("DeviceName").toString().contains(deviceName)){
 				continue;
 			}
-			if(!consName.equals("全部")&&!device.get("InstallPosition").toString().contains(consName)){
+			if(!consName.equals("全部")&&!consName.equals("")&&!LogicMethod.getRightString(device.get("InstallPosition").toString()).equals(consName)){
 				continue;
+			}
+			
+			if(consName.equals("全部")||consName.equals("")){
+				//go on
+			}else {
+				if(consName.equals(LogicMethod.getRightString(device.get("InstallPosition").toString()))){
+					//go on
+				}else {
+					continue;
+				}
 			}
 			
 			map.put("DeviceID", device.get("DeviceID").toString());
@@ -351,7 +361,7 @@ public class OperationMethod {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static ArrayList<HashMap<String, String>> parseRepairTaskToArray(int rolePosition,JSONObject jsonObject,int taskState,boolean isFilter) throws JSONException{
+	public static ArrayList<HashMap<String, String>> parseRepairTaskToArray(int rolePosition,JSONObject jsonObject,int taskState,String consName,boolean isFilter) throws JSONException{
 		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
 		JSONObject report = null;
 		HashMap<String, String> map = null;
@@ -372,6 +382,15 @@ public class OperationMethod {
 			}
 			if(taskState!=-1&&taskState!=Integer.valueOf(report.get("State").toString())){
 				continue;
+			}
+			if(consName.equals("全部")||consName.equals("")){
+				//go on
+			}else {
+				if(consName.equals(LogicMethod.getRightString(report.get("InstallPosition").toString()))){
+					//go on
+				}else {
+					continue;
+				}
 			}
 			//是否能够编辑
 			map.put("CanUpdate", canUpdate?"true":"false");

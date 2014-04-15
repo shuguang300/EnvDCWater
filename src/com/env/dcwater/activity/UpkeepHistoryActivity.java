@@ -20,10 +20,11 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.component.SystemParams;
+import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.fragment.DataFilterView;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
-
 /**
  * 保养历史记录
  * @author sk
@@ -31,7 +32,7 @@ import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickListener,IXListViewListener{
 	
 	public static final String TAG_STRING = "UpkeepHistoryActivity";
-	
+	private ThreadPool.GetServerConsData getServerConsData;
 	private ActionBar mActionBar;
 	private PullToRefreshView mHistoryList;
 	private UpkeepHistoryItemAdapter mAdapter;
@@ -57,6 +58,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		iniData();
 		iniActionBar();
 		iniView();
+		getServerData();
 	}
 	
 	/**
@@ -126,6 +128,38 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 			map.put("State", "State"+i);
 			mData.add(map);
 		}
+	}
+	
+	/**
+	 * 从服务器获取数据
+	 */
+	private void getServerData(){
+		if(SystemParams.getInstance().getConstructionList()==null){
+			getServerConsData = new ThreadPool.GetServerConsData() {
+				@Override
+				protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
+					if(result!=null){
+						String [] posList = new String [result.size()] ;
+						for(int i =0;i<result.size();i++){
+							posList[i] = result.get(i).get("StructureName");
+						}
+						mDataFilterView.setPosList(posList, 0);
+					}
+				}
+			};
+			getServerConsData.execute("");
+		}else {
+			ArrayList<HashMap<String, String>> result = SystemParams.getInstance().getConstructionList();
+			String [] posList = new String [result.size()] ;
+			for(int i =0;i<result.size();i++){
+				posList[i] = result.get(i).get("StructureName");
+			}
+			mDataFilterView.setPosList(posList, 0);
+		}
+//		if(!isRfresh){
+//			getServerData = new GetServerData();
+//			getServerData.execute("");
+//		}
 	}
 	
 	@Override

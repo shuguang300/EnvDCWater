@@ -7,11 +7,8 @@
     <item
         android:id="@+id/menu_machineinfo_upkeephistory"
         android:title="@string/menu_machineinfo_upkeephistory"/>
-    <!--
+    
     <item
-        android:id="@+id/menu_machineinfo_refresh"
-        android:title="@string/menu_machineinfo_refresh"
-        android:showAsAction="always|withText"
-        android:icon="@drawable/ic_launcher"/>
-  -->
+        android:id="@+id/menu_machineinfo_showdevice"
+        android:title="@string/menu_machineinfo_showdevice"/>
 </menu>

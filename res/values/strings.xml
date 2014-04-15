@@ -147,10 +147,12 @@
     <string name="menu_machineinfo_maintainhistory">维修历史</string>
     <string name="menu_machineinfo_upkeephistory">保养历史</string>
     <string name="menu_machineinfo_refresh">刷新</string>
+    <string name="menu_machineinfo_showdevice">选择设备</string>
     <string name="menu_repairmanage_add">故障上报</string>
     <string name="menu_repairmanage_refresh">刷新</string>
     <string name="menu_repairmanage_nofilter">所有任务</string>
     <string name="menu_repairmanage_filter">可操作任务</string>
+    <string name="menu_repairmanage_drawshow">筛选条件</string>
     <string name="menu_repairmanageitem_refresh">刷新</string>
     <string name="menu_upkeephistory_refresh">刷新</string>
     <string name="menu_maintainhistory_refresh">刷新</string>

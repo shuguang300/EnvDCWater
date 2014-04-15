@@ -42,7 +42,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	private PullToRefreshView infoListView;
 	private ArrayList<HashMap<String, String>> mMachine;
 	private ArrayList<HashMap<String, String>> mMachineParams;
-	private GetServerData getServerData;
+	private GetServerDeviceData getServerDeviceData;
 	private MachineInfoItemAdapter infoListViewAdapter;
 	private MachineListItemAdapter machineListViewAdapter;
 	private ActionBar mActionBar;
@@ -90,8 +90,8 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	 * 使用asynctask异步获取服务器上的数据
 	 */
 	private void getServerData(){
-		getServerData = new GetServerData();
-		getServerData.execute("");
+		getServerDeviceData = new GetServerDeviceData();
+		getServerDeviceData.execute("");
 	}
 	
 	/**
@@ -275,6 +275,9 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 		case R.id.menu_machineinfo_upkeephistory:
 			startUpkeepHistoryActivity();
 			break;
+		case R.id.menu_machineinfo_showdevice:
+			mDrawerLayout.openDrawer(Gravity.LEFT);
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -353,7 +356,7 @@ public class MachineInfoActivity extends NfcActivity implements OnItemClickListe
 	 * 调用webservice获取数据的异步方法
 	 * @author sk
 	 */
-	private class GetServerData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
+	private class GetServerDeviceData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
 			JSONObject object = new JSONObject();
