@@ -72,6 +72,7 @@ public class RepairManageItemActivity extends NfcActivity{
 			mActionBar.setTitle("上报故障");
 			break;
 		case RepairManageActivity.REPAIRMANAGE_NORMAL_INTEGER:
+		case RepairManageActivity.REPAIRMANAGE_HISTORY_INTEGER:
 			mActionBar.setTitle(receivedData.get("FaultReportSN")+"详情");
 			break;
 		}
@@ -94,6 +95,7 @@ public class RepairManageItemActivity extends NfcActivity{
 			selectedData.put("AccidentDetail", "");
 			break;
 		case RepairManageActivity.REPAIRMANAGE_NORMAL_INTEGER://普通模式
+		case RepairManageActivity.REPAIRMANAGE_HISTORY_INTEGER: //历史浏览模式
 			receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("Data");
 			selectedData = receivedData;
 			taskState = Integer.valueOf(selectedData.get("State"));
@@ -210,6 +212,7 @@ public class RepairManageItemActivity extends NfcActivity{
 				taskType = 0;
 			}
 		}
+		
 		switch (taskType) {
 		case 0:
 		case EnumList.RepairTaskType.TASKTYPE_EQUIPMENT:
@@ -218,7 +221,8 @@ public class RepairManageItemActivity extends NfcActivity{
 		case EnumList.RepairTaskType.TASKTYPE_PRODUCTION:
 			setGroupVerifyPDShow(true);
 			break;
-		}
+		}	
+		
 		switch (taskState) {
 		case -1:
 			setGroupRepairShow(false);
@@ -284,6 +288,7 @@ public class RepairManageItemActivity extends NfcActivity{
 			break;
 		case RepairManageActivity.REPAIRMANAGE_UPDATE_INTEGER:
 		case RepairManageActivity.REPAIRMANAGE_NORMAL_INTEGER:
+		case RepairManageActivity.REPAIRMANAGE_HISTORY_INTEGER:
 			setGroupBasicData(false);
 			setGroupFaultData(false);
 			setGroupTaskSendData(false);
@@ -609,50 +614,52 @@ public class RepairManageItemActivity extends NfcActivity{
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		if(!methodName.equals(RepairManageActivity.METHOD_ADD_STRING)&&receivedData.get("CanUpdate").equals("true")){
-			int positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
-			int taskState = Integer.valueOf(receivedData.get("State"));
-//			int taskType = Integer.valueOf(mData.get(info.position-1).get("RepairTaskType"));
-			switch (positionID) {
-			case EnumList.UserRole.USERROLEPLANTER:
-				getMenuInflater().inflate(R.menu.cm_rm_pm, menu);
-				break;
-			case EnumList.UserRole.USERROLEEQUIPMENTOPERATION:
-			case EnumList.UserRole.USERROLEPRODUCTIONOPERATION:
-				getMenuInflater().inflate(R.menu.cm_rm_op, menu);
-				break;
-			case EnumList.UserRole.USERROLEEQUIPMENTCHIEF:
-				getMenuInflater().inflate(R.menu.cm_rm_dd, menu);
-				if(taskState==EnumList.RepairState.STATEHASBEENCONFIRMED||
-				taskState==EnumList.RepairState.STATEHASBEENREPORTED||
-				taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED){
-					menu.getItem(0).setVisible(true);
-					menu.getItem(1).setVisible(false);
-				}else {
-					menu.getItem(0).setVisible(false);
-					menu.getItem(1).setVisible(true);
+		if (mRequestCode!=RepairManageActivity.REPAIRMANAGE_HISTORY_INTEGER) {
+			if(!methodName.equals(RepairManageActivity.METHOD_ADD_STRING)&&receivedData.get("CanUpdate").equals("true")){
+				int positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+				int taskState = Integer.valueOf(receivedData.get("State"));
+//				int taskType = Integer.valueOf(mData.get(info.position-1).get("RepairTaskType"));
+				switch (positionID) {
+				case EnumList.UserRole.USERROLEPLANTER:
+					getMenuInflater().inflate(R.menu.cm_rm_pm, menu);
+					break;
+				case EnumList.UserRole.USERROLEEQUIPMENTOPERATION:
+				case EnumList.UserRole.USERROLEPRODUCTIONOPERATION:
+					getMenuInflater().inflate(R.menu.cm_rm_op, menu);
+					break;
+				case EnumList.UserRole.USERROLEEQUIPMENTCHIEF:
+					getMenuInflater().inflate(R.menu.cm_rm_dd, menu);
+					if(taskState==EnumList.RepairState.STATEHASBEENCONFIRMED||
+					taskState==EnumList.RepairState.STATEHASBEENREPORTED||
+					taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED){
+						menu.getItem(0).setVisible(true);
+						menu.getItem(1).setVisible(false);
+					}else {
+						menu.getItem(0).setVisible(false);
+						menu.getItem(1).setVisible(true);
+					}
+					break;
+				case EnumList.UserRole.USERROLEPRODUCTIONCHIEF:
+					getMenuInflater().inflate(R.menu.cm_rm_pd, menu);
+					if(taskState==EnumList.RepairState.STATEHASBEENREPORTED){
+						menu.getItem(0).setVisible(true);
+						menu.getItem(1).setVisible(false);
+					}else {
+						menu.getItem(0).setVisible(false);
+						menu.getItem(1).setVisible(true);
+					}
+					break;
+				case EnumList.UserRole.USERROLEREPAIRMAN:
+					getMenuInflater().inflate(R.menu.cm_rm_rm, menu);
+					if(taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED){
+						menu.getItem(0).setVisible(true);
+						menu.getItem(1).setVisible(false);
+					}else {
+						menu.getItem(0).setVisible(false);
+						menu.getItem(1).setVisible(true);
+					}
+					break;
 				}
-				break;
-			case EnumList.UserRole.USERROLEPRODUCTIONCHIEF:
-				getMenuInflater().inflate(R.menu.cm_rm_pd, menu);
-				if(taskState==EnumList.RepairState.STATEHASBEENREPORTED){
-					menu.getItem(0).setVisible(true);
-					menu.getItem(1).setVisible(false);
-				}else {
-					menu.getItem(0).setVisible(false);
-					menu.getItem(1).setVisible(true);
-				}
-				break;
-			case EnumList.UserRole.USERROLEREPAIRMAN:
-				getMenuInflater().inflate(R.menu.cm_rm_rm, menu);
-				if(taskState==EnumList.RepairState.STATEHASBEENDISTRIBUTED){
-					menu.getItem(0).setVisible(true);
-					menu.getItem(1).setVisible(false);
-				}else {
-					menu.getItem(0).setVisible(false);
-					menu.getItem(1).setVisible(true);
-				}
-				break;
 			}
 		}
 		return super.onCreateOptionsMenu(menu);

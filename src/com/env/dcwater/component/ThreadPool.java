@@ -35,7 +35,7 @@ public class ThreadPool {
 				String result = DataCenterHelper.HttpPostData("GetStructureByPlantID", object);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
-					data = OperationMethod.parseConsListToArray(jsonObject);
+					data = OperationMethod.parseConsDataToList(jsonObject);
 					SystemParams.getInstance().setConstructionList(data);
 				}
 			} catch (ClientProtocolException e) {

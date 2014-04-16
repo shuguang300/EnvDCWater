@@ -42,15 +42,8 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	private Intent receivedIntent;
 	private String receivedAction;
 	private HashMap<String, String> receivedData;
-	private Handler mHandler = new Handler(){
-		public void handleMessage(android.os.Message msg) {
-			switch (msg.what) {
-			case 0:
-				mHistoryList.stopRefresh();
-				break;
-			}
-		}
-	};
+	private TextView titleMessage;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -87,7 +80,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		mHistoryList.setXListViewListener(this);
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_upkeephistory_drawlayout);
 		mDataFilterView =(DataFilterView)findViewById(R.id.activity_upkeephistory_datafilter);
-		mDataFilterView.setStateList(getResources().getStringArray(R.array.view_datafilter_statelist),0);
+		mDataFilterView.hideTaskStatePicker();
 		mDataFilterView.setPosList(getResources().getStringArray(R.array.view_datafilter_poslist),0);
 		mDrawerLayout.setDrawerListener(new DrawerListener() {
 			@Override
@@ -121,19 +114,20 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		receivedAction = receivedIntent.getExtras().getString("action");
 		receivedData = (HashMap<String, String>)receivedIntent.getExtras().getSerializable("data");
 		mData = new ArrayList<HashMap<String,String>>();
-		HashMap<String, String> map = null;
-		for(int i =0;i<30;i++){
-			map = new HashMap<String, String>();
-			map.put("Name", "Name"+i);
-			map.put("State", "State"+i);
-			mData.add(map);
-		}
 	}
 	
 	/**
-	 * 从服务器获取数据
+	 * 获取服务器数据
 	 */
 	private void getServerData(){
+		getServerConsData();
+		getServerHistoryData();
+	}
+	
+	/**
+	 * 从服务器获取构筑物数据
+	 */
+	private void getServerConsData(){
 		if(SystemParams.getInstance().getConstructionList()==null){
 			getServerConsData = new ThreadPool.GetServerConsData() {
 				@Override
@@ -156,10 +150,13 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 			}
 			mDataFilterView.setPosList(posList, 0);
 		}
-//		if(!isRfresh){
-//			getServerData = new GetServerData();
-//			getServerData.execute("");
-//		}
+	}
+	
+	/**
+	 * 获取养护的历史任务
+	 */
+	private void getServerHistoryData(){
+		
 	}
 	
 	@Override
@@ -195,6 +192,9 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_upkeephistory, menu);
+		titleMessage = (TextView)menu.getItem(0).getActionView();
+		titleMessage.setTextColor(getResources().getColor(R.color.white));
+		titleMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.small));
 		return super.onCreateOptionsMenu(menu);
 	}
 	@Override
@@ -202,6 +202,13 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			onBackPressed();
+			break;
+		case R.id.menu_upkeephistory_showdraw:
+			if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+				mDrawerLayout.closeDrawer(Gravity.LEFT);
+			}else {
+				mDrawerLayout.openDrawer(Gravity.LEFT);
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -218,17 +225,6 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 
 	@Override
 	public void onRefresh() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				mHandler.sendEmptyMessage(0);
-			}
-		}).start();
 	}
 
 	@Override

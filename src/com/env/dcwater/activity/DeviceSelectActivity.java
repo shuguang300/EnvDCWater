@@ -156,6 +156,16 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		mProgressDialog.show();
 	}
 	
+	/**
+	 * 取消时，退出对话框
+	 */
+	private void hideProgressDialog(){
+		if(mProgressDialog!=null){
+			mProgressDialog.cancel();
+		}
+	}
+	
+	
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
@@ -279,7 +289,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 				String result = DataCenterHelper.HttpPostData("GetDeviceInfoList", object);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
-					data = OperationMethod.parseDeviceListToArray(jsonObject,params[0],params[1]);
+					data = OperationMethod.parseDeviceDataToList(jsonObject,params[0],params[1]);
 					deviceDataArrayList = data;
 				}
 			} catch (ClientProtocolException e) {
@@ -307,7 +317,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 			if(result!=null){
 				deviceAdapter.notifyDataSetChanged();
 			}
-			mProgressDialog.dismiss();
+			hideProgressDialog();
 			mListView.stopRefresh();
 		}
 	}

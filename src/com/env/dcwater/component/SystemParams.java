@@ -56,7 +56,7 @@ public class SystemParams {
 	 * @param mLoggedUserInfo
 	 *            the mLoggedUserInfo to set
 	 */
-	public void setmLoggedUserInfo(HashMap<String, String> LoggedUserInfo) {
+	public void setLoggedUserInfo(HashMap<String, String> LoggedUserInfo) {
 		mLoggedUserInfo = LoggedUserInfo;
 	}
 	

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <!--  
     <item 
-        android:id="@+id/menu_maintainhistory_refresh"
-        android:title="@string/menu_maintainhistory_refresh"
-        android:icon="@drawable/ic_launcher"
-        android:showAsAction="always|withText">
+        android:actionViewClass="android.widget.TextView"
+        android:title=""
+        android:showAsAction="always">
     </item>
     
-    -->
+    <item 
+        android:id="@+id/menu_maintainhistory_showdraw"
+        android:title="@string/menu_maintainhistory_drawshow"
+        android:showAsAction="never" />
+
 </menu>

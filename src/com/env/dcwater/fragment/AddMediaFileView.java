@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 /**
  * 在数据录入界面中，可以输入文本，语音，图像
@@ -45,19 +46,20 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 		buttonVoice.setOnClickListener(this);
 		buttonImg.setOnClickListener(this);
 		buttonLocation.setOnClickListener(this);
+		
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.view_addmediafile_voice:
-			
+			Toast.makeText(mContext, "添加语音", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.view_addmediafile_img:
-			
+			Toast.makeText(mContext, "添加图片", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.view_addmediafile_location:
-			
+			Toast.makeText(mContext, "添加位置信息", Toast.LENGTH_SHORT).show();
 			break;
 		}
 	}

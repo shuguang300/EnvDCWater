@@ -1,6 +1,7 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -43,6 +46,8 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	private ArrayList<HashMap<String, String>> data;
 	private ActionBar mActionBar;
 	private Button mLogout;
+	private TextView titleMessage;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -152,6 +157,10 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_main, menu);
+		titleMessage = (TextView)menu.getItem(0).getActionView();
+		titleMessage.setTextColor(getResources().getColor(R.color.white));
+		titleMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.i_small));
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -160,6 +169,9 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			finish();
+			break;
+		case R.id.menu_main_userinfo:
+			
 			break;
 		}
 		return super.onOptionsItemSelected(item);

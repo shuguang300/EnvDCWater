@@ -100,7 +100,6 @@ public class DataFilterView extends LinearLayout{
 		tvEndTime.setText(new SimpleDateFormat(SystemParams.SHORTDATE_PATTERN_STRING, Locale.CHINA).format(mEndTime.getTime()));
 		
 		
-		
 		//设置控件的单击事件
 		trFastTime.setOnClickListener(mClickListen);
 		trStartTime.setOnClickListener(mClickListen);
@@ -281,7 +280,21 @@ public class DataFilterView extends LinearLayout{
 				if(dateTimePickerView==null){
 					dateTimePickerView = new DateTimePickerView(mContext);
 					dateTimePickerView.setShortDateView();
+					dateTimePickerView.hideResetButton();
 				}
+				dateTimePickerView.setButtonClickEvent(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						mStartTime.setTime(dateTimePickerView.getSelectedDate());
+						tvStartTime.setText(new SimpleDateFormat(SystemParams.SHORTDATE_PATTERN_STRING, Locale.CHINA).format(mStartTime.getTime()));
+						dateTimePickerView.dismiss();
+					}
+				}, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						
+					}
+				}, null);
 				dateTimePickerView.iniWheelView(mStartTime);
 				dateTimePickerView.showAtLocation(mView.findViewById(R.id.view_datafilter_tablerow_starttime), Gravity.BOTTOM, 0, 0);
 				break;
@@ -289,7 +302,21 @@ public class DataFilterView extends LinearLayout{
 				if(dateTimePickerView==null){
 					dateTimePickerView = new DateTimePickerView(mContext);
 					dateTimePickerView.setShortDateView();
+					dateTimePickerView.hideResetButton();
 				}
+				dateTimePickerView.setButtonClickEvent(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						mEndTime.setTime(dateTimePickerView.getSelectedDate());
+						tvEndTime.setText(new SimpleDateFormat(SystemParams.SHORTDATE_PATTERN_STRING, Locale.CHINA).format(mEndTime.getTime()));
+						dateTimePickerView.dismiss();
+					}
+				}, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						dateTimePickerView.dismiss();
+					}
+				}, null);
 				dateTimePickerView.iniWheelView(mEndTime);
 				dateTimePickerView.showAtLocation(mView.findViewById(R.id.view_datafilter_tablerow_starttime), Gravity.BOTTOM, 0, 0);
 				break;

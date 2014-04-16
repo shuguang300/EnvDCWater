@@ -113,6 +113,11 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	public static final String METHOD_PMAPPROVE_STRING ="PMApprove";
 	
 	/**
+	 * 历史浏览
+	 */
+	public static final String METHOD_HISTORY_STRING ="History";
+	
+	/**
 	 * 新增模式
 	 */
 	public static final int REPAIRMANAGE_ADD_INTEGER = 0;
@@ -418,7 +423,11 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			getServerData();
 			break;
 		case R.id.menu_repairmanage_drawlayout:
-			mDrawerLayout.openDrawer(Gravity.LEFT);
+			if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+				mDrawerLayout.closeDrawer(Gravity.LEFT);
+			}else {
+				mDrawerLayout.openDrawer(Gravity.LEFT);
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -624,7 +633,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 					int rolePositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
 					dateFilters = mDataFilterView.getSelectCondition();
 					int taskState = OperationMethod.getTaskStateByStateName(dateFilters[3]);
-					data = OperationMethod.parseRepairTaskToArray(rolePositionID, jsonObject, taskState,dateFilters[2], isFilter);
+					data = OperationMethod.parseRepairTaskDataToList(rolePositionID, jsonObject, taskState,dateFilters[2], isFilter);
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -642,7 +651,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			showProgressDialog(true);
+			showProgressDialog(false);
 		}
 		
 		@Override

@@ -25,6 +25,7 @@ import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
+import com.env.dcwater.util.SystemMethod;
 
 /**
  * 登录窗口
@@ -146,12 +147,21 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 			mLoginProgressDialog.show();
 		}
 	}
+	/**
+	 * 取消时，退出对话框
+	 */
+	private void hideProgressDialog(){
+		if(mLoginProgressDialog!=null){
+			mLoginProgressDialog.cancel();
+		}
+	}
 	
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.activity_login_submit:
+			SystemMethod.hideSoftInput(LoginActivity.this);
 			startLogin();
 //			entranceMainActivity();
 			break;
@@ -181,7 +191,6 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	 * @author sk
 	 */
 	class LoginAsyncTask extends AsyncTask<String, ProgressDialog, SoapObject>{
-
 		@Override
 		protected SoapObject doInBackground(String... params) {
 			HashMap<String, String> param = new HashMap<String, String>();
@@ -236,13 +245,13 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 //								SystemParams.getInstance().setmLoggedUserInfo(map);
 //								entranceMainActivity();
 //							}
-							SystemParams.getInstance().setmLoggedUserInfo(map);
+							SystemParams.getInstance().setLoggedUserInfo(map);
 							entranceMainActivity();
 						}
 					}
 				}
 			}
-			mLoginProgressDialog.dismiss();
+			hideProgressDialog();
 		}
 	}
 	

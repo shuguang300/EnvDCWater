@@ -153,10 +153,10 @@
     <string name="menu_repairmanage_nofilter">所有任务</string>
     <string name="menu_repairmanage_filter">可操作任务</string>
     <string name="menu_repairmanage_drawshow">筛选条件</string>
-    <string name="menu_repairmanageitem_refresh">刷新</string>
-    <string name="menu_upkeephistory_refresh">刷新</string>
-    <string name="menu_maintainhistory_refresh">刷新</string>
+    <string name="menu_maintainhistory_drawshow">筛选条件</string>
+    <string name="menu_upkeephistory_drawshow">筛选条件</string>
     <string name="menu_datainput_save">保存</string>
+    <string name="menu_main_userinfo">个人信息</string>
     
     <string name="cm_rm_op_update">修改</string>
     <string name="cm_rm_op_delete">删除</string>

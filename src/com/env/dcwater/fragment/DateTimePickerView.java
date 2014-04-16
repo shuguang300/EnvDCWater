@@ -163,6 +163,13 @@ public class DateTimePickerView extends PopupWindow{
 	}
 	
 	/**
+	 * 隐藏重置按钮
+	 */
+	public void hideResetButton(){
+		mReset.setVisibility(View.GONE);
+	}
+	
+	/**
 	 * @param submit 确定事件
 	 * @param cancel 取消事件
 	 * @param reset  重置事件

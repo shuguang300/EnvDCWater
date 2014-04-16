@@ -1,32 +1,25 @@
 package com.env.dcwater.activity;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.http.Header;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.params.ConnConnectionPNames;
-import org.apache.http.params.CoreConnectionPNames;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -41,6 +34,7 @@ import com.env.dcwater.fragment.DataFilterView;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
+import com.env.dcwater.util.OperationMethod;
 
 /**
  * 维修历史记录
@@ -54,11 +48,15 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	private DrawerLayout mDrawerLayout;
 	private DataFilterView mDataFilterView;
 	private PullToRefreshView mHistoryList;
-	private ArrayList<HashMap<String, String>> mHistories; 
+	private ProgressDialog mProgressDialog;
+	private GetServerTaskHistoryData getServerTaskHistoryData;
+	private ArrayList<HashMap<String, String>> mHistoryArrayList; 
 	private MaintainHistoryItemAdapter mAdapter;
 	private Intent receivedIntent;
 	private String receivedAction;
 	private HashMap<String, String> receivedData;
+	private TextView titleMessage;
+	private int positionID;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +66,22 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		iniActionBar();
 		iniView();
 		getServerData();
+	}
+	
+	/**
+	 * 初始化测试数据
+	 */
+	@SuppressWarnings("unchecked")
+	private void iniData() {
+		try {
+			positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+		} catch (Exception e) {
+			positionID = Integer.MIN_VALUE;
+		}
+		receivedIntent = getIntent();
+		receivedAction = receivedIntent.getExtras().getString("action");
+		receivedData = (HashMap<String,String>)receivedIntent.getExtras().getSerializable("data");
+		mHistoryArrayList = new ArrayList<HashMap<String,String>>();
 	}
 	
 	/**
@@ -97,8 +111,16 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		mHistoryList.setXListViewListener(this);
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_maintainhistory_drawlayout);
 		mDataFilterView = (DataFilterView)findViewById(R.id.activity_maintainhistory_datafilter);
-		mDataFilterView.setStateList(getResources().getStringArray(R.array.view_datafilter_statelist),0);
+		mDataFilterView.hideTaskStatePicker();
 		mDataFilterView.setPosList(getResources().getStringArray(R.array.view_datafilter_poslist),0);
+		mDataFilterView.setSubmitEvent(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mDrawerLayout.closeDrawer(Gravity.LEFT);
+				getServerHistoryData();
+			}
+		});
+		
 		mDrawerLayout.setDrawerListener(new DrawerListener() {
 			@Override
 			public void onDrawerStateChanged(int arg0) {
@@ -122,34 +144,21 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		});
 	}
 	
-	
-	/**
-	 * 初始化测试数据
-	 */
-	@SuppressWarnings("unchecked")
-	private void iniData() {
-		receivedIntent = getIntent();
-		receivedAction = receivedIntent.getExtras().getString("action");
-		receivedData = (HashMap<String,String>)receivedIntent.getExtras().getSerializable("data");
-		mHistories = new ArrayList<HashMap<String,String>>();
-		HashMap<String, String> history = null;
-		for(int i =0;i<10;i++){
-			history = new HashMap<String, String>();
-			history.put("Name", "test"+i);
-			history.put("State", "state"+i);
-			mHistories.add(history);
-		}
+	private void getServerData(){
+		getServerConsData();
+		getServerHistoryData();
 	}
 	
 	/**
-	 * 调用webservice的异步方法
+	 * 获取构筑物
 	 */
-	private void getServerData(){
+	private void getServerConsData(){
 		if(SystemParams.getInstance().getConstructionList()==null){
 			getServerConsData = new ThreadPool.GetServerConsData() {
 				@Override
 				protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
 					if(result!=null){
+						SystemParams.getInstance().setConstructionList(result);
 						String [] posList = new String [result.size()] ;
 						for(int i =0;i<result.size();i++){
 							posList[i] = result.get(i).get("StructureName");
@@ -167,10 +176,54 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 			}
 			mDataFilterView.setPosList(posList, 0);
 		}
-//		if(!isRfresh){
-//			getServerData = new GetServerData();
-//			getServerData.execute("");
-//		}
+	}
+	
+	/**
+	 * 获取维修历史的数据
+	 */
+	private void getServerHistoryData(){
+		String [] filterData = mDataFilterView.getSelectCondition();
+		String startTime = filterData[0]+" 00:00:00";
+		String endTime = filterData[1]+" 23:59:59";
+		String consName = filterData[2];
+		String plantID = SystemParams.PLANTID_INT+"";
+		getServerTaskHistoryData = new GetServerTaskHistoryData();
+		if(receivedAction.equals(MainActivity.ACTION_STRING)){
+			getServerTaskHistoryData.execute(plantID,startTime,endTime,"",consName);
+		}else if (receivedAction.equals(MachineInfoActivity.ACTION_STRING)) {
+			getServerTaskHistoryData.execute("",startTime,endTime,receivedData.get("DeviceID"),consName);
+		}
+	}
+	
+	/**
+	 * 获取数据时，弹出进度对话框
+	 * @param cancelable 是否能被取消的操作
+	 */
+	private void showProgressDialog(boolean cancelable){
+		if(mProgressDialog==null){
+			mProgressDialog = new ProgressDialog(MaintainHistoryActivity.this);
+			mProgressDialog.setTitle("提交中");
+			mProgressDialog.setMessage("正在向服务器提交，请稍后");
+			mProgressDialog.setCanceledOnTouchOutside(false);
+		}
+		mProgressDialog.setCancelable(cancelable);
+		mProgressDialog.show();
+	}
+	
+	/**
+	 * 取消时，退出对话框
+	 */
+	private void hideProgressDialog(){
+		if(mProgressDialog!=null){
+			mProgressDialog.cancel();
+		}
+	}
+	
+	private void startCheckDetailActivity(HashMap<String, String> data){
+		Intent intent = new Intent(this,RepairManageItemActivity.class);
+		intent.putExtra("RequestCode", RepairManageActivity.REPAIRMANAGE_HISTORY_INTEGER);
+		intent.putExtra("Data", data);
+		startActivity(intent);
 	}
 	
 	@Override
@@ -206,6 +259,9 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_maintainhistory, menu);
+		titleMessage = (TextView)menu.getItem(0).getActionView();
+		titleMessage.setTextColor(getResources().getColor(R.color.white));
+		titleMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.small));
 		return super.onCreateOptionsMenu(menu);
 	}
 	@Override
@@ -213,6 +269,13 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			onBackPressed();
+			break;
+		case R.id.menu_maintainhistory_showdraw:
+			if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+				mDrawerLayout.closeDrawer(Gravity.LEFT);
+			}else {
+				mDrawerLayout.openDrawer(Gravity.LEFT);
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -231,11 +294,14 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+		if(position!=0){
+			startCheckDetailActivity(mHistoryArrayList.get(position-1));
+		}
 	}
 
 	@Override
 	public void onRefresh() {
-		mHistoryList.stopRefresh();
+		getServerHistoryData();
 	}
 	
 	/**
@@ -245,11 +311,11 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	private class MaintainHistoryItemAdapter extends BaseAdapter{
 		@Override
 		public int getCount() {
-			return mHistories.size();
+			return mHistoryArrayList.size();
 		}
 		@Override
 		public HashMap<String, String> getItem(int position) {
-			return mHistories.get(position);
+			return mHistoryArrayList.get(position);
 		}
 		@Override
 		public long getItemId(int position) {
@@ -263,8 +329,8 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 			HashMap<String,String> map = getItem(position);
 			TextView name = (TextView)convertView.findViewById(R.id.item_maintainhistory_name);
 			TextView state = (TextView)convertView.findViewById(R.id.item_maintainhistory_state);
-			name.setText(map.get("Name").toString());
-			state.setText(map.get("State").toString());
+			name.setText(map.get("DeviceName").toString());
+			state.setText(map.get("InstallPosition").toString());
 			return convertView;
 		}
 	}
@@ -273,6 +339,11 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	/**
 	 * 获取维修历史数据的异步调用方法AsyncTask
 	 * @author sk
+	 * @param 0 PlantID to WebService
+	 * @param 1 StartTime to WebService
+	 * @param 2 EndTime to WebService
+	 * @param 3 DeviceID to WebService
+	 * @param 4 ConsName to Filter Data
 	 */
 	class GetServerTaskHistoryData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 
@@ -287,7 +358,10 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 				param.put("EndTime", params[2]);
 				param.put("DeviceID", params[3]);
 				result = DataCenterHelper.HttpPostData("GetReportInfoArraylist", param);
-				Log.v(TAG_STRING, result);
+				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
+					JSONObject jsonObject = new JSONObject(result);
+					data = OperationMethod.parseRepairHistoryDataToList(jsonObject,params[4],positionID);
+				}
 			} catch (ClientProtocolException e) {
 				data = null;
 				e.printStackTrace();
@@ -304,14 +378,21 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			showProgressDialog(false);
 		}
 		
 		@Override
 		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
 			super.onPostExecute(result);
+			int count = 0;
 			if(result!=null){
+				mHistoryArrayList = result;
 				mAdapter.notifyDataSetChanged();
+				count = mHistoryArrayList.size();
 			}
+			hideProgressDialog();
+			mHistoryList.stopRefresh();
+			titleMessage.setText("当前共有"+count+"条记录");
 		}
 		
 	}

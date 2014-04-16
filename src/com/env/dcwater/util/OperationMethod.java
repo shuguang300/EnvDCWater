@@ -243,7 +243,7 @@ public class OperationMethod {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static ArrayList<HashMap<String, String>> parseConsListToArray(JSONObject jsonObject) throws JSONException {
+	public static ArrayList<HashMap<String, String>> parseConsDataToList(JSONObject jsonObject) throws JSONException {
 		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
 		JSONObject cons = null;
@@ -271,7 +271,7 @@ public class OperationMethod {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static ArrayList<HashMap<String, String>> parseDeviceListToArray(JSONObject jsonObject ,String deviceName, String consName) throws JSONException{
+	public static ArrayList<HashMap<String, String>> parseDeviceDataToList(JSONObject jsonObject ,String deviceName, String consName) throws JSONException{
 		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
 		JSONObject device = null;
@@ -361,7 +361,7 @@ public class OperationMethod {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static ArrayList<HashMap<String, String>> parseRepairTaskToArray(int rolePosition,JSONObject jsonObject,int taskState,String consName,boolean isFilter) throws JSONException{
+	public static ArrayList<HashMap<String, String>> parseRepairTaskDataToList(int rolePosition,JSONObject jsonObject,int taskState,String consName,boolean isFilter) throws JSONException{
 		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
 		JSONObject report = null;
 		HashMap<String, String> map = null;
@@ -374,7 +374,7 @@ public class OperationMethod {
 			try {
 				taskType = Integer.valueOf(report.get("RepairTaskType").toString());
 			} catch (Exception e) {
-				taskState = 0;
+				taskType = 0;
 			}
 			canUpdate = canTaskUpdated(rolePosition, Integer.valueOf(report.get("State").toString()),taskType);
 			if(isFilter&&!canUpdate){
@@ -394,6 +394,127 @@ public class OperationMethod {
 			}
 			//是否能够编辑
 			map.put("CanUpdate", canUpdate?"true":"false");
+			//保修单的ID
+			map.put("RepairTaskID", report.get("RepairTaskID").toString());
+			//维修单类型
+			map.put("RepairTaskType", LogicMethod.getRightString(report.get("RepairTaskType").toString()));
+			//厂名
+			map.put("PlantID", report.get("PlantID").toString());
+			//维修措施（紧急措施和其他措施）
+			map.put("EmergencyMeasures",LogicMethod.getRightString(report.get("EmergencyMeasures").toString()));
+			//设备安装位置
+			map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
+			//设备安装位置ID
+			map.put("InstallPositionID", LogicMethod.getRightString(report.get("InstallPositionID").toString()));
+			//故障信息
+			map.put("AccidentDetail",LogicMethod.getRightString(report.get("AccidentDetail").toString()));
+			//故障发生时间
+			map.put("AccidentOccurTime", report.get("AccidentOccurTime").toString().replace("T", " "));
+			//维修时间
+			map.put("RepairedTime", LogicMethod.getRightString(report.get("RepairedTime").toString().replace("T", " ")));
+			//故障单填报人ID	
+			map.put("ReportPersonID", report.get("ReportPersonID").toString());
+			//故障单填报人名
+			map.put("ReportPersonRealName", report.get("ReportPersonRealName").toString());
+			//故障单接收人ID
+			map.put("ReceiverID", LogicMethod.getRightString(report.get("ReceiverID").toString()));
+			//故障单接收人名
+			map.put("ReceiverRealName", LogicMethod.getRightString(report.get("ReceiverRealName").toString()));
+			//故障维修人ID
+			map.put("RepairPersonID", LogicMethod.getRightString(report.get("RepairPersonID").toString()));
+			//故障维修人名
+			map.put("RepairPersonRealName", LogicMethod.getRightString(report.get("RepairPersonRealName").toString()));
+			//所需工时
+			map.put("RequiredManHours", LogicMethod.getRightString(report.get("RequiredManHours").toString()));
+			//维修内容及要求
+			map.put("TaskDetail",LogicMethod.getRightString(report.get("TaskDetail").toString()));
+			//维修结果
+			map.put("RepairDetail", LogicMethod.getRightString(report.get("RepairDetail").toString()));
+			//维修物品消耗
+			map.put("AccessoryUsed", LogicMethod.getRightString(report.get("AccessoryUsed").toString()));
+			//金钱消耗
+			map.put("RepairCost", LogicMethod.getRightString(report.get("RepairCost").toString()));
+			//审核结果
+			map.put("ApproveResult", LogicMethod.getRightString(report.get("ApproveResult").toString()));
+			//审核人ID
+			map.put("ApprovePersonID", LogicMethod.getRightString(report.get("ApprovePersonID").toString()));
+			//审核人名
+			map.put("ApprovePersonRealName", LogicMethod.getRightString(report.get("ApprovePersonRealName").toString()));
+			//设备科意见
+			map.put("DDOpinion", LogicMethod.getRightString(report.get("DDOpinion").toString()));
+			//生产科意见
+			map.put("PDOpinion", LogicMethod.getRightString(report.get("PDOpinion").toString()));
+			//厂长意见
+			map.put("PMOpinion", LogicMethod.getRightString(report.get("PMOpinion").toString()));
+			//工单派发时间
+			map.put("TaskCreateTime", LogicMethod.getRightString(report.get("TaskCreateTime").toString().replace("T", " ")));
+			//工单派发人ID
+			map.put("CreatePersonID", LogicMethod.getRightString(report.get("CreatePersonID").toString()));
+			//工单派发人名
+			map.put("CreatePersonRealName", LogicMethod.getRightString(report.get("CreatePersonRealName").toString()));
+			//工单状态ID
+			map.put("State", LogicMethod.getRightString(report.get("State").toString()));
+			//工单状态描述
+			map.put("StateDescription", EnumList.RepairState.getEnumRepairState(Integer.valueOf(report.get("State").toString())).getStateDescription());
+			//设备ID
+			map.put("DeviceID", report.get("DeviceID").toString());
+			//设备型号
+			map.put("Specification", LogicMethod.getRightString(report.get("Specification").toString()));
+			//设备编码
+			map.put("DeviceSN", LogicMethod.getRightString(report.get("DeviceSN").toString()));
+			//开始使用时间
+			map.put("StartUseTime",LogicMethod.getRightString(report.get("StartUseTime").toString().toString().replace("T", " ")));
+			//生产产商
+			map.put("Manufacturer", LogicMethod.getRightString(report.get("Manufacturer").toString()));
+			//设备名称
+			map.put("DeviceName", LogicMethod.getRightString(report.get("DeviceName").toString()));
+			//工单编码
+			map.put("FaultReportSN", report.get("FaultReportSN").toString());
+			//使用部门
+			map.put("Department", LogicMethod.getRightString(report.get("Department").toString()));
+			//设备类型
+			map.put("DeviceClassType", LogicMethod.getRightString(report.get("DeviceClassType").toString()));
+			
+			data.add(map);
+		}
+		return data;
+	}
+	
+	
+	/**
+	 * 将得到的维修 的历史任务json字符串解析为arraylist
+	 * @param jsonObject
+	 * @param consName
+	 * @param rolePosition 
+	 * @return
+	 * @throws JSONException
+	 */
+	public static ArrayList<HashMap<String, String>> parseRepairHistoryDataToList(JSONObject jsonObject,String consName,int rolePosition) throws JSONException{
+		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
+		JSONObject report = null;
+		HashMap<String, String> map = null;
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
+//		int taskType = 0;
+		for(int i =0;i<jsonArray.length();i++){
+			report = jsonArray.getJSONObject(i);
+			map = new HashMap<String, String>();
+//			try {
+//				taskType = Integer.valueOf(report.get("RepairTaskType").toString());
+//			} catch (Exception e) {
+//				taskType = 0;
+//			}
+//			
+			if(consName.equals("全部")||consName.equals("")){
+				//go on
+			}else {
+				if(consName.equals(LogicMethod.getRightString(report.get("InstallPosition").toString()))){
+					//go on
+				}else {
+					continue;
+				}
+			}
+			//是否能够编辑
+			map.put("CanUpdate","false");
 			//保修单的ID
 			map.put("RepairTaskID", report.get("RepairTaskID").toString());
 			//维修单类型
