@@ -1,11 +1,10 @@
 package com.env.dcwater.activity;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.Gravity;
@@ -14,10 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -81,7 +82,16 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_upkeephistory_drawlayout);
 		mDataFilterView =(DataFilterView)findViewById(R.id.activity_upkeephistory_datafilter);
 		mDataFilterView.hideTaskStatePicker();
-		mDataFilterView.setPosList(getResources().getStringArray(R.array.view_datafilter_poslist),0);
+		mDataFilterView.setSubmitEvent(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mDrawerLayout.closeDrawer(Gravity.LEFT);
+				getServerHistoryData();
+			}
+		});
+		
+		
+		
 		mDrawerLayout.setDrawerListener(new DrawerListener() {
 			@Override
 			public void onDrawerStateChanged(int arg0) {

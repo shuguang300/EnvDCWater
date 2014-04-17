@@ -188,8 +188,6 @@ public class RepairManageItemActivity extends NfcActivity{
 		trPlantOpinion = (TableRow)findViewById(R.id.activity_repairmanageitem_plantopinion_tr);
 		etPlantOpinion = (TextView)findViewById(R.id.activity_repairmanageitem_plantopinion);
 		
-//		mSubmitButton = (Button)findViewById(R.id.activity_repairmanageitem_submit);
-		
 		fillViewData(mRequestCode);
 		setViewState(mRequestCode);
 		

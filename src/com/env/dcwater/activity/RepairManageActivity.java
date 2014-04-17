@@ -301,7 +301,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		mListView.setOnItemClickListener(this);
 		
 		mDataFilterView.setStateList(getResources().getStringArray(R.array.view_datafilter_statelist),0);
-		mDataFilterView.setPosList(getResources().getStringArray(R.array.view_datafilter_poslist),0);
 		mDrawerLayout.setDrawerListener(new DrawerListener() {
 			@Override
 			public void onDrawerStateChanged(int arg0) {

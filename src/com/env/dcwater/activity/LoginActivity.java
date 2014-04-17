@@ -2,13 +2,11 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.transport.HttpResponseException;
 import org.xmlpull.v1.XmlPullParserException;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -19,13 +17,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
-import com.env.dcwater.util.SystemMethod;
 
 /**
  * 登录窗口
@@ -161,7 +157,7 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.activity_login_submit:
-			SystemMethod.hideSoftInput(LoginActivity.this);
+//			SystemMethod.hideSoftInput(LoginActivity.this);
 			startLogin();
 //			entranceMainActivity();
 			break;

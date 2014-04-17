@@ -112,7 +112,6 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_maintainhistory_drawlayout);
 		mDataFilterView = (DataFilterView)findViewById(R.id.activity_maintainhistory_datafilter);
 		mDataFilterView.hideTaskStatePicker();
-		mDataFilterView.setPosList(getResources().getStringArray(R.array.view_datafilter_poslist),0);
 		mDataFilterView.setSubmitEvent(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -326,11 +325,19 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 			if(convertView == null){
 				convertView = LayoutInflater.from(MaintainHistoryActivity.this).inflate(R.layout.item_maintainhistory, null);
 			}
-			HashMap<String,String> map = getItem(position);
-			TextView name = (TextView)convertView.findViewById(R.id.item_maintainhistory_name);
+			HashMap<String, String> map = getItem(position);
+			TextView id = (TextView)convertView.findViewById(R.id.item_maintainhistory_id);
+			id.setText("工单SN码："+map.get("FaultReportSN"));
+			TextView sttime = (TextView)convertView.findViewById(R.id.item_maintainhistory_faulttime);
+			sttime.setText("故障时间："+map.get("AccidentOccurTime"));
+			TextView endtime = (TextView)convertView.findViewById(R.id.item_maintainhistory_endtime);
+			endtime.setText("维修完成时间："+map.get("RepairedTime"));
 			TextView state = (TextView)convertView.findViewById(R.id.item_maintainhistory_state);
-			name.setText(map.get("DeviceName").toString());
-			state.setText(map.get("InstallPosition").toString());
+			state.setText(map.get("StateDescription"));
+			TextView name = (TextView)convertView.findViewById(R.id.item_maintainhistory_name);
+			name.setText("故障设备："+map.get("DeviceName"));
+			TextView info = (TextView)convertView.findViewById(R.id.item_maintainhistory_info);
+			info.setText("故障现象："+map.get("AccidentDetail"));
 			return convertView;
 		}
 	}

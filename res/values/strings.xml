@@ -134,16 +134,6 @@
         <item >生产科长已确认</item>
     </string-array>
     
-    <string-array name="view_datafilter_poslist">
-        <item >不限</item>
-        <item >位置1</item>
-        <item >位置2</item>
-        <item >位置3</item>
-        <item >位置4</item>
-        <item >位置5</item>
-        <item >位置6</item>
-    </string-array>
-    
     <string name="menu_machineinfo_maintainhistory">维修历史</string>
     <string name="menu_machineinfo_upkeephistory">保养历史</string>
     <string name="menu_machineinfo_refresh">刷新</string>
