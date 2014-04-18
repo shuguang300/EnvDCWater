@@ -616,7 +616,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	 * 获取服务器端的数据，并将数据放入 arraylist中
 	 * @author sk
 	 */
-	class GetServerTaskData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
+	private class GetServerTaskData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {

@@ -134,10 +134,12 @@
         <item >生产科长已确认</item>
     </string-array>
     
-    <string name="menu_machineinfo_maintainhistory">维修历史</string>
-    <string name="menu_machineinfo_upkeephistory">保养历史</string>
-    <string name="menu_machineinfo_refresh">刷新</string>
-    <string name="menu_machineinfo_showdevice">选择设备</string>
+    <string name="menu_deviceinfoitem_maintainhistory">维修历史</string>
+    <string name="menu_deviceinfoitem_upkeephistory">保养历史</string>
+    <string name="menu_deviceinfoitem_showdevice">选择设备</string>
+    <string name="menu_deviceinfolist_maintainhistory">维修历史</string>
+    <string name="menu_deviceinfolist_upkeephistory">保养历史</string>
+    <string name="menu_deviceinfolist_showcons">选择构筑物</string>
     <string name="menu_repairmanage_add">故障上报</string>
     <string name="menu_repairmanage_refresh">刷新</string>
     <string name="menu_repairmanage_nofilter">所有任务</string>

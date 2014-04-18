@@ -1,15 +1,13 @@
 package com.env.dcwater.fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import com.env.dcwater.R;
-import com.env.dcwater.activity.MachineInfoActivity;
+import com.env.dcwater.activity.DeviceInfoListActivity;
 import com.env.dcwater.activity.MainActivity;
 import com.env.dcwater.activity.MaintainHistoryActivity;
 import com.env.dcwater.activity.RepairManageActivity;
 import com.env.dcwater.activity.UpkeepHistoryActivity;
 import com.env.dcwater.javabean.EnumList;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -61,7 +59,7 @@ public class UserRigthGroupView extends LinearLayout implements OnItemClickListe
 		intent.putExtra("action", MainActivity.ACTION_STRING);
 		switch (code) {
 		case 0:
-			intent.setClass(mContext, MachineInfoActivity.class);
+			intent.setClass(mContext, DeviceInfoListActivity.class);
 			break;
 		case 1:
 			intent.setClass(mContext, RepairManageActivity.class);

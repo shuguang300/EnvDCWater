@@ -93,9 +93,9 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setDisplayShowTitleEnabled(true);
 		//判断是否是所有设备的维修历史
-		if(receivedAction.equals(MainActivity.ACTION_STRING)){
+		if(receivedAction.equals(MainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
 			mActionBar.setTitle("维修历史总览");
-		}else if (receivedAction.equals(MachineInfoActivity.ACTION_STRING)) {
+		}else if (receivedAction.equals(DeviceInfoItemActivity.ACTION_STRING)) {
 			mActionBar.setTitle(receivedData.get("DeviceName")+"维修历史");
 		}
 	}
@@ -187,9 +187,9 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		String consName = filterData[2];
 		String plantID = SystemParams.PLANTID_INT+"";
 		getServerTaskHistoryData = new GetServerTaskHistoryData();
-		if(receivedAction.equals(MainActivity.ACTION_STRING)){
+		if(receivedAction.equals(MainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
 			getServerTaskHistoryData.execute(plantID,startTime,endTime,"",consName);
-		}else if (receivedAction.equals(MachineInfoActivity.ACTION_STRING)) {
+		}else if (receivedAction.equals(DeviceInfoItemActivity.ACTION_STRING)) {
 			getServerTaskHistoryData.execute("",startTime,endTime,receivedData.get("DeviceID"),consName);
 		}
 	}
@@ -352,7 +352,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	 * @param 3 DeviceID to WebService
 	 * @param 4 ConsName to Filter Data
 	 */
-	class GetServerTaskHistoryData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
+	private class GetServerTaskHistoryData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>>{
 
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {

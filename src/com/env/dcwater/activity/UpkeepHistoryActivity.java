@@ -63,9 +63,9 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setDisplayShowTitleEnabled(true);
-		if(receivedAction.equals(MainActivity.ACTION_STRING)){
+		if(receivedAction.equals(MainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
 			mActionBar.setTitle("保养历史总览");
-		}else if (receivedAction.equals(MachineInfoActivity.ACTION_STRING)) {
+		}else if (receivedAction.equals(DeviceInfoItemActivity.ACTION_STRING)) {
 			mActionBar.setTitle(receivedData.get("DeviceName")+"保养历史");
 		}
 	}

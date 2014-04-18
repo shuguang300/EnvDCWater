@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item 
+        android:title=""
+        android:icon="@android:drawable/ic_menu_search"
+        android:showAsAction="always"
+        android:actionViewClass="android.widget.SearchView"/>
+    
+    <item 
+        android:id="@+id/menu_deviceinfolist_maintainhistory"
+        android:title="@string/menu_deviceinfolist_maintainhistory"/>
+    
+    <item
+        android:id="@+id/menu_deviceinfolist_upkeephistory"
+        android:title="@string/menu_deviceinfolist_upkeephistory"/>
+    
+    <item
+        android:id="@+id/menu_deviceinfolist_showcons"
+        android:title="@string/menu_deviceinfolist_showcons"/>
+</menu>

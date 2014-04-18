@@ -92,9 +92,19 @@
             android:icon="@drawable/ic_launcher" >
         </activity>
         
+        <!-- 设备信息列表查看界面 -->
+        <activity
+            android:name="com.env.dcwater.activity.DeviceInfoListActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/ic_launcher">
+        </activity>
+        
         <!-- 设备信息查看界面 -->
         <activity
-            android:name="com.env.dcwater.activity.MachineInfoActivity"
+            android:name="com.env.dcwater.activity.DeviceInfoItemActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"

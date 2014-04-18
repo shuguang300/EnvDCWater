@@ -212,7 +212,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	 * @author sk
 	 *
 	 */
-	class ConstructionAdapter extends BaseAdapter{
+	private class ConstructionAdapter extends BaseAdapter{
 
 		@Override
 		public int getCount() {
@@ -245,7 +245,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	 * @author sk
 	 *
 	 */
-	class DeviceAdapter extends BaseAdapter{
+	private class DeviceAdapter extends BaseAdapter{
 		
 		@Override
 		public int getCount() {
