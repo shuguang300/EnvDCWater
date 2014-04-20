@@ -15,16 +15,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
@@ -34,7 +38,7 @@ import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
 
-public class DeviceInfoListActivity extends NfcActivity {
+public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextListener,OnItemClickListener {
 	
 	public static final String ACTION_STRING = "DeviceInfoListActivity";
 	private ProgressDialog mProgressDialog;
@@ -46,7 +50,7 @@ public class DeviceInfoListActivity extends NfcActivity {
 	private ConstructionAdapter constructionAdapter;
 	private DeviceListAdapter deviceListAdapter;
 	private ThreadPool.GetServerConsData getServerConsData;
-	private SearchView searchView;
+	private SearchView mSearchView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +69,7 @@ public class DeviceInfoListActivity extends NfcActivity {
 		deviceArrayList = new ArrayList<HashMap<String,String>>();
 		consArrayList = new ArrayList<HashMap<String,String>>();
 		constructionAdapter = new ConstructionAdapter();
-		deviceListAdapter = new DeviceListAdapter();
+		deviceListAdapter = new DeviceListAdapter(deviceArrayList);
 	}
 	
 	/**
@@ -93,13 +97,7 @@ public class DeviceInfoListActivity extends NfcActivity {
 			}
 		});
 		
-		consListView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		consListView.setOnItemClickListener(this);
 		
 		deviceListView.setXListViewListener(new PullToRefreshView.IXListViewListener() {
 			@Override
@@ -108,17 +106,27 @@ public class DeviceInfoListActivity extends NfcActivity {
 			}
 		});
 		
-		deviceListView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent intent = new Intent(DeviceInfoListActivity.this,DeviceInfoItemActivity.class);
-				intent.putExtra("data", deviceArrayList.get(position-1));
-				startActivity(intent);
-			}
-		});
+		deviceListView.setOnItemClickListener(this);
+		
+		deviceListView.setTextFilterEnabled(false);
 		
 		deviceListView.setAdapter(deviceListAdapter);
 		consListView.setAdapter(constructionAdapter);
+	}
+	
+	private void iniSearchView(){
+		mSearchView.setQueryHint("请输入设备关键词查找");
+		mSearchView.setOnQueryTextListener(this);
+		mSearchView.setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				// TODO Auto-generated method stub
+				if(keyCode==KeyEvent.KEYCODE_BACK){
+					mSearchView.setIconified(true);
+				}
+				return false;
+			}
+		});
 	}
 	
 	/**
@@ -215,11 +223,28 @@ public class DeviceInfoListActivity extends NfcActivity {
 		startActivity(intent);
 	}
 	
+	private ArrayList<HashMap<String, String>> getSearchData(String searchContent){
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
+		for(int i =0;i<deviceArrayList.size();i++){
+			int index = deviceArrayList.get(i).get("DeviceName").indexOf(searchContent);
+			if(index!=-1){
+				data.add(deviceArrayList.get(i));
+			}
+		}
+		return data;
+	}
+	
+	private void updateSearchResult(ArrayList<HashMap<String, String>> data){
+		deviceListAdapter = new DeviceListAdapter(data);
+		deviceListView.setAdapter(deviceListAdapter);
+	}
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_deviceinfolist, menu);
-		searchView = (SearchView)menu.getItem(0).getActionView();
+		mSearchView = (SearchView)menu.getItem(0).getActionView();
+		iniSearchView();
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -248,8 +273,9 @@ public class DeviceInfoListActivity extends NfcActivity {
 	
 	@Override
 	public void onBackPressed() {
-		if(drawerLayout.isDrawerOpen(Gravity.LEFT)){
+		if(drawerLayout.isDrawerOpen(Gravity.LEFT)||!mSearchView.isIconified()){
 			drawerLayout.closeDrawer(Gravity.LEFT);
+			mSearchView.setIconified(true);
 		}else {
 			super.onBackPressed();
 		}
@@ -293,13 +319,20 @@ public class DeviceInfoListActivity extends NfcActivity {
 	 * @author sk
 	 */
 	private class DeviceListAdapter extends BaseAdapter {
+		
+		private ArrayList<HashMap<String, String>> mData;
+		
+		public DeviceListAdapter (ArrayList<HashMap<String, String>> data){
+			mData = data;
+		}
+		
 		@Override
 		public int getCount() {
-			return deviceArrayList.size();
+			return mData.size();
 		}
 		@Override
 		public HashMap<String, String> getItem(int position) {
-			return deviceArrayList.get(position);
+			return mData.get(position);
 		}
 		@Override
 		public long getItemId(int position) {
@@ -311,7 +344,7 @@ public class DeviceInfoListActivity extends NfcActivity {
 				convertView = LayoutInflater.from(DeviceInfoListActivity.this).inflate(R.layout.item_devicelist, null);
 			}
 			TextView nameTextView = (TextView)convertView.findViewById(R.id.item_devicelist_name);
-			nameTextView.setText(deviceArrayList.get(position).get("DeviceName").toString());
+			nameTextView.setText(mData.get(position).get("DeviceName").toString());
 			return convertView;
 		}
 	}
@@ -360,11 +393,40 @@ public class DeviceInfoListActivity extends NfcActivity {
 		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
 			super.onPostExecute(result);
 			if(result!=null){
-				result = deviceArrayList;
-				deviceListAdapter.notifyDataSetChanged();
+				deviceArrayList = result;
+				deviceListAdapter = new DeviceListAdapter(deviceArrayList);
+				deviceListView.setAdapter(deviceListAdapter);
 			}
 			deviceListView.stopRefresh();
 			hideProgressDialog();
 		}
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		
+        return false;  
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		updateSearchResult(getSearchData(newText));
+		return false;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+		if(parent==deviceListView){
+			if(position!=0){
+				Intent intent = new Intent(DeviceInfoListActivity.this,DeviceInfoItemActivity.class);
+				intent.putExtra("data", deviceListAdapter.getItem(position-1));
+				startActivity(intent);
+			}
+		}else if (parent==consListView) {
+			if(position!=0){
+				Toast.makeText(DeviceInfoListActivity.this, constructionAdapter.getItem(position).toString(), Toast.LENGTH_SHORT).show();
+			}
+		}
+		
 	}
 }
