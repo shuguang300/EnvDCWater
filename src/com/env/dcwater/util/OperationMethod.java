@@ -264,6 +264,62 @@ public class OperationMethod {
 		return data;
 	}
 	
+	public static HashMap<String, String> parseDeviceDataToHashMap(JSONObject jsonObject) throws JSONException{
+		JSONObject device = new JSONObject(jsonObject.getString("d"));
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("DeviceID", device.get("DeviceID").toString());
+		
+		map.put("DeviceSN", device.get("DeviceSN").toString());
+		
+		map.put("DeviceName", device.get("DeviceName").toString());
+		
+		
+		map.put("PlantID", device.get("PlantID").toString());
+		
+		map.put("Department", LogicMethod.getRightString(device.get("Department").toString()));
+		
+		map.put("FixedAssets", LogicMethod.getRightString(device.get("FixedAssets").toString()));
+		
+		map.put("InstallPosition", LogicMethod.getRightString(device.get("InstallPosition").toString()));
+		
+		map.put("InstallPositionforMobile", LogicMethod.getRightString(device.get("InstallPositionforMobile").toString()));
+		
+		map.put("TechnicalParameter", LogicMethod.getRightString(device.get("TechnicalParameter").toString()));
+		
+		map.put("Manufacturer", LogicMethod.getRightString(device.get("Manufacturer").toString()));
+		
+		map.put("Price", LogicMethod.getRightString(device.get("Price").toString()));
+		
+		map.put("FilingTime", LogicMethod.getRightString(device.get("FilingTime").toString().replace("T", " ")));
+		
+		map.put("InstallTime", LogicMethod.getRightString(device.get("InstallTime").toString().replace("T", " ")));
+		
+		map.put("StartUseTime", LogicMethod.getRightString(device.get("StartUseTime").toString().replace("T", " ")));
+		
+		map.put("StopUseTime", LogicMethod.getRightString(device.get("StopUseTime").toString().replace("T", " ")));
+		
+		map.put("ScrapTime", LogicMethod.getRightString(device.get("ScrapTime").toString().replace("T", " ")));
+		
+		map.put("DepreciationPeriod", LogicMethod.getRightString(device.get("DepreciationPeriod").toString()));
+		
+		map.put("Quality", LogicMethod.getRightString(device.get("Quality").toString()));
+		
+		map.put("ReMark", LogicMethod.getRightString(device.get("ReMark").toString()));
+		
+		map.put("StandardNorOperation", LogicMethod.getRightString(device.get("StandardNorOperation").toString()));
+		
+		map.put("OperatManagAndOperatPoint", LogicMethod.getRightString(device.get("OperatManagAndOperatPoint").toString()));
+		
+		map.put("ComProbAndSolutions", LogicMethod.getRightString(device.get("ComProbAndSolutions").toString()));
+		
+		map.put("DeviceClassType", LogicMethod.getRightString(device.get("DeviceClassType").toString()));
+		
+		map.put("AccessoryInfo", LogicMethod.getRightString(device.get("AccessoryInfo").toString()));
+		
+		return map;
+	}
+	
 	/**
 	 * @param jsonObject
 	 * @param deviceName

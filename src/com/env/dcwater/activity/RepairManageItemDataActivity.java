@@ -46,7 +46,7 @@ import com.env.dcwater.util.DataCenterHelper;
  *
  */
 public class RepairManageItemDataActivity extends NfcActivity implements OnClickListener{
-	
+	private AlertDialog.Builder mUpdateConfirm;
 	private Intent mIntent;
 	private AlertDialog.Builder mHandleContent;
 	private HashMap<String, String> repairData;
@@ -566,11 +566,20 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 			startDataInputActivity(plantopinion);
 			break;
 		case R.id.activity_repairmanageitem_submit:
-			updateServerTask(methodName);
+			if(mUpdateConfirm==null){
+				mUpdateConfirm = new AlertDialog.Builder(RepairManageItemDataActivity.this);
+			}
+			mUpdateConfirm.setTitle("确认").setMessage("确认提交吗？");
+			mUpdateConfirm.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					updateServerTask(methodName);
+				}
+			}).setNegativeButton("取消", null);
+			mUpdateConfirm.create();
+			mUpdateConfirm.show();
 			break;
-		
 		}
-		
 	}
 	
 	@Override

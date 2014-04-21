@@ -89,6 +89,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 			getServerDeviceList("","");
 		}else {
 			deviceDataArrayList = SystemParams.getInstance().getMachineList();
+			
 		}
 		if(SystemParams.getInstance().getConstructionList()==null){
 			getServerConsList();

@@ -1,6 +1,7 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,8 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 
@@ -32,6 +36,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	private DeviceInfoAdapter deviceInfoAdapter;
 	private ActionBar mActionBar;
 	private ProgressDialog mProgressDialog;
+	private ThreadPool.GetDeviceDetailData getDeviceDetailData;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setDisplayShowTitleEnabled(true);
+		mActionBar.setTitle(receivedDevice.get("DeviceName"));
 	}
 	
 	/**
@@ -74,7 +80,27 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		
 	}
 	
-	
+	private void getServerDeviceData(){
+		getDeviceDetailData = new ThreadPool.GetDeviceDetailData() {
+			@Override
+			protected void onPreExecute() {
+				showProgressDialog(false);
+			}
+			@Override
+			protected void onPostExecute(HashMap<String, String> result) {
+				if(result!=null){
+					setDeviceParams(result);
+					deviceInfoAdapter.notifyDataSetChanged();
+					Toast.makeText(DeviceInfoItemActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
+				}else {
+					Toast.makeText(DeviceInfoItemActivity.this, "更新失败", Toast.LENGTH_SHORT).show();
+				}
+				hideProgressDialog();
+				infoListView.stopRefresh();
+			}
+		};
+		getDeviceDetailData.execute(receivedDevice.get("DeviceID"));
+	}
 	
 	/**
 	 * 构造参数列表
@@ -265,7 +291,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	
 	@Override
 	public void onRefresh() {
-		infoListView.stopRefresh();
+		getServerDeviceData();
 	}
 	
 	/**

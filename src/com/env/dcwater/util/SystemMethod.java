@@ -118,11 +118,20 @@ public class SystemMethod {
 	 * 隐藏输入法
 	 * @param context
 	 */
-	public static void hideSoftInput(Context context){
+	public static void toggleSoftInput(Context context){
 		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 //		imm.hideSoftInputFromInputMethod(et.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
 	}
+	
+	/*隐藏软键盘*/
+	public static void hideSoftInput(Context context){
+		InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		if(imm.isActive()){
+			imm.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getApplicationWindowToken(), 0);
+		}
+	}
+	
 	
 	/**
 	 * 打开GPS设置界面

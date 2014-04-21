@@ -109,7 +109,7 @@
     <string name="view_datafilter_pos">安装位置</string>
     <string name="view_datafilter_state">工单状态</string>
     <string name="view_datafilter_name">设备名称</string>
-    <string name="view_datafilter_ok">确定</string>
+    <string name="view_datafilter_ok">搜    索</string>
     
     <string-array name="view_datafilter_fasttimelist">
         <item>请选择</item>
@@ -139,7 +139,7 @@
     <string name="menu_deviceinfoitem_showdevice">选择设备</string>
     <string name="menu_deviceinfolist_maintainhistory">维修历史</string>
     <string name="menu_deviceinfolist_upkeephistory">保养历史</string>
-    <string name="menu_deviceinfolist_showcons">选择构筑物</string>
+    <string name="menu_deviceinfolist_showcons">按构筑物查找</string>
     <string name="menu_repairmanage_add">故障上报</string>
     <string name="menu_repairmanage_refresh">刷新</string>
     <string name="menu_repairmanage_nofilter">所有任务</string>

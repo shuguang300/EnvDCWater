@@ -292,7 +292,7 @@ public class DataFilterView extends LinearLayout{
 				}, new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						
+						dateTimePickerView.dismiss();
 					}
 				}, null);
 				dateTimePickerView.iniWheelView(mStartTime);

@@ -1,13 +1,10 @@
 package com.env.dcwater.activity;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,15 +18,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.TextView.OnEditorActionListener;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -37,6 +35,7 @@ import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
+import com.env.dcwater.util.SystemMethod;
 
 public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextListener,OnItemClickListener {
 	
@@ -102,7 +101,11 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		deviceListView.setXListViewListener(new PullToRefreshView.IXListViewListener() {
 			@Override
 			public void onRefresh() {
-				getServerDeviceList();
+				if(actionBar.getTitle().equals("设备列表")){
+					getServerDeviceList("");
+				}else {
+					getServerDeviceList(actionBar.getTitle().toString());
+				}
 			}
 		});
 		
@@ -120,8 +123,20 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		mSearchView.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				// TODO Auto-generated method stub
 				if(keyCode==KeyEvent.KEYCODE_BACK){
+					mSearchView.setIconified(true);
+				}
+				return false;
+			}
+		});
+		final EditText editText = (EditText)mSearchView.findViewById(getResources().getIdentifier("android:id/search_src_text", null, null));
+		editText.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.small));
+		editText.setTextColor(getResources().getColor(R.color.white));
+		editText.setOnEditorActionListener(new OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if ( actionId == EditorInfo.IME_ACTION_SEARCH) {
+					SystemMethod.hideSoftInput(DeviceInfoListActivity.this);
 					mSearchView.setIconified(true);
 				}
 				return false;
@@ -146,6 +161,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			getServerConsList();
 		}else {
 			consArrayList = SystemParams.getInstance().getConstructionList();
+			constructionAdapter.notifyDataSetChanged();
 		}
 	}
 	
@@ -167,18 +183,20 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	
 	private void getDeviceList(){
 		if(SystemParams.getInstance().getMachineList()==null){
-			getServerDeviceList();
+			getServerDeviceList("");
 		}else {
 			deviceArrayList = SystemParams.getInstance().getMachineList();
+			deviceListAdapter = new DeviceListAdapter(deviceArrayList);
+			deviceListView.setAdapter(deviceListAdapter);
 		}
 	}
 	
 	/**
 	 * 
 	 */
-	private void getServerDeviceList(){
+	private void getServerDeviceList(String consName){
 		getServerDeviceData = new GetServerDeviceData();
-		getServerDeviceData.execute("");
+		getServerDeviceData.execute(consName);
 	}
 	
 	
@@ -214,6 +232,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		intent.putExtra("action", ACTION_STRING);
 		startActivity(intent);
 	}
+
 	/**
 	 * 跳转到保养历史
 	 */
@@ -223,6 +242,11 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		startActivity(intent);
 	}
 	
+	/**
+	 * 搜索与输入内容有关的数据
+	 * @param searchContent
+	 * @return
+	 */
 	private ArrayList<HashMap<String, String>> getSearchData(String searchContent){
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
 		for(int i =0;i<deviceArrayList.size();i++){
@@ -234,6 +258,11 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		return data;
 	}
 	
+	
+	/**
+	 * 更新listview的显示
+	 * @param data
+	 */
 	private void updateSearchResult(ArrayList<HashMap<String, String>> data){
 		deviceListAdapter = new DeviceListAdapter(data);
 		deviceListView.setAdapter(deviceListAdapter);
@@ -363,12 +392,11 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 				String result = DataCenterHelper.HttpPostData("GetDeviceInfoList", object);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
-					data = OperationMethod.parseDeviceDataToList(jsonObject,"","");
-					if(data!=null){
+					data = OperationMethod.parseDeviceDataToList(jsonObject,"",params[0]);
+					if(data!=null&&(params[0].equals("")||params[0].equals("全部"))){
 						deviceArrayList = data;
+						SystemParams.getInstance().setMachineList(data);
 					}
-					//获取到设备列表后，将设备列表数据暂存到程序变量中，方便其他地方调用
-					
 				}
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -424,7 +452,13 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			}
 		}else if (parent==consListView) {
 			if(position!=0){
-				Toast.makeText(DeviceInfoListActivity.this, constructionAdapter.getItem(position).toString(), Toast.LENGTH_SHORT).show();
+				drawerLayout.closeDrawer(Gravity.LEFT);
+				if(position==1){
+					actionBar.setTitle("设备列表");
+				}else {
+					actionBar.setTitle(consArrayList.get(position-1).get("StructureName"));
+				}
+				getServerDeviceList(consArrayList.get(position-1).get("StructureName"));
 			}
 		}
 		

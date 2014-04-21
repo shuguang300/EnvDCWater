@@ -37,7 +37,7 @@ public class DataCenterHelper {
 	/**
 	 * webservice数据中心地址
 	 */
-	public static final String URL_STRING = "http://192.168.0.107/dcwater/MobileDataCenter.asmx";
+	public static final String URL_STRING = "http://192.168.200.50/dcwater/MobileDataCenter.asmx";
 	
 	/**
 	 * 连接超时
