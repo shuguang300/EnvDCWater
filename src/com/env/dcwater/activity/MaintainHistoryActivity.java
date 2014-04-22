@@ -10,10 +10,13 @@ import org.json.JSONObject;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -56,7 +59,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	private String receivedAction;
 	private HashMap<String, String> receivedData;
 	private TextView titleMessage;
-	private int positionID;
+	private SpannableString spannableString;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +76,6 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	 */
 	@SuppressWarnings("unchecked")
 	private void iniData() {
-		try {
-			positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
-		} catch (Exception e) {
-			positionID = Integer.MIN_VALUE;
-		}
 		receivedIntent = getIntent();
 		receivedAction = receivedIntent.getExtras().getString("action");
 		receivedData = (HashMap<String,String>)receivedIntent.getExtras().getSerializable("data");
@@ -164,6 +162,12 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 						}
 						mDataFilterView.setPosList(posList, 0);
 					}
+				}
+
+				@Override
+				protected void onPreExecute() {
+					// TODO Auto-generated method stub
+					
 				}
 			};
 			getServerConsData.execute("");
@@ -326,18 +330,24 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 				convertView = LayoutInflater.from(MaintainHistoryActivity.this).inflate(R.layout.item_maintainhistory, null);
 			}
 			HashMap<String, String> map = getItem(position);
-			TextView id = (TextView)convertView.findViewById(R.id.item_maintainhistory_id);
-			id.setText("工单SN码："+map.get("FaultReportSN"));
+			TextView name = (TextView)convertView.findViewById(R.id.item_maintainhistory_name);
+			spannableString = new SpannableString("故障设备："+map.get("DeviceName"));
+			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+			name.setText(spannableString);
 			TextView sttime = (TextView)convertView.findViewById(R.id.item_maintainhistory_faulttime);
-			sttime.setText("故障时间："+map.get("AccidentOccurTime"));
+			spannableString = new SpannableString("故障时间："+map.get("AccidentOccurTime"));
+			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+			sttime.setText(spannableString);
 			TextView endtime = (TextView)convertView.findViewById(R.id.item_maintainhistory_endtime);
-			endtime.setText("维修完成时间："+map.get("RepairedTime"));
+			spannableString = new SpannableString("完成时间："+map.get("RepairedTime"));
+			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+			endtime.setText(spannableString);
+			TextView info = (TextView)convertView.findViewById(R.id.item_maintainhistory_info);
+			spannableString = new SpannableString("故障现象："+map.get("AccidentDetail"));
+			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+			info.setText(spannableString);
 			TextView state = (TextView)convertView.findViewById(R.id.item_maintainhistory_state);
 			state.setText(map.get("StateDescription"));
-			TextView name = (TextView)convertView.findViewById(R.id.item_maintainhistory_name);
-			name.setText("故障设备："+map.get("DeviceName"));
-			TextView info = (TextView)convertView.findViewById(R.id.item_maintainhistory_info);
-			info.setText("故障现象："+map.get("AccidentDetail"));
 			return convertView;
 		}
 	}
@@ -367,7 +377,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 				result = DataCenterHelper.HttpPostData("GetReportInfoArraylist", param);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
-					data = OperationMethod.parseRepairHistoryDataToList(jsonObject,params[4],positionID);
+					data = OperationMethod.parseRepairHistoryDataToList(jsonObject,params[4]);
 				}
 			} catch (ClientProtocolException e) {
 				data = null;

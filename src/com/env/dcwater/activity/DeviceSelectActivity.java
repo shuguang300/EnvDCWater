@@ -139,6 +139,12 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 					constructionAdapter.notifyDataSetChanged();
 				}
 			}
+
+			@Override
+			protected void onPreExecute() {
+				// TODO Auto-generated method stub
+				
+			}
 		};
 		getServerConsData.execute("");
 	}

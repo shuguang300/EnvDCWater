@@ -48,9 +48,8 @@ public class ThreadPool {
 		}
 		
 		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
+		protected abstract void onPreExecute();
+		
 		
 		@Override
 		protected abstract void onPostExecute(ArrayList<HashMap<String, String>> result);

@@ -11,56 +11,34 @@
         android:layout_centerVertical="true"
         android:orientation="vertical" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+        <TextView
+            android:id="@+id/item_maintainhistory_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:textSize="@dimen/middle" />
 
-            <TextView
-                android:id="@+id/item_maintainhistory_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:textSize="@dimen/middle"
-                android:gravity="left|center_vertical" />
+        <TextView
+            android:id="@+id/item_maintainhistory_faulttime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:textSize="@dimen/middle" />
 
-            <TextView
-                android:id="@+id/item_maintainhistory_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/middle"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/item_maintainhistory_id"
-                android:gravity="left|center_vertical" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/item_maintainhistory_endtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:textSize="@dimen/middle" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/item_maintainhistory_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/item_maintainhistory_faulttime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/middle"
-                android:gravity="left|center_vertical" />
-            
-            <TextView
-                android:id="@+id/item_maintainhistory_endtime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/middle"
-                android:gravity="left|center_vertical" />
-
-            <TextView
-                android:id="@+id/item_maintainhistory_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/middle"
-                android:gravity="left|center_vertical"
-                android:singleLine="false" />
-        </LinearLayout>
+            android:gravity="left|center_vertical"
+            android:singleLine="false"
+            android:textSize="@dimen/middle" />
     </LinearLayout>
 
     <TextView
@@ -68,9 +46,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:textSize="@dimen/middle"
         android:layout_centerVertical="true"
         android:drawableRight="@drawable/activity_machinemanage_arrowright"
-        android:gravity="right|center_vertical" />
+        android:gravity="right|center_vertical"
+        android:textSize="@dimen/middle"
+        android:textStyle="bold" />
 
 </RelativeLayout>

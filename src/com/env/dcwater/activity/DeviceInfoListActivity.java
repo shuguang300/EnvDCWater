@@ -177,9 +177,15 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 				}
 				consListView.stopRefresh();
 			}
+
+			@Override
+			protected void onPreExecute() {
+				
+			}
 		};
 		getServerConsData.execute("");
 	}
+	
 	
 	private void getDeviceList(){
 		if(SystemParams.getInstance().getMachineList()==null){

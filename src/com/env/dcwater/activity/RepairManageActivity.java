@@ -15,10 +15,14 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -33,6 +37,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -143,12 +148,12 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private ArrayList<HashMap<String, String>> mData;
 	private Intent sendedIntent;
 	private GetServerTaskData getServerTaskData;
-	private boolean isFilter = true,isRfresh = false,actionChooseIsShow = false;;
+	private boolean isFilter = true,actionChooseIsShow = false;;
 	private ProgressDialog mProgressDialog;
-//	private UpdateServerData updateServerData;
 	private int userPositionID;
 	private String [] dateFilters,nfcCardAction = {"查看设备信息","设备故障上报"};
 	private AlertDialog.Builder actionChoose;
+	private SpannableString spannableString;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -193,6 +198,10 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 						mDataFilterView.setPosList(posList, 0);
 					}
 				}
+				@Override
+				protected void onPreExecute() {
+					
+				}
 			};
 			getServerConsData.execute("");
 		}else {
@@ -203,10 +212,15 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			}
 			mDataFilterView.setPosList(posList, 0);
 		}
-		if(!isRfresh){
-			getServerTaskData = new GetServerTaskData();
-			getServerTaskData.execute("");
-		}
+		getServerTaskData();
+	}
+	
+	/**
+	 * 
+	 */
+	private void getServerTaskData(){
+		getServerTaskData = new GetServerTaskData();
+		getServerTaskData.execute("");
 	}
 	
 //	/**
@@ -289,6 +303,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			public void onClick(View v) {
 				getServerTaskData = new GetServerTaskData();
 				getServerTaskData.execute("");
+				
 				mDrawerLayout.closeDrawer(Gravity.LEFT);
 			}
 		});
@@ -300,7 +315,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		mListView.setXListViewListener(this);
 		mListView.setOnItemClickListener(this);
 		
-		mDataFilterView.setStateList(getResources().getStringArray(R.array.view_datafilter_statelist),0);
+		mDataFilterView.setStateList(getResources().getStringArray(R.array.view_datafilter_repairstatelist),0);
 		mDrawerLayout.setDrawerListener(new DrawerListener() {
 			@Override
 			public void onDrawerStateChanged(int arg0) {
@@ -317,12 +332,8 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			public void onDrawerClosed(View arg0) {
 				mListView.setEnabled(true);
 				mListView.setPullRefreshEnable(true);
-				if(mDataFilterView.isDateTimePickerShowing()){
-					mDataFilterView.hideDateTimePicker();
-				}
 			}
 		});
-		
 		
 //		mListView.setOnItemLongClickListener(this); //长按事件与上下文菜单冲突，二者只能选其一
 //		registerForContextMenu(mListView);
@@ -353,7 +364,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode==Activity.RESULT_OK){
-			getServerData();
+			getServerTaskData();
 		}
 	}
 	
@@ -419,7 +430,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		case R.id.menu_repairmanage_filter:
 			isFilter = !isFilter;
 			item.setChecked(isFilter);
-			getServerData();
+			getServerTaskData();
 			break;
 		case R.id.menu_repairmanage_drawlayout:
 			if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
@@ -569,7 +580,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 
 	@Override
 	public void onRefresh() {
-		getServerData();
+		getServerTaskData();
 	}
 
 	@Override
@@ -598,16 +609,20 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 				convertView = LayoutInflater.from(RepairManageActivity.this).inflate(R.layout.item_repairmanage, null);
 			}
 			HashMap<String, String> map = getItem(position);
-			TextView id = (TextView)convertView.findViewById(R.id.item_repairmanage_id);
-			id.setText("工单SN码："+map.get("FaultReportSN"));
+			TextView name = (TextView)convertView.findViewById(R.id.item_repairmanage_name);
+			spannableString = new SpannableString("故障设备："+map.get("DeviceName"));
+			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			name.setText(spannableString);
 			TextView time = (TextView)convertView.findViewById(R.id.item_repairmanage_time);
-			time.setText("故障时间："+map.get("AccidentOccurTime"));
+			spannableString = new SpannableString("故障时间："+map.get("AccidentOccurTime"));
+			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			time.setText(spannableString);
 			TextView state = (TextView)convertView.findViewById(R.id.item_repairmanage_state);
 			state.setText(map.get("StateDescription"));
-			TextView name = (TextView)convertView.findViewById(R.id.item_repairmanage_name);
-			name.setText("故障设备："+map.get("DeviceName"));
 			TextView info = (TextView)convertView.findViewById(R.id.item_repairmanage_info);
-			info.setText("故障现象："+map.get("AccidentDetail"));
+			spannableString = new SpannableString("故障现象："+map.get("AccidentDetail"));
+			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			info.setText(spannableString);
 			return convertView;
 		}
 	}
@@ -620,7 +635,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
-			isRfresh = true;
 			JSONObject object = new JSONObject();
 			ArrayList<HashMap<String, String>> data = null;
 			try {
@@ -665,7 +679,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 				Toast.makeText(RepairManageActivity.this, "获取数据失败，请重试", Toast.LENGTH_SHORT).show();
 			}
 			mListView.stopRefresh();
-			isRfresh = false;
 			hideProgressDialog();
 			menuMessage.setText("当前共有"+count+"条任务");
 		}

@@ -1,12 +1,9 @@
 package com.env.dcwater.util;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.env.dcwater.javabean.EnumList;
 
 /**
@@ -545,7 +542,7 @@ public class OperationMethod {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static ArrayList<HashMap<String, String>> parseRepairHistoryDataToList(JSONObject jsonObject,String consName,int rolePosition) throws JSONException{
+	public static ArrayList<HashMap<String, String>> parseRepairHistoryDataToList(JSONObject jsonObject,String consName) throws JSONException{
 		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
 		JSONObject report = null;
 		HashMap<String, String> map = null;
@@ -651,6 +648,114 @@ public class OperationMethod {
 			map.put("Department", LogicMethod.getRightString(report.get("Department").toString()));
 			//设备类型
 			map.put("DeviceClassType", LogicMethod.getRightString(report.get("DeviceClassType").toString()));
+			
+			data.add(map);
+		}
+		return data;
+	}
+	
+	
+	/**
+	 * 将得到的的设备养护的历史任务json字符串解析为arraylist
+	 * @param jsonObject
+	 * @param consName
+	 * @param rolePosition 
+	 * @return
+	 * @throws JSONException
+	 */
+	public static ArrayList<HashMap<String, String>> parseUpkeepHistoryDataToList(JSONObject jsonObject,String consName) throws JSONException{
+		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
+		JSONObject report = null;
+		HashMap<String, String> map = null;
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
+		for(int i =0;i<jsonArray.length();i++){
+			report = jsonArray.getJSONObject(i);
+			map = new HashMap<String, String>();
+			
+			if(consName.equals("全部")||consName.equals("")){
+				//go on
+			}else {
+				if(consName.equals(LogicMethod.getRightString(report.get("StructureName").toString()))){
+					//go on
+				}else {
+					continue;
+				}
+			}
+			
+			//实际使用工时
+			map.put("ActualManHours", LogicMethod.getRightString(report.get("ActualManHours").toString()));
+			//要求完成时间
+			map.put("NeedComplete", LogicMethod.getRightString(report.get("NeedComplete").toString().replace("T", " ")));
+			//设备ID
+			map.put("DeviceID", report.get("DeviceID").toString());
+			//完成情况及处理措施
+			map.put("MaintainDetail",LogicMethod.getRightString(report.get("MaintainDetail").toString()));
+			//构筑物
+			map.put("StructureName", LogicMethod.getRightString(report.get("StructureName").toString()));
+			//设备科长意见
+			map.put("DDOpinion", LogicMethod.getRightString(report.get("DDOpinion").toString()));
+			//
+			map.put("Specification",LogicMethod.getRightString(report.get("Specification").toString()));
+			// 养护开始时间
+			map.put("MaintainStartTime", LogicMethod.getRightString(report.get("MaintainStartTime").toString().replace("T", " ")));
+			//养护状态
+			map.put("MaintainState", LogicMethod.getRightString(report.get("MaintainState").toString()));
+			//养护状态 描述信息
+//			map.put("MaintainStateDescription", LogicMethod.getRightString(report.get("MaintainState").toString()));
+			//
+			map.put("TaskDetail", LogicMethod.getRightString(report.get("TaskDetail").toString()));
+			//审核时间
+			map.put("ApproveTime", LogicMethod.getRightString(report.get("ApproveTime").toString()).replace("T", " "));
+			//
+			map.put("CheckTime", LogicMethod.getRightString(report.get("CheckTime").toString()).replace("T", " "));
+			//
+			map.put("MaintainTaskID", LogicMethod.getRightString(report.get("MaintainTaskID").toString()));
+			//
+			map.put("MaintainPlanID", LogicMethod.getRightString(report.get("MaintainPlanID").toString()));
+			//
+			map.put("StructureID", LogicMethod.getRightString(report.get("StructureID").toString()));
+			//
+			map.put("PlantID", LogicMethod.getRightString(report.get("PlantID").toString()));
+			//
+			map.put("MaintainPeriod",LogicMethod.getRightString(report.get("MaintainPeriod").toString()));
+			//
+			map.put("DeviceName", LogicMethod.getRightString(report.get("DeviceName").toString()));
+			//
+			map.put("CreatePerson", LogicMethod.getRightString(report.get("CreatePerson").toString()));
+			//
+			map.put("CheckPerson", LogicMethod.getRightString(report.get("CheckPerson").toString()));
+			//
+			map.put("MaintainSpecification", LogicMethod.getRightString(report.get("MaintainSpecification").toString()));
+			//
+			map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
+			//
+			map.put("RequiredManHours", LogicMethod.getRightString(report.get("RequiredManHours").toString()));
+			//
+			map.put("MaintainPosition", LogicMethod.getRightString(report.get("MaintainPosition").toString()));
+			//
+			map.put("State", LogicMethod.getRightString(report.get("State").toString()));
+			//
+//			map.put("StateDescription", EnumList.RepairState.getEnumRepairState(Integer.valueOf(report.get("State").toString())).getStateDescription());
+			//
+			map.put("RealCompleteTime", LogicMethod.getRightString(report.get("realcompleteTime").toString().replace("T", " ")));
+			//审核人
+			map.put("ApprovePerson", LogicMethod.getRightString(report.get("ApprovePerson").toString()));
+			//
+			map.put("CreateTime", LogicMethod.getRightString(report.get("CreateTime").toString().replace("T", " ")));
+			//
+			map.put("MaintainType", LogicMethod.getRightString(report.get("MaintainType").toString()));
+			//
+			map.put("IsDeleted", LogicMethod.getRightString(report.get("IsDeleted").toString()));
+			//
+			map.put("MaintainTaskSN", LogicMethod.getRightString(report.get("MaintainTaskSN").toString()));
+			//
+			map.put("Capacity", LogicMethod.getRightString(report.get("Capacity").toString()));
+			//
+			map.put("Remark", LogicMethod.getRightString(report.get("Remark").toString()));
+			//
+			map.put("MaintainPerson",LogicMethod.getRightString(report.get("MaintainPerson").toString().toString()));
+			//
+			map.put("NeedCompleteTotaDay", LogicMethod.getRightString(report.get("NeedCompleteTotaDay").toString()));
 			
 			data.add(map);
 		}

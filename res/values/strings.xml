@@ -122,7 +122,16 @@
         <item>最近1月</item>
     </string-array>
     
-    <string-array name="view_datafilter_statelist">
+    <string-array name="view_datafilter_upkeepstatelist">
+        <item >不限</item>
+        <item >已派发工单</item>
+        <item >已回单</item>
+        <item >审核通过</item>
+        <item >审核未通过</item>
+        <item >已填写待上报</item>
+    </string-array>
+    
+    <string-array name="view_datafilter_repairstatelist">
         <item >不限</item>
         <item >报修单已上报</item>
         <item >报修单已确认</item>
