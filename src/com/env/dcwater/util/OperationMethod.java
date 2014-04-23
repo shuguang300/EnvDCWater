@@ -698,15 +698,15 @@ public class OperationMethod {
 			map.put("Specification",LogicMethod.getRightString(report.get("Specification").toString()));
 			// 养护开始时间
 			map.put("MaintainStartTime", LogicMethod.getRightString(report.get("MaintainStartTime").toString().replace("T", " ")));
-			//养护状态
+			//保养计划状态
 			map.put("MaintainState", LogicMethod.getRightString(report.get("MaintainState").toString()));
-			//养护状态 描述信息
-//			map.put("MaintainStateDescription", LogicMethod.getRightString(report.get("MaintainState").toString()));
+			//保养计划状态描述信息
+			map.put("MaintainStateDescription", EnumList.UpkeepHistoryPlanState.getHistoryStateEnum(Integer.valueOf(report.get("MaintainState").toString())).getCodeName());
 			//
 			map.put("TaskDetail", LogicMethod.getRightString(report.get("TaskDetail").toString()));
 			//审核时间
 			map.put("ApproveTime", LogicMethod.getRightString(report.get("ApproveTime").toString()).replace("T", " "));
-			//
+			//回单时间
 			map.put("CheckTime", LogicMethod.getRightString(report.get("CheckTime").toString()).replace("T", " "));
 			//
 			map.put("MaintainTaskID", LogicMethod.getRightString(report.get("MaintainTaskID").toString()));
@@ -720,29 +720,29 @@ public class OperationMethod {
 			map.put("MaintainPeriod",LogicMethod.getRightString(report.get("MaintainPeriod").toString()));
 			//
 			map.put("DeviceName", LogicMethod.getRightString(report.get("DeviceName").toString()));
-			//
+			//派发人
 			map.put("CreatePerson", LogicMethod.getRightString(report.get("CreatePerson").toString()));
-			//
+			//回单人
 			map.put("CheckPerson", LogicMethod.getRightString(report.get("CheckPerson").toString()));
-			//
+			//保养内容及要求：
 			map.put("MaintainSpecification", LogicMethod.getRightString(report.get("MaintainSpecification").toString()));
 			//
 			map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
 			//
 			map.put("RequiredManHours", LogicMethod.getRightString(report.get("RequiredManHours").toString()));
-			//
+			//养护部位
 			map.put("MaintainPosition", LogicMethod.getRightString(report.get("MaintainPosition").toString()));
 			//
 			map.put("State", LogicMethod.getRightString(report.get("State").toString()));
 			//
-//			map.put("StateDescription", EnumList.RepairState.getEnumRepairState(Integer.valueOf(report.get("State").toString())).getStateDescription());
+			map.put("StateDescription", EnumList.UpkeepHistoryState.getHistoryStateEnum(Integer.valueOf(report.get("State").toString())).getCodeName());
 			//
 			map.put("RealCompleteTime", LogicMethod.getRightString(report.get("realcompleteTime").toString().replace("T", " ")));
 			//审核人
 			map.put("ApprovePerson", LogicMethod.getRightString(report.get("ApprovePerson").toString()));
-			//
+			//派发时间
 			map.put("CreateTime", LogicMethod.getRightString(report.get("CreateTime").toString().replace("T", " ")));
-			//
+			//养护类型
 			map.put("MaintainType", LogicMethod.getRightString(report.get("MaintainType").toString()));
 			//
 			map.put("IsDeleted", LogicMethod.getRightString(report.get("IsDeleted").toString()));
@@ -752,7 +752,7 @@ public class OperationMethod {
 			map.put("Capacity", LogicMethod.getRightString(report.get("Capacity").toString()));
 			//
 			map.put("Remark", LogicMethod.getRightString(report.get("Remark").toString()));
-			//
+			//养护人
 			map.put("MaintainPerson",LogicMethod.getRightString(report.get("MaintainPerson").toString().toString()));
 			//
 			map.put("NeedCompleteTotaDay", LogicMethod.getRightString(report.get("NeedCompleteTotaDay").toString()));

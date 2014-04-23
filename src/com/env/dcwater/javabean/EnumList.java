@@ -342,6 +342,177 @@ public class EnumList {
 		}
 	}
 	
+	
+	
+	/**
+	 * 保养流程的工单状态
+	 * @author SK
+	 *
+	 */
+	public enum UpkeepHistoryPlanState{
+		
+		/**
+		 * 已列入计划
+		 */
+		HASBEENPLAN(1,"已列入计划"),
+		/**
+		 * 养护中
+		 */
+		BEENUPKEEP(2,"养护中"),
+		/**
+		 * 审核未通过
+		 */
+		NOTAPPROVE(3,"审核未通过"),
+		/**
+		 * 完成
+		 */
+		DONE(4,"完成"),
+		/**
+		 * 回单待审核
+		 */
+		WAITFORAPPROVE(5,"回单待审核");
+		
+		/**
+		 * 已列入计划
+		 */
+		public static final int STATE_HASBEENPLAN_INT = 1;
+		/**
+		 *  养护中
+		 */
+		public static final int STATE_BEENUPKEEP_INT = 2;
+		/**
+		 * 审核未通过
+		 */
+		public static final int STATE_NOTAPPROVE_INT = 3;
+		/**
+		 * 完成
+		 */
+		public static final int STATE_DONE_INT = 4;
+		/**
+		 * 回单待审核
+		 */
+		public static final int STATE_WAITFORAPPROVE_INT = 5;
+		
+		private int mCode;
+		private String mName;
+		
+		private UpkeepHistoryPlanState (int code,String codeName){
+			mCode = code;
+			mName = codeName;
+		}
+		
+		public int getCode(){
+			return mCode;
+		}
+		
+		public String getCodeName(){
+			return mName;
+		}
+		
+		public static UpkeepHistoryPlanState getHistoryStateEnum(int code){
+			switch (code) {
+			case STATE_HASBEENPLAN_INT:
+				return UpkeepHistoryPlanState.HASBEENPLAN;
+			case STATE_BEENUPKEEP_INT:
+				return UpkeepHistoryPlanState.BEENUPKEEP;
+			case STATE_NOTAPPROVE_INT:
+				return UpkeepHistoryPlanState.NOTAPPROVE;
+			case STATE_DONE_INT:
+				return UpkeepHistoryPlanState.DONE;
+			case STATE_WAITFORAPPROVE_INT:
+				return UpkeepHistoryPlanState.WAITFORAPPROVE;
+			}
+			return null;
+		}
+		
+	}
+	
+	
+	/**
+	 * 保养流程的工单状态
+	 * @author SK
+	 *
+	 */
+	public enum UpkeepHistoryState{
+		
+		/**
+		 * 已派发工单
+		 */
+		HASBEENSEND(1,"已派发工单"),
+		/**
+		 * 已回单
+		 */
+		HASBEENBACK(2,"已回单"),
+		/**
+		 * 审核通过
+		 */
+		HASBEENAPPROVE(3,"审核通过"),
+		/**
+		 * 审核未通过
+		 */
+		NOTAPPROVE(4,"审核未通过"),
+		/**
+		 * 已填写待上报
+		 */
+		WAITFORSUBMIT(5,"已填写待上报");
+		
+		/**
+		 * 已派发工单
+		 */
+		public static final int STATE_HASBEENSEND_INT = 1;
+		/**
+		 * 已回单
+		 */
+		public static final int STATE_HASBEENBACK_INT = 2;
+		/**
+		 * 审核通过
+		 */
+		public static final int STATE_HASBEENAPPROVE_INT = 3;
+		/**
+		 * 审核未通过
+		 */
+		public static final int STATE_NOTAPPROVE_INT = 4;
+		/**
+		 * 已填写待上报
+		 */
+		public static final int STATE_WAITFORSUBMIT_INT = 5;
+		
+		private int mCode;
+		private String mName;
+		
+		private UpkeepHistoryState (int code,String codeName){
+			mCode = code;
+			mName = codeName;
+		}
+		
+		public int getCode(){
+			return mCode;
+		}
+		
+		public String getCodeName(){
+			return mName;
+		}
+		
+		public static UpkeepHistoryState getHistoryStateEnum(int code){
+			switch (code) {
+			case STATE_HASBEENSEND_INT:
+				return UpkeepHistoryState.HASBEENSEND;
+			case STATE_HASBEENBACK_INT:
+				return UpkeepHistoryState.HASBEENBACK;
+			case STATE_HASBEENAPPROVE_INT:
+				return UpkeepHistoryState.HASBEENAPPROVE;
+			case STATE_NOTAPPROVE_INT:
+				return UpkeepHistoryState.NOTAPPROVE;
+			case STATE_WAITFORSUBMIT_INT:
+				return UpkeepHistoryState.WAITFORSUBMIT;
+			}
+			return null;
+		}
+		
+	}
+	
+	
+	
 	/**
 	 * 维修单种类
 	 * @author sk

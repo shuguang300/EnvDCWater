@@ -347,8 +347,8 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 			spannableString = new SpannableString("科长意见："+map.get("DDOpinion"));
 			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
 			info.setText(spannableString);
-//			TextView state = (TextView)convertView.findViewById(R.id.item_upkeephistory_state);
-//			state.setText(map.get("StateDescription"));
+			TextView state = (TextView)convertView.findViewById(R.id.item_upkeephistory_state);
+			state.setText(map.get("StateDescription"));
 			return convertView;
 		}
 	}

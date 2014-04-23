@@ -1,28 +1,34 @@
 package com.env.dcwater.activity;
 import java.util.HashMap;
+
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.fragment.AddMediaFileView;
 import com.env.dcwater.util.SystemMethod;
 
 /**
  * 填报数据的界面
  * @author sk
  */
-public class DataInputActivity extends NfcActivity implements OnClickListener {
+public class DataInputActivity extends NfcActivity {
 	private Intent getedIntend;
 	private HashMap<String, String> data;
 	private ActionBar mActionBar;
 	private EditText dataInputer;
-	private Button buttonAddMedia;
+	private RelativeLayout mainLayout;
+	private AddMediaFileView addMediaFileView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +63,17 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 	 * 
 	 */
 	private void iniView(){
+		mainLayout = (RelativeLayout)findViewById(R.id.activity_datainput_main);
+		
+		addMediaFileView = new AddMediaFileView(DataInputActivity.this);
+		
 		dataInputer = (EditText)findViewById(R.id.activity_datainput_data);
 		dataInputer.setText(data.get("Value"));
 		dataInputer.selectAll();
-		buttonAddMedia = (Button)findViewById(R.id.activity_datainput_add);
-		buttonAddMedia.setOnClickListener(this);
-		if(data.get("Key").equals("RequiredManHours")||data.get("Key").equals("RepairCost")){
-			buttonAddMedia.setVisibility(View.GONE);
-		}
+		
+		
+		
+		
 	}
 
 	/**
@@ -76,6 +85,15 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 		intent.putExtra("data", data);
 		return intent;
 	}
+	
+	/**
+	 * 
+	 */
+	private void showMediaFilePanel(){
+		if(!addMediaFileView.isShowing()){
+			addMediaFileView.showAtLocation(mainLayout, Gravity.BOTTOM, 0, 0);
+		}
+	}
 
 	@Override
 	protected void onNewIntent(Intent intent) {
@@ -85,6 +103,9 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_datainput, menu);
+		if(data.get("Key").equals("RequiredManHours")||data.get("Key").equals("RepairCost")){
+			menu.findItem(R.id.menu_datainput_add).setVisible(false);
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -92,13 +113,17 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			setResult(RESULT_CANCELED);
+			onBackPressed();
 			break;
 		case R.id.menu_datainput_save:
 			setResult(RESULT_OK, sendDataToRepairItem());
+			finish();
+			break;
+		case R.id.menu_datainput_add:
+			SystemMethod.hideSoftInput(DataInputActivity.this);
+			showMediaFilePanel();
 			break;
 		}
-		finish();
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -107,15 +132,6 @@ public class DataInputActivity extends NfcActivity implements OnClickListener {
 		super.onBackPressed();
 		setResult(RESULT_CANCELED);
 		finish();
-	}
-
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.activity_datainput_add:
-			SystemMethod.hideSoftInput(DataInputActivity.this);
-			break;
-		}
 	}
 
 }

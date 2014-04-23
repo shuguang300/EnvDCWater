@@ -7,39 +7,93 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 
 /**
  * @author sk
- *
+ * 每个保养工单的详细情况
  */
 public class UpkeepHistoryItemActivity extends NfcActivity {
 	
 	private HashMap<String, String> receivedData;
 	private Intent receivedIntent;
 	private ActionBar mActionBar;
+	private TextView tvDeviceName,tvInstallPos,tvMTPos,tvMTDetail,tvSendTime,tvSendPerson,tvNeedHour,tvNeedFinishTime,tvMTPerson,tvBackPerson,tvActualHour,tvMTResult,tvApprovePerson,tvApproveTime,tvDDOpinion;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_upkeephistoryitem);
 		iniData();
 		iniActionBar();
+		iniView();
+		
 	}
 	
+	/**
+	 * 
+	 */
 	@SuppressWarnings("unchecked")
 	private void iniData(){
 		receivedIntent = getIntent();
 		receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("data");
 	}
 	
+	/**
+	 * 
+	 */
 	private void iniActionBar(){
 		mActionBar = getActionBar();
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setDisplayShowTitleEnabled(true);
 		mActionBar.setTitle(receivedData.get("MaintainTaskSN")+"详情");
+	}
+	
+	/**
+	 * 
+	 */
+	private void iniView(){
+		tvDeviceName = (TextView)findViewById(R.id.activity_upkeephistoryitem_devicename);
+		tvInstallPos = (TextView)findViewById(R.id.activity_upkeephistoryitem_installpos);
+		tvMTPos = (TextView)findViewById(R.id.activity_upkeephistoryitem_maintainpos);
+		tvMTDetail = (TextView)findViewById(R.id.activity_upkeephistoryitem_maintaindetail);
+		tvSendTime = (TextView)findViewById(R.id.activity_upkeephistoryitem_sendtime);
+		tvSendPerson = (TextView)findViewById(R.id.activity_upkeephistoryitem_sendperson);
+		tvNeedHour = (TextView)findViewById(R.id.activity_upkeephistoryitem_needhour);
+		tvNeedFinishTime = (TextView)findViewById(R.id.activity_upkeephistoryitem_needfinishtime);
+		tvMTPerson = (TextView)findViewById(R.id.activity_upkeephistoryitem_maintainperson);
+		tvBackPerson = (TextView)findViewById(R.id.activity_upkeephistoryitem_backperson);
+		tvActualHour = (TextView)findViewById(R.id.activity_upkeephistoryitem_actualhour);
+		tvMTResult = (TextView)findViewById(R.id.activity_upkeephistoryitem_maintainresult);
+		tvApprovePerson = (TextView)findViewById(R.id.activity_upkeephistoryitem_approveperson);
+		tvApproveTime = (TextView)findViewById(R.id.activity_upkeephistoryitem_approvetime);
+		tvDDOpinion = (TextView)findViewById(R.id.activity_upkeephistoryitem_ddopinion);
+		setViewData();
+	}
+	
+	/**
+	 * 
+	 */
+	private void setViewData(){
+		tvDeviceName.setText(receivedData.get("DeviceName"));
+		tvInstallPos.setText(receivedData.get("StructureName"));
+		tvMTPos.setText(receivedData.get("MaintainPosition"));
+		tvMTDetail.setText(receivedData.get("MaintainSpecification"));
+		tvSendTime.setText(receivedData.get("CreateTime"));
+		tvSendPerson.setText(receivedData.get("CreatePerson"));
+		tvNeedHour.setText(receivedData.get("RequiredManHours"));
+		tvNeedFinishTime.setText(receivedData.get("NeedComplete"));
+		tvMTPerson.setText(receivedData.get("MaintainPerson"));
+		tvBackPerson.setText(receivedData.get("CheckPerson"));
+		tvActualHour.setText(receivedData.get("ActualManHours"));
+		tvMTResult.setText(receivedData.get("MaintainDetail"));
+		tvApprovePerson.setText(receivedData.get("ApprovePerson"));
+		tvApproveTime.setText(receivedData.get("ApproveTime"));
+		tvDDOpinion.setText(receivedData.get("DDOpinion"));
 	}
 	
 	@Override

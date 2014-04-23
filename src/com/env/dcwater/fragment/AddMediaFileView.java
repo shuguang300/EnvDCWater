@@ -1,13 +1,15 @@
 package com.env.dcwater.fragment;
-
 import com.env.dcwater.R;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.GridLayout.LayoutParams;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -34,12 +36,21 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 	
 	public AddMediaFileView(Context context,AttributeSet attr){
 		super(context, attr);
+		mContext = context;
+		mView = LayoutInflater.from(context).inflate(R.layout.view_addmediafile, null);
+		iniView();
 	}
 	
 	/**
 	 * 初始化控件
 	 */
 	private void iniView(){
+		
+		
+		setWidth(LayoutParams.MATCH_PARENT);
+		setHeight(LayoutParams.WRAP_CONTENT);
+		setAnimationStyle(R.style.popupwindow_anim);
+		
 		buttonVoice = (Button)mView.findViewById(R.id.view_addmediafile_voice);
 		buttonImg = (Button)mView.findViewById(R.id.view_addmediafile_img);
 		buttonLocation = (Button)mView.findViewById(R.id.view_addmediafile_location);
@@ -47,7 +58,15 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 		buttonImg.setOnClickListener(this);
 		buttonLocation.setOnClickListener(this);
 		
+		setBackgroundDrawable(new ColorDrawable(Color.argb(50, 52, 53, 55)));
+
+		setOutsideTouchable(true);
+		
+		setContentView(mView);
+		
+		
 	}
+
 
 	@Override
 	public void onClick(View v) {

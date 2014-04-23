@@ -77,6 +77,26 @@
     <string name="activity_deviceselect_devicename">设备名称</string>
     <string name="activity_deviceselect_consname">构筑物</string>
     
+    <string name="activity_upkeephistoryitem_devicegroup">设备信息</string>
+    <string name="activity_upkeephistoryitem_taskgroup">工单信息</string>
+    <string name="activity_upkeephistoryitem_approvegroup">审核信息</string>
+    
+    <string name="activity_upkeephistoryitem_installpos">安装位置</string>
+    <string name="activity_upkeephistoryitem_devicename">设备名称</string>
+    <string name="activity_upkeephistoryitem_maintainpos">养护部位</string>
+    <string name="activity_upkeephistoryitem_maintaindetail">保养内容及要求</string>
+    <string name="activity_upkeephistoryitem_sendtime">派发时间</string>
+    <string name="activity_upkeephistoryitem_sendperson">派发人</string>
+    <string name="activity_upkeephistoryitem_needhour">所需工时</string>
+    <string name="activity_upkeephistoryitem_needfinishtime">要求完成时间</string>
+    <string name="activity_upkeephistoryitem_maintainperson">养护人</string>
+    <string name="activity_upkeephistoryitem_backperson">回单人</string>
+    <string name="activity_upkeephistoryitem_actualhour">实际工时</string>
+    <string name="activity_upkeephistoryitem_maintainresult">完成情况及处理措施</string>
+    <string name="activity_upkeephistoryitem_approveperson">审阅人</string>
+    <string name="activity_upkeephistoryitem_approvetime">审核时间</string>
+    <string name="activity_upkeephistoryitem_ddopinion">科长意见</string>
+    
     
     <string name="view_datetimepick_ok">确定</string>
     <string name="view_datetimepick_cancel">取消</string>
@@ -157,6 +177,7 @@
     <string name="menu_maintainhistory_drawshow">筛选条件</string>
     <string name="menu_upkeephistory_drawshow">筛选条件</string>
     <string name="menu_datainput_save">保存</string>
+    <string name="menu_datainput_add">添加</string>
     <string name="menu_main_userinfo">个人信息</string>
     
     <string name="cm_rm_op_update">修改</string>
