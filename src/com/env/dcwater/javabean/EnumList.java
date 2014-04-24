@@ -8,23 +8,26 @@ public class EnumList {
 	 * @author sk 用户权限枚举
 	 */
 	public enum UserRight {
-
 		/**
 		 * 设备信息枚举对象
 		 */
-		MACHINEINFO(0, "设备信息查看"),
+		USERINFORMATION(99, "个人信息","com.env.dcwater.activity.UserInformationAcivity"),
 		/**
-		 * 报修枚举对象
+		 * 设备信息枚举对象
 		 */
-		REPAIRMANAGE(1, "设备维修管理"),
+		MACHINEINFO(0, "设备信息查看","com.env.dcwater.activity.DeviceInfoListActivity"),
+		/**
+		 * 报修管理枚举对象
+		 */
+		REPAIRMANAGE(1, "设备维修管理","com.env.dcwater.activity.RepairManageActivity"),
 		/**
 		 * 维修记录枚举对象
 		 */
-		MAINTAINHISTORY(2, "维修历史记录"),
+		MAINTAINHISTORY(2, "维修历史记录","com.env.dcwater.activity.MaintainHistoryActivity"),
 		/**
 		 * 保养记录枚举对象
 		 */
-		UPKEEPHISTORY(3, "保养历史记录");
+		UPKEEPHISTORY(3, "保养历史记录","com.env.dcwater.activity.UpkeepHistoryActivity");
 
 		/**
 		 * 权限名称
@@ -35,19 +38,26 @@ public class EnumList {
 		 * 权限代码
 		 */
 		public static final String RightCode = "UserRightCode";
+		/**
+		 * 权限路径
+		 */
+		public static final String RightAction = "UserRightAction";
 		
 		private int mRightCode;
 		private String mRightName;
+		private String mAction;
 
 		/**
 		 * 权限枚举对象的构造函数
 		 * 
 		 * @param code
 		 * @param name
+		 * @param action
 		 */
-		private UserRight(int code, String name) {
+		private UserRight(int code, String name,String action) {
 			mRightCode = code;
 			mRightName = name;
+			mAction = action;
 		}
 
 		/**
@@ -66,6 +76,8 @@ public class EnumList {
 				return UserRight.MAINTAINHISTORY;
 			case 3:
 				return UserRight.UPKEEPHISTORY;
+			case 99:
+				return UserRight.USERINFORMATION;
 			}
 			return null;
 		}
@@ -86,6 +98,10 @@ public class EnumList {
 		 */
 		public String getName() {
 			return mRightName;
+		}
+		
+		public String getAction(){
+			return mAction;
 		}
 	}
 	

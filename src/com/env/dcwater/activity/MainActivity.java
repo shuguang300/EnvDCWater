@@ -1,29 +1,30 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
-import com.env.dcwater.fragment.UserRigthGroupView;
+import com.env.dcwater.javabean.EnumList.UserRight;
 import com.env.dcwater.util.OperationMethod;
 
 /**
@@ -31,22 +32,18 @@ import com.env.dcwater.util.OperationMethod;
  * 右边的是app常用设置界面
  * @author sk
  */
-public class MainActivity extends NfcActivity implements OnClickListener{
+public class MainActivity extends NfcActivity implements OnItemClickListener{
 	
 	public static final String TAG_STRING = "MainActivity";
 	public static final String ACTION_STRING = "MainActivity";
-	
-	private ViewPager viewPager;
-	private ImageView imageView0,imageView1;
-	private View userRigthView,configView;
-	private ArrayList<View> views;
 	private long lastExitTime;
-	private LinearLayout userRightContainer;
-	private UserRigthGroupView machineManageGroup;
 	private ArrayList<HashMap<String, String>> data;
 	private ActionBar mActionBar;
-	private Button mLogout;
 	private TextView titleMessage;
+	private DrawerLayout drawerLayout;
+	private WebView webView;
+	private ListView naviListView;
+	private NaviBarAdapter naviBarAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +51,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		setContentView(R.layout.activity_main);
 		iniActionBar();
 		iniData();
-		ini();
+		iniView();
 	}
 	
 	/**
@@ -78,50 +75,34 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	/**
 	 * 初始化界面
 	 */
-	private void ini(){
-		viewPager = (ViewPager)findViewById(R.id.activity_main_container);
-		imageView0 = (ImageView)findViewById(R.id.activity_main_page0);
-		imageView1 = (ImageView)findViewById(R.id.activity_main_page1);
+	@SuppressLint("SetJavaScriptEnabled")
+	private void iniView(){
+		drawerLayout = (DrawerLayout)findViewById(R.id.activity_main_drawlayout);
+		naviListView = (ListView)findViewById(R.id.activity_main_navibar);
+		webView = (WebView)findViewById(R.id.activity_main_showdata);
+		naviBarAdapter = new NaviBarAdapter();
+		naviListView.setAdapter(naviBarAdapter);
+		naviListView.setOnItemClickListener(this);
 		
-		//注册权限界面
-		userRigthView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_userright, null);                 
-		
-		iniUserRight();                                                                                                                                                                                                                                                                                                                                                                                                         
-		iniConfig();
-		
-		views = new ArrayList<View>();
-		views.add(userRigthView);
-		views.add(configView);
-		viewPager.setOnPageChangeListener(new MainOnPageChangeListener());
-		viewPager.setAdapter(new MainPageAdapter(views));
+		webView.getSettings().setJavaScriptEnabled(true);
+		webView.getSettings().setDefaultTextEncodingName("utf-8");
+		webView.setWebViewClient(new WebViewClient(){
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				view.loadUrl(url); 
+				return true;
+			}
+		});
+		webView.setWebChromeClient(new WebChromeClient(){
+			@Override
+			public void onProgressChanged(WebView view, int newProgress) {
+				super.onProgressChanged(view, newProgress);
+			}
+		});
+		webView.loadUrl("http://www.baidu.com");
 	}
 	
-	/**
-	 *  初始化权限控制
-	 */
-	private void iniUserRight(){
-		userRightContainer = (LinearLayout)userRigthView.findViewById(R.id.view_userright_container);
-		machineManageGroup = new UserRigthGroupView(MainActivity.this,getResources().getString(R.string.activity_userright_group_machinemanage),data);
-		userRightContainer.addView(machineManageGroup);
-	}
 	
-	/**
-	 *  初始化配置界面
-	 */
-	private void iniConfig(){
-		mLogout = (Button)configView.findViewById(R.id.view_config_logout);
-		mLogout.setOnClickListener(this);
-	}
-	
-	/**
-	 * 登出，类似微信的登出
-	 */
-	private void logout(){
-		Intent intent = new Intent();
-		intent.setClass(this, LoginActivity.class);
-		startActivity(intent);
-		finish();
-	}
 	
 	@Override
 	protected void onStart() {
@@ -166,10 +147,11 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			finish();
-			break;
-		case R.id.menu_main_userinfo:
-			
+			if(drawerLayout.isShown()){
+				drawerLayout.closeDrawer(Gravity.LEFT);
+			}else{
+				drawerLayout.openDrawer(Gravity.LEFT);
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -177,76 +159,50 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	
 	@Override
 	public void onBackPressed() {
-		if(System.currentTimeMillis()-lastExitTime>2000){
-			Toast.makeText(MainActivity.this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
+		if(drawerLayout.isShown()){
+			drawerLayout.closeDrawer(Gravity.LEFT);
 		}else {
-			finish();
-		}
-		lastExitTime = System.currentTimeMillis();	
-	}
-	
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.view_config_logout:
-			logout();
-			break;
-		}
-		
-	}
-	
-	/**
-	 * viewpage的滑动事件
-	 * @author sk
-	 */
-	private class MainOnPageChangeListener implements OnPageChangeListener{
-		@Override
-		public void onPageScrollStateChanged(int arg0) {}
-		@Override
-		public void onPageScrolled(int arg0, float arg1, int arg2) {}
-		@Override
-		public void onPageSelected(int arg0) {
-			switch (arg0) {
-			case 0:
-				imageView0.setImageDrawable(getResources().getDrawable(R.drawable.page_now));
-				imageView1.setImageDrawable(getResources().getDrawable(R.drawable.page));
-				break;
-			case 1:
-				imageView0.setImageDrawable(getResources().getDrawable(R.drawable.page));
-				imageView1.setImageDrawable(getResources().getDrawable(R.drawable.page_now));
-				break;
+			if(System.currentTimeMillis()-lastExitTime>2000){
+				Toast.makeText(MainActivity.this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
+			}else {
+				finish();
 			}
+			lastExitTime = System.currentTimeMillis();	
 		}
 	}
-	
-	/**
-	 * 主界面功能模块的自定义adapter，目前只有2个：用户权限，设置
-	 * @author sk
-	 */
-	private class MainPageAdapter extends PagerAdapter{
-		private ArrayList<View> mViews;
-		public MainPageAdapter(ArrayList<View> views){
-			mViews = views;
-		}
+	private class NaviBarAdapter extends BaseAdapter{
+
 		@Override
 		public int getCount() {
-			return mViews.size();
+			return data.size();
 		}
+
 		@Override
-		public boolean isViewFromObject(View arg0, Object arg1) {
-			return arg0 == arg1;
+		public Object getItem(int position) {
+			return data.get(position);
 		}
-		public void destroyItem(View container, int position, Object object) {
-			((ViewPager)container).removeView(views.get(position));
-		}
+
 		@Override
-		public Object instantiateItem(ViewGroup container, int position) {
-			((ViewPager)container).addView(mViews.get(position));
-			return mViews.get(position);
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if(convertView==null){
+				convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_mainnavibar, null);
+			}
+			TextView name = (TextView)convertView.findViewById(R.id.item_mainnavibar_name);
+			name.setText(data.get(position).get(UserRight.RightName));
+			return convertView;
 		}
 		
 	}
-
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+		Intent intent = new Intent(data.get(position).get(UserRight.RightAction));
+		intent.putExtra("action", ACTION_STRING);
+		startActivity(intent);
+	}
 	
-
 }

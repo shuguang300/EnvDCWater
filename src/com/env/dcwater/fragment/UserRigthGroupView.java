@@ -27,7 +27,6 @@ import android.widget.TextView;
  */
 public class UserRigthGroupView extends LinearLayout implements OnItemClickListener{
 	
-	public static final String TAG_STRING = "UserRigthGroupView";
 	
 	private TextView title;
 	private Context mContext;

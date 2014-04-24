@@ -1,10 +1,14 @@
 package com.env.dcwater.util;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.env.dcwater.javabean.EnumList;
+import com.env.dcwater.javabean.EnumList.UserRight;
+import com.env.dcwater.javabean.EnumList.UserRole;
 
 /**
  * 一个用于存储 污水厂业务逻辑方法 的类
@@ -20,66 +24,88 @@ public class OperationMethod {
 	public static ArrayList<HashMap<String,String>> getViewByUserRole ( int PositionID ){
 		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
 		HashMap<String, String> map = new HashMap<String, String>();
-		if(PositionID == EnumList.UserRole.EQUIPMENTOPERATION.getState()){
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
+		
+		map.put(UserRight.RightName, UserRight.USERINFORMATION.getName());
+		map.put(UserRight.RightCode, UserRight.USERINFORMATION.getCode()+"");
+		map.put(UserRight.RightAction, UserRight.USERINFORMATION.getAction());
+		
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		
+		if(PositionID == UserRole.EQUIPMENTOPERATION.getState()){
+			map.put(UserRight.RightName, UserRight.REPAIRMANAGE.getName());
+			map.put(UserRight.RightCode, UserRight.REPAIRMANAGE.getCode()+"");
+			map.put(UserRight.RightAction, UserRight.REPAIRMANAGE.getAction());
 			data.add(map);
 			
-		}else if (PositionID == EnumList.UserRole.PRODUCTIONOPERATION.getState()) {
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
-			data.add(map);
-			
-			map = new HashMap<String, String>();
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
-			data.add(map);
-		}else if (PositionID == EnumList.UserRole.EQUIPMENTCHIEF.getState()){
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
-			data.add(map);
-			
-			map = new HashMap<String, String>();
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
-			data.add(map);
-		}else if (PositionID == EnumList.UserRole.PRODUCTIONCHIEF.getState()) {
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
+		}else if (PositionID == UserRole.PRODUCTIONOPERATION.getState()) {
+			map.put(UserRight.RightName, UserRight.MACHINEINFO.getName());
+			map.put(UserRight.RightCode, UserRight.MACHINEINFO.getCode()+"");
+			map.put(UserRight.RightAction, UserRight.MACHINEINFO.getAction());
 			data.add(map);
 			
 			map = new HashMap<String, String>();
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
+			map.put(UserRight.RightName, UserRight.REPAIRMANAGE.getName());
+			map.put(UserRight.RightCode, UserRight.REPAIRMANAGE.getCode()+"");
+			map.put(UserRight.RightAction, UserRight.REPAIRMANAGE.getAction());
 			data.add(map);
-		}else if (PositionID == EnumList.UserRole.REPAIRMAN.getState()) {
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
-			data.add(map);
-			
-			map = new HashMap<String, String>();
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
-			data.add(map);
-		}else if (PositionID == EnumList.UserRole.PLANTER.getState()) {
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.MACHINEINFO.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MACHINEINFO.getCode()+"");
+		}else if (PositionID == UserRole.EQUIPMENTCHIEF.getState()){
+			map.put(UserRight.RightName, UserRight.MACHINEINFO.getName());
+			map.put(UserRight.RightCode, UserRight.MACHINEINFO.getCode()+"");
+			map.put(UserRight.RightAction, UserRight.MACHINEINFO.getAction());
 			data.add(map);
 			
 			map = new HashMap<String, String>();
-			map.put(EnumList.UserRight.RightName, EnumList.UserRight.REPAIRMANAGE.getName());
-			map.put(EnumList.UserRight.RightCode, EnumList.UserRight.REPAIRMANAGE.getCode()+"");
+			map.put(UserRight.RightName, UserRight.REPAIRMANAGE.getName());
+			map.put(UserRight.RightCode, UserRight.REPAIRMANAGE.getCode()+"");
+			map.put(UserRight.RightAction, UserRight.REPAIRMANAGE.getAction());
+			data.add(map);
+		}else if (PositionID == UserRole.PRODUCTIONCHIEF.getState()) {
+			map.put(UserRight.RightName, UserRight.MACHINEINFO.getName());
+			map.put(UserRight.RightCode, UserRight.MACHINEINFO.getCode()+"");
+			map.put(UserRight.RightAction, UserRight.MACHINEINFO.getAction());
+			data.add(map);
+			
+			map = new HashMap<String, String>();
+			map.put(UserRight.RightName, UserRight.REPAIRMANAGE.getName());
+			map.put(UserRight.RightCode, UserRight.REPAIRMANAGE.getCode()+"");
+			map.put(UserRight.RightAction, UserRight.REPAIRMANAGE.getAction());
+			data.add(map);
+		}else if (PositionID == UserRole.REPAIRMAN.getState()) {
+			map.put(UserRight.RightName, UserRight.MACHINEINFO.getName());
+			map.put(UserRight.RightCode, UserRight.MACHINEINFO.getCode()+"");
+			map.put(UserRight.RightAction, UserRight.MACHINEINFO.getAction());
+			data.add(map);
+			
+			map = new HashMap<String, String>();
+			map.put(UserRight.RightName, UserRight.REPAIRMANAGE.getName());
+			map.put(UserRight.RightCode, UserRight.REPAIRMANAGE.getCode()+"");
+			map.put(UserRight.RightAction, UserRight.REPAIRMANAGE.getAction());
+			data.add(map);
+		}else if (PositionID == UserRole.PLANTER.getState()) {
+			map.put(UserRight.RightName, UserRight.MACHINEINFO.getName());
+			map.put(UserRight.RightCode, UserRight.MACHINEINFO.getCode()+"");
+			map.put(UserRight.RightAction, UserRight.MACHINEINFO.getAction());
+			data.add(map);
+			
+			map = new HashMap<String, String>();
+			map.put(UserRight.RightName, UserRight.REPAIRMANAGE.getName());
+			map.put(UserRight.RightCode, UserRight.REPAIRMANAGE.getCode()+"");
+			map.put(UserRight.RightAction, UserRight.REPAIRMANAGE.getAction());
 			data.add(map);
 		}
 		
 		map = new HashMap<String, String>();
-		map.put(EnumList.UserRight.RightName, EnumList.UserRight.MAINTAINHISTORY.getName());
-		map.put(EnumList.UserRight.RightCode, EnumList.UserRight.MAINTAINHISTORY.getCode()+"");
+		map.put(UserRight.RightName, UserRight.MAINTAINHISTORY.getName());
+		map.put(UserRight.RightCode, UserRight.MAINTAINHISTORY.getCode()+"");
+		map.put(UserRight.RightAction, UserRight.MAINTAINHISTORY.getAction());
 		data.add(map);
 		
 		map = new HashMap<String, String>();
-		map.put(EnumList.UserRight.RightName, EnumList.UserRight.UPKEEPHISTORY.getName());
-		map.put(EnumList.UserRight.RightCode, EnumList.UserRight.UPKEEPHISTORY.getCode()+"");
+		map.put(UserRight.RightName, UserRight.UPKEEPHISTORY.getName());
+		map.put(UserRight.RightCode, UserRight.UPKEEPHISTORY.getCode()+"");
+		map.put(UserRight.RightAction, UserRight.UPKEEPHISTORY.getAction());
 		data.add(map);
 		return data;
 		

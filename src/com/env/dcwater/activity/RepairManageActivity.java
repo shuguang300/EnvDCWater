@@ -685,6 +685,4 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		
 	}
 	
-	
-	
 }

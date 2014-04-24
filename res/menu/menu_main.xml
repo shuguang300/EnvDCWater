@@ -5,9 +5,4 @@
         android:title=""
         android:actionViewClass="android.widget.TextView"/>
     
-    <item 
-        android:id="@+id/menu_main_userinfo"
-        android:showAsAction="never"
-        android:title="@string/menu_main_userinfo" />
-
 </menu>
