@@ -102,8 +102,12 @@
     <string name="view_datetimepick_cancel">取消</string>
     <string name="view_datetimepick_reset">重置</string>
     
-    <string name="view_addmediafile_voice">录音</string>
-    <string name="view_addmediafile_img">图片</string>
+    
+    <string name="view_addmediafile_takephoto">拍照</string>
+    <string name="view_addmediafile_photo">图片</string>
+    <string name="view_addmediafile_voice">音频</string>
+    <string name="view_addmediafile_video">视频</string>
+    <string name="view_addmediafile_file">文件</string>
     <string name="view_addmediafile_location">位置</string>
     
     <string name="view_userright_group_performance">绩效管理</string>

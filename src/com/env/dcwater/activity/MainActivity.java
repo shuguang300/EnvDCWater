@@ -85,8 +85,6 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		
 		//注册权限界面
 		userRigthView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_userright, null);                 
-		//注册设置界面
-		configView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_config, null);
 		
 		iniUserRight();                                                                                                                                                                                                                                                                                                                                                                                                         
 		iniConfig();

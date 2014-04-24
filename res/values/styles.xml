@@ -45,6 +45,25 @@
 	    <item name="android:background">@drawable/inforitem_withallconner_blue_bg</item>
 	</style>
 	
+	<!--  -->
+	<style name="DialogActivityStyle" parent="@android:style/Theme.Dialog">
+   	    <item name="android:windowFrame">@null</item><!-- 边框 -->  
+        <item name="android:windowIsFloating">true</item><!-- 是否浮现在activity之上 -->  
+        <item name="android:windowIsTranslucent">false</item> 半透明 -->  
+        <item name="android:windowNoTitle">true</item><!-- 无标题 -->  
+        <item name="android:backgroundDimEnabled">false</item><!-- 模糊 --> 
+    </style>
+    
+	<!--  -->
+   	<style name="CustomDialogStyle" parent="@android:style/Theme.Holo.Light.Dialog">
+   	    <item name="android:windowFrame">@null</item><!-- 边框 -->  
+        <item name="android:windowIsFloating">true</item><!-- 是否浮现在activity之上 -->  
+        <item name="android:windowIsTranslucent">false</item> 半透明 -->  
+        <item name="android:windowNoTitle">true</item><!-- 无标题 -->  
+        <item name="android:backgroundDimEnabled">false</item><!-- 模糊 --> 
+        <item name="android:windowBackground">@color/white</item><!-- 模糊 --> 
+    </style>
+	
 	<!-- 筛选控件的 条件样式 -->
 	<style name="view_datafilter_tablerow">
 	    <item name="android:layout_width">match_parent</item>
@@ -124,7 +143,12 @@
 	    <item name="android:gravity">center_vertical|right</item>
 	</style>
 	
-	
+	<style name="MediaFileViewButtonStyle" parent="@android:style/Widget.Button">
+	    <item name="android:layout_width">wrap_content</item>
+	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:layout_margin">5dp</item>
+	    <item name="android:background">@drawable/ic_launcher</item>
+	</style>
 	
 	
 	<!-- 自定义的actionbar的样式 -->

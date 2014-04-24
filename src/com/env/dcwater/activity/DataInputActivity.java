@@ -7,12 +7,8 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.AddMediaFileView;
@@ -116,6 +112,7 @@ public class DataInputActivity extends NfcActivity {
 			onBackPressed();
 			break;
 		case R.id.menu_datainput_save:
+			addMediaFileView.dismiss();
 			setResult(RESULT_OK, sendDataToRepairItem());
 			finish();
 			break;
@@ -129,9 +126,13 @@ public class DataInputActivity extends NfcActivity {
 
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
-		setResult(RESULT_CANCELED);
-		finish();
+		if(addMediaFileView.isShowing()){
+			addMediaFileView.dismiss();
+		}else {
+			setResult(RESULT_CANCELED);
+			finish();
+		}
+		
 	}
 
 }

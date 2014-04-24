@@ -1,9 +1,15 @@
 package com.env.dcwater.fragment;
+import java.io.File;
+import java.util.Calendar;
 import com.env.dcwater.R;
-
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +27,8 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 	
 	private View mView;
 	private Context mContext;
-	private Button buttonVoice,buttonImg,buttonLocation;
+	private Button btVoice,btPhoto,btLocation,btTakePhoto,btFile,btVideo;
+	private String folderPath;
 	
 	/**
 	 * 构造函数
@@ -51,20 +58,38 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 		setHeight(LayoutParams.WRAP_CONTENT);
 		setAnimationStyle(R.style.popupwindow_anim);
 		
-		buttonVoice = (Button)mView.findViewById(R.id.view_addmediafile_voice);
-		buttonImg = (Button)mView.findViewById(R.id.view_addmediafile_img);
-		buttonLocation = (Button)mView.findViewById(R.id.view_addmediafile_location);
-		buttonVoice.setOnClickListener(this);
-		buttonImg.setOnClickListener(this);
-		buttonLocation.setOnClickListener(this);
+		btVoice = (Button)mView.findViewById(R.id.view_addmediafile_voice);
+		btPhoto = (Button)mView.findViewById(R.id.view_addmediafile_photo);
+		btLocation = (Button)mView.findViewById(R.id.view_addmediafile_location);
+		btTakePhoto = (Button)mView.findViewById(R.id.view_addmediafile_takephoto);
+		btFile = (Button)mView.findViewById(R.id.view_addmediafile_file);
+		btVideo = (Button)mView.findViewById(R.id.view_addmediafile_video);
+		btVoice.setOnClickListener(this);
+		btPhoto.setOnClickListener(this);
+		btTakePhoto.setOnClickListener(this);
+		btFile.setOnClickListener(this);
+		btVideo.setOnClickListener(this);
+		btLocation.setOnClickListener(this);
 		
 		setBackgroundDrawable(new ColorDrawable(Color.argb(50, 52, 53, 55)));
 
 		setOutsideTouchable(true);
 		
 		setContentView(mView);
-		
-		
+		iniPath();
+	}
+	
+	/**
+	 * 
+	 */
+	private void iniPath(){
+		String pathLevel1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+		String pathLevel2 = pathLevel1+File.separator+"EnvDCWater"+File.separator+"Picture";
+		File folder = new File(pathLevel2);
+		if(!folder.exists()){
+			folder.mkdirs();
+		}
+		folderPath = folder.getAbsolutePath();
 	}
 
 
@@ -72,13 +97,35 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.view_addmediafile_voice:
-			Toast.makeText(mContext, "添加语音", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "添加录音", Toast.LENGTH_SHORT).show();
 			break;
-		case R.id.view_addmediafile_img:
-			Toast.makeText(mContext, "添加图片", Toast.LENGTH_SHORT).show();
+		case R.id.view_addmediafile_takephoto:
+			String newPicturePath = folderPath+File.separator+Calendar.getInstance().getTimeInMillis()+".jpg";
+			File newPictureFile = new File(newPicturePath);
+			Intent capture = new Intent();
+			capture.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+			capture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newPictureFile));
+			((Activity)mContext).startActivityForResult(capture,0);
+			break;
+		case R.id.view_addmediafile_photo:
+			Intent photo = new Intent();
+			photo.setAction(Intent.ACTION_GET_CONTENT);
+			photo.addCategory(Intent.CATEGORY_OPENABLE);
+			photo.setType("image/*");
+			((Activity)mContext).startActivityForResult(photo, 0);
+			break;
+		case R.id.view_addmediafile_video:
+			Toast.makeText(mContext, "添加视频", Toast.LENGTH_SHORT).show();
+			break;
+		case R.id.view_addmediafile_file:
+			Intent fileIntent = new Intent();
+			fileIntent.setAction(android.content.Intent.ACTION_GET_CONTENT);
+			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator);
+			fileIntent.setDataAndType(Uri.fromFile(file), "file/*");
+			((Activity)mContext).startActivityForResult(fileIntent,0);
 			break;
 		case R.id.view_addmediafile_location:
-			Toast.makeText(mContext, "添加位置信息", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "添加位置", Toast.LENGTH_SHORT).show();
 			break;
 		}
 	}

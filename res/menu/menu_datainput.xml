@@ -3,12 +3,12 @@
     <item 
         android:id="@+id/menu_datainput_save"
         android:title="@string/menu_datainput_save"
-        android:showAsAction="never">
+        android:showAsAction="always|withText">
     </item>
     <item 
         android:id="@+id/menu_datainput_add"
         android:title="@string/menu_datainput_add"
-        android:showAsAction="never">
+        android:showAsAction="always|withText">
     </item>
 
 </menu>

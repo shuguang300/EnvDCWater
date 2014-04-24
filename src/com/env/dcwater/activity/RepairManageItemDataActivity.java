@@ -599,7 +599,12 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 	
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
+		if(dateTimePickerView!=null&&dateTimePickerView.isShowing()){
+			dateTimePickerView.dismiss();
+		}else {
+			super.onBackPressed();
+		}
+		
 	}
 	
 	@Override
