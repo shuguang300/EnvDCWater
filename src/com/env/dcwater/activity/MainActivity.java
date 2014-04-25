@@ -1,31 +1,32 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
+import com.env.dcwater.fragment.NaviBarAdapter;
 import com.env.dcwater.javabean.EnumList.UserRight;
 import com.env.dcwater.util.OperationMethod;
+import com.env.dcwater.util.SystemMethod;
 
 /**
  * 登录后的主界面，主要包含2大区域，左边的是功能模块区
@@ -60,9 +61,7 @@ public class MainActivity extends NfcActivity implements OnItemClickListener{
 	private void iniActionBar(){
 		mActionBar = getActionBar();
 		mActionBar.setTitle(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
-		mActionBar.setDisplayShowHomeEnabled(true);
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setHomeButtonEnabled(true);
+		SystemMethod.setActionBarHomeButton(true, mActionBar);
 	}
 	
 	/**
@@ -80,7 +79,7 @@ public class MainActivity extends NfcActivity implements OnItemClickListener{
 		drawerLayout = (DrawerLayout)findViewById(R.id.activity_main_drawlayout);
 		naviListView = (ListView)findViewById(R.id.activity_main_navibar);
 		webView = (WebView)findViewById(R.id.activity_main_showdata);
-		naviBarAdapter = new NaviBarAdapter();
+		naviBarAdapter = new NaviBarAdapter(MainActivity.this,data);
 		naviListView.setAdapter(naviBarAdapter);
 		naviListView.setOnItemClickListener(this);
 		
@@ -147,7 +146,7 @@ public class MainActivity extends NfcActivity implements OnItemClickListener{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			if(drawerLayout.isShown()){
+			if(drawerLayout.isDrawerOpen(Gravity.LEFT)){
 				drawerLayout.closeDrawer(Gravity.LEFT);
 			}else{
 				drawerLayout.openDrawer(Gravity.LEFT);
@@ -159,7 +158,7 @@ public class MainActivity extends NfcActivity implements OnItemClickListener{
 	
 	@Override
 	public void onBackPressed() {
-		if(drawerLayout.isShown()){
+		if(drawerLayout.isDrawerOpen(Gravity.LEFT)){
 			drawerLayout.closeDrawer(Gravity.LEFT);
 		}else {
 			if(System.currentTimeMillis()-lastExitTime>2000){
@@ -170,39 +169,13 @@ public class MainActivity extends NfcActivity implements OnItemClickListener{
 			lastExitTime = System.currentTimeMillis();	
 		}
 	}
-	private class NaviBarAdapter extends BaseAdapter{
-
-		@Override
-		public int getCount() {
-			return data.size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return data.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if(convertView==null){
-				convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_mainnavibar, null);
-			}
-			TextView name = (TextView)convertView.findViewById(R.id.item_mainnavibar_name);
-			name.setText(data.get(position).get(UserRight.RightName));
-			return convertView;
-		}
-		
-	}
+	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 		Intent intent = new Intent(data.get(position).get(UserRight.RightAction));
 		intent.putExtra("action", ACTION_STRING);
 		startActivity(intent);
+		drawerLayout.closeDrawer(Gravity.LEFT);
 	}
 	
 }

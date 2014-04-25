@@ -20,6 +20,7 @@ import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
+import com.env.dcwater.util.SystemMethod;
 
 /**
  * 设备信息查看
@@ -52,9 +53,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	 */
 	private void iniActionBar(){
 		mActionBar = getActionBar();
-		mActionBar.setDisplayShowHomeEnabled(true);
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setDisplayShowTitleEnabled(true);
+		SystemMethod.setActionBarHomeButton(true, mActionBar);
 		mActionBar.setTitle(receivedDevice.get("DeviceName"));
 	}
 	

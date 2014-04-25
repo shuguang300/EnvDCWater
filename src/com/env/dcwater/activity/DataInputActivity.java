@@ -49,9 +49,7 @@ public class DataInputActivity extends NfcActivity {
 	 */
 	private void iniActionBar(){
 		mActionBar = getActionBar();
-		mActionBar.setDisplayShowHomeEnabled(true);
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setDisplayShowTitleEnabled(true);
+		SystemMethod.setActionBarHomeButton(true, mActionBar);
 		mActionBar.setTitle(data.get("Name"));
 	}
 
@@ -75,8 +73,8 @@ public class DataInputActivity extends NfcActivity {
 	/**
 	 * @return
 	 */
-	private Intent sendDataToRepairItem(){
-		Intent intent = new Intent(this,RepairManageItemActivity.class);
+	private Intent sendDataBack(){
+		Intent intent = new Intent();
 		data.put("Value", dataInputer.getText().toString());
 		intent.putExtra("data", data);
 		return intent;
@@ -113,7 +111,7 @@ public class DataInputActivity extends NfcActivity {
 			break;
 		case R.id.menu_datainput_save:
 			addMediaFileView.dismiss();
-			setResult(RESULT_OK, sendDataToRepairItem());
+			setResult(RESULT_OK, sendDataBack());
 			finish();
 			break;
 		case R.id.menu_datainput_add:

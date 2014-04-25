@@ -1,4 +1,5 @@
 package com.env.dcwater.util;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -130,6 +131,17 @@ public class SystemMethod {
 		if(imm.isActive()){
 			imm.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getApplicationWindowToken(), 0);
 		}
+	}
+	
+	/**
+	 * @param show
+	 * @param actionBar
+	 */
+	public static void setActionBarHomeButton(boolean show, ActionBar actionBar){
+		actionBar.setDisplayShowHomeEnabled(show);
+		actionBar.setDisplayHomeAsUpEnabled(show);
+		actionBar.setDisplayShowTitleEnabled(show);
+		actionBar.setHomeButtonEnabled(show);
 	}
 	
 	

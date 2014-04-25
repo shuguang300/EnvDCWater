@@ -71,9 +71,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	 */
 	private void initialActionbar(){
 		mActionBar = getActionBar();
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setDisplayShowHomeEnabled(true);
-		mActionBar.setDisplayShowTitleEnabled(true);
+		SystemMethod.setActionBarHomeButton(true, mActionBar);
 		mActionBar.setTitle("设备列表");
 	};
 	

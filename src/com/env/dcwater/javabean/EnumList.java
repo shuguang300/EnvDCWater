@@ -9,9 +9,14 @@ public class EnumList {
 	 */
 	public enum UserRight {
 		/**
-		 * 设备信息枚举对象
+		 * 个人信息
 		 */
 		USERINFORMATION(99, "个人信息","com.env.dcwater.activity.UserInformationAcivity"),
+		/**
+		 * 设置
+		 */
+		USERCONFIG(100, "设置","com.env.dcwater.activity.UserConfigActivity"),
+		
 		/**
 		 * 设备信息枚举对象
 		 */
@@ -20,14 +25,30 @@ public class EnumList {
 		 * 报修管理枚举对象
 		 */
 		REPAIRMANAGE(1, "设备维修管理","com.env.dcwater.activity.RepairManageActivity"),
+		
+		/**
+		 * 保养工单派发
+		 */
+		UPKEEPSEND(2, "保养工单派发","com.env.dcwater.activity.UpkeepSendActivity"),
+		
+		/**
+		 * 保养工单填写
+		 */
+		UPKEEPREPORT(3, "保养工单填写","com.env.dcwater.activity.UpkeepReportActivity"),
+		
+		/**
+		 * 保养工单审核
+		 */
+		UPKEEPAPPROVE(4, "保养工单审核","com.env.dcwater.activity.UpkeepApproveActivity"),
+		
 		/**
 		 * 维修记录枚举对象
 		 */
-		MAINTAINHISTORY(2, "维修历史记录","com.env.dcwater.activity.MaintainHistoryActivity"),
+		MAINTAINHISTORY(5, "维修历史记录","com.env.dcwater.activity.MaintainHistoryActivity"),
 		/**
 		 * 保养记录枚举对象
 		 */
-		UPKEEPHISTORY(3, "保养历史记录","com.env.dcwater.activity.UpkeepHistoryActivity");
+		UPKEEPHISTORY(6, "保养历史记录","com.env.dcwater.activity.UpkeepHistoryActivity");
 
 		/**
 		 * 权限名称
@@ -73,11 +94,19 @@ public class EnumList {
 			case 1:
 				return UserRight.REPAIRMANAGE;
 			case 2:
-				return UserRight.MAINTAINHISTORY;
+				return UserRight.UPKEEPSEND;
 			case 3:
+				return UserRight.UPKEEPREPORT;
+			case 4:
+				return UserRight.UPKEEPAPPROVE;
+			case 5:
+				return UserRight.MAINTAINHISTORY;
+			case 6:
 				return UserRight.UPKEEPHISTORY;
 			case 99:
 				return UserRight.USERINFORMATION;
+			case 100:
+				return UserRight.USERCONFIG;
 			}
 			return null;
 		}

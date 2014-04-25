@@ -13,15 +13,16 @@
             android:id="@+id/activity_main_showdata"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        
-        <ListView 
+
+        <ListView
             android:id="@+id/activity_main_navibar"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:background="@color/white"
             android:listSelector="@drawable/inforitem_withnoconner_blue_bg" />
-            
+        
     </android.support.v4.widget.DrawerLayout>
+    
 
 </LinearLayout>

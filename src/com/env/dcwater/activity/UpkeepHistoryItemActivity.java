@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.util.SystemMethod;
 
 /**
  * @author sk
@@ -47,9 +48,7 @@ public class UpkeepHistoryItemActivity extends NfcActivity {
 	 */
 	private void iniActionBar(){
 		mActionBar = getActionBar();
-		mActionBar.setDisplayShowHomeEnabled(true);
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setDisplayShowTitleEnabled(true);
+		SystemMethod.setActionBarHomeButton(true, mActionBar);
 		mActionBar.setTitle(receivedData.get("MaintainTaskSN")+"详情");
 	}
 	
@@ -82,7 +81,7 @@ public class UpkeepHistoryItemActivity extends NfcActivity {
 		tvDeviceName.setText(receivedData.get("DeviceName"));
 		tvInstallPos.setText(receivedData.get("StructureName"));
 		tvMTPos.setText(receivedData.get("MaintainPosition"));
-		tvMTDetail.setText(receivedData.get("MaintainSpecification"));
+		tvMTDetail.setText(receivedData.get("TaskDetail"));
 		tvSendTime.setText(receivedData.get("CreateTime"));
 		tvSendPerson.setText(receivedData.get("CreatePerson"));
 		tvNeedHour.setText(receivedData.get("RequiredManHours"));

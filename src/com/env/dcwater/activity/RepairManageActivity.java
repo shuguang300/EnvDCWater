@@ -48,6 +48,7 @@ import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
+import com.env.dcwater.util.SystemMethod;
 
 /**
  * 设备维修管理
@@ -169,9 +170,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	 */
 	private void iniActionBar(){
 		mActionBar = getActionBar();
-		mActionBar.setDisplayShowHomeEnabled(true);
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setDisplayShowTitleEnabled(true);
+		SystemMethod.setActionBarHomeButton(true, mActionBar);
 	}
 	
 	/**

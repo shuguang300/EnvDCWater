@@ -38,6 +38,7 @@ import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
+import com.env.dcwater.util.SystemMethod;
 
 /**
  * 维修历史记录
@@ -87,9 +88,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	 */
 	private void iniActionBar(){
 		mActionBar = getActionBar();
-		mActionBar.setDisplayShowHomeEnabled(true);
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setDisplayShowTitleEnabled(true);
+		SystemMethod.setActionBarHomeButton(true, mActionBar);
 		//判断是否是所有设备的维修历史
 		if(receivedAction.equals(MainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
 			mActionBar.setTitle("维修历史总览");

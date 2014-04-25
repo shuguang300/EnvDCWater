@@ -218,6 +218,104 @@
             </intent-filter>
         </activity>
         
+        <!-- 派发保养工单 -->
+        <activity
+            android:name="com.env.dcwater.activity.UpkeepSendActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/ic_launcher" >
+            <intent-filter >
+                <action android:name="com.env.dcwater.activity.UpkeepSendActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 派发保养工单详情 -->
+        <activity
+            android:name="com.env.dcwater.activity.UpkeepSendItemActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/ic_launcher" >
+            <intent-filter >
+                <action android:name="com.env.dcwater.activity.UpkeepSendItemActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 保养工单填写 -->
+        <activity
+            android:name="com.env.dcwater.activity.UpkeepReportActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/ic_launcher" >
+            <intent-filter >
+                <action android:name="com.env.dcwater.activity.UpkeepReportActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 保养工单填写详细 -->
+        <activity
+            android:name="com.env.dcwater.activity.UpkeepReportItemActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/ic_launcher" >
+            <intent-filter >
+                <action android:name="com.env.dcwater.activity.UpkeepReportItemActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 保养工单审核 详情-->
+        <activity
+            android:name="com.env.dcwater.activity.UpkeepApproveItemActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/ic_launcher" >
+            <intent-filter >
+                <action android:name="com.env.dcwater.activity.UpkeepApproveItemActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 保养工单审核 -->
+        <activity
+            android:name="com.env.dcwater.activity.UpkeepApproveActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/ic_launcher" >
+            <intent-filter >
+                <action android:name="com.env.dcwater.activity.UpkeepApproveActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 保养工单详情   -->
+        <activity
+            android:name="com.env.dcwater.activity.UpkeepManageItemActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/ic_launcher" >
+            <intent-filter >
+                <action android:name="com.env.dcwater.activity.UpkeepManageItemActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
         <!-- 保养历史记录 -->
         <activity
             android:name="com.env.dcwater.activity.UpkeepHistoryActivity"

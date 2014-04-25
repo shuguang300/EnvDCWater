@@ -4,9 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -22,11 +24,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
+import com.env.dcwater.util.SystemMethod;
 
 /**
  * 单个报修工单界面，该界面可查看，编辑
@@ -64,9 +68,7 @@ public class RepairManageItemActivity extends NfcActivity{
 	 */
 	private void iniActionbar(){
 		mActionBar = getActionBar();
-		mActionBar.setDisplayShowHomeEnabled(true);
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setDisplayShowTitleEnabled(true);
+		SystemMethod.setActionBarHomeButton(true, mActionBar);
 		switch (mRequestCode) {
 		case RepairManageActivity.REPAIRMANAGE_ADD_INTEGER:
 			mActionBar.setTitle("上报故障");

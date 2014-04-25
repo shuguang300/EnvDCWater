@@ -78,13 +78,17 @@
     <string name="activity_deviceselect_consname">构筑物</string>
     
     <string name="activity_upkeephistoryitem_devicegroup">设备信息</string>
+    <string name="activity_upkeephistoryitem_maintaingroup">养护信息</string>
     <string name="activity_upkeephistoryitem_taskgroup">工单信息</string>
     <string name="activity_upkeephistoryitem_approvegroup">审核信息</string>
     
     <string name="activity_upkeephistoryitem_installpos">安装位置</string>
     <string name="activity_upkeephistoryitem_devicename">设备名称</string>
     <string name="activity_upkeephistoryitem_maintainpos">养护部位</string>
-    <string name="activity_upkeephistoryitem_maintaindetail">保养内容及要求</string>
+    <string name="activity_upkeephistoryitem_maintaindetail">保养内容</string>
+    <string name="activity_upkeephistoryitem_maintainperiod">保养周期</string>
+    <string name="activity_upkeephistoryitem_maintainnext">需保养时间</string>
+    <string name="activity_upkeephistoryitem_taskdetail">工作要求</string>
     <string name="activity_upkeephistoryitem_sendtime">派发时间</string>
     <string name="activity_upkeephistoryitem_sendperson">派发人</string>
     <string name="activity_upkeephistoryitem_needhour">所需工时</string>
@@ -94,8 +98,12 @@
     <string name="activity_upkeephistoryitem_actualhour">实际工时</string>
     <string name="activity_upkeephistoryitem_maintainresult">完成情况及处理措施</string>
     <string name="activity_upkeephistoryitem_approveperson">审阅人</string>
+    <string name="activity_upkeephistoryitem_approveresult">审核结果</string>
     <string name="activity_upkeephistoryitem_approvetime">审核时间</string>
     <string name="activity_upkeephistoryitem_ddopinion">科长意见</string>
+    <string name="activity_upkeephistoryitem_send">派发工单</string>
+    <string name="activity_upkeephistoryitem_report">上报工单</string>
+    <string name="activity_upkeephistoryitem_approve">审核工单</string>
     
     
     <string name="view_datetimepick_ok">确定</string>
@@ -144,6 +152,15 @@
         <item>去年</item>
         <item>最近7天</item>
         <item>最近1月</item>
+    </string-array>
+    
+    <string-array name="view_datafilter_upkeepplanstatelist">
+        <item >不限</item>
+        <item >已列入计划</item>
+        <item >养护中</item>
+        <item >审核未通过</item>
+        <item >完成</item>
+        <item >回单待审核</item>
     </string-array>
     
     <string-array name="view_datafilter_upkeepstatelist">

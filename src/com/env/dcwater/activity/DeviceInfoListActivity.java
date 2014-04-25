@@ -76,9 +76,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	 */
 	private void iniActionbar(){
 		actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setDisplayShowHomeEnabled(true);
-		actionBar.setDisplayShowTitleEnabled(true);
+		SystemMethod.setActionBarHomeButton(true, actionBar);
 		actionBar.setTitle("设备列表");
 	}
 	

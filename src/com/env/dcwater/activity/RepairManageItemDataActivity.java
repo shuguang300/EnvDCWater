@@ -39,6 +39,7 @@ import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.fragment.DateTimePickerView;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
+import com.env.dcwater.util.SystemMethod;
 
 /**
  * 填写工单数据的一个页面
@@ -124,9 +125,7 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 	 */
 	private void iniActionbar(){
 		mActionBar = getActionBar();
-		mActionBar.setDisplayShowHomeEnabled(true);
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setDisplayShowTitleEnabled(true);
+		SystemMethod.setActionBarHomeButton(true, mActionBar);
 		if(methodName.equals(RepairManageActivity.METHOD_ADD_STRING)){
 			mActionBar.setTitle("新增故障上报");
 		}else if (methodName.equals(RepairManageActivity.METHOD_UPDATE_STRING)) {

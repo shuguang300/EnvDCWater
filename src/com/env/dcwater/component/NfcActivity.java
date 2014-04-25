@@ -23,6 +23,8 @@ public class NfcActivity extends Activity{
 		super.onCreate(savedInstanceState);
 	}
 	
+	
+	
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
