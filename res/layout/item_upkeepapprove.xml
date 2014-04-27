@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/item_upkeepapprove_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:textSize="@dimen/middle" />
+
+        <TextView
+            android:id="@+id/item_upkeepapprove_mtpos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:textSize="@dimen/middle" />
+
+        <TextView
+            android:id="@+id/item_upkeepapprove_mtdetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:textSize="@dimen/middle" />
+
+        <TextView
+            android:id="@+id/item_upkeepapprove_mttime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:singleLine="false"
+            android:textSize="@dimen/middle" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_upkeepapprove_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:drawableRight="@drawable/activity_machinemanage_arrowright"
+        android:gravity="right|center_vertical"
+        android:textSize="@dimen/middle"
+        android:textStyle="bold" />
+
+</RelativeLayout>

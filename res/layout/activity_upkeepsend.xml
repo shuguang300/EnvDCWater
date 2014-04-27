@@ -2,9 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical" >
     
-    
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/activity_upkeepsend_drawlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <com.env.dcwater.fragment.PullToRefreshView
+            android:id="@+id/activity_upkeepsend_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:listSelector="@drawable/inforitem_withnoconner_blue_bg" >
+        </com.env.dcwater.fragment.PullToRefreshView>
+
+        <com.env.dcwater.fragment.DataFilterView
+            android:id="@+id/activity_upkeepsend_datafilter"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="@color/white" >
+        </com.env.dcwater.fragment.DataFilterView>
+        
+    </android.support.v4.widget.DrawerLayout>
     
 
 </LinearLayout>

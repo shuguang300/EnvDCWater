@@ -1,9 +1,13 @@
 package com.env.dcwater.activity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.util.SystemMethod;
 
 import android.app.ActionBar;
@@ -12,6 +16,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Switch;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -24,6 +30,7 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 	private Switch tvApproveSwitch;
 	private TableRow trDDOpinion;
 	private Button submit;
+	private boolean canUpdate;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,7 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 	private void iniData(){
 		receivedIntent = getIntent();
 		receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("data");
+		canUpdate = receivedData.get("CanUpdate").equals("true")?true:false;
 	}
 	
 	/**
@@ -77,10 +85,25 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 		tvDDOpinion = (TextView)findViewById(R.id.activity_upkeepapproveitem_ddopinion);
 		
 		trDDOpinion = (TableRow)findViewById(R.id.activity_upkeepapproveitem_ddopinion_tr);
-		trDDOpinion.setOnClickListener(this);
+		trDDOpinion.setOnClickListener(canUpdate?this:null);
 		
 		submit = (Button)findViewById(R.id.activity_upkeepapproveitem_approve);
-		submit.setOnClickListener(this);
+		submit.setOnClickListener(canUpdate?this:null);
+		submit.setVisibility(canUpdate?View.VISIBLE:View.GONE);
+		
+		if(!canUpdate){
+			tvDDOpinion.setCompoundDrawables(null, null, null, null);
+			tvApproveSwitch.setCompoundDrawables(null, null, null, null);
+			tvApproveSwitch.setEnabled(false);
+		}
+		
+//		tvApproveSwitch.setOnDragListener(l);
+		tvApproveSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				tvApproveSwitch.setCompoundDrawables(null, null, null, null);
+			}
+		});
 		
 		setViewData();
 	}
@@ -105,8 +128,8 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 		tvMTResult.setText(receivedData.get("MaintainDetail"));
 		
 		tvApproveSwitch.setChecked(false);
-		tvApprovePerson.setText("");
-		tvApproveTime.setText("");
+		tvApprovePerson.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+		tvApproveTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
 		tvDDOpinion.setText("");
 	}
 
@@ -127,11 +150,20 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == RESULT_OK){
-			
+			HashMap<String, String> temp = (HashMap<String, String>)data.getSerializableExtra("data");
+			String value = temp.get("Value");
+			String key = temp.get("Key");
+			if(key.equals("DDOpinion")){
+				tvDDOpinion.setText(value);
+				if(!value.isEmpty()){
+					tvDDOpinion.setCompoundDrawables(null, null, null, null);
+				}
+			}
 		}
 	}
 }

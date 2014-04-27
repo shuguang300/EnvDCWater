@@ -1,11 +1,9 @@
 package com.env.dcwater.util;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.javabean.EnumList.UserRight;
 import com.env.dcwater.javabean.EnumList.UserRole;
@@ -126,6 +124,49 @@ public class OperationMethod {
 			return EnumList.RepairState.PRODUCTIONTHROUGH.getState();
 		}else if(stateName.equals(EnumList.RepairState.DIRECTORTHROUGH.getStateDescription())){
 			return EnumList.RepairState.DIRECTORTHROUGH.getState();
+		}else {
+			return -1;
+		}
+		
+	}
+	
+	/**
+	 * 根据保养单计划状态的名称获得状态代码
+	 * @param stateName
+	 * @return
+	 */
+	public static int getUpkeepPlanStateByStateName(String stateName){
+		if(stateName.equals("已派发工单")){
+			return 1;
+		}else if (stateName.equals("已回单")) {
+			return 2;
+		}else if (stateName.equals("审核通过")) {
+			return 3;
+		}else if (stateName.equals("审核未通过")) {
+			return 4;
+		}else if (stateName.equals("已填写待上报")) {
+			return 5;
+		}else {
+			return -1;
+		}
+	}
+	
+	/**
+	 * 根据保养单状态的名称获得状态代码
+	 * @param stateName
+	 * @return
+	 */
+	public static int getUpkeepStateByStateName(String stateName){
+		if(stateName.equals("已列入计划")){
+			return 1;
+		}else if (stateName.equals("养护中")) {
+			return 2;
+		}else if (stateName.equals("审核未通过")) {
+			return 3;
+		}else if (stateName.equals("完成")) {
+			return 4;
+		}else if (stateName.equals("回单待审核")) {
+			return 5;
 		}else {
 			return -1;
 		}
@@ -780,6 +821,234 @@ public class OperationMethod {
 	}
 	
 	/**
+	 * @param jsonObject
+	 * @param type 是全部的还是计划内的
+	 * @param consName
+	 * @param stateName
+	 * @return
+	 * @throws JSONException 
+	 */
+	public static ArrayList<HashMap<String, String>> parseUpkeepSendDataList(JSONObject jsonObject, boolean type,String consName,String stateName) throws JSONException{
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
+		JSONObject json1 = new JSONObject(jsonObject.getString("d"));
+		JSONArray jsonArray = null;
+		HashMap<String, String> map = null;
+		JSONObject json2 = null;
+		int taskState = OperationMethod.getUpkeepPlanStateByStateName(stateName);
+		if(type){
+			jsonArray = new JSONArray(json1.get("AllPlanList").toString());
+		}else if (!type) {
+			jsonArray = new JSONArray(json1.get("ToTermData").toString());
+		}else {
+			
+		}
+		if(jsonArray!=null){
+			for(int i = 0; i < jsonArray.length();i++){
+				map = new HashMap<String, String>();
+				json2 = jsonArray.getJSONObject(i);
+				
+				if(taskState!=-1&&taskState!=Integer.valueOf(json2.get("MaintainState").toString())){
+					continue;
+				}
+				
+				if(consName.equals("全部")||consName.equals("")){
+					//go on
+				}else {
+					if(consName.equals(LogicMethod.getRightString(json2.get("StructureName").toString()))){
+						//go on
+					}else {
+						continue;
+					}
+				}
+				map.put("MaintainSpecification", LogicMethod.getRightString(json2.get("MaintainSpecification").toString()));
+				map.put("MaintainState", LogicMethod.getRightString(json2.get("MaintainState").toString()));
+				if(LogicMethod.getRightString(json2.get("MaintainState").toString()).equals("1")){
+					map.put("CanUpdate", "true");
+				}else {
+					map.put("CanUpdate", "false");
+				}
+				map.put("MaintainStateDescription", EnumList.UpkeepHistoryPlanState.getHistoryStateEnum(Integer.valueOf(json2.get("MaintainState").toString())).getCodeName());
+				map.put("DeviceID", LogicMethod.getRightString(json2.get("DeviceID").toString()));
+				map.put("IsDeleted", LogicMethod.getRightString(json2.get("IsDeleted").toString()));
+				map.put("MaintainPeriod", LogicMethod.getRightString(json2.get("MaintainPeriod").toString()));
+				map.put("MaintainPlanID", LogicMethod.getRightString(json2.get("MaintainPlanID").toString()));
+				map.put("MaintainPosition", LogicMethod.getRightString(json2.get("MaintainPosition").toString()));
+				map.put("MaintainStartTime", LogicMethod.getRightString(json2.get("MaintainStartTime").toString().replace("T", " ")));
+				map.put("MaintainType", LogicMethod.getRightString(json2.get("MaintainType").toString()));
+				map.put("PlantID", LogicMethod.getRightString(json2.get("PlantID").toString()));
+				map.put("Maintaintimenext", LogicMethod.getRightString(json2.get("Maintaintimenext").toString().replace("T", " ")));
+				map.put("dataToday", LogicMethod.getRightString(json2.get("dataToday").toString()));
+				map.put("DeviceName", LogicMethod.getRightString(json2.get("DeviceName").toString()));
+				map.put("InstallPosition", LogicMethod.getRightString(json2.get("InstallPosition").toString()));
+				map.put("StructureID", LogicMethod.getRightString(json2.get("StructureID").toString()));
+				
+				data.add(map);
+			}
+		}
+		return  data;
+	}
+	
+	
+	/**
+	 * @param jsonObject
+	 * @param type
+	 * @param consName
+	 * @param stateName
+	 * @return
+	 * @throws JSONException
+	 */
+	public static ArrayList<HashMap<String, String>> parseUpkeepReportDataList(JSONObject jsonObject, boolean filter,String consName,String stateName) throws JSONException{
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
+		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
+		HashMap<String, String> map = null;
+		JSONObject json2 = null;
+//		boolean canUpdate = false;
+		int taskState = OperationMethod.getUpkeepStateByStateName(stateName);
+		if(jsonArray!=null){
+			for(int i = 0; i < jsonArray.length();i++){
+				map = new HashMap<String, String>();
+				json2 = jsonArray.getJSONObject(i);
+				
+				if(taskState!=-1&&taskState!=Integer.valueOf(json2.get("State").toString())){
+					continue;
+				}
+				
+				if(consName.equals("全部")||consName.equals("")){
+					//go on
+				}else {
+					if(consName.equals(LogicMethod.getRightString(json2.get("StructureName").toString()))){
+						//go on
+					}else {
+						continue;
+					}
+				}
+				
+//				map.put("CanUpdate", canUpdate?"true":"false");
+				map.put("CanUpdate", "true");
+				map.put("PlantID", LogicMethod.getRightString(json2.get("PlantID").toString()));
+				map.put("MaintainTaskID", LogicMethod.getRightString(json2.get("MaintainTaskID").toString()));
+				map.put("StructureID", LogicMethod.getRightString(json2.get("StructureID").toString()));
+				map.put("StructureName", LogicMethod.getRightString(json2.get("StructureName").toString()));
+				map.put("NeedComplete", LogicMethod.getRightString(json2.get("NeedComplete").toString().replace("T", " ")));
+				map.put("NeedCompleteTotaDay", LogicMethod.getRightString(json2.get("NeedCompleteTotaDay").toString()));
+				map.put("MaintainTaskSN", LogicMethod.getRightString(json2.get("MaintainTaskSN").toString()));
+				map.put("State", LogicMethod.getRightString(json2.get("State").toString()));
+				map.put("StateDescription", EnumList.UpkeepHistoryState.getHistoryStateEnum(Integer.valueOf(json2.get("State").toString())).getCodeName());
+				map.put("RequiredManHours", LogicMethod.getRightString(json2.get("RequiredManHours").toString()));
+				map.put("ActualManHours", LogicMethod.getRightString(json2.get("ActualManHours").toString()));
+				map.put("CreateTime", LogicMethod.getRightString(json2.get("CreateTime").toString().replace("T", " ")));
+				map.put("CreatePerson", LogicMethod.getRightString(json2.get("CreatePerson").toString().replace("T", " ")));
+				map.put("CreatePersonID", LogicMethod.getRightString(json2.get("CreatePersonID").toString()));
+				map.put("CheckTime", LogicMethod.getRightString(json2.get("CheckTime").toString().replace("T", " ")));
+				map.put("CheckPerson", LogicMethod.getRightString(json2.get("CheckPerson").toString()));
+				map.put("CheckPersonID", LogicMethod.getRightString(json2.get("CheckPersonID").toString()));
+				map.put("ApproveTime", LogicMethod.getRightString(json2.get("ApproveTime").toString().replace("T", " ")));
+				map.put("ApprovePerson", LogicMethod.getRightString(json2.get("ApprovePerson").toString()));
+				map.put("ApprovePersonID", LogicMethod.getRightString(json2.get("ApprovePersonID").toString()));
+				map.put("MaintainPerson", LogicMethod.getRightString(json2.get("MaintainPerson").toString()));
+				map.put("MaintainPersonID", LogicMethod.getRightString(json2.get("MaintainPersonID").toString()));
+				map.put("TaskDetail", LogicMethod.getRightString(json2.get("TaskDetail").toString()));
+				map.put("MaintainDetail", LogicMethod.getRightString(json2.get("MaintainDetail").toString()));
+				map.put("DDOpinion", LogicMethod.getRightString(json2.get("DDOpinion").toString()));
+				map.put("MaintainSpecification", LogicMethod.getRightString(json2.get("MaintainSpecification").toString()));
+				map.put("MaintainState", LogicMethod.getRightString(json2.get("MaintainState").toString()));
+				map.put("IsDeleted", LogicMethod.getRightString(json2.get("IsDeleted").toString()));
+				map.put("MaintainPeriod", LogicMethod.getRightString(json2.get("MaintainPeriod").toString()));
+				map.put("Specification", LogicMethod.getRightString(json2.get("Specification").toString()));
+				map.put("MaintainPlanID", LogicMethod.getRightString(json2.get("MaintainPlanID").toString()));
+				map.put("MaintainPosition", LogicMethod.getRightString(json2.get("MaintainPosition").toString()));
+				map.put("MaintainStartTime", LogicMethod.getRightString(json2.get("MaintainStartTime").toString().replace("T", " ")));
+				map.put("MaintainType", LogicMethod.getRightString(json2.get("MaintainType").toString()));
+				map.put("DeviceName", LogicMethod.getRightString(json2.get("DeviceName").toString()));
+				map.put("DeviceID", LogicMethod.getRightString(json2.get("DeviceID").toString()));
+				
+				data.add(map);
+			}
+		}
+		return  data;
+	}
+	
+	
+	/**
+	 * @param jsonObject
+	 * @param type
+	 * @param consName
+	 * @param stateName
+	 * @return
+	 * @throws JSONException
+	 */
+	public static ArrayList<HashMap<String, String>> parseUpkeepApproveDataList(JSONObject jsonObject, boolean filter,String consName,String stateName) throws JSONException{
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
+		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
+		HashMap<String, String> map = null;
+		JSONObject json2 = null;
+//		boolean canUpdate = false;
+		int taskState = OperationMethod.getUpkeepStateByStateName(stateName);
+		if(jsonArray!=null){
+			for(int i = 0; i < jsonArray.length();i++){
+				map = new HashMap<String, String>();
+				json2 = jsonArray.getJSONObject(i);
+				
+				if(taskState!=-1&&taskState!=Integer.valueOf(json2.get("State").toString())){
+					continue;
+				}
+				
+				if(consName.equals("全部")||consName.equals("")){
+					//go on
+				}else {
+					if(consName.equals(LogicMethod.getRightString(json2.get("StructureName").toString()))){
+						//go on
+					}else {
+						continue;
+					}
+				}
+				
+//				map.put("CanUpdate", canUpdate?"true":"false");
+				map.put("CanUpdate", "true");
+				map.put("PlantID", LogicMethod.getRightString(json2.get("PlantID").toString()));
+				map.put("MaintainTaskID", LogicMethod.getRightString(json2.get("MaintainTaskID").toString()));
+				map.put("StructureID", LogicMethod.getRightString(json2.get("StructureID").toString()));
+				map.put("StructureName", LogicMethod.getRightString(json2.get("StructureName").toString()));
+				map.put("NeedComplete", LogicMethod.getRightString(json2.get("NeedComplete").toString().replace("T", " ")));
+				map.put("NeedCompleteTotaDay", LogicMethod.getRightString(json2.get("NeedCompleteTotaDay").toString()));
+				map.put("MaintainTaskSN", LogicMethod.getRightString(json2.get("MaintainTaskSN").toString()));
+				map.put("State", LogicMethod.getRightString(json2.get("State").toString()));
+				map.put("StateDescription", EnumList.UpkeepHistoryState.getHistoryStateEnum(Integer.valueOf(json2.get("State").toString())).getCodeName());
+				map.put("RequiredManHours", LogicMethod.getRightString(json2.get("RequiredManHours").toString()));
+				map.put("ActualManHours", LogicMethod.getRightString(json2.get("ActualManHours").toString()));
+				map.put("CreateTime", LogicMethod.getRightString(json2.get("CreateTime").toString().replace("T", " ")));
+				map.put("CreatePerson", LogicMethod.getRightString(json2.get("CreatePerson").toString().replace("T", " ")));
+				map.put("CreatePersonID", LogicMethod.getRightString(json2.get("CreatePersonID").toString()));
+				map.put("CheckTime", LogicMethod.getRightString(json2.get("CheckTime").toString().replace("T", " ")));
+				map.put("CheckPerson", LogicMethod.getRightString(json2.get("CheckPerson").toString()));
+				map.put("CheckPersonID", LogicMethod.getRightString(json2.get("CheckPersonID").toString()));
+				map.put("ApproveTime", LogicMethod.getRightString(json2.get("ApproveTime").toString().replace("T", " ")));
+				map.put("ApprovePerson", LogicMethod.getRightString(json2.get("ApprovePerson").toString()));
+				map.put("ApprovePersonID", LogicMethod.getRightString(json2.get("ApprovePersonID").toString()));
+				map.put("MaintainPerson", LogicMethod.getRightString(json2.get("MaintainPerson").toString()));
+				map.put("MaintainPersonID", LogicMethod.getRightString(json2.get("MaintainPersonID").toString()));
+				map.put("TaskDetail", LogicMethod.getRightString(json2.get("TaskDetail").toString()));
+				map.put("MaintainDetail", LogicMethod.getRightString(json2.get("MaintainDetail").toString()));
+				map.put("DDOpinion", LogicMethod.getRightString(json2.get("DDOpinion").toString()));
+				map.put("MaintainSpecification", LogicMethod.getRightString(json2.get("MaintainSpecification").toString()));
+				map.put("MaintainState", LogicMethod.getRightString(json2.get("MaintainState").toString()));
+				map.put("IsDeleted", LogicMethod.getRightString(json2.get("IsDeleted").toString()));
+				map.put("MaintainPeriod", LogicMethod.getRightString(json2.get("MaintainPeriod").toString()));
+				map.put("Specification", LogicMethod.getRightString(json2.get("Specification").toString()));
+				map.put("MaintainPlanID", LogicMethod.getRightString(json2.get("MaintainPlanID").toString()));
+				map.put("MaintainPosition", LogicMethod.getRightString(json2.get("MaintainPosition").toString()));
+				map.put("MaintainStartTime", LogicMethod.getRightString(json2.get("MaintainStartTime").toString().replace("T", " ")));
+				map.put("MaintainType", LogicMethod.getRightString(json2.get("MaintainType").toString()));
+				map.put("DeviceName", LogicMethod.getRightString(json2.get("DeviceName").toString()));
+				map.put("DeviceID", LogicMethod.getRightString(json2.get("DeviceID").toString()));
+				
+				data.add(map);
+			}
+		}
+		return  data;
+	}
+	
+	/**
 	 * 将得到的用户信息的jsonObject解析成为hashmap
 	 * @param jsonObject
 	 * @param mAccount
@@ -807,6 +1076,5 @@ public class OperationMethod {
 			
 		}
 		return map;
-		
 	}
 }

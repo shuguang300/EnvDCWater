@@ -1,10 +1,17 @@
 package com.env.dcwater.activity;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,6 +20,8 @@ import android.widget.TextView;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.component.SystemParams;
+import com.env.dcwater.fragment.DateTimePickerView;
 import com.env.dcwater.util.SystemMethod;
 
 public class UpkeepSendItemActivity extends NfcActivity implements OnClickListener{
@@ -23,6 +32,9 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 	private TextView tvDeviceName,tvInstallPos,tvMTPos,tvMTDetail,tvMTPeriod,tvMTNext,tvSendTime,tvSendPerson,tvNeedFinishTime,tvTaskDetail;
 	private Button submit;
 	private TableRow trNeedFinishTime,trTaskDetail;
+	private Date date;
+	private DateTimePickerView dateTimePickerView;
+	private boolean canUpdate;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,12 +48,14 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 	private void iniData(){
 		receivedIntent = getIntent();
 		receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("data");
+		date = new Date();
+		canUpdate = receivedData.get("CanUpdate").equals("true")?true:false;
 	}
 	
 	private void iniActionBar(){
 		mActionBar = getActionBar();
 		SystemMethod.setActionBarHomeButton(true, mActionBar);
-		mActionBar.setTitle(receivedData.get("MaintainTaskSN")+"详情");
+		mActionBar.setTitle("派发工单");
 	}
 	
 	private void iniView(){
@@ -57,13 +71,19 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 		tvTaskDetail = (TextView)findViewById(R.id.activity_upkeepsenditem_taskdetail);
 		
 		trNeedFinishTime = (TableRow)findViewById(R.id.activity_upkeepsenditem_needfinishtime_tr);
-		trNeedFinishTime.setOnClickListener(this);
+		trNeedFinishTime.setOnClickListener(canUpdate?this:null);
 		
 		trTaskDetail = (TableRow)findViewById(R.id.activity_upkeepsenditem_taskdetail_tr);
-		trTaskDetail.setOnClickListener(this);
+		trTaskDetail.setOnClickListener(canUpdate?this:null);
 		
 		submit = (Button)findViewById(R.id.activity_upkeepsenditem_send);
-		submit.setOnClickListener(this);
+		submit.setOnClickListener(canUpdate?this:null);
+		submit.setVisibility(canUpdate?View.VISIBLE:View.GONE);
+		
+		if(!canUpdate){
+			tvNeedFinishTime.setCompoundDrawables(null, null, null, null);
+			tvTaskDetail.setCompoundDrawables(null, null, null, null);
+		}
 		
 		setViewData();
 		
@@ -75,10 +95,10 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 		tvMTPos.setText(receivedData.get("MaintainPosition"));
 		tvMTDetail.setText(receivedData.get("MaintainSpecification"));
 		tvMTPeriod.setText(receivedData.get("MaintainPeriod"));
-		tvMTNext.setText("");
-		tvSendTime.setText("");
-		tvSendPerson.setText("");
-		tvNeedFinishTime.setText("");
+		tvMTNext.setText(receivedData.get("Maintaintimenext"));
+		tvSendTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(date));
+		tvSendPerson.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+		tvNeedFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(date));
 		tvTaskDetail.setText("");
 	}
 	
@@ -88,12 +108,38 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 		startActivityForResult(intent, 0);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode==RESULT_OK){
-			
+			HashMap<String, String> temp = (HashMap<String, String>)data.getSerializableExtra("data");
+			tvTaskDetail.setText(temp.get("Value"));
+			if(!temp.get("Value").toString().trim().equals("")){
+				tvTaskDetail.setCompoundDrawables(null, null, null, null);
+			}
 		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		setResult(RESULT_CANCELED);
+		finish();
 	}
 
 	@Override
@@ -102,12 +148,40 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 		case R.id.activity_upkeepsenditem_send:
 			break;
 		case R.id.activity_upkeepsenditem_needfinishtime_tr:
+			if(dateTimePickerView==null){
+				dateTimePickerView = new DateTimePickerView(UpkeepSendItemActivity.this);
+			}
+			dateTimePickerView.setButtonClickEvent(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					date = dateTimePickerView.getSelectedDate();
+					tvNeedFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(date));
+					dateTimePickerView.dismiss();
+				}
+			}, new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dateTimePickerView.dismiss();
+				}
+			}, new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Calendar calendar = Calendar.getInstance(Locale.CHINA);
+					calendar.setTime(date);
+					dateTimePickerView.iniWheelView(calendar);
+				}
+			});
+			Calendar fualtTimeCL = Calendar.getInstance(Locale.CHINA);
+			fualtTimeCL.setTime(date);
+			dateTimePickerView.iniWheelView(fualtTimeCL);
+			dateTimePickerView.showAtLocation(findViewById(R.id.activity_upkeepsenditem_main), Gravity.BOTTOM, 0, 0);
+			tvNeedFinishTime.setCompoundDrawables(null, null, null, null);
 			break;
 		case R.id.activity_upkeepsenditem_taskdetail_tr:
 			HashMap<String, String> taskdetail= new HashMap<String, String>();
 			taskdetail.put("Name", "保养要求");
 			taskdetail.put("Key", "TaskDetail");
-			taskdetail.put("Value", "");
+			taskdetail.put("Value", tvTaskDetail.getText().toString());
 			startDataInputActivity(taskdetail);
 			break;
 		}

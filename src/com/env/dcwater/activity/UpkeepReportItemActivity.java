@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.util.SystemMethod;
 
 public class UpkeepReportItemActivity extends NfcActivity implements OnClickListener{
@@ -22,6 +23,7 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 	private Button submit;
 	private TableRow trActualHour,trMTResult,trMTPerson;
 	private TextView tvDeviceName,tvInstallPos,tvNeedHour,tvMTPos,tvSendTime,tvSendPerson,tvNeedFinishTime,tvTaskDetail,tvBackPerson,tvActualHour,tvMTResult,tvMTPerson;
+	private boolean canUpdate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 	private void iniData(){
 		receivedIntent = getIntent();
 		receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("data");
+		canUpdate = receivedData.get("CanUpdate").equals("true")?true:false;
 	}
 	
 	private void iniActionBar(){
@@ -61,19 +64,25 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 		tvMTResult = (TextView)findViewById(R.id.activity_upkeepreportitem_maintainresult);
 
 		trMTPerson = (TableRow)findViewById(R.id.activity_upkeepreportitem_maintainperson_tr);
-		trMTPerson.setOnClickListener(this);
+		trMTPerson.setOnClickListener(canUpdate?this:null);
 
 		trActualHour = (TableRow)findViewById(R.id.activity_upkeepreportitem_actualhour_tr);
-		trActualHour.setOnClickListener(this);
+		trActualHour.setOnClickListener(canUpdate?this:null);
 		
 		trMTResult = (TableRow)findViewById(R.id.activity_upkeepreportitem_maintainresult_tr);
-		trMTResult.setOnClickListener(this);
+		trMTResult.setOnClickListener(canUpdate?this:null);
 		
 		submit = (Button)findViewById(R.id.activity_upkeepreportitem_report);
-		submit.setOnClickListener(this);
+		submit.setOnClickListener(canUpdate?this:null);
+		submit.setVisibility(canUpdate?View.VISIBLE:View.GONE);
+		
+		if(!canUpdate){
+			tvMTPerson.setCompoundDrawables(null, null, null, null);
+			tvActualHour.setCompoundDrawables(null, null, null, null);
+			tvMTResult.setCompoundDrawables(null, null, null, null);
+		}
 		
 		setViewData();
-		
 	}
 	
 	private void setViewData(){
@@ -88,7 +97,7 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 		tvNeedFinishTime.setText(receivedData.get("NeedComplete"));
 		
 		tvMTPerson.setText("");
-		tvBackPerson.setText("");
+		tvBackPerson.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
 		tvActualHour.setText("");
 		tvMTResult.setText("");
 	}
@@ -99,11 +108,30 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 		startActivityForResult(intent, 0);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode==RESULT_OK){
-			
+			HashMap<String, String> temp = (HashMap<String, String>)data.getSerializableExtra("data");
+			String value = temp.get("Value");
+			String key = temp.get("Key");
+			if(key.equals("MaintainPerson")){
+				tvMTPerson.setText(value);
+				if(!value.isEmpty()){
+					tvMTPerson.setCompoundDrawables(null, null, null, null);
+				}
+			}else if (key.equals("ActualManHours")) {
+				tvActualHour.setText(value);
+				if(!value.isEmpty()){
+					tvActualHour.setCompoundDrawables(null, null, null, null);
+				}
+			}else if (key.equals("TaskDetail")) {
+				tvTaskDetail.setText(value);
+				if(!value.isEmpty()){
+					tvTaskDetail.setCompoundDrawables(null, null, null, null);
+				}
+			}
 		}
 	}
 
@@ -125,11 +153,11 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 			startDataInputActivity(actualhour);
 			break;
 		case R.id.activity_upkeepreportitem_maintainresult_tr:
-//			HashMap<String, String> mtresult= new HashMap<String, String>();
-//			mtresult.put("Name", "完成情况");
-//			mtresult.put("Key", "TaskDetail");
-//			mtresult.put("Value", tvMTPerson.getText().toString());
-//			startDataInputActivity(mtresult);
+			HashMap<String, String> mtresult= new HashMap<String, String>();
+			mtresult.put("Name", "完成情况");
+			mtresult.put("Key", "TaskDetail");
+			mtresult.put("Value", tvTaskDetail.getText().toString());
+			startDataInputActivity(mtresult);
 			break;
 		case  R.id.activity_upkeepreportitem_report:
 			break;
