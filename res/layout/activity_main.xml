@@ -9,10 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <WebView
-            android:id="@+id/activity_main_showdata"
+        <include 
+            android:id="@+id/activity_main_webview"
+            layout="@layout/view_webview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
+        
 
         <ListView
             android:id="@+id/activity_main_navibar"

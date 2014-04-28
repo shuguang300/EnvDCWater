@@ -5,6 +5,10 @@
         android:checkable="true"
         android:checked="true"
         android:showAsAction="never"
-        android:title="只显示到期"/>
+        android:title="@string/menu_upkeepsend_filter"/>
+    <item 
+        android:id="@+id/menu_upkeepsend_showdrawer"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_upkeepsend_showdrawer"/>
 
 </menu>

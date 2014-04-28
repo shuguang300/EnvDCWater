@@ -40,8 +40,10 @@ public class NaviBarAdapter extends BaseAdapter{
 		if(convertView==null){
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.item_mainnavibar, null);
 		}
+		HashMap<String, String> map = mUserRightData.get(position);
 		TextView name = (TextView)convertView.findViewById(R.id.item_mainnavibar_name);
-		name.setText(mUserRightData.get(position).get(UserRight.RightName));
+		name.setText(map.get(UserRight.RightName));
+		name.setCompoundDrawablesWithIntrinsicBounds(mContext.getResources().getDrawable(Integer.valueOf(map.get(UserRight.RightResourceID))), null, null, null);
 		return convertView;
 	}
 

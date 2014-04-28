@@ -4,18 +4,22 @@ import java.util.HashMap;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +37,7 @@ import com.env.dcwater.util.SystemMethod;
  * 右边的是app常用设置界面
  * @author sk
  */
-public class MainActivity extends NfcActivity implements OnItemClickListener{
+public class MainActivity extends NfcActivity implements OnItemClickListener,OnClickListener{
 	
 	public static final String TAG_STRING = "MainActivity";
 	public static final String ACTION_STRING = "MainActivity";
@@ -45,6 +49,8 @@ public class MainActivity extends NfcActivity implements OnItemClickListener{
 	private WebView webView;
 	private ListView naviListView;
 	private NaviBarAdapter naviBarAdapter;
+	private Button back,forward,refresh,stop;
+	private ProgressDialog progressDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +85,15 @@ public class MainActivity extends NfcActivity implements OnItemClickListener{
 		drawerLayout = (DrawerLayout)findViewById(R.id.activity_main_drawlayout);
 		naviListView = (ListView)findViewById(R.id.activity_main_navibar);
 		webView = (WebView)findViewById(R.id.activity_main_showdata);
+		back = (Button)findViewById(R.id.activity_main_back);
+		forward = (Button)findViewById(R.id.activity_main_forward);
+		refresh = (Button)findViewById(R.id.activity_main_refresh);
+		stop = (Button)findViewById(R.id.activity_main_stop);
+		progressDialog = new ProgressDialog(MainActivity.this);
+		progressDialog.setMax(100);
+		progressDialog.setIndeterminate(false);
+		progressDialog.setTitle("正在加载");
+		progressDialog.setMessage("请稍候，正在努力的为您加载");
 		naviBarAdapter = new NaviBarAdapter(MainActivity.this,data);
 		naviListView.setAdapter(naviBarAdapter);
 		naviListView.setOnItemClickListener(this);
@@ -91,14 +106,29 @@ public class MainActivity extends NfcActivity implements OnItemClickListener{
 				view.loadUrl(url); 
 				return true;
 			}
+			@Override
+            public void onPageFinished(WebView view, String url) {
+            	super.onPageFinished(view, url);
+            	progressDialog.dismiss();;
+            }
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            	super.onPageStarted(view, url, favicon);
+            	progressDialog.show();
+            }
 		});
 		webView.setWebChromeClient(new WebChromeClient(){
 			@Override
 			public void onProgressChanged(WebView view, int newProgress) {
 				super.onProgressChanged(view, newProgress);
+				progressDialog.setProgress(newProgress);
 			}
 		});
-		webView.loadUrl("http://www.baidu.com");
+		webView.loadUrl("http://192.168.200.50/dcwater/MobileMainPage.htm");
+		back.setOnClickListener(this);
+		forward.setOnClickListener(this);
+		refresh.setOnClickListener(this);
+		stop.setOnClickListener(this);
 	}
 	
 	
@@ -176,6 +206,25 @@ public class MainActivity extends NfcActivity implements OnItemClickListener{
 		intent.putExtra("action", ACTION_STRING);
 		startActivity(intent);
 		drawerLayout.closeDrawer(Gravity.LEFT);
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.activity_main_back:
+			webView.goBack();
+			break;
+		case R.id.activity_main_forward:
+			webView.goForward();
+			break;
+		case R.id.activity_main_refresh:
+			webView.reload();
+			break;
+		case R.id.activity_main_stop:
+			webView.stopLoading();
+			break;
+		}
+		
 	}
 	
 }

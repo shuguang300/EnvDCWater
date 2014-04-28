@@ -5,6 +5,10 @@
         android:checkable="true"
         android:checked="true"
         android:showAsAction="never"
-        android:title="只显示可操作"/>
+        android:title="@string/menu_upkeepreport_filter"/>
+    <item 
+        android:id="@+id/menu_upkeepreport_showdrawer"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_upkeepreport_showdrawer"/>
 
 </menu>

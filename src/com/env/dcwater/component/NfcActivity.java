@@ -1,6 +1,5 @@
 package com.env.dcwater.component;
 import com.env.dcwater.util.NfcHelper;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
@@ -68,4 +67,5 @@ public class NfcActivity extends Activity{
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		return super.onKeyDown(keyCode, event);		
 	}
+	
 }

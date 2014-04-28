@@ -121,7 +121,7 @@
     <string name="view_userright_group_performance">绩效管理</string>
     <string name="view_userright_group_analysis">生产统计分析</string>
     
-    <string name="view_config_logout">注销</string>
+    <string name="activity_config_logout">注销</string>
     
     <string name="activity_login_summit">登录</string>
     
@@ -129,7 +129,7 @@
     
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
-    <string name="xlistview_header_hint_loading">正在加载...</string>
+    <string name="xlistview_header_hint_loading">正在加载。。。</string>
     <string name="xlistview_header_last_time">上次更新时间：</string>
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
@@ -142,6 +142,11 @@
     <string name="view_datafilter_state">工单状态</string>
     <string name="view_datafilter_name">设备名称</string>
     <string name="view_datafilter_ok">搜    索</string>
+    
+    <string name="view_webview_back">返    回</string>
+    <string name="view_webview_forward">前    进</string>
+    <string name="view_webview_stop">停    止</string>
+    <string name="view_webview_refresh">刷    新</string>
     
     <string-array name="view_datafilter_fasttimelist">
         <item>请选择</item>
@@ -199,7 +204,13 @@
     <string name="menu_upkeephistory_drawshow">筛选条件</string>
     <string name="menu_datainput_save">保存</string>
     <string name="menu_datainput_add">添加</string>
-    <string name="menu_main_userinfo">个人信息</string>
+    <string name="menu_upkeepsend_filter">只显示到期</string>
+    <string name="menu_upkeepsend_showdrawer">筛选条件</string>
+    <string name="menu_upkeepreport_filter">只显示可操作</string>
+    <string name="menu_upkeepreport_showdrawer">筛选条件</string>
+    <string name="menu_upkeepapprove_filter">只显示可操作</string>
+    <string name="menu_upkeepapprove_showdrawer">筛选条件</string>
+    
     
     <string name="cm_rm_op_update">修改</string>
     <string name="cm_rm_op_delete">删除</string>

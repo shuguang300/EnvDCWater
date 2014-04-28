@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <LinearLayout 
+        android:id="@+id/activity_main_webviewcontroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+        
+        <Button
+            style="@style/fragment_button"
+            android:id="@+id/activity_main_back"
+            android:text="@string/view_webview_back" />
+
+        <Button
+            style="@style/fragment_button"
+            android:id="@+id/activity_main_forward"
+            android:text="@string/view_webview_forward" />
+
+        <Button
+            style="@style/fragment_button"
+            android:id="@+id/activity_main_refresh"
+            android:text="@string/view_webview_refresh" />
+
+        <Button
+            style="@style/fragment_button"
+            android:id="@+id/activity_main_stop"
+            android:text="@string/view_webview_stop" />
+        
+    </LinearLayout>
+
+    <WebView
+        android:id="@+id/activity_main_showdata"
+        android:layout_above="@id/activity_main_webviewcontroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+</RelativeLayout>

@@ -2,10 +2,13 @@ package com.env.dcwater.component;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.os.AsyncTask;
+
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
 
@@ -96,6 +99,51 @@ public class ThreadPool {
 		
 		@Override
 		protected abstract void onPostExecute(HashMap<String, String> result);
+	}
+	
+	/**
+	 * 养护流程的 发送，填报，审核工单
+	 * @author sk
+	 */
+	public static abstract class UpkeepTaskUpdate extends AsyncTask<String, String, String>{
+		
+		public static final String METHOD_SEND_STRING = "InsertMaintainTasklist";
+		public static final String METHOD_REPORT_STRING = "ChangePlanAs5ANDTaskAs2andInPeople";
+		public static final String METHOD_APPROVE_STRING = "ChangePlanToOK";
+		public static final String METHOD_NOTAPPROVE_STRING = "ChangePlanToNotOK";
+		
+		private JSONObject mParam;
+		
+		public UpkeepTaskUpdate (JSONObject param){
+			mParam = param;
+		}
+		
+		@Override
+		protected String doInBackground(String... params) {
+			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
+			try {
+				if(params[0].equals(METHOD_SEND_STRING)){
+					result = DataCenterHelper.HttpPostData(METHOD_SEND_STRING, mParam);
+				}else if (params[0].equals(METHOD_REPORT_STRING)) {
+					result = DataCenterHelper.HttpPostData(METHOD_REPORT_STRING, mParam);
+				}else if (params[0].equals(METHOD_APPROVE_STRING)) {
+					result = DataCenterHelper.HttpPostData(METHOD_APPROVE_STRING, mParam);
+				}else if (params[0].equals(METHOD_NOTAPPROVE_STRING)) {
+					result = DataCenterHelper.HttpPostData(METHOD_NOTAPPROVE_STRING, mParam);
+				}
+			} catch (Exception e) {
+				
+			}
+			
+			return result;
+		}
+		
+		@Override
+		public abstract void onPreExecute();
+		
+		@Override
+		public abstract void onPostExecute(String result);
+		
 	}
 
 }

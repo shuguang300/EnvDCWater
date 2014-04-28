@@ -1,10 +1,14 @@
 package com.env.dcwater.util;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.env.dcwater.javabean.EnumList;
+import com.env.dcwater.javabean.EnumList.UpkeepHistoryPlanState;
+import com.env.dcwater.javabean.EnumList.UpkeepHistoryState;
 import com.env.dcwater.javabean.EnumList.UserRight;
 import com.env.dcwater.javabean.EnumList.UserRole;
 
@@ -26,6 +30,7 @@ public class OperationMethod {
 		map.put(UserRight.RightName, UserRight.USERINFORMATION.getName());
 		map.put(UserRight.RightCode, UserRight.USERINFORMATION.getCode()+"");
 		map.put(UserRight.RightAction, UserRight.USERINFORMATION.getAction());		
+		map.put(UserRight.RightResourceID, UserRight.USERINFORMATION.getResourceID()+"");		
 		data.add(map);
 		
 		
@@ -39,6 +44,7 @@ public class OperationMethod {
 			map.put(UserRight.RightName, UserRight.MACHINEINFO.getName());
 			map.put(UserRight.RightCode, UserRight.MACHINEINFO.getCode()+"");
 			map.put(UserRight.RightAction, UserRight.MACHINEINFO.getAction());
+			map.put(UserRight.RightResourceID, UserRight.MACHINEINFO.getResourceID()+"");
 			data.add(map);
 			
 			if (PositionID == UserRole.PRODUCTIONOPERATION.getState()) {
@@ -49,12 +55,14 @@ public class OperationMethod {
 				map.put(UserRight.RightName, UserRight.UPKEEPSEND.getName());
 				map.put(UserRight.RightCode, UserRight.UPKEEPSEND.getCode()+"");
 				map.put(UserRight.RightAction, UserRight.UPKEEPSEND.getAction());
+				map.put(UserRight.RightResourceID, UserRight.UPKEEPSEND.getResourceID()+"");
 				data.add(map);
 				//审核保养工单
 				map = new HashMap<String, String>();
 				map.put(UserRight.RightName, UserRight.UPKEEPAPPROVE.getName());
 				map.put(UserRight.RightCode, UserRight.UPKEEPAPPROVE.getCode()+"");
 				map.put(UserRight.RightAction, UserRight.UPKEEPAPPROVE.getAction());
+				map.put(UserRight.RightResourceID, UserRight.UPKEEPAPPROVE.getResourceID()+"");
 				data.add(map);
 				
 			}else if (PositionID == UserRole.PRODUCTIONCHIEF.getState()) {
@@ -65,6 +73,7 @@ public class OperationMethod {
 				map.put(UserRight.RightName, UserRight.UPKEEPREPORT.getName());
 				map.put(UserRight.RightCode, UserRight.UPKEEPREPORT.getCode()+"");
 				map.put(UserRight.RightAction, UserRight.UPKEEPREPORT.getAction());
+				map.put(UserRight.RightResourceID, UserRight.UPKEEPREPORT.getResourceID()+"");
 				data.add(map);
 				
 			}else if (PositionID == UserRole.PLANTER.getState()) {
@@ -77,24 +86,28 @@ public class OperationMethod {
 		map.put(UserRight.RightName, UserRight.REPAIRMANAGE.getName());
 		map.put(UserRight.RightCode, UserRight.REPAIRMANAGE.getCode()+"");
 		map.put(UserRight.RightAction, UserRight.REPAIRMANAGE.getAction());
+		map.put(UserRight.RightResourceID, UserRight.REPAIRMANAGE.getResourceID()+"");
 		data.add(map);
 		//维修记录
 		map = new HashMap<String, String>();
 		map.put(UserRight.RightName, UserRight.MAINTAINHISTORY.getName());
 		map.put(UserRight.RightCode, UserRight.MAINTAINHISTORY.getCode()+"");
 		map.put(UserRight.RightAction, UserRight.MAINTAINHISTORY.getAction());
+		map.put(UserRight.RightResourceID, UserRight.MAINTAINHISTORY.getResourceID()+"");
 		data.add(map);
 		//养护记录
 		map = new HashMap<String, String>();
 		map.put(UserRight.RightName, UserRight.UPKEEPHISTORY.getName());
 		map.put(UserRight.RightCode, UserRight.UPKEEPHISTORY.getCode()+"");
 		map.put(UserRight.RightAction, UserRight.UPKEEPHISTORY.getAction());
+		map.put(UserRight.RightResourceID, UserRight.UPKEEPHISTORY.getResourceID()+"");
 		data.add(map);
 		//用户设置
 		map = new HashMap<String, String>();
 		map.put(UserRight.RightName, UserRight.USERCONFIG.getName());
 		map.put(UserRight.RightCode, UserRight.USERCONFIG.getCode()+"");
 		map.put(UserRight.RightAction, UserRight.USERCONFIG.getAction());
+		map.put(UserRight.RightResourceID, UserRight.USERCONFIG.getResourceID()+"");
 		data.add(map);
 		return data;
 		
@@ -785,7 +798,7 @@ public class OperationMethod {
 			//保养内容：
 			map.put("MaintainSpecification", LogicMethod.getRightString(report.get("MaintainSpecification").toString()));
 			//
-			map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
+//			map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
 			//所需工时
 			map.put("RequiredManHours", LogicMethod.getRightString(report.get("RequiredManHours").toString()));
 			//养护部位
@@ -795,7 +808,7 @@ public class OperationMethod {
 			//
 			map.put("StateDescription", EnumList.UpkeepHistoryState.getHistoryStateEnum(Integer.valueOf(report.get("State").toString())).getCodeName());
 			//实际完成时间
-			map.put("RealCompleteTime", LogicMethod.getRightString(report.get("realcompleteTime").toString().replace("T", " ")));
+//			map.put("RealCompleteTime", LogicMethod.getRightString(report.get("realcompleteTime").toString().replace("T", " ")));
 			//审核人
 			map.put("ApprovePerson", LogicMethod.getRightString(report.get("ApprovePerson").toString()));
 			//派发时间
@@ -807,9 +820,9 @@ public class OperationMethod {
 			//
 			map.put("MaintainTaskSN", LogicMethod.getRightString(report.get("MaintainTaskSN").toString()));
 			//
-			map.put("Capacity", LogicMethod.getRightString(report.get("Capacity").toString()));
+//			map.put("Capacity", LogicMethod.getRightString(report.get("Capacity").toString()));
 			//
-			map.put("Remark", LogicMethod.getRightString(report.get("Remark").toString()));
+//			map.put("Remark", LogicMethod.getRightString(report.get("Remark").toString()));
 			//养护人
 			map.put("MaintainPerson",LogicMethod.getRightString(report.get("MaintainPerson").toString().toString()));
 			//
@@ -834,10 +847,11 @@ public class OperationMethod {
 		JSONArray jsonArray = null;
 		HashMap<String, String> map = null;
 		JSONObject json2 = null;
+		int state = 0;
 		int taskState = OperationMethod.getUpkeepPlanStateByStateName(stateName);
-		if(type){
+		if(!type){
 			jsonArray = new JSONArray(json1.get("AllPlanList").toString());
-		}else if (!type) {
+		}else if (type) {
 			jsonArray = new JSONArray(json1.get("ToTermData").toString());
 		}else {
 			
@@ -860,9 +874,10 @@ public class OperationMethod {
 						continue;
 					}
 				}
+				state = Integer.valueOf(json2.get("MaintainState").toString());
 				map.put("MaintainSpecification", LogicMethod.getRightString(json2.get("MaintainSpecification").toString()));
 				map.put("MaintainState", LogicMethod.getRightString(json2.get("MaintainState").toString()));
-				if(LogicMethod.getRightString(json2.get("MaintainState").toString()).equals("1")){
+				if(state==UpkeepHistoryPlanState.STATE_DONE_INT||state==UpkeepHistoryPlanState.STATE_HASBEENPLAN_INT){
 					map.put("CanUpdate", "true");
 				}else {
 					map.put("CanUpdate", "false");
@@ -902,7 +917,8 @@ public class OperationMethod {
 		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
 		HashMap<String, String> map = null;
 		JSONObject json2 = null;
-//		boolean canUpdate = false;
+		boolean canUpdate = false;
+		int state = 0;
 		int taskState = OperationMethod.getUpkeepStateByStateName(stateName);
 		if(jsonArray!=null){
 			for(int i = 0; i < jsonArray.length();i++){
@@ -923,8 +939,13 @@ public class OperationMethod {
 					}
 				}
 				
-//				map.put("CanUpdate", canUpdate?"true":"false");
-				map.put("CanUpdate", "true");
+				state = Integer.valueOf(LogicMethod.getRightString(json2.get("State").toString()));
+				if(state==UpkeepHistoryState.STATE_HASBEENSEND_INT||state==UpkeepHistoryState.STATE_NOTAPPROVE_INT||state==UpkeepHistoryState.STATE_WAITFORSUBMIT_INT){
+					canUpdate = true;
+				}else {
+					canUpdate = false;
+				}
+				map.put("CanUpdate", canUpdate?"true":"false");
 				map.put("PlantID", LogicMethod.getRightString(json2.get("PlantID").toString()));
 				map.put("MaintainTaskID", LogicMethod.getRightString(json2.get("MaintainTaskID").toString()));
 				map.put("StructureID", LogicMethod.getRightString(json2.get("StructureID").toString()));
@@ -982,7 +1003,8 @@ public class OperationMethod {
 		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
 		HashMap<String, String> map = null;
 		JSONObject json2 = null;
-//		boolean canUpdate = false;
+		boolean canUpdate = false;
+		int state = 0;
 		int taskState = OperationMethod.getUpkeepStateByStateName(stateName);
 		if(jsonArray!=null){
 			for(int i = 0; i < jsonArray.length();i++){
@@ -1002,9 +1024,13 @@ public class OperationMethod {
 						continue;
 					}
 				}
-				
-//				map.put("CanUpdate", canUpdate?"true":"false");
-				map.put("CanUpdate", "true");
+				state = Integer.valueOf(LogicMethod.getRightString(json2.get("State").toString()));
+				if(state == UpkeepHistoryState.STATE_HASBEENBACK_INT){
+					canUpdate = true;
+				}else {
+					canUpdate = false;
+				}
+				map.put("CanUpdate", canUpdate?"true":"false");
 				map.put("PlantID", LogicMethod.getRightString(json2.get("PlantID").toString()));
 				map.put("MaintainTaskID", LogicMethod.getRightString(json2.get("MaintainTaskID").toString()));
 				map.put("StructureID", LogicMethod.getRightString(json2.get("StructureID").toString()));

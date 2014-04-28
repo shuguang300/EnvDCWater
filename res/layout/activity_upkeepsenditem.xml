@@ -115,6 +115,7 @@
         </TableLayout>
 
         <TableLayout
+            android:id="@+id/activity_upkeepsenditem_approvegroup"
             style="@style/activity_repairmanageitem_tablelayout" >
 
             <TextView

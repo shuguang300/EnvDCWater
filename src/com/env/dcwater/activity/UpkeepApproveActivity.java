@@ -15,6 +15,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.Gravity;
@@ -81,6 +82,12 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 	private void iniView(){
 		drawerLayout = (DrawerLayout)findViewById(R.id.activity_upkeepapprove_drawlayout);
 		dataFilterView = (DataFilterView)findViewById(R.id.activity_upkeepapprove_datafilter);
+		dataListView = (PullToRefreshView)findViewById(R.id.activity_upkeepapprove_list);
+		
+		dataListView.setOnItemClickListener(this);
+		dataListView.setXListViewListener(this);
+		dataListView.setAdapter(adapter);
+		
 		dataFilterView.hideTimeSelectionPart();
 		dataFilterView.setStateList(getResources().getStringArray(R.array.view_datafilter_upkeepstatelist), 0);
 		dataFilterView.setSubmitEvent(new OnClickListener() {
@@ -91,11 +98,26 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 			}
 		});
 		
+		drawerLayout.setDrawerListener(new DrawerListener() {
+			@Override
+			public void onDrawerStateChanged(int arg0) {
+			}
+			@Override
+			public void onDrawerSlide(View arg0, float arg1) {
+			}
+			@Override
+			public void onDrawerOpened(View arg0) {
+				dataListView.setEnabled(false);
+				dataListView.setPullRefreshEnable(false);
+			}
+			@Override
+			public void onDrawerClosed(View arg0) {
+				dataListView.setEnabled(true);
+				dataListView.setPullRefreshEnable(true);
+			}
+		});
 		
-		dataListView = (PullToRefreshView)findViewById(R.id.activity_upkeepapprove_list);
-		dataListView.setOnItemClickListener(this);
-		dataListView.setXListViewListener(this);
-		dataListView.setAdapter(adapter);
+		
 	}
 	
 	private void getServerData(){
@@ -170,7 +192,14 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 	}
 	
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		drawerLayout.closeDrawer(Gravity.RIGHT);
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		drawerLayout.closeDrawer(Gravity.RIGHT);
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			onBackPressed();
@@ -179,6 +208,13 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 			filter = ! filter;
 			item.setChecked(filter);
 			getUpkeepApproveData();
+			break;
+		case R.id.menu_upkeepapprove_showdrawer:
+			if(drawerLayout.isDrawerOpen(Gravity.RIGHT)){
+				drawerLayout.closeDrawer(Gravity.RIGHT);
+			}else {
+				drawerLayout.openDrawer(Gravity.RIGHT);
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -254,7 +290,11 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 			ArrayList<HashMap<String, String>> data = null;
 			try {
 				param.put("PlantID", SystemParams.PLANTID_INT+"");
-				result = DataCenterHelper.HttpPostData("GetMaintainTaskApproveList", param);
+				if(filter){
+					result = DataCenterHelper.HttpPostData("GetMaintainTaskApproveList", param);
+				}else {
+					result = DataCenterHelper.HttpPostData("GetallNotFinish", param);
+				}
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
 					data = OperationMethod.parseUpkeepApproveDataList(jsonObject,filter,params[0],params[1]);
@@ -288,7 +328,6 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 			hideProgressDialog();
 			dataListView.stopRefresh();
 		}
-		
 	}
 
 	@Override

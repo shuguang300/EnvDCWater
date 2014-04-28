@@ -1,4 +1,7 @@
 package com.env.dcwater.javabean;
+
+import com.env.dcwater.R;
+
 /**
  * 常用数据集合
  * @author sk
@@ -11,44 +14,44 @@ public class EnumList {
 		/**
 		 * 个人信息
 		 */
-		USERINFORMATION(99, "个人信息","com.env.dcwater.activity.UserInformationAcivity"),
+		USERINFORMATION(99, "个人信息","com.env.dcwater.activity.UserInformationAcivity",R.drawable.ic_launcher),
 		/**
 		 * 设置
 		 */
-		USERCONFIG(100, "设置","com.env.dcwater.activity.UserConfigActivity"),
+		USERCONFIG(100, "设置","com.env.dcwater.activity.UserConfigActivity",R.drawable.ic_launcher),
 		
 		/**
 		 * 设备信息枚举对象
 		 */
-		MACHINEINFO(0, "设备信息查看","com.env.dcwater.activity.DeviceInfoListActivity"),
+		MACHINEINFO(0, "设备信息查看","com.env.dcwater.activity.DeviceInfoListActivity",R.drawable.ic_launcher),
 		/**
 		 * 报修管理枚举对象
 		 */
-		REPAIRMANAGE(1, "设备维修管理","com.env.dcwater.activity.RepairManageActivity"),
+		REPAIRMANAGE(1, "设备维修管理","com.env.dcwater.activity.RepairManageActivity",R.drawable.ic_launcher),
 		
 		/**
 		 * 保养工单派发
 		 */
-		UPKEEPSEND(2, "保养工单派发","com.env.dcwater.activity.UpkeepSendActivity"),
+		UPKEEPSEND(2, "保养工单派发","com.env.dcwater.activity.UpkeepSendActivity",R.drawable.ic_launcher),
 		
 		/**
 		 * 保养工单填写
 		 */
-		UPKEEPREPORT(3, "保养工单填写","com.env.dcwater.activity.UpkeepReportActivity"),
+		UPKEEPREPORT(3, "保养工单填写","com.env.dcwater.activity.UpkeepReportActivity",R.drawable.ic_launcher),
 		
 		/**
 		 * 保养工单审核
 		 */
-		UPKEEPAPPROVE(4, "保养工单审核","com.env.dcwater.activity.UpkeepApproveActivity"),
+		UPKEEPAPPROVE(4, "保养工单审核","com.env.dcwater.activity.UpkeepApproveActivity",R.drawable.ic_launcher),
 		
 		/**
 		 * 维修记录枚举对象
 		 */
-		MAINTAINHISTORY(5, "维修历史记录","com.env.dcwater.activity.MaintainHistoryActivity"),
+		MAINTAINHISTORY(5, "维修历史记录","com.env.dcwater.activity.MaintainHistoryActivity",R.drawable.ic_launcher),
 		/**
 		 * 保养记录枚举对象
 		 */
-		UPKEEPHISTORY(6, "保养历史记录","com.env.dcwater.activity.UpkeepHistoryActivity");
+		UPKEEPHISTORY(6, "保养历史记录","com.env.dcwater.activity.UpkeepHistoryActivity",R.drawable.ic_launcher);
 
 		/**
 		 * 权限名称
@@ -63,10 +66,15 @@ public class EnumList {
 		 * 权限路径
 		 */
 		public static final String RightAction = "UserRightAction";
+		/**
+		 * 权限图片ID
+		 */
+		public static final String RightResourceID = "UserRightResourceID";
 		
 		private int mRightCode;
 		private String mRightName;
 		private String mAction;
+		private int mResourceID;
 
 		/**
 		 * 权限枚举对象的构造函数
@@ -74,11 +82,13 @@ public class EnumList {
 		 * @param code
 		 * @param name
 		 * @param action
+		 * @param resourceid
 		 */
-		private UserRight(int code, String name,String action) {
+		private UserRight(int code, String name,String action,int resourceid) {
 			mRightCode = code;
 			mRightName = name;
 			mAction = action;
+			mResourceID = resourceid;
 		}
 
 		/**
@@ -113,7 +123,6 @@ public class EnumList {
 
 		/**
 		 * 返回权限代码
-		 * 
 		 * @return
 		 */
 		public int getCode() {
@@ -122,15 +131,26 @@ public class EnumList {
 
 		/**
 		 * 返回权限名称
-		 * 
 		 * @return
 		 */
 		public String getName() {
 			return mRightName;
 		}
 		
+		/**
+		 * 返回activity的action
+		 * @return
+		 */
 		public String getAction(){
 			return mAction;
+		}
+		
+		/**
+		 * 返回ResourceID
+		 * @return
+		 */
+		public int getResourceID(){
+			return mResourceID;
 		}
 	}
 	

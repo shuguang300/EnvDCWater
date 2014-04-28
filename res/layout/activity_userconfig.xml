@@ -7,9 +7,9 @@
     android:background="@color/orange" >
 
     <Button
-        android:id="@+id/view_config_logout"
+        android:id="@+id/activity_config_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/view_config_logout" />
+        android:text="@string/activity_config_logout" />
 
 </LinearLayout>

@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/large"
         android:gravity="left|center_vertical"
-		android:layout_gravity="left|center_vertical"
-        android:drawableLeft="@drawable/ic_launcher" />
+		android:layout_gravity="left|center_vertical" />
 
 </LinearLayout>
