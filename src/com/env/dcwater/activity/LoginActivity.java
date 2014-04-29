@@ -235,14 +235,12 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 						if(map==null){
 							Toast.makeText(LoginActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
 						}else {
-//							if(map.get("AccountState").toString().equals("0")){
-//								Toast.makeText(LoginActivity.this, "您的账号未启用", Toast.LENGTH_SHORT).show();
-//							}else {
-//								SystemParams.getInstance().setmLoggedUserInfo(map);
-//								entranceMainActivity();
-//							}
-							SystemParams.getInstance().setLoggedUserInfo(map);
-							entranceMainActivity();
+							if(map.get("AccountState").toString().equals("0")){
+								Toast.makeText(LoginActivity.this, "您的账号未启用", Toast.LENGTH_SHORT).show();
+							}else {
+								SystemParams.getInstance().setLoggedUserInfo(map);
+								entranceMainActivity();
+							}
 						}
 					}
 				}

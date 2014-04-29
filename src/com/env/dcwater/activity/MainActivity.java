@@ -1,10 +1,8 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -21,9 +19,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -50,7 +48,7 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 	private ListView naviListView;
 	private NaviBarAdapter naviBarAdapter;
 	private Button back,forward,refresh,stop;
-	private ProgressDialog progressDialog;
+	private ProgressBar progressBar;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,11 +87,7 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 		forward = (Button)findViewById(R.id.activity_main_forward);
 		refresh = (Button)findViewById(R.id.activity_main_refresh);
 		stop = (Button)findViewById(R.id.activity_main_stop);
-		progressDialog = new ProgressDialog(MainActivity.this);
-		progressDialog.setMax(100);
-		progressDialog.setIndeterminate(false);
-		progressDialog.setTitle("正在加载");
-		progressDialog.setMessage("请稍候，正在努力的为您加载");
+		progressBar = (ProgressBar)findViewById(R.id.activity_main_webviewprogress);
 		naviBarAdapter = new NaviBarAdapter(MainActivity.this,data);
 		naviListView.setAdapter(naviBarAdapter);
 		naviListView.setOnItemClickListener(this);
@@ -109,19 +103,19 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 			@Override
             public void onPageFinished(WebView view, String url) {
             	super.onPageFinished(view, url);
-            	progressDialog.dismiss();;
+            	progressBar.setVisibility(View.GONE);
             }
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
             	super.onPageStarted(view, url, favicon);
-            	progressDialog.show();
+            	progressBar.setVisibility(View.VISIBLE);
             }
 		});
 		webView.setWebChromeClient(new WebChromeClient(){
 			@Override
 			public void onProgressChanged(WebView view, int newProgress) {
 				super.onProgressChanged(view, newProgress);
-				progressDialog.setProgress(newProgress);
+				progressBar.setProgress(newProgress);
 			}
 		});
 		webView.loadUrl("http://192.168.200.50/dcwater/MobileMainPage.htm");

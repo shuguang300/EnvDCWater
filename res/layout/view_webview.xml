@@ -2,41 +2,55 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:id="@+id/activity_main_webviewcontroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-        
+        android:orientation="horizontal" >
+
         <Button
-            style="@style/fragment_button"
             android:id="@+id/activity_main_back"
+            style="@style/fragment_button"
             android:text="@string/view_webview_back" />
 
         <Button
-            style="@style/fragment_button"
             android:id="@+id/activity_main_forward"
+            style="@style/fragment_button"
             android:text="@string/view_webview_forward" />
 
         <Button
-            style="@style/fragment_button"
             android:id="@+id/activity_main_refresh"
+            style="@style/fragment_button"
             android:text="@string/view_webview_refresh" />
 
         <Button
-            style="@style/fragment_button"
             android:id="@+id/activity_main_stop"
+            style="@style/fragment_button"
             android:text="@string/view_webview_stop" />
-        
     </LinearLayout>
 
-    <WebView
-        android:id="@+id/activity_main_showdata"
-        android:layout_above="@id/activity_main_webviewcontroll"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        android:layout_above="@id/activity_main_webviewcontroll"
+        android:orientation="vertical" >
+
+        <ProgressBar
+            android:id="@+id/activity_main_webviewprogress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ii_small"
+            android:max="100"
+            android:progress="0"
+            android:visibility="gone"
+            style="@android:style/Widget.Holo.ProgressBar.Horizontal" />
+
+        <WebView
+            android:id="@+id/activity_main_showdata"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+    </LinearLayout>
 
 </RelativeLayout>

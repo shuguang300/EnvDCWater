@@ -3,12 +3,14 @@
     <item 
         android:id="@+id/menu_datainput_save"
         android:title="@string/menu_datainput_save"
-        android:showAsAction="always|withText">
+        android:showAsAction="always"
+        android:icon="@drawable/ic_datainput_save">
     </item>
     <item 
         android:id="@+id/menu_datainput_add"
         android:title="@string/menu_datainput_add"
-        android:showAsAction="always|withText">
+        android:showAsAction="always"
+        android:icon="@drawable/ic_datainput_file">
     </item>
 
 </menu>

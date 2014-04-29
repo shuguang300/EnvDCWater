@@ -111,7 +111,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher">
+            android:icon="@drawable/ic_devicelist">
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.DeviceInfoListActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -125,7 +125,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher">
+            android:icon="@drawable/ic_devicelist">
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.DeviceInfoItemActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -140,7 +140,7 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
             android:label="@string/activity_userright_item_repairmanage"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_repair" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.RepairManageActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -154,7 +154,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_repair" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.RepairManageItemActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -168,7 +168,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_repair" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.RepairManageItemDataActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -182,7 +182,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_devicelist" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.DeviceSelectActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -197,7 +197,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_datainput" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.DataInputActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -211,7 +211,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_repairhistory" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.MaintainHistoryActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -225,7 +225,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_upkeepsend" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.UpkeepSendActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -239,7 +239,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_upkeepsend" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.UpkeepSendItemActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -253,7 +253,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_upkeepreport" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.UpkeepReportActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -267,7 +267,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_upkeepreport" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.UpkeepReportItemActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -281,7 +281,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_upkeepapprove" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.UpkeepApproveItemActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -295,7 +295,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_upkeepapprove" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.UpkeepApproveActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -309,7 +309,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_upkeephistory" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.UpkeepManageItemActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -323,7 +323,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_upkeephistory" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.UpkeepHistoryActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -337,7 +337,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_upkeephistory" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.UpkeepHistoryItemActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -351,7 +351,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_userconfig" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.UserConfigActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -365,7 +365,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_userinformation" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.UserInformationAcivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
