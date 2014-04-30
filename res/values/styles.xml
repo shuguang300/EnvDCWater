@@ -157,10 +157,15 @@
         <item name="android:actionBarTabTextStyle">@style/MyActionBarTabText</item>  
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="android:actionBarDivider">@drawable/actionbar_item_divider</item>  
-        <item name="android:actionOverflowButtonStyle">@android:style/Widget.ActionButton.Overflow</item>
+        <item name="android:actionOverflowButtonStyle">@style/CustomOverFlowButtonStyle</item>
         <!-- ActionBar 的小箭头 -->  
      <!--    <item name="android:homeAsUpIndicator">@drawable/activity_machinemanage_arrowleft</item> -->
     </style>  
+    
+	<style name="CustomOverFlowButtonStyle" parent="@android:style/Widget.ActionButton.Overflow">
+	    <item name="android:src">@drawable/ic_menu_more</item>
+	</style>
+	
     <!-- ActionBar styles -->  
     <style name="MyActionBar"  parent="@android:style/Widget.Holo.ActionBar">
         <item name="android:background">@color/lightblack</item>  

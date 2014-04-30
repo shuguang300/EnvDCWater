@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
@@ -50,6 +51,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	private DeviceListAdapter deviceListAdapter;
 	private ThreadPool.GetServerConsData getServerConsData;
 	private SearchView mSearchView;
+	private ImageView mSearchHintIcon;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +142,8 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 				return false;
 			}
 		});
+		mSearchHintIcon = (ImageView)mSearchView.findViewById(getResources().getIdentifier("android:id/search_button",null,null));
+		mSearchHintIcon.setImageResource(R.drawable.ic_search);
 	}
 	
 	/**
