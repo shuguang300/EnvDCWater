@@ -191,6 +191,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 		return super.onCreateOptionsMenu(menu);
 	}
 	
+	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		drawerLayout.closeDrawer(Gravity.RIGHT);

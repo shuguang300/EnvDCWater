@@ -1,164 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_upkeepreportitem_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:fillViewport="true" >
+    android:background="@color/white" >
 
     <LinearLayout
+        android:id="@+id/activity_upkeepreportitem_operationpart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
         android:orientation="vertical" >
 
         <TableLayout
-            style="@style/activity_repairmanageitem_tablelayout" >
-
-            <TextView
-                style="@style/activity_repairmanageitem_textview_group"
-                android:text="@string/activity_upkeephistoryitem_devicegroup" />
-
-            <TextView style="@style/item_divide" />
+            android:id="@+id/activity_upkeepreportitem_reportgroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
             <TableRow
+                android:id="@+id/activity_upkeepreportitem_maintainperson_tr"
                 style="@style/activity_repairmanageitem_tablerow" >
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_devicename" />
+                    android:text="@string/activity_upkeephistoryitem_maintainperson" />
 
                 <TextView
-                    android:id="@+id/activity_upkeepreportitem_devicename"
+                    android:id="@+id/activity_upkeepreportitem_maintainperson"
+                    style="@style/activity_repairmanageitem_textview"
+                    android:drawableRight="@drawable/warning" />
+            </TableRow>
+
+            <TextView style="@style/item_divide" />
+
+            <TableRow style="@style/activity_repairmanageitem_tablerow" >
+
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_item"
+                    android:text="@string/activity_upkeephistoryitem_backperson" />
+
+                <TextView
+                    android:id="@+id/activity_upkeepreportitem_backperson"
                     style="@style/activity_repairmanageitem_textview" />
             </TableRow>
 
             <TextView style="@style/item_divide" />
 
             <TableRow
+                android:id="@+id/activity_upkeepreportitem_actualhour_tr"
                 style="@style/activity_repairmanageitem_tablerow" >
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_installpos" />
+                    android:text="@string/activity_upkeephistoryitem_actualhour" />
 
                 <TextView
-                    android:id="@+id/activity_upkeepreportitem_installpos"
-                    style="@style/activity_repairmanageitem_textview" />
+                    android:id="@+id/activity_upkeepreportitem_actualhour"
+                    style="@style/activity_repairmanageitem_textview"
+                    android:drawableRight="@drawable/warning" />
             </TableRow>
 
             <TextView style="@style/item_divide" />
 
             <TableRow
+                android:id="@+id/activity_upkeepreportitem_maintainresult_tr"
                 style="@style/activity_repairmanageitem_tablerow" >
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_maintainpos" />
+                    android:text="@string/activity_upkeephistoryitem_maintainresult" />
 
                 <TextView
-                    android:id="@+id/activity_upkeepreportitem_maintainpos"
-                    style="@style/activity_repairmanageitem_textview" />
+                    android:id="@+id/activity_upkeepreportitem_maintainresult"
+                    style="@style/activity_repairmanageitem_textview"
+                    android:drawableRight="@drawable/warning" />
             </TableRow>
-
-            <TextView style="@style/item_divide" />
-
-            <TableRow
-                style="@style/activity_repairmanageitem_tablerow" >
-
-                <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_taskdetail" />
-
-                <TextView
-                    android:id="@+id/activity_upkeepreportitem_taskdetail"
-                    style="@style/activity_repairmanageitem_textview" />
-            </TableRow>
-
         </TableLayout>
 
-        <TableLayout
-            style="@style/activity_repairmanageitem_tablelayout" >
+        <Button
+            android:id="@+id/activity_upkeepreportitem_report"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_upkeephistoryitem_report" />
+    </LinearLayout>
 
-            <TextView
-                style="@style/activity_repairmanageitem_textview_group"
-                android:text="@string/activity_upkeephistoryitem_taskgroup" />
+    <ScrollView
+        android:layout_above="@id/activity_upkeepreportitem_operationpart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true" >
 
-            <TextView style="@style/item_divide" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-            <TableRow
-                style="@style/activity_repairmanageitem_tablerow" >
-
-                <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_sendtime" />
-
-                <TextView
-                    android:id="@+id/activity_upkeepreportitem_sendtime"
-                    style="@style/activity_repairmanageitem_textview" />
-            </TableRow>
-
-            <TextView style="@style/item_divide" />
-
-            <TableRow
-                style="@style/activity_repairmanageitem_tablerow" >
+            <TableLayout style="@style/activity_repairmanageitem_tablelayout" >
 
                 <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_sendperson" />
+                    style="@style/activity_repairmanageitem_textview_group"
+                    android:text="@string/activity_upkeephistoryitem_devicegroup" />
 
-                <TextView
-                    android:id="@+id/activity_upkeepreportitem_sendperson"
-                    style="@style/activity_repairmanageitem_textview" />
-            </TableRow>
+                <TextView style="@style/item_divide" />
 
-            <TextView style="@style/item_divide" />
-
-            <TableRow
-                style="@style/activity_repairmanageitem_tablerow" >
-
-                <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_needhour" />
-
-                <TextView
-                    android:id="@+id/activity_upkeepreportitem_needhour"
-                    style="@style/activity_repairmanageitem_textview" />
-            </TableRow>
-
-            <TextView style="@style/item_divide" />
-
-            <TableRow
-                style="@style/activity_repairmanageitem_tablerow" >
-
-                <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_needfinishtime" />
-
-                <TextView
-                    android:id="@+id/activity_upkeepreportitem_needfinishtime"
-                    style="@style/activity_repairmanageitem_textview" />
-            </TableRow>
-            
-            
-            <TextView style="@style/item_divide" />
-
-            <TableLayout
-                android:id="@+id/activity_upkeepreportitem_reportgroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <TableRow
-                    android:id="@+id/activity_upkeepreportitem_maintainperson_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                <TableRow style="@style/activity_repairmanageitem_tablerow" >
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_maintainperson" />
+                        android:text="@string/activity_upkeephistoryitem_devicename" />
 
                     <TextView
-                        android:id="@+id/activity_upkeepreportitem_maintainperson"
-                        style="@style/activity_repairmanageitem_textview"
-                        android:drawableRight="@drawable/warning" />
+                        android:id="@+id/activity_upkeepreportitem_devicename"
+                        style="@style/activity_repairmanageitem_textview" />
                 </TableRow>
 
                 <TextView style="@style/item_divide" />
@@ -167,54 +121,99 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_backperson" />
+                        android:text="@string/activity_upkeephistoryitem_installpos" />
 
                     <TextView
-                        android:id="@+id/activity_upkeepreportitem_backperson"
+                        android:id="@+id/activity_upkeepreportitem_installpos"
                         style="@style/activity_repairmanageitem_textview" />
                 </TableRow>
 
                 <TextView style="@style/item_divide" />
 
-                <TableRow
-                    android:id="@+id/activity_upkeepreportitem_actualhour_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                <TableRow style="@style/activity_repairmanageitem_tablerow" >
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_actualhour" />
+                        android:text="@string/activity_upkeephistoryitem_maintainpos" />
 
                     <TextView
-                        android:id="@+id/activity_upkeepreportitem_actualhour"
-                        style="@style/activity_repairmanageitem_textview"
-                        android:drawableRight="@drawable/warning" />
+                        android:id="@+id/activity_upkeepreportitem_maintainpos"
+                        style="@style/activity_repairmanageitem_textview" />
                 </TableRow>
 
                 <TextView style="@style/item_divide" />
 
-                <TableRow
-                    android:id="@+id/activity_upkeepreportitem_maintainresult_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                <TableRow style="@style/activity_repairmanageitem_tablerow" >
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_maintainresult" />
+                        android:text="@string/activity_upkeephistoryitem_taskdetail" />
 
                     <TextView
-                        android:id="@+id/activity_upkeepreportitem_maintainresult"
-                        style="@style/activity_repairmanageitem_textview"
-                        android:drawableRight="@drawable/warning" />
+                        android:id="@+id/activity_upkeepreportitem_taskdetail"
+                        style="@style/activity_repairmanageitem_textview" />
                 </TableRow>
             </TableLayout>
-            
-        </TableLayout>
-        
-        <Button 
-            android:id="@+id/activity_upkeepreportitem_report"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/activity_upkeephistoryitem_report" />
 
-    </LinearLayout>
+            <TableLayout style="@style/activity_repairmanageitem_tablelayout" >
 
-</ScrollView>
+                <TextView
+                    style="@style/activity_repairmanageitem_textview_group"
+                    android:text="@string/activity_upkeephistoryitem_taskgroup" />
+
+                <TextView style="@style/item_divide" />
+
+                <TableRow style="@style/activity_repairmanageitem_tablerow" >
+
+                    <TextView
+                        style="@style/activity_repairmanageitem_textview_item"
+                        android:text="@string/activity_upkeephistoryitem_sendtime" />
+
+                    <TextView
+                        android:id="@+id/activity_upkeepreportitem_sendtime"
+                        style="@style/activity_repairmanageitem_textview" />
+                </TableRow>
+
+                <TextView style="@style/item_divide" />
+
+                <TableRow style="@style/activity_repairmanageitem_tablerow" >
+
+                    <TextView
+                        style="@style/activity_repairmanageitem_textview_item"
+                        android:text="@string/activity_upkeephistoryitem_sendperson" />
+
+                    <TextView
+                        android:id="@+id/activity_upkeepreportitem_sendperson"
+                        style="@style/activity_repairmanageitem_textview" />
+                </TableRow>
+
+                <TextView style="@style/item_divide" />
+
+                <TableRow style="@style/activity_repairmanageitem_tablerow" >
+
+                    <TextView
+                        style="@style/activity_repairmanageitem_textview_item"
+                        android:text="@string/activity_upkeephistoryitem_needhour" />
+
+                    <TextView
+                        android:id="@+id/activity_upkeepreportitem_needhour"
+                        style="@style/activity_repairmanageitem_textview" />
+                </TableRow>
+
+                <TextView style="@style/item_divide" />
+
+                <TableRow style="@style/activity_repairmanageitem_tablerow" >
+
+                    <TextView
+                        style="@style/activity_repairmanageitem_textview_item"
+                        android:text="@string/activity_upkeephistoryitem_needfinishtime" />
+
+                    <TextView
+                        android:id="@+id/activity_upkeepreportitem_needfinishtime"
+                        style="@style/activity_repairmanageitem_textview" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

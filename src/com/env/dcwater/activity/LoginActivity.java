@@ -30,6 +30,7 @@ import com.env.dcwater.util.OperationMethod;
 public class LoginActivity extends NfcActivity implements OnClickListener{
 	
 	public static final String TAG_STRING = "LoginActivity";
+	public static final String ACTION_STRING = "com.env.dcwater.activity.LoginActivity";
 	
 	private Button loginButton;
 	private Intent userRightIntent;

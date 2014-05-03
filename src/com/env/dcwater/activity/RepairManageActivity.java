@@ -303,7 +303,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 				getServerTaskData = new GetServerTaskData();
 				getServerTaskData.execute("");
 				
-				mDrawerLayout.closeDrawer(Gravity.LEFT);
+				mDrawerLayout.closeDrawer(Gravity.RIGHT);
 			}
 		});
 		
@@ -405,7 +405,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		getMenuInflater().inflate(R.menu.menu_repairmanage, menu);
 		menuMessage = (TextView)menu.getItem(2).getActionView();
 		menuMessage.setTextColor(getResources().getColor(R.color.white));
-		menuMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.small));
+//		menuMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.small));
 		int positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
 		if(positionID == EnumList.UserRole.USERROLEEQUIPMENTOPERATION||positionID==EnumList.UserRole.USERROLEPRODUCTIONOPERATION){
 			menu.getItem(0).setVisible(true);
@@ -415,7 +415,11 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		return super.onCreateOptionsMenu(menu);
 	}
 	
-	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		mDrawerLayout.closeDrawer(Gravity.RIGHT);
+		return super.onPrepareOptionsMenu(menu);
+	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -432,10 +436,10 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			getServerTaskData();
 			break;
 		case R.id.menu_repairmanage_drawlayout:
-			if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
-				mDrawerLayout.closeDrawer(Gravity.LEFT);
+			if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
+				mDrawerLayout.closeDrawer(Gravity.RIGHT);
 			}else {
-				mDrawerLayout.openDrawer(Gravity.LEFT);
+				mDrawerLayout.openDrawer(Gravity.RIGHT);
 			}
 			break;
 		}
@@ -570,8 +574,8 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	
 	@Override
 	public void onBackPressed() {
-		if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
-			mDrawerLayout.closeDrawer(Gravity.LEFT);
+		if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
+			mDrawerLayout.closeDrawer(Gravity.RIGHT);
 		}else {
 			this.finish();
 		}

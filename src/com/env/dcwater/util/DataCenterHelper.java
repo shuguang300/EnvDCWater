@@ -35,9 +35,13 @@ public class DataCenterHelper {
 	public static final String SOAP_NAMESPACE_STRING = "http://tempuri.org/";
 	
 	/**
+	 * 服务器地址
+	 */
+	public static final String IPADDR_STRING = "http://192.168.0.105/dcwater";
+	/**
 	 * webservice数据中心地址
 	 */
-	public static final String URL_STRING = "http://192.168.200.50/dcwater/MobileDataCenter.asmx";
+	public static final String URL_STRING = "http://192.168.0.105/dcwater/MobileDataCenter.asmx";
 	
 	/**
 	 * 连接超时

@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.env.dcwater.R;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryPlanState;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryState;
@@ -108,6 +109,13 @@ public class OperationMethod {
 		map.put(UserRight.RightCode, UserRight.USERCONFIG.getCode()+"");
 		map.put(UserRight.RightAction, UserRight.USERCONFIG.getAction());
 		map.put(UserRight.RightResourceID, UserRight.USERCONFIG.getResourceID()+"");
+		data.add(map);
+		//注销
+		map = new HashMap<String, String>();
+		map.put(UserRight.RightName, "注销");
+		map.put(UserRight.RightCode, "");
+		map.put(UserRight.RightAction, "");
+		map.put(UserRight.RightResourceID, R.drawable.ic_logout+"");
 		data.add(map);
 		return data;
 		

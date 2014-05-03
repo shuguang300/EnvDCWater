@@ -117,7 +117,7 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 		tvApproveSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				tvApproveSwitch.setCompoundDrawables(null, null, null, null);
+				tvApproveSwitch.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 			}
 		});
 		

@@ -98,7 +98,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		mDataFilterView.setSubmitEvent(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mDrawerLayout.closeDrawer(Gravity.LEFT);
+				mDrawerLayout.closeDrawer(Gravity.RIGHT);
 				getServerHistoryData();
 			}
 		});
@@ -263,7 +263,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		getMenuInflater().inflate(R.menu.menu_upkeephistory, menu);
 		titleMessage = (TextView)menu.getItem(0).getActionView();
 		titleMessage.setTextColor(getResources().getColor(R.color.white));
-		titleMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.small));
+//		titleMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.small));
 		return super.onCreateOptionsMenu(menu);
 	}
 	@Override
@@ -273,19 +273,26 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 			onBackPressed();
 			break;
 		case R.id.menu_upkeephistory_showdraw:
-			if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
-				mDrawerLayout.closeDrawer(Gravity.LEFT);
+			if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
+				mDrawerLayout.closeDrawer(Gravity.RIGHT);
 			}else {
-				mDrawerLayout.openDrawer(Gravity.LEFT);
+				mDrawerLayout.openDrawer(Gravity.RIGHT);
 			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		mDrawerLayout.closeDrawer(Gravity.RIGHT);
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
 	@Override
 	public void onBackPressed() {
-		if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
-			mDrawerLayout.closeDrawer(Gravity.LEFT);
+		if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
+			mDrawerLayout.closeDrawer(Gravity.RIGHT);
 		}else {
 			super.onBackPressed();
 			this.finish();

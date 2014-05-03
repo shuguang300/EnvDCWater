@@ -130,7 +130,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			}
 		});
 		final EditText editText = (EditText)mSearchView.findViewById(getResources().getIdentifier("android:id/search_src_text", null, null));
-		editText.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.small));
+//		editText.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.small));
 		editText.setTextColor(getResources().getColor(R.color.white));
 		editText.setOnEditorActionListener(new OnEditorActionListener() {
 			@Override
@@ -143,7 +143,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			}
 		});
 		mSearchHintIcon = (ImageView)mSearchView.findViewById(getResources().getIdentifier("android:id/search_button",null,null));
-		mSearchHintIcon.setImageResource(R.drawable.ic_search);
+		mSearchHintIcon.setImageResource(R.drawable.ic_menu_search);
 	}
 	
 	/**
@@ -286,6 +286,12 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	}
 	
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		drawerLayout.closeDrawer(Gravity.RIGHT);
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
@@ -298,10 +304,10 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			startUpkeepHistoryActivity();
 			break;
 		case R.id.menu_deviceinfolist_showcons:
-			if(drawerLayout.isDrawerOpen(Gravity.LEFT)){
-				drawerLayout.closeDrawer(Gravity.LEFT);
+			if(drawerLayout.isDrawerOpen(Gravity.RIGHT)){
+				drawerLayout.closeDrawer(Gravity.RIGHT);
 			}else {
-				drawerLayout.openDrawer(Gravity.LEFT);
+				drawerLayout.openDrawer(Gravity.RIGHT);
 			}
 			break;
 		}
@@ -310,8 +316,8 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	
 	@Override
 	public void onBackPressed() {
-		if(drawerLayout.isDrawerOpen(Gravity.LEFT)||!mSearchView.isIconified()){
-			drawerLayout.closeDrawer(Gravity.LEFT);
+		if(drawerLayout.isDrawerOpen(Gravity.RIGHT)||!mSearchView.isIconified()){
+			drawerLayout.closeDrawer(Gravity.RIGHT);
 			mSearchView.setIconified(true);
 		}else {
 			super.onBackPressed();
@@ -460,7 +466,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			}
 		}else if (parent==consListView) {
 			if(position!=0){
-				drawerLayout.closeDrawer(Gravity.LEFT);
+				drawerLayout.closeDrawer(Gravity.RIGHT);
 				if(position==1){
 					actionBar.setTitle("设备列表");
 				}else {

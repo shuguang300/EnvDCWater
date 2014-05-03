@@ -1,6 +1,7 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
@@ -22,11 +23,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.fragment.NaviBarAdapter;
 import com.env.dcwater.javabean.EnumList.UserRight;
+import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
 
@@ -118,13 +121,18 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 				progressBar.setProgress(newProgress);
 			}
 		});
-		webView.loadUrl("http://192.168.200.50/dcwater/MobileMainPage.htm");
+		webView.loadUrl(DataCenterHelper.IPADDR_STRING+"/MobileMainPage.htm");
 		back.setOnClickListener(this);
 		forward.setOnClickListener(this);
 		refresh.setOnClickListener(this);
 		stop.setOnClickListener(this);
 	}
 	
+	private void logOut(){
+		SystemParams.getInstance().setLoggedUserInfo(null);
+		startActivity(new Intent(LoginActivity.ACTION_STRING));
+		finish();
+	}
 	
 	
 	@Override
@@ -188,7 +196,9 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 			if(System.currentTimeMillis()-lastExitTime>2000){
 				Toast.makeText(MainActivity.this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
 			}else {
+				SystemParams.getInstance().setLoggedUserInfo(null);
 				finish();
+				
 			}
 			lastExitTime = System.currentTimeMillis();	
 		}
@@ -196,10 +206,14 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		Intent intent = new Intent(data.get(position).get(UserRight.RightAction));
-		intent.putExtra("action", ACTION_STRING);
-		startActivity(intent);
-		drawerLayout.closeDrawer(Gravity.LEFT);
+		if(position==data.size()-1){
+			logOut();
+		}else {
+			Intent intent = new Intent(data.get(position).get(UserRight.RightAction));
+			intent.putExtra("action", ACTION_STRING);
+			startActivity(intent);
+		}
+		
 	}
 
 	@Override

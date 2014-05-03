@@ -108,7 +108,7 @@
 	    <item name="android:layout_width">0dp</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:layout_weight">1</item>
-	    <item name="android:gravity">center_vertical</item>
+	    <item name="android:gravity">center_vertical|left</item>
 	    <item name="android:textSize">@dimen/middle</item>
 	    <item name="android:drawableLeft">@drawable/activity_machinemanage_arrowleft</item>
 	</style>
@@ -139,7 +139,8 @@
 	    <item name="android:layout_weight">1</item>
 	    <item name="android:singleLine">false</item>
 	    <item name="android:textSize">@dimen/middle</item>
-	    <item name="android:paddingRight">10dp</item>
+	    <item name="android:paddingRight">5dp</item>
+	    <item name="android:layout_gravity">center_vertical</item>
 	    <item name="android:gravity">center_vertical|right</item>
 	</style>
 	
