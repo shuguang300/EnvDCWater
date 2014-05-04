@@ -123,7 +123,8 @@
     
     <string name="activity_config_logout">注销</string>
     
-    <string name="activity_login_summit">登录</string>
+    <string name="activity_login_summit">登    录</string>
+    <string name="activity_login_reset">重    置</string>
     
     <string name="activity_datainput_add">添加</string>
     

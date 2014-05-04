@@ -388,6 +388,8 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			}
 			TextView nameTextView = (TextView)convertView.findViewById(R.id.item_devicelist_name);
 			nameTextView.setText(mData.get(position).get("DeviceName").toString());
+			TextView consTextView = (TextView)convertView.findViewById(R.id.item_devicelist_cons);
+			consTextView.setText(mData.get(position).get("InstallPosition").toString());
 			return convertView;
 		}
 	}

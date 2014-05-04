@@ -404,82 +404,88 @@ public class OperationMethod {
 	 * @throws JSONException
 	 */
 	public static ArrayList<HashMap<String, String>> parseDeviceDataToList(JSONObject jsonObject ,String deviceName, String consName) throws JSONException{
-		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
-		JSONObject device = null;
-		HashMap<String, String> map = null;
-		for(int i =0;i<jsonArray.length();i++){
-			device = jsonArray.getJSONObject(i);
-			map = new HashMap<String, String>();
-			
-			//添加过滤条件
-			if(!deviceName.equals("")&&!device.get("DeviceName").toString().contains(deviceName)){
-				continue;
-			}
-			if(!consName.equals("全部")&&!consName.equals("")&&!LogicMethod.getRightString(device.get("InstallPosition").toString()).equals(consName)){
-				continue;
-			}
-			
-			if(consName.equals("全部")||consName.equals("")){
-				//go on
-			}else {
-				if(consName.equals(LogicMethod.getRightString(device.get("InstallPosition").toString()))){
-					//go on
-				}else {
+		String result = jsonObject.getString("d").toString();
+		JSONArray jsonArray;
+		if(result.equals("")||result.equals("null")){
+			jsonArray = null;
+		}else {
+			jsonArray = new JSONArray(result);
+			JSONObject device = null;
+			HashMap<String, String> map = null;
+			for(int i =0;i<jsonArray.length();i++){
+				device = jsonArray.getJSONObject(i);
+				map = new HashMap<String, String>();
+				
+				//添加过滤条件
+				if(!deviceName.equals("")&&!device.get("DeviceName").toString().contains(deviceName)){
 					continue;
 				}
+				if(!consName.equals("全部")&&!consName.equals("")&&!LogicMethod.getRightString(device.get("InstallPosition").toString()).equals(consName)){
+					continue;
+				}
+				
+				if(consName.equals("全部")||consName.equals("")){
+					//go on
+				}else {
+					if(consName.equals(LogicMethod.getRightString(device.get("InstallPosition").toString()))){
+						//go on
+					}else {
+						continue;
+					}
+				}
+				
+				map.put("DeviceID", device.get("DeviceID").toString());
+				
+				map.put("DeviceSN", device.get("DeviceSN").toString());
+				
+				map.put("DeviceName", device.get("DeviceName").toString());
+				
+				
+				map.put("PlantID", device.get("PlantID").toString());
+				
+				map.put("Department", LogicMethod.getRightString(device.get("Department").toString()));
+				
+				map.put("FixedAssets", LogicMethod.getRightString(device.get("FixedAssets").toString()));
+				
+				map.put("InstallPosition", LogicMethod.getRightString(device.get("InstallPosition").toString()));
+				
+				map.put("InstallPositionforMobile", LogicMethod.getRightString(device.get("InstallPositionforMobile").toString()));
+				
+				map.put("TechnicalParameter", LogicMethod.getRightString(device.get("TechnicalParameter").toString()));
+				
+				map.put("Manufacturer", LogicMethod.getRightString(device.get("Manufacturer").toString()));
+				
+				map.put("Price", LogicMethod.getRightString(device.get("Price").toString()));
+				
+				map.put("FilingTime", LogicMethod.getRightString(device.get("FilingTime").toString().replace("T", " ")));
+				
+				map.put("InstallTime", LogicMethod.getRightString(device.get("InstallTime").toString().replace("T", " ")));
+				
+				map.put("StartUseTime", LogicMethod.getRightString(device.get("StartUseTime").toString().replace("T", " ")));
+				
+				map.put("StopUseTime", LogicMethod.getRightString(device.get("StopUseTime").toString().replace("T", " ")));
+				
+				map.put("ScrapTime", LogicMethod.getRightString(device.get("ScrapTime").toString().replace("T", " ")));
+				
+				map.put("DepreciationPeriod", LogicMethod.getRightString(device.get("DepreciationPeriod").toString()));
+				
+				map.put("Quality", LogicMethod.getRightString(device.get("Quality").toString()));
+				
+				map.put("ReMark", LogicMethod.getRightString(device.get("ReMark").toString()));
+				
+				map.put("StandardNorOperation", LogicMethod.getRightString(device.get("StandardNorOperation").toString()));
+				
+				map.put("OperatManagAndOperatPoint", LogicMethod.getRightString(device.get("OperatManagAndOperatPoint").toString()));
+				
+				map.put("ComProbAndSolutions", LogicMethod.getRightString(device.get("ComProbAndSolutions").toString()));
+				
+				map.put("DeviceClassType", LogicMethod.getRightString(device.get("DeviceClassType").toString()));
+				
+				map.put("AccessoryInfo", LogicMethod.getRightString(device.get("AccessoryInfo").toString()));
+				
+				data.add(map);
 			}
-			
-			map.put("DeviceID", device.get("DeviceID").toString());
-			
-			map.put("DeviceSN", device.get("DeviceSN").toString());
-			
-			map.put("DeviceName", device.get("DeviceName").toString());
-			
-			
-			map.put("PlantID", device.get("PlantID").toString());
-			
-			map.put("Department", LogicMethod.getRightString(device.get("Department").toString()));
-			
-			map.put("FixedAssets", LogicMethod.getRightString(device.get("FixedAssets").toString()));
-			
-			map.put("InstallPosition", LogicMethod.getRightString(device.get("InstallPosition").toString()));
-			
-			map.put("InstallPositionforMobile", LogicMethod.getRightString(device.get("InstallPositionforMobile").toString()));
-			
-			map.put("TechnicalParameter", LogicMethod.getRightString(device.get("TechnicalParameter").toString()));
-			
-			map.put("Manufacturer", LogicMethod.getRightString(device.get("Manufacturer").toString()));
-			
-			map.put("Price", LogicMethod.getRightString(device.get("Price").toString()));
-			
-			map.put("FilingTime", LogicMethod.getRightString(device.get("FilingTime").toString().replace("T", " ")));
-			
-			map.put("InstallTime", LogicMethod.getRightString(device.get("InstallTime").toString().replace("T", " ")));
-			
-			map.put("StartUseTime", LogicMethod.getRightString(device.get("StartUseTime").toString().replace("T", " ")));
-			
-			map.put("StopUseTime", LogicMethod.getRightString(device.get("StopUseTime").toString().replace("T", " ")));
-			
-			map.put("ScrapTime", LogicMethod.getRightString(device.get("ScrapTime").toString().replace("T", " ")));
-			
-			map.put("DepreciationPeriod", LogicMethod.getRightString(device.get("DepreciationPeriod").toString()));
-			
-			map.put("Quality", LogicMethod.getRightString(device.get("Quality").toString()));
-			
-			map.put("ReMark", LogicMethod.getRightString(device.get("ReMark").toString()));
-			
-			map.put("StandardNorOperation", LogicMethod.getRightString(device.get("StandardNorOperation").toString()));
-			
-			map.put("OperatManagAndOperatPoint", LogicMethod.getRightString(device.get("OperatManagAndOperatPoint").toString()));
-			
-			map.put("ComProbAndSolutions", LogicMethod.getRightString(device.get("ComProbAndSolutions").toString()));
-			
-			map.put("DeviceClassType", LogicMethod.getRightString(device.get("DeviceClassType").toString()));
-			
-			map.put("AccessoryInfo", LogicMethod.getRightString(device.get("AccessoryInfo").toString()));
-			
-			data.add(map);
 		}
 		return data;
 	}
@@ -494,120 +500,126 @@ public class OperationMethod {
 	 * @throws JSONException
 	 */
 	public static ArrayList<HashMap<String, String>> parseRepairTaskDataToList(int rolePosition,JSONObject jsonObject,int taskState,String consName,boolean isFilter) throws JSONException{
-		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
-		JSONObject report = null;
-		HashMap<String, String> map = null;
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
-		boolean canUpdate = false;
-		int taskType = 0;
-		for(int i =0;i<jsonArray.length();i++){
-			report = jsonArray.getJSONObject(i);
-			map = new HashMap<String, String>();
-			try {
-				taskType = Integer.valueOf(report.get("RepairTaskType").toString());
-			} catch (Exception e) {
-				taskType = 0;
-			}
-			canUpdate = canTaskUpdated(rolePosition, Integer.valueOf(report.get("State").toString()),taskType);
-			if(isFilter&&!canUpdate){
-				continue;
-			}
-			if(taskState!=-1&&taskState!=Integer.valueOf(report.get("State").toString())){
-				continue;
-			}
-			if(consName.equals("全部")||consName.equals("")){
-				//go on
-			}else {
-				if(consName.equals(LogicMethod.getRightString(report.get("InstallPosition").toString()))){
-					//go on
-				}else {
+		String result = jsonObject.getString("d").toString();
+		JSONArray jsonArray;
+		if(result.equals("")||result.equals("null")){
+			jsonArray = null;
+		}else {
+			jsonArray = new JSONArray(result);
+			JSONObject report = null;
+			HashMap<String, String> map = null;
+			boolean canUpdate = false;
+			int taskType = 0;
+			for(int i =0;i<jsonArray.length();i++){
+				report = jsonArray.getJSONObject(i);
+				map = new HashMap<String, String>();
+				try {
+					taskType = Integer.valueOf(report.get("RepairTaskType").toString());
+				} catch (Exception e) {
+					taskType = 0;
+				}
+				canUpdate = canTaskUpdated(rolePosition, Integer.valueOf(report.get("State").toString()),taskType);
+				if(isFilter&&!canUpdate){
 					continue;
 				}
+				if(taskState!=-1&&taskState!=Integer.valueOf(report.get("State").toString())){
+					continue;
+				}
+				if(consName.equals("全部")||consName.equals("")){
+					//go on
+				}else {
+					if(consName.equals(LogicMethod.getRightString(report.get("InstallPosition").toString()))){
+						//go on
+					}else {
+						continue;
+					}
+				}
+				//是否能够编辑
+				map.put("CanUpdate", canUpdate?"true":"false");
+				//保修单的ID
+				map.put("RepairTaskID", report.get("RepairTaskID").toString());
+				//维修单类型
+				map.put("RepairTaskType", LogicMethod.getRightString(report.get("RepairTaskType").toString()));
+				//厂名
+				map.put("PlantID", report.get("PlantID").toString());
+				//维修措施（紧急措施和其他措施）
+				map.put("EmergencyMeasures",LogicMethod.getRightString(report.get("EmergencyMeasures").toString()));
+				//设备安装位置
+				map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
+				//设备安装位置ID
+				map.put("InstallPositionID", LogicMethod.getRightString(report.get("InstallPositionID").toString()));
+				//故障信息
+				map.put("AccidentDetail",LogicMethod.getRightString(report.get("AccidentDetail").toString()));
+				//故障发生时间
+				map.put("AccidentOccurTime", report.get("AccidentOccurTime").toString().replace("T", " "));
+				//维修时间
+				map.put("RepairedTime", LogicMethod.getRightString(report.get("RepairedTime").toString().replace("T", " ")));
+				//故障单填报人ID	
+				map.put("ReportPersonID", report.get("ReportPersonID").toString());
+				//故障单填报人名
+				map.put("ReportPersonRealName", report.get("ReportPersonRealName").toString());
+				//故障单接收人ID
+				map.put("ReceiverID", LogicMethod.getRightString(report.get("ReceiverID").toString()));
+				//故障单接收人名
+				map.put("ReceiverRealName", LogicMethod.getRightString(report.get("ReceiverRealName").toString()));
+				//故障维修人ID
+				map.put("RepairPersonID", LogicMethod.getRightString(report.get("RepairPersonID").toString()));
+				//故障维修人名
+				map.put("RepairPersonRealName", LogicMethod.getRightString(report.get("RepairPersonRealName").toString()));
+				//所需工时
+				map.put("RequiredManHours", LogicMethod.getRightString(report.get("RequiredManHours").toString()));
+				//维修内容及要求
+				map.put("TaskDetail",LogicMethod.getRightString(report.get("TaskDetail").toString()));
+				//维修结果
+				map.put("RepairDetail", LogicMethod.getRightString(report.get("RepairDetail").toString()));
+				//维修物品消耗
+				map.put("AccessoryUsed", LogicMethod.getRightString(report.get("AccessoryUsed").toString()));
+				//金钱消耗
+				map.put("RepairCost", LogicMethod.getRightString(report.get("RepairCost").toString()));
+				//审核结果
+				map.put("ApproveResult", LogicMethod.getRightString(report.get("ApproveResult").toString()));
+				//审核人ID
+				map.put("ApprovePersonID", LogicMethod.getRightString(report.get("ApprovePersonID").toString()));
+				//审核人名
+				map.put("ApprovePersonRealName", LogicMethod.getRightString(report.get("ApprovePersonRealName").toString()));
+				//设备科意见
+				map.put("DDOpinion", LogicMethod.getRightString(report.get("DDOpinion").toString()));
+				//生产科意见
+				map.put("PDOpinion", LogicMethod.getRightString(report.get("PDOpinion").toString()));
+				//厂长意见
+				map.put("PMOpinion", LogicMethod.getRightString(report.get("PMOpinion").toString()));
+				//工单派发时间
+				map.put("TaskCreateTime", LogicMethod.getRightString(report.get("TaskCreateTime").toString().replace("T", " ")));
+				//工单派发人ID
+				map.put("CreatePersonID", LogicMethod.getRightString(report.get("CreatePersonID").toString()));
+				//工单派发人名
+				map.put("CreatePersonRealName", LogicMethod.getRightString(report.get("CreatePersonRealName").toString()));
+				//工单状态ID
+				map.put("State", LogicMethod.getRightString(report.get("State").toString()));
+				//工单状态描述
+				map.put("StateDescription", EnumList.RepairState.getEnumRepairState(Integer.valueOf(report.get("State").toString())).getStateDescription());
+				//设备ID
+				map.put("DeviceID", report.get("DeviceID").toString());
+				//设备型号
+				map.put("Specification", LogicMethod.getRightString(report.get("Specification").toString()));
+				//设备编码
+				map.put("DeviceSN", LogicMethod.getRightString(report.get("DeviceSN").toString()));
+				//开始使用时间
+				map.put("StartUseTime",LogicMethod.getRightString(report.get("StartUseTime").toString().toString().replace("T", " ")));
+				//生产产商
+				map.put("Manufacturer", LogicMethod.getRightString(report.get("Manufacturer").toString()));
+				//设备名称
+				map.put("DeviceName", LogicMethod.getRightString(report.get("DeviceName").toString()));
+				//工单编码
+				map.put("FaultReportSN", report.get("FaultReportSN").toString());
+				//使用部门
+				map.put("Department", LogicMethod.getRightString(report.get("Department").toString()));
+				//设备类型
+				map.put("DeviceClassType", LogicMethod.getRightString(report.get("DeviceClassType").toString()));
+				
+				data.add(map);
 			}
-			//是否能够编辑
-			map.put("CanUpdate", canUpdate?"true":"false");
-			//保修单的ID
-			map.put("RepairTaskID", report.get("RepairTaskID").toString());
-			//维修单类型
-			map.put("RepairTaskType", LogicMethod.getRightString(report.get("RepairTaskType").toString()));
-			//厂名
-			map.put("PlantID", report.get("PlantID").toString());
-			//维修措施（紧急措施和其他措施）
-			map.put("EmergencyMeasures",LogicMethod.getRightString(report.get("EmergencyMeasures").toString()));
-			//设备安装位置
-			map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
-			//设备安装位置ID
-			map.put("InstallPositionID", LogicMethod.getRightString(report.get("InstallPositionID").toString()));
-			//故障信息
-			map.put("AccidentDetail",LogicMethod.getRightString(report.get("AccidentDetail").toString()));
-			//故障发生时间
-			map.put("AccidentOccurTime", report.get("AccidentOccurTime").toString().replace("T", " "));
-			//维修时间
-			map.put("RepairedTime", LogicMethod.getRightString(report.get("RepairedTime").toString().replace("T", " ")));
-			//故障单填报人ID	
-			map.put("ReportPersonID", report.get("ReportPersonID").toString());
-			//故障单填报人名
-			map.put("ReportPersonRealName", report.get("ReportPersonRealName").toString());
-			//故障单接收人ID
-			map.put("ReceiverID", LogicMethod.getRightString(report.get("ReceiverID").toString()));
-			//故障单接收人名
-			map.put("ReceiverRealName", LogicMethod.getRightString(report.get("ReceiverRealName").toString()));
-			//故障维修人ID
-			map.put("RepairPersonID", LogicMethod.getRightString(report.get("RepairPersonID").toString()));
-			//故障维修人名
-			map.put("RepairPersonRealName", LogicMethod.getRightString(report.get("RepairPersonRealName").toString()));
-			//所需工时
-			map.put("RequiredManHours", LogicMethod.getRightString(report.get("RequiredManHours").toString()));
-			//维修内容及要求
-			map.put("TaskDetail",LogicMethod.getRightString(report.get("TaskDetail").toString()));
-			//维修结果
-			map.put("RepairDetail", LogicMethod.getRightString(report.get("RepairDetail").toString()));
-			//维修物品消耗
-			map.put("AccessoryUsed", LogicMethod.getRightString(report.get("AccessoryUsed").toString()));
-			//金钱消耗
-			map.put("RepairCost", LogicMethod.getRightString(report.get("RepairCost").toString()));
-			//审核结果
-			map.put("ApproveResult", LogicMethod.getRightString(report.get("ApproveResult").toString()));
-			//审核人ID
-			map.put("ApprovePersonID", LogicMethod.getRightString(report.get("ApprovePersonID").toString()));
-			//审核人名
-			map.put("ApprovePersonRealName", LogicMethod.getRightString(report.get("ApprovePersonRealName").toString()));
-			//设备科意见
-			map.put("DDOpinion", LogicMethod.getRightString(report.get("DDOpinion").toString()));
-			//生产科意见
-			map.put("PDOpinion", LogicMethod.getRightString(report.get("PDOpinion").toString()));
-			//厂长意见
-			map.put("PMOpinion", LogicMethod.getRightString(report.get("PMOpinion").toString()));
-			//工单派发时间
-			map.put("TaskCreateTime", LogicMethod.getRightString(report.get("TaskCreateTime").toString().replace("T", " ")));
-			//工单派发人ID
-			map.put("CreatePersonID", LogicMethod.getRightString(report.get("CreatePersonID").toString()));
-			//工单派发人名
-			map.put("CreatePersonRealName", LogicMethod.getRightString(report.get("CreatePersonRealName").toString()));
-			//工单状态ID
-			map.put("State", LogicMethod.getRightString(report.get("State").toString()));
-			//工单状态描述
-			map.put("StateDescription", EnumList.RepairState.getEnumRepairState(Integer.valueOf(report.get("State").toString())).getStateDescription());
-			//设备ID
-			map.put("DeviceID", report.get("DeviceID").toString());
-			//设备型号
-			map.put("Specification", LogicMethod.getRightString(report.get("Specification").toString()));
-			//设备编码
-			map.put("DeviceSN", LogicMethod.getRightString(report.get("DeviceSN").toString()));
-			//开始使用时间
-			map.put("StartUseTime",LogicMethod.getRightString(report.get("StartUseTime").toString().toString().replace("T", " ")));
-			//生产产商
-			map.put("Manufacturer", LogicMethod.getRightString(report.get("Manufacturer").toString()));
-			//设备名称
-			map.put("DeviceName", LogicMethod.getRightString(report.get("DeviceName").toString()));
-			//工单编码
-			map.put("FaultReportSN", report.get("FaultReportSN").toString());
-			//使用部门
-			map.put("Department", LogicMethod.getRightString(report.get("Department").toString()));
-			//设备类型
-			map.put("DeviceClassType", LogicMethod.getRightString(report.get("DeviceClassType").toString()));
-			
-			data.add(map);
 		}
 		return data;
 	}
@@ -622,113 +634,118 @@ public class OperationMethod {
 	 * @throws JSONException
 	 */
 	public static ArrayList<HashMap<String, String>> parseRepairHistoryDataToList(JSONObject jsonObject,String consName) throws JSONException{
-		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
-		JSONObject report = null;
-		HashMap<String, String> map = null;
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
-//		int taskType = 0;
-		for(int i =0;i<jsonArray.length();i++){
-			report = jsonArray.getJSONObject(i);
-			map = new HashMap<String, String>();
-//			try {
-//				taskType = Integer.valueOf(report.get("RepairTaskType").toString());
-//			} catch (Exception e) {
-//				taskType = 0;
-//			}
-//			
-			if(consName.equals("全部")||consName.equals("")){
-				//go on
-			}else {
-				if(consName.equals(LogicMethod.getRightString(report.get("InstallPosition").toString()))){
+		String result = jsonObject.getString("d").toString();
+		JSONArray jsonArray;
+		if(result.equals("")||result.equals("null")){
+			jsonArray = null;
+		}else {
+			jsonArray = new JSONArray(result);
+			JSONObject report = null;
+			HashMap<String, String> map = null;
+			for(int i =0;i<jsonArray.length();i++){
+				report = jsonArray.getJSONObject(i);
+				map = new HashMap<String, String>();
+//				try {
+//					taskType = Integer.valueOf(report.get("RepairTaskType").toString());
+//				} catch (Exception e) {
+//					taskType = 0;
+//				}
+//				
+				if(consName.equals("全部")||consName.equals("")){
 					//go on
 				}else {
-					continue;
+					if(consName.equals(LogicMethod.getRightString(report.get("InstallPosition").toString()))){
+						//go on
+					}else {
+						continue;
+					}
 				}
+				//是否能够编辑
+				map.put("CanUpdate","false");
+				//保修单的ID
+				map.put("RepairTaskID", report.get("RepairTaskID").toString());
+				//维修单类型
+				map.put("RepairTaskType", LogicMethod.getRightString(report.get("RepairTaskType").toString()));
+				//厂名
+				map.put("PlantID", report.get("PlantID").toString());
+				//维修措施（紧急措施和其他措施）
+				map.put("EmergencyMeasures",LogicMethod.getRightString(report.get("EmergencyMeasures").toString()));
+				//设备安装位置
+				map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
+				//设备安装位置ID
+				map.put("InstallPositionID", LogicMethod.getRightString(report.get("InstallPositionID").toString()));
+				//故障信息
+				map.put("AccidentDetail",LogicMethod.getRightString(report.get("AccidentDetail").toString()));
+				//故障发生时间
+				map.put("AccidentOccurTime", report.get("AccidentOccurTime").toString().replace("T", " "));
+				//维修时间
+				map.put("RepairedTime", LogicMethod.getRightString(report.get("RepairedTime").toString().replace("T", " ")));
+				//故障单填报人ID	
+				map.put("ReportPersonID", report.get("ReportPersonID").toString());
+				//故障单填报人名
+				map.put("ReportPersonRealName", report.get("ReportPersonRealName").toString());
+				//故障单接收人ID
+				map.put("ReceiverID", LogicMethod.getRightString(report.get("ReceiverID").toString()));
+				//故障单接收人名
+				map.put("ReceiverRealName", LogicMethod.getRightString(report.get("ReceiverRealName").toString()));
+				//故障维修人ID
+				map.put("RepairPersonID", LogicMethod.getRightString(report.get("RepairPersonID").toString()));
+				//故障维修人名
+				map.put("RepairPersonRealName", LogicMethod.getRightString(report.get("RepairPersonRealName").toString()));
+				//所需工时
+				map.put("RequiredManHours", LogicMethod.getRightString(report.get("RequiredManHours").toString()));
+				//维修内容及要求
+				map.put("TaskDetail",LogicMethod.getRightString(report.get("TaskDetail").toString()));
+				//维修结果
+				map.put("RepairDetail", LogicMethod.getRightString(report.get("RepairDetail").toString()));
+				//维修物品消耗
+				map.put("AccessoryUsed", LogicMethod.getRightString(report.get("AccessoryUsed").toString()));
+				//金钱消耗
+				map.put("RepairCost", LogicMethod.getRightString(report.get("RepairCost").toString()));
+				//审核结果
+				map.put("ApproveResult", LogicMethod.getRightString(report.get("ApproveResult").toString()));
+				//审核人ID
+				map.put("ApprovePersonID", LogicMethod.getRightString(report.get("ApprovePersonID").toString()));
+				//审核人名
+				map.put("ApprovePersonRealName", LogicMethod.getRightString(report.get("ApprovePersonRealName").toString()));
+				//设备科意见
+				map.put("DDOpinion", LogicMethod.getRightString(report.get("DDOpinion").toString()));
+				//生产科意见
+				map.put("PDOpinion", LogicMethod.getRightString(report.get("PDOpinion").toString()));
+				//厂长意见
+				map.put("PMOpinion", LogicMethod.getRightString(report.get("PMOpinion").toString()));
+				//工单派发时间
+				map.put("TaskCreateTime", LogicMethod.getRightString(report.get("TaskCreateTime").toString().replace("T", " ")));
+				//工单派发人ID
+				map.put("CreatePersonID", LogicMethod.getRightString(report.get("CreatePersonID").toString()));
+				//工单派发人名
+				map.put("CreatePersonRealName", LogicMethod.getRightString(report.get("CreatePersonRealName").toString()));
+				//工单状态ID
+				map.put("State", LogicMethod.getRightString(report.get("State").toString()));
+				//工单状态描述
+				map.put("StateDescription", EnumList.RepairState.getEnumRepairState(Integer.valueOf(report.get("State").toString())).getStateDescription());
+				//设备ID
+				map.put("DeviceID", report.get("DeviceID").toString());
+				//设备型号
+				map.put("Specification", LogicMethod.getRightString(report.get("Specification").toString()));
+				//设备编码
+				map.put("DeviceSN", LogicMethod.getRightString(report.get("DeviceSN").toString()));
+				//开始使用时间
+				map.put("StartUseTime",LogicMethod.getRightString(report.get("StartUseTime").toString().toString().replace("T", " ")));
+				//生产产商
+				map.put("Manufacturer", LogicMethod.getRightString(report.get("Manufacturer").toString()));
+				//设备名称
+				map.put("DeviceName", LogicMethod.getRightString(report.get("DeviceName").toString()));
+				//工单编码
+				map.put("FaultReportSN", report.get("FaultReportSN").toString());
+				//使用部门
+				map.put("Department", LogicMethod.getRightString(report.get("Department").toString()));
+				//设备类型
+				map.put("DeviceClassType", LogicMethod.getRightString(report.get("DeviceClassType").toString()));
+				
+				data.add(map);
 			}
-			//是否能够编辑
-			map.put("CanUpdate","false");
-			//保修单的ID
-			map.put("RepairTaskID", report.get("RepairTaskID").toString());
-			//维修单类型
-			map.put("RepairTaskType", LogicMethod.getRightString(report.get("RepairTaskType").toString()));
-			//厂名
-			map.put("PlantID", report.get("PlantID").toString());
-			//维修措施（紧急措施和其他措施）
-			map.put("EmergencyMeasures",LogicMethod.getRightString(report.get("EmergencyMeasures").toString()));
-			//设备安装位置
-			map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
-			//设备安装位置ID
-			map.put("InstallPositionID", LogicMethod.getRightString(report.get("InstallPositionID").toString()));
-			//故障信息
-			map.put("AccidentDetail",LogicMethod.getRightString(report.get("AccidentDetail").toString()));
-			//故障发生时间
-			map.put("AccidentOccurTime", report.get("AccidentOccurTime").toString().replace("T", " "));
-			//维修时间
-			map.put("RepairedTime", LogicMethod.getRightString(report.get("RepairedTime").toString().replace("T", " ")));
-			//故障单填报人ID	
-			map.put("ReportPersonID", report.get("ReportPersonID").toString());
-			//故障单填报人名
-			map.put("ReportPersonRealName", report.get("ReportPersonRealName").toString());
-			//故障单接收人ID
-			map.put("ReceiverID", LogicMethod.getRightString(report.get("ReceiverID").toString()));
-			//故障单接收人名
-			map.put("ReceiverRealName", LogicMethod.getRightString(report.get("ReceiverRealName").toString()));
-			//故障维修人ID
-			map.put("RepairPersonID", LogicMethod.getRightString(report.get("RepairPersonID").toString()));
-			//故障维修人名
-			map.put("RepairPersonRealName", LogicMethod.getRightString(report.get("RepairPersonRealName").toString()));
-			//所需工时
-			map.put("RequiredManHours", LogicMethod.getRightString(report.get("RequiredManHours").toString()));
-			//维修内容及要求
-			map.put("TaskDetail",LogicMethod.getRightString(report.get("TaskDetail").toString()));
-			//维修结果
-			map.put("RepairDetail", LogicMethod.getRightString(report.get("RepairDetail").toString()));
-			//维修物品消耗
-			map.put("AccessoryUsed", LogicMethod.getRightString(report.get("AccessoryUsed").toString()));
-			//金钱消耗
-			map.put("RepairCost", LogicMethod.getRightString(report.get("RepairCost").toString()));
-			//审核结果
-			map.put("ApproveResult", LogicMethod.getRightString(report.get("ApproveResult").toString()));
-			//审核人ID
-			map.put("ApprovePersonID", LogicMethod.getRightString(report.get("ApprovePersonID").toString()));
-			//审核人名
-			map.put("ApprovePersonRealName", LogicMethod.getRightString(report.get("ApprovePersonRealName").toString()));
-			//设备科意见
-			map.put("DDOpinion", LogicMethod.getRightString(report.get("DDOpinion").toString()));
-			//生产科意见
-			map.put("PDOpinion", LogicMethod.getRightString(report.get("PDOpinion").toString()));
-			//厂长意见
-			map.put("PMOpinion", LogicMethod.getRightString(report.get("PMOpinion").toString()));
-			//工单派发时间
-			map.put("TaskCreateTime", LogicMethod.getRightString(report.get("TaskCreateTime").toString().replace("T", " ")));
-			//工单派发人ID
-			map.put("CreatePersonID", LogicMethod.getRightString(report.get("CreatePersonID").toString()));
-			//工单派发人名
-			map.put("CreatePersonRealName", LogicMethod.getRightString(report.get("CreatePersonRealName").toString()));
-			//工单状态ID
-			map.put("State", LogicMethod.getRightString(report.get("State").toString()));
-			//工单状态描述
-			map.put("StateDescription", EnumList.RepairState.getEnumRepairState(Integer.valueOf(report.get("State").toString())).getStateDescription());
-			//设备ID
-			map.put("DeviceID", report.get("DeviceID").toString());
-			//设备型号
-			map.put("Specification", LogicMethod.getRightString(report.get("Specification").toString()));
-			//设备编码
-			map.put("DeviceSN", LogicMethod.getRightString(report.get("DeviceSN").toString()));
-			//开始使用时间
-			map.put("StartUseTime",LogicMethod.getRightString(report.get("StartUseTime").toString().toString().replace("T", " ")));
-			//生产产商
-			map.put("Manufacturer", LogicMethod.getRightString(report.get("Manufacturer").toString()));
-			//设备名称
-			map.put("DeviceName", LogicMethod.getRightString(report.get("DeviceName").toString()));
-			//工单编码
-			map.put("FaultReportSN", report.get("FaultReportSN").toString());
-			//使用部门
-			map.put("Department", LogicMethod.getRightString(report.get("Department").toString()));
-			//设备类型
-			map.put("DeviceClassType", LogicMethod.getRightString(report.get("DeviceClassType").toString()));
-			
-			data.add(map);
 		}
 		return data;
 	}
@@ -743,101 +760,108 @@ public class OperationMethod {
 	 * @throws JSONException
 	 */
 	public static ArrayList<HashMap<String, String>> parseUpkeepHistoryDataToList(JSONObject jsonObject,String consName) throws JSONException{
-		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
-		JSONObject report = null;
-		HashMap<String, String> map = null;
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
-		for(int i =0;i<jsonArray.length();i++){
-			report = jsonArray.getJSONObject(i);
-			map = new HashMap<String, String>();
-			
-			if(consName.equals("全部")||consName.equals("")){
-				//go on
-			}else {
-				if(consName.equals(LogicMethod.getRightString(report.get("StructureName").toString()))){
+		String result = jsonObject.getString("d").toString();
+		JSONArray jsonArray;
+		if(result.equals("")||result.equals("null")){
+			jsonArray = null;
+		}else {
+			jsonArray = new JSONArray(result);
+			JSONObject report = null;
+			HashMap<String, String> map = null;
+			for(int i =0;i<jsonArray.length();i++){
+				report = jsonArray.getJSONObject(i);
+				map = new HashMap<String, String>();
+				
+				if(consName.equals("全部")||consName.equals("")){
 					//go on
 				}else {
-					continue;
+					if(consName.equals(LogicMethod.getRightString(report.get("StructureName").toString()))){
+						//go on
+					}else {
+						continue;
+					}
 				}
+				
+				//实际使用工时
+				map.put("ActualManHours", LogicMethod.getRightString(report.get("ActualManHours").toString()));
+				//要求完成时间
+				map.put("NeedComplete", LogicMethod.getRightString(report.get("NeedComplete").toString().replace("T", " ")));
+				//设备ID
+				map.put("DeviceID", report.get("DeviceID").toString());
+				//完成情况及处理措施
+				map.put("MaintainDetail",LogicMethod.getRightString(report.get("MaintainDetail").toString()));
+				//构筑物
+				map.put("StructureName", LogicMethod.getRightString(report.get("StructureName").toString()));
+				//设备科长意见
+				map.put("DDOpinion", LogicMethod.getRightString(report.get("DDOpinion").toString()));
+				//
+				map.put("Specification",LogicMethod.getRightString(report.get("Specification").toString()));
+				// 养护开始时间
+				map.put("MaintainStartTime", LogicMethod.getRightString(report.get("MaintainStartTime").toString().replace("T", " ")));
+				//保养计划状态
+				map.put("MaintainState", LogicMethod.getRightString(report.get("MaintainState").toString()));
+				//保养计划状态描述信息
+				map.put("MaintainStateDescription", EnumList.UpkeepHistoryPlanState.getHistoryStateEnum(Integer.valueOf(report.get("MaintainState").toString())).getCodeName());
+				//养护要求
+				map.put("TaskDetail", LogicMethod.getRightString(report.get("TaskDetail").toString()));
+				//审核时间
+				map.put("ApproveTime", LogicMethod.getRightString(report.get("ApproveTime").toString()).replace("T", " "));
+				//回单时间
+				map.put("CheckTime", LogicMethod.getRightString(report.get("CheckTime").toString()).replace("T", " "));
+				//
+				map.put("MaintainTaskID", LogicMethod.getRightString(report.get("MaintainTaskID").toString()));
+				//
+				map.put("MaintainPlanID", LogicMethod.getRightString(report.get("MaintainPlanID").toString()));
+				//
+				map.put("StructureID", LogicMethod.getRightString(report.get("StructureID").toString()));
+				//
+				map.put("PlantID", LogicMethod.getRightString(report.get("PlantID").toString()));
+				//养护周期
+				map.put("MaintainPeriod",LogicMethod.getRightString(report.get("MaintainPeriod").toString()));
+				//
+				map.put("DeviceName", LogicMethod.getRightString(report.get("DeviceName").toString()));
+				//派发人
+				map.put("CreatePerson", LogicMethod.getRightString(report.get("CreatePerson").toString()));
+				//回单人
+				map.put("CheckPerson", LogicMethod.getRightString(report.get("CheckPerson").toString()));
+				//保养内容：
+				map.put("MaintainSpecification", LogicMethod.getRightString(report.get("MaintainSpecification").toString()));
+				//
+//				map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
+				//所需工时
+				map.put("RequiredManHours", LogicMethod.getRightString(report.get("RequiredManHours").toString()));
+				//养护部位
+				map.put("MaintainPosition", LogicMethod.getRightString(report.get("MaintainPosition").toString()));
+				//
+				map.put("State", LogicMethod.getRightString(report.get("State").toString()));
+				//
+				map.put("StateDescription", EnumList.UpkeepHistoryState.getHistoryStateEnum(Integer.valueOf(report.get("State").toString())).getCodeName());
+				//实际完成时间
+//				map.put("RealCompleteTime", LogicMethod.getRightString(report.get("realcompleteTime").toString().replace("T", " ")));
+				//审核人
+				map.put("ApprovePerson", LogicMethod.getRightString(report.get("ApprovePerson").toString()));
+				//派发时间
+				map.put("CreateTime", LogicMethod.getRightString(report.get("CreateTime").toString().replace("T", " ")));
+				//养护类型
+				map.put("MaintainType", LogicMethod.getRightString(report.get("MaintainType").toString()));
+				//
+				map.put("IsDeleted", LogicMethod.getRightString(report.get("IsDeleted").toString()));
+				//
+				map.put("MaintainTaskSN", LogicMethod.getRightString(report.get("MaintainTaskSN").toString()));
+				//
+//				map.put("Capacity", LogicMethod.getRightString(report.get("Capacity").toString()));
+				//
+//				map.put("Remark", LogicMethod.getRightString(report.get("Remark").toString()));
+				//养护人
+				map.put("MaintainPerson",LogicMethod.getRightString(report.get("MaintainPerson").toString().toString()));
+				//
+				map.put("NeedCompleteTotaDay", LogicMethod.getRightString(report.get("NeedCompleteTotaDay").toString()));
+				
+				data.add(map);
 			}
-			
-			//实际使用工时
-			map.put("ActualManHours", LogicMethod.getRightString(report.get("ActualManHours").toString()));
-			//要求完成时间
-			map.put("NeedComplete", LogicMethod.getRightString(report.get("NeedComplete").toString().replace("T", " ")));
-			//设备ID
-			map.put("DeviceID", report.get("DeviceID").toString());
-			//完成情况及处理措施
-			map.put("MaintainDetail",LogicMethod.getRightString(report.get("MaintainDetail").toString()));
-			//构筑物
-			map.put("StructureName", LogicMethod.getRightString(report.get("StructureName").toString()));
-			//设备科长意见
-			map.put("DDOpinion", LogicMethod.getRightString(report.get("DDOpinion").toString()));
-			//
-			map.put("Specification",LogicMethod.getRightString(report.get("Specification").toString()));
-			// 养护开始时间
-			map.put("MaintainStartTime", LogicMethod.getRightString(report.get("MaintainStartTime").toString().replace("T", " ")));
-			//保养计划状态
-			map.put("MaintainState", LogicMethod.getRightString(report.get("MaintainState").toString()));
-			//保养计划状态描述信息
-			map.put("MaintainStateDescription", EnumList.UpkeepHistoryPlanState.getHistoryStateEnum(Integer.valueOf(report.get("MaintainState").toString())).getCodeName());
-			//养护要求
-			map.put("TaskDetail", LogicMethod.getRightString(report.get("TaskDetail").toString()));
-			//审核时间
-			map.put("ApproveTime", LogicMethod.getRightString(report.get("ApproveTime").toString()).replace("T", " "));
-			//回单时间
-			map.put("CheckTime", LogicMethod.getRightString(report.get("CheckTime").toString()).replace("T", " "));
-			//
-			map.put("MaintainTaskID", LogicMethod.getRightString(report.get("MaintainTaskID").toString()));
-			//
-			map.put("MaintainPlanID", LogicMethod.getRightString(report.get("MaintainPlanID").toString()));
-			//
-			map.put("StructureID", LogicMethod.getRightString(report.get("StructureID").toString()));
-			//
-			map.put("PlantID", LogicMethod.getRightString(report.get("PlantID").toString()));
-			//养护周期
-			map.put("MaintainPeriod",LogicMethod.getRightString(report.get("MaintainPeriod").toString()));
-			//
-			map.put("DeviceName", LogicMethod.getRightString(report.get("DeviceName").toString()));
-			//派发人
-			map.put("CreatePerson", LogicMethod.getRightString(report.get("CreatePerson").toString()));
-			//回单人
-			map.put("CheckPerson", LogicMethod.getRightString(report.get("CheckPerson").toString()));
-			//保养内容：
-			map.put("MaintainSpecification", LogicMethod.getRightString(report.get("MaintainSpecification").toString()));
-			//
-//			map.put("InstallPosition", LogicMethod.getRightString(report.get("InstallPosition").toString()));
-			//所需工时
-			map.put("RequiredManHours", LogicMethod.getRightString(report.get("RequiredManHours").toString()));
-			//养护部位
-			map.put("MaintainPosition", LogicMethod.getRightString(report.get("MaintainPosition").toString()));
-			//
-			map.put("State", LogicMethod.getRightString(report.get("State").toString()));
-			//
-			map.put("StateDescription", EnumList.UpkeepHistoryState.getHistoryStateEnum(Integer.valueOf(report.get("State").toString())).getCodeName());
-			//实际完成时间
-//			map.put("RealCompleteTime", LogicMethod.getRightString(report.get("realcompleteTime").toString().replace("T", " ")));
-			//审核人
-			map.put("ApprovePerson", LogicMethod.getRightString(report.get("ApprovePerson").toString()));
-			//派发时间
-			map.put("CreateTime", LogicMethod.getRightString(report.get("CreateTime").toString().replace("T", " ")));
-			//养护类型
-			map.put("MaintainType", LogicMethod.getRightString(report.get("MaintainType").toString()));
-			//
-			map.put("IsDeleted", LogicMethod.getRightString(report.get("IsDeleted").toString()));
-			//
-			map.put("MaintainTaskSN", LogicMethod.getRightString(report.get("MaintainTaskSN").toString()));
-			//
-//			map.put("Capacity", LogicMethod.getRightString(report.get("Capacity").toString()));
-			//
-//			map.put("Remark", LogicMethod.getRightString(report.get("Remark").toString()));
-			//养护人
-			map.put("MaintainPerson",LogicMethod.getRightString(report.get("MaintainPerson").toString().toString()));
-			//
-			map.put("NeedCompleteTotaDay", LogicMethod.getRightString(report.get("NeedCompleteTotaDay").toString()));
-			
-			data.add(map);
 		}
+		
 		return data;
 	}
 	
@@ -858,9 +882,17 @@ public class OperationMethod {
 		int state = 0;
 		int taskState = OperationMethod.getUpkeepPlanStateByStateName(stateName);
 		if(!type){
-			jsonArray = new JSONArray(json1.get("AllPlanList").toString());
+			if(json1.get("AllPlanList").equals("")||json1.get("AllPlanList").equals("null")){
+				jsonArray = null;
+			}else {
+				jsonArray = new JSONArray(json1.get("AllPlanList").toString());
+			}
 		}else if (type) {
-			jsonArray = new JSONArray(json1.get("ToTermData").toString());
+			if(json1.get("AllPlanList").equals("")||json1.get("AllPlanList").equals("null")){
+				jsonArray = null;
+			}else {
+				jsonArray = new JSONArray(json1.get("ToTermData").toString());
+			}
 		}else {
 			
 		}
@@ -922,13 +954,17 @@ public class OperationMethod {
 	 */
 	public static ArrayList<HashMap<String, String>> parseUpkeepReportDataList(JSONObject jsonObject, boolean filter,String consName,String stateName) throws JSONException{
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
-		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
-		HashMap<String, String> map = null;
-		JSONObject json2 = null;
-		boolean canUpdate = false;
-		int state = 0;
-		int taskState = OperationMethod.getUpkeepStateByStateName(stateName);
-		if(jsonArray!=null){
+		String result = jsonObject.getString("d").toString();
+		JSONArray jsonArray;
+		if(result.equals("")||result.equals("null")){
+			jsonArray = null;
+		}else {
+			jsonArray = new JSONArray(jsonObject.getString("d").toString());
+			HashMap<String, String> map = null;
+			JSONObject json2 = null;
+			boolean canUpdate = false;
+			int state = 0;
+			int taskState = OperationMethod.getUpkeepStateByStateName(stateName);
 			for(int i = 0; i < jsonArray.length();i++){
 				map = new HashMap<String, String>();
 				json2 = jsonArray.getJSONObject(i);
@@ -936,7 +972,6 @@ public class OperationMethod {
 				if(taskState!=-1&&taskState!=Integer.valueOf(json2.get("State").toString())){
 					continue;
 				}
-				
 				if(consName.equals("全部")||consName.equals("")){
 					//go on
 				}else {
@@ -946,7 +981,6 @@ public class OperationMethod {
 						continue;
 					}
 				}
-				
 				state = Integer.valueOf(LogicMethod.getRightString(json2.get("State").toString()));
 				if(state==UpkeepHistoryState.STATE_HASBEENSEND_INT||state==UpkeepHistoryState.STATE_NOTAPPROVE_INT||state==UpkeepHistoryState.STATE_WAITFORSUBMIT_INT){
 					canUpdate = true;
@@ -1008,13 +1042,18 @@ public class OperationMethod {
 	 */
 	public static ArrayList<HashMap<String, String>> parseUpkeepApproveDataList(JSONObject jsonObject, boolean filter,String consName,String stateName) throws JSONException{
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
-		JSONArray jsonArray = new JSONArray(jsonObject.getString("d").toString());
-		HashMap<String, String> map = null;
-		JSONObject json2 = null;
-		boolean canUpdate = false;
-		int state = 0;
-		int taskState = OperationMethod.getUpkeepStateByStateName(stateName);
-		if(jsonArray!=null){
+		String result = jsonObject.getString("d").toString();
+		JSONArray jsonArray;
+		if(result.equals("")||result.equals("null")){
+			jsonArray = null;
+		}else {
+			jsonArray = new JSONArray(result);
+			HashMap<String, String> map = null;
+			JSONObject json2 = null;
+			boolean canUpdate = false;
+			int state = 0;
+			int taskState = OperationMethod.getUpkeepStateByStateName(stateName);
+
 			for(int i = 0; i < jsonArray.length();i++){
 				map = new HashMap<String, String>();
 				json2 = jsonArray.getJSONObject(i);

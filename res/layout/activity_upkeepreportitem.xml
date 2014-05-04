@@ -29,7 +29,7 @@
                 <TextView
                     android:id="@+id/activity_upkeepreportitem_maintainperson"
                     style="@style/activity_repairmanageitem_textview"
-                    android:drawableRight="@drawable/warning" />
+                    android:drawableRight="@drawable/ic_warning" />
             </TableRow>
 
             <TextView style="@style/item_divide" />
@@ -58,7 +58,7 @@
                 <TextView
                     android:id="@+id/activity_upkeepreportitem_actualhour"
                     style="@style/activity_repairmanageitem_textview"
-                    android:drawableRight="@drawable/warning" />
+                    android:drawableRight="@drawable/ic_warning" />
             </TableRow>
 
             <TextView style="@style/item_divide" />
@@ -74,7 +74,7 @@
                 <TextView
                     android:id="@+id/activity_upkeepreportitem_maintainresult"
                     style="@style/activity_repairmanageitem_textview"
-                    android:drawableRight="@drawable/warning" />
+                    android:drawableRight="@drawable/ic_warning" />
             </TableRow>
         </TableLayout>
 

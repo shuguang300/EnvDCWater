@@ -49,7 +49,7 @@
                 <Switch
                     android:id="@+id/activity_upkeepapproveitem_approveresult"
                     style="@style/activity_repairmanageitem_textview"
-                    android:drawableRight="@drawable/warning"
+                    android:drawableRight="@drawable/ic_warning"
                     android:textOff="未通过"
                     android:textOn="通过" />
             </TableRow>
@@ -82,7 +82,7 @@
                 <TextView
                     android:id="@+id/activity_upkeepapproveitem_ddopinion"
                     style="@style/activity_repairmanageitem_textview"
-                    android:drawableRight="@drawable/warning" />
+                    android:drawableRight="@drawable/ic_warning" />
             </TableRow>
         </TableLayout>
 

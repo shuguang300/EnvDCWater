@@ -32,7 +32,7 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	public static final String TAG_STRING = "LoginActivity";
 	public static final String ACTION_STRING = "com.env.dcwater.activity.LoginActivity";
 	
-	private Button loginButton;
+	private Button loginButton,resetButton;
 	private Intent userRightIntent;
 	private EditText accountView,passwordView;
 	private String mAccount,mPassword;
@@ -89,6 +89,8 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	private void ini(){
 		loginButton = (Button)findViewById(R.id.activity_login_submit);
 		loginButton.setOnClickListener(this);
+		resetButton = (Button)findViewById(R.id.activity_login_reset);
+		resetButton.setOnClickListener(this);
 		
 		accountView = (EditText)findViewById(R.id.activity_login_account);
 		passwordView = (EditText)findViewById(R.id.activity_login_password);
@@ -158,9 +160,11 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.activity_login_submit:
-//			SystemMethod.hideSoftInput(LoginActivity.this);
 			startLogin();
-//			entranceMainActivity();
+			break;
+		case R.id.activity_login_reset:
+			accountView.setText("");
+			passwordView.setText("");
 			break;
 		}
 	}

@@ -25,6 +25,7 @@
             android:background="@color/white" >
         </com.env.dcwater.fragment.DataFilterView>
         
+        
     </android.support.v4.widget.DrawerLayout>
 
 </LinearLayout>
