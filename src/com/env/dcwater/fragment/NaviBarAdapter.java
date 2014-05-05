@@ -42,8 +42,15 @@ public class NaviBarAdapter extends BaseAdapter{
 		}
 		HashMap<String, String> map = mUserRightData.get(position);
 		TextView name = (TextView)convertView.findViewById(R.id.item_mainnavibar_name);
+		TextView count = (TextView)convertView.findViewById(R.id.item_mainnavibar_taskcount);
 		name.setText(map.get(UserRight.RightName));
 		name.setCompoundDrawablesWithIntrinsicBounds(mContext.getResources().getDrawable(Integer.valueOf(map.get(UserRight.RightResourceID))), null, null, null);
+		count.setText(map.get(UserRight.RightTaskCount));
+		if(map.get(UserRight.RightTaskCount).length()>0){
+			count.setBackground(mContext.getResources().getDrawable(R.drawable.ic_item_notification));
+		}else {
+			count.setBackground(null);
+		}
 		return convertView;
 	}
 

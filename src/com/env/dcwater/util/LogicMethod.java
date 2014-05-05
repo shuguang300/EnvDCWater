@@ -1,5 +1,4 @@
 package com.env.dcwater.util;
-
 /**
  * 一个用于存储 算法，一般逻辑方法的类
  * @author sk
@@ -58,5 +57,22 @@ public class LogicMethod {
 		}
 	}
 	
-	 
+	/**
+	 * 接收一个字符串，将字符串转换为int型数据
+	 * @param arg0
+	 * @return
+	 */
+	public static int getRightInt(String arg0) {
+		int count = 0;
+		if(arg0.toLowerCase().equals("null")||arg0.length()==0){
+			count = 0;
+		}else {
+			try {
+				count = Integer.valueOf(arg0);
+			} catch (Exception e) {
+				count = 0;
+			}
+		}
+		return count;
+	}
 }

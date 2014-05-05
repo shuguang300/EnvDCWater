@@ -19,7 +19,8 @@
 
             <TextView
                 style="@style/activity_repairmanageitem_textview_group"
-                android:text="@string/activity_upkeephistoryitem_approvegroup" />
+                android:text="@string/activity_upkeephistoryitem_approvegroup"
+                android:drawableLeft="@drawable/ic_item_groupedit" />
 
             <TextView style="@style/item_divide" />
 
@@ -29,7 +30,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_approveperson" />
+                    android:text="@string/activity_upkeephistoryitem_approveperson"
+                    android:drawableLeft="@drawable/ic_item_person" />
 
                 <TextView
                     android:id="@+id/activity_upkeepapproveitem_approveperson"
@@ -44,12 +46,13 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_approveresult" />
+                    android:text="@string/activity_upkeephistoryitem_approveresult"
+                    android:drawableLeft="@drawable/ic_item_approve" />
 
                 <Switch
                     android:id="@+id/activity_upkeepapproveitem_approveresult"
                     style="@style/activity_repairmanageitem_textview"
-                    android:drawableRight="@drawable/ic_warning"
+                    android:drawableRight="@drawable/ic_item_warning"
                     android:textOff="未通过"
                     android:textOn="通过" />
             </TableRow>
@@ -62,7 +65,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_approvetime" />
+                    android:text="@string/activity_upkeephistoryitem_approvetime"
+                    android:drawableLeft="@drawable/ic_item_time" />
 
                 <TextView
                     android:id="@+id/activity_upkeepapproveitem_approvetime"
@@ -77,16 +81,18 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_ddopinion" />
+                    android:text="@string/activity_upkeephistoryitem_ddopinion"
+                    android:drawableLeft="@drawable/ic_item_opinion" />
 
                 <TextView
                     android:id="@+id/activity_upkeepapproveitem_ddopinion"
                     style="@style/activity_repairmanageitem_textview"
-                    android:drawableRight="@drawable/ic_warning" />
+                    android:drawableRight="@drawable/ic_item_warning" />
             </TableRow>
         </TableLayout>
 
         <Button
+            style="@style/SubmitButtonStyle"
             android:id="@+id/activity_upkeepapproveitem_approve"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -110,7 +116,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_group"
-                    android:text="@string/activity_upkeephistoryitem_devicegroup" />
+                    android:text="@string/activity_upkeephistoryitem_devicegroup"
+                    android:drawableLeft="@drawable/ic_item_groupread" />
 
                 <TextView style="@style/item_divide" />
 
@@ -120,7 +127,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_devicename" />
+                        android:text="@string/activity_upkeephistoryitem_devicename"
+                        android:drawableLeft="@drawable/ic_item_device" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_devicename"
@@ -135,7 +143,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_installpos" />
+                        android:text="@string/activity_upkeephistoryitem_installpos"
+                        android:drawableLeft="@drawable/ic_item_construction" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_installpos"
@@ -150,7 +159,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_maintainpos" />
+                        android:text="@string/activity_upkeephistoryitem_maintainpos"
+                        android:drawableLeft="@drawable/ic_item_mtposition" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_maintainpos"
@@ -165,7 +175,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_taskdetail" />
+                        android:text="@string/activity_upkeephistoryitem_taskdetail"
+                        android:drawableLeft="@drawable/ic_item_require" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_taskdetail"
@@ -179,7 +190,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_group"
-                    android:text="@string/activity_upkeephistoryitem_taskgroup" />
+                    android:text="@string/activity_upkeephistoryitem_taskgroup"
+                    android:drawableLeft="@drawable/ic_item_groupread" />
 
                 <TextView style="@style/item_divide" />
 
@@ -189,7 +201,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_sendtime" />
+                        android:text="@string/activity_upkeephistoryitem_sendtime"
+                        android:drawableLeft="@drawable/ic_item_time" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_sendtime"
@@ -204,7 +217,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_sendperson" />
+                        android:text="@string/activity_upkeephistoryitem_sendperson"
+                        android:drawableLeft="@drawable/ic_item_person" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_sendperson"
@@ -219,7 +233,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_needhour" />
+                        android:text="@string/activity_upkeephistoryitem_needhour"
+                        android:drawableLeft="@drawable/ic_item_hours" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_needhour"
@@ -234,7 +249,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_needfinishtime" />
+                        android:text="@string/activity_upkeephistoryitem_needfinishtime"
+                        android:drawableLeft="@drawable/ic_item_time" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_needfinishtime"
@@ -249,7 +265,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_maintainperson" />
+                        android:text="@string/activity_upkeephistoryitem_maintainperson"
+                        android:drawableLeft="@drawable/ic_item_person" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_maintainperson"
@@ -264,7 +281,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_backperson" />
+                        android:text="@string/activity_upkeephistoryitem_backperson"
+                        android:drawableLeft="@drawable/ic_item_person" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_backperson"
@@ -279,7 +297,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_actualhour" />
+                        android:text="@string/activity_upkeephistoryitem_actualhour"
+                        android:drawableLeft="@drawable/ic_item_hours" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_actualhour"
@@ -294,7 +313,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_maintainresult" />
+                        android:text="@string/activity_upkeephistoryitem_maintainresult"
+                        android:drawableLeft="@drawable/ic_item_result" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_maintainresult"

@@ -15,21 +15,28 @@
 
         <TableLayout
             android:id="@+id/activity_upkeepreportitem_reportgroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
+            style="@style/activity_repairmanageitem_tablelayout" >
+            
+			<TextView
+                    style="@style/activity_repairmanageitem_textview_group"
+                    android:text="@string/activity_upkeephistoryitem_taskgroup"
+                    android:drawableLeft="@drawable/ic_item_groupedit" />
+                
+			<TextView style="@style/item_divide" />
+	
             <TableRow
                 android:id="@+id/activity_upkeepreportitem_maintainperson_tr"
                 style="@style/activity_repairmanageitem_tablerow" >
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_maintainperson" />
+                    android:text="@string/activity_upkeephistoryitem_maintainperson"
+                    android:drawableLeft="@drawable/ic_item_person" />
 
                 <TextView
                     android:id="@+id/activity_upkeepreportitem_maintainperson"
                     style="@style/activity_repairmanageitem_textview"
-                    android:drawableRight="@drawable/ic_warning" />
+                    android:drawableRight="@drawable/ic_item_warning" />
             </TableRow>
 
             <TextView style="@style/item_divide" />
@@ -38,7 +45,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_backperson" />
+                    android:text="@string/activity_upkeephistoryitem_backperson"
+                    android:drawableLeft="@drawable/ic_item_person" />
 
                 <TextView
                     android:id="@+id/activity_upkeepreportitem_backperson"
@@ -53,12 +61,13 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_actualhour" />
+                    android:text="@string/activity_upkeephistoryitem_actualhour"
+                    android:drawableLeft="@drawable/ic_item_hours" />
 
                 <TextView
                     android:id="@+id/activity_upkeepreportitem_actualhour"
                     style="@style/activity_repairmanageitem_textview"
-                    android:drawableRight="@drawable/ic_warning" />
+                    android:drawableRight="@drawable/ic_item_warning" />
             </TableRow>
 
             <TextView style="@style/item_divide" />
@@ -69,16 +78,18 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_upkeephistoryitem_maintainresult" />
+                    android:text="@string/activity_upkeephistoryitem_maintainresult"
+                    android:drawableLeft="@drawable/ic_item_result" />
 
                 <TextView
                     android:id="@+id/activity_upkeepreportitem_maintainresult"
                     style="@style/activity_repairmanageitem_textview"
-                    android:drawableRight="@drawable/ic_warning" />
+                    android:drawableRight="@drawable/ic_item_warning" />
             </TableRow>
         </TableLayout>
 
         <Button
+            style="@style/SubmitButtonStyle"
             android:id="@+id/activity_upkeepreportitem_report"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,7 +111,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_group"
-                    android:text="@string/activity_upkeephistoryitem_devicegroup" />
+                    android:text="@string/activity_upkeephistoryitem_devicegroup"
+                    android:drawableLeft="@drawable/ic_item_groupread" />
 
                 <TextView style="@style/item_divide" />
 
@@ -108,7 +120,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_devicename" />
+                        android:text="@string/activity_upkeephistoryitem_devicename"
+                        android:drawableLeft="@drawable/ic_item_device" />
 
                     <TextView
                         android:id="@+id/activity_upkeepreportitem_devicename"
@@ -121,7 +134,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_installpos" />
+                        android:text="@string/activity_upkeephistoryitem_installpos"
+                        android:drawableLeft="@drawable/ic_item_construction" />
 
                     <TextView
                         android:id="@+id/activity_upkeepreportitem_installpos"
@@ -134,7 +148,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_maintainpos" />
+                        android:text="@string/activity_upkeephistoryitem_maintainpos"
+                        android:drawableLeft="@drawable/ic_item_mtposition" />
 
                     <TextView
                         android:id="@+id/activity_upkeepreportitem_maintainpos"
@@ -147,7 +162,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_taskdetail" />
+                        android:text="@string/activity_upkeephistoryitem_taskdetail"
+                        android:drawableLeft="@drawable/ic_item_require" />
 
                     <TextView
                         android:id="@+id/activity_upkeepreportitem_taskdetail"
@@ -159,7 +175,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_group"
-                    android:text="@string/activity_upkeephistoryitem_taskgroup" />
+                    android:text="@string/activity_upkeephistoryitem_taskgroup"
+                    android:drawableLeft="@drawable/ic_item_groupread" />
 
                 <TextView style="@style/item_divide" />
 
@@ -167,7 +184,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_sendtime" />
+                        android:text="@string/activity_upkeephistoryitem_sendtime"
+                        android:drawableLeft="@drawable/ic_item_time" />
 
                     <TextView
                         android:id="@+id/activity_upkeepreportitem_sendtime"
@@ -180,7 +198,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_sendperson" />
+                        android:text="@string/activity_upkeephistoryitem_sendperson"
+                        android:drawableLeft="@drawable/ic_item_person" />
 
                     <TextView
                         android:id="@+id/activity_upkeepreportitem_sendperson"
@@ -193,7 +212,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_needhour" />
+                        android:text="@string/activity_upkeephistoryitem_needhour"
+                        android:drawableLeft="@drawable/ic_item_hours" />
 
                     <TextView
                         android:id="@+id/activity_upkeepreportitem_needhour"
@@ -206,7 +226,8 @@
 
                     <TextView
                         style="@style/activity_repairmanageitem_textview_item"
-                        android:text="@string/activity_upkeephistoryitem_needfinishtime" />
+                        android:text="@string/activity_upkeephistoryitem_needfinishtime"
+                        android:drawableLeft="@drawable/ic_item_time" />
 
                     <TextView
                         android:id="@+id/activity_upkeepreportitem_needfinishtime"

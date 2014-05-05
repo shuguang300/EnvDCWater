@@ -109,8 +109,21 @@
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:layout_weight">1</item>
 	    <item name="android:gravity">center_vertical|left</item>
+	    <item name="android:layout_gravity">center_vertical</item>
+	    <item name="android:padding">5dp</item>
 	    <item name="android:textSize">@dimen/middle</item>
-	    <item name="android:drawableLeft">@drawable/activity_machinemanage_arrowleft</item>
+	</style>
+	
+	<!-- 设备维修单个记录查看界面中的 编辑菜单样式 -->
+	<style name="activity_repairmanageitem_textview">
+	    <item name="android:layout_width">0dp</item>
+	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:layout_weight">1</item>
+	    <item name="android:singleLine">false</item>
+	    <item name="android:textSize">@dimen/middle</item>
+	    <item name="android:paddingRight">5dp</item>
+	    <item name="android:layout_gravity">center_vertical</item>
+	    <item name="android:gravity">center_vertical|right</item>
 	</style>
 	
 	<!-- 设备维修单个记录查看界面中的 三个大表单的描述信息 -->
@@ -118,6 +131,8 @@
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:padding">5dp</item>
+	    <item name="android:gravity">center_vertical</item>
+	    <item name="android:layout_gravity">center_vertical</item>
 	    <item name="android:background">@color/gray</item>
 	    <item name="android:textSize">@dimen/large</item>
 	</style>
@@ -132,16 +147,10 @@
 	    <item name="android:orientation">vertical</item>
 	</style>
 	
-	<!-- 设备维修单个记录查看界面中的 编辑菜单样式 -->
-	<style name="activity_repairmanageitem_textview">
-	    <item name="android:layout_width">0dp</item>
-	    <item name="android:layout_height">wrap_content</item>
-	    <item name="android:layout_weight">1</item>
-	    <item name="android:singleLine">false</item>
-	    <item name="android:textSize">@dimen/middle</item>
-	    <item name="android:paddingRight">5dp</item>
-	    <item name="android:layout_gravity">center_vertical</item>
-	    <item name="android:gravity">center_vertical|right</item>
+	
+	<style name="SubmitButtonStyle" parent="@android:style/Widget.Button">
+	    <item name="android:background">@drawable/btn_style_red</item>
+	    <item name="android:textColor">@color/white</item>
 	</style>
 	
 	<style name="MediaFileViewButtonStyle" parent="@android:style/Widget.Button">

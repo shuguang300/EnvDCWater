@@ -12,6 +12,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -115,6 +117,23 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		
 		mListView.setAdapter(deviceAdapter);
 		spConstruction.setAdapter(constructionAdapter);
+		etDeviceName.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {
+			}
+			@Override
+			public void afterTextChanged(Editable s) {
+				int count = etDeviceName.getText().toString().length();
+				if(count==0){
+					btClear.setVisibility(View.GONE);
+				}else {
+					btClear.setVisibility(View.VISIBLE);
+				}
+			}
+		});
 		
 	}
 	
@@ -270,12 +289,12 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if(convertView==null){
-				convertView = LayoutInflater.from(DeviceSelectActivity.this).inflate(R.layout.item_deviceselect, null);
+				convertView = LayoutInflater.from(DeviceSelectActivity.this).inflate(R.layout.item_devicelist, null);
 			}
-			TextView name = (TextView)convertView.findViewById(R.id.item_deviceselect_devicename);
-			TextView cons = (TextView)convertView.findViewById(R.id.item_deviceselect_devicecons);
-			name.setText("设备名称："+deviceDataArrayList.get(position).get("DeviceName"));
-			cons.setText("所属构筑物："+deviceDataArrayList.get(position).get("InstallPosition"));
+			TextView nameTextView = (TextView)convertView.findViewById(R.id.item_devicelist_name);
+			nameTextView.setText(deviceDataArrayList.get(position).get("DeviceName").toString());
+			TextView consTextView = (TextView)convertView.findViewById(R.id.item_devicelist_cons);
+			consTextView.setText(deviceDataArrayList.get(position).get("InstallPosition").toString());
 			return convertView;
 		}
 	}

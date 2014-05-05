@@ -70,6 +70,10 @@ public class EnumList {
 		 * 权限图片ID
 		 */
 		public static final String RightResourceID = "UserRightResourceID";
+		/**
+		 * 任务数量
+		 */
+		public static final String RightTaskCount = "UserRightTaskCount";
 		
 		private int mRightCode;
 		private String mRightName;

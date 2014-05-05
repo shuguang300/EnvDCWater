@@ -3,12 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp" >
+    
+    <TextView
+        android:id="@+id/item_maintainhistory_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:drawableRight="@drawable/activity_machinemanage_arrowright"
+        android:gravity="right|center_vertical"
+        android:textSize="@dimen/middle"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/item_maintainhistory_state"
         android:orientation="vertical" >
 
         <TextView
@@ -41,15 +53,6 @@
             android:textSize="@dimen/middle" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/item_maintainhistory_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:drawableRight="@drawable/activity_machinemanage_arrowright"
-        android:gravity="right|center_vertical"
-        android:textSize="@dimen/middle"
-        android:textStyle="bold" />
+    
 
 </RelativeLayout>

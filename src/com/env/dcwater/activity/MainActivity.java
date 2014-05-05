@@ -2,6 +2,8 @@ package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
+import com.env.dcwater.component.ThreadPool.GetTaskCountByUserPositionID;
 import com.env.dcwater.fragment.NaviBarAdapter;
 import com.env.dcwater.javabean.EnumList.UserRight;
 import com.env.dcwater.util.DataCenterHelper;
@@ -34,14 +37,13 @@ import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
 
 /**
- * 登录后的主界面，主要包含2大区域，左边的是功能模块区
- * 右边的是app常用设置界面
+ * 登录后的主界面，
  * @author sk
  */
 public class MainActivity extends NfcActivity implements OnItemClickListener,OnClickListener{
 	
 	public static final String TAG_STRING = "MainActivity";
-	public static final String ACTION_STRING = "MainActivity";
+	public static final String ACTION_STRING = "com.env.dcwater.activity.MainActivity";
 	private long lastExitTime;
 	private ArrayList<HashMap<String, String>> data;
 	private ActionBar mActionBar;
@@ -52,6 +54,7 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 	private NaviBarAdapter naviBarAdapter;
 	private Button back,forward,refresh,stop;
 	private ProgressBar progressBar;
+	private GetTaskCountByUserPositionID getTaskCount;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,17 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 	 */
 	private void iniData(){
 		data = OperationMethod.getViewByUserRole(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID")));
+		naviBarAdapter = new NaviBarAdapter(MainActivity.this,data);
+		getTaskCount = new GetTaskCountByUserPositionID() {
+			@Override
+			public void onPostExecute(JSONObject result) {
+				if(result!=null){
+					data = OperationMethod.addUserTaskCountInfor(data, result);
+					naviBarAdapter.notifyDataSetChanged();
+				}
+			}
+		};
+		getTaskCount.execute(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID")));
 	}
 	
 	/**
@@ -91,7 +105,7 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 		refresh = (Button)findViewById(R.id.activity_main_refresh);
 		stop = (Button)findViewById(R.id.activity_main_stop);
 		progressBar = (ProgressBar)findViewById(R.id.activity_main_webviewprogress);
-		naviBarAdapter = new NaviBarAdapter(MainActivity.this,data);
+		
 		naviListView.setAdapter(naviBarAdapter);
 		naviListView.setOnItemClickListener(this);
 		
@@ -143,6 +157,7 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 	@Override
 	protected void onResume() {
 		super.onResume();
+		naviBarAdapter.notifyDataSetChanged();
 	}
 	
 	@Override
@@ -170,7 +185,7 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		titleMessage = (TextView)menu.getItem(0).getActionView();
 		titleMessage.setTextColor(getResources().getColor(R.color.white));
-		titleMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.i_small));
+//		titleMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.i_small));
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -209,6 +224,15 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 		if(position==data.size()-1){
 			logOut();
 		}else {
+			if(data.get(position).get(UserRight.RightName).equals(UserRight.REPAIRMANAGE.getName())){
+				data.get(position).put(UserRight.RightTaskCount, "");
+			}else if(data.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPAPPROVE.getName())){
+				data.get(position).put(UserRight.RightTaskCount, "");
+			}else if (data.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPREPORT.getName())) {
+				data.get(position).put(UserRight.RightTaskCount, "");
+			}else if (data.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPSEND.getName())) {
+				data.get(position).put(UserRight.RightTaskCount, "");
+			}
 			Intent intent = new Intent(data.get(position).get(UserRight.RightAction));
 			intent.putExtra("action", ACTION_STRING);
 			startActivity(intent);

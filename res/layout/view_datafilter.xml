@@ -13,10 +13,13 @@
             style="@style/view_datafilter_tablerow" >
 
             <TextView
+                android:gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="@string/view_datafilter_time" />
+                android:text="@string/view_datafilter_time"
+                android:drawableLeft="@drawable/ic_item_time" />
 
             <TextView
+                android:gravity="center_vertical"
                 android:id="@+id/view_datafilter_tv_fasttime"
                 android:layout_weight="1"
                 android:text="@string/view_datafilter_fasttime" />
@@ -29,10 +32,13 @@
             style="@style/view_datafilter_tablerow" >
 
             <TextView
+                android:gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="@string/view_datafilter_starttime" />
+                android:text="@string/view_datafilter_starttime"
+                android:drawableLeft="@drawable/ic_item_time" />
 
             <TextView 
+                android:gravity="center_vertical"
                 android:id="@+id/view_datafilter_tv_starttime"
                 android:layout_weight="1" />
         </TableRow>
@@ -45,10 +51,13 @@
 
             <TextView
                 android:layout_weight="1"
-                android:text="@string/view_datafilter_endtime" />
+                android:gravity="center_vertical"
+                android:text="@string/view_datafilter_endtime"
+                android:drawableLeft="@drawable/ic_item_time" />
 
             <TextView 
                 android:id="@+id/view_datafilter_tv_endtime"
+                android:gravity="center_vertical"
                 android:layout_weight="1" />
         </TableRow>
         
@@ -60,10 +69,13 @@
 
             <TextView
                 android:layout_weight="1"
-                android:text="@string/view_datafilter_pos" />
+                android:text="@string/view_datafilter_pos"
+                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/ic_item_construction" />
 
             <TextView 
                 android:id="@+id/view_datafilter_tv_pos"
+                android:gravity="center_vertical"
                 android:layout_weight="1" />
             
         </TableRow>
@@ -77,10 +89,13 @@
 
             <TextView
                 android:layout_weight="1"
-                android:text="@string/view_datafilter_state" />
+                android:gravity="center_vertical"
+                android:text="@string/view_datafilter_state"
+                android:drawableLeft="@drawable/ic_item_state" />
 
             <TextView 
                 android:id="@+id/view_datafilter_tv_state"
+                android:gravity="center_vertical"
                 android:layout_weight="1" />
             
         </TableRow>
@@ -94,6 +109,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/view_datafilter_ok" />
+        android:text="@string/view_datafilter_ok"
+        android:background="@drawable/btn_style_green" />
 
 </LinearLayout>

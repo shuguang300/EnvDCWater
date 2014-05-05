@@ -145,5 +145,38 @@ public class ThreadPool {
 		public abstract void onPostExecute(String result);
 		
 	}
+	
+	/**
+	 * 获取登录用户的任务个数
+	 * @author sk
+	 *
+	 */
+	public static abstract class GetTaskCountByUserPositionID extends AsyncTask<Integer, String, JSONObject>{
+		@Override
+		protected JSONObject doInBackground(Integer... params) {
+			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
+			JSONObject jsonObject = null;
+			try {
+				JSONObject param = new JSONObject();
+				param.put("PlantID", SystemParams.PLANTID_INT);
+				param.put("PositionID", params[0]);
+				result = DataCenterHelper.HttpPostData("GetTaskCountByUserPositionID", param);
+				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
+					JSONObject rootObject = new JSONObject(result);
+					jsonObject = new JSONObject(rootObject.getString("d"));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return jsonObject;
+		}
+		
+		@Override
+		public abstract void onPostExecute(JSONObject result);
+	}
 
 }

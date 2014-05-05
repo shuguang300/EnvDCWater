@@ -17,7 +17,8 @@
 
             <TextView
                 style="@style/activity_repairmanageitem_textview_group"
-                android:text="@string/activity_repairmanageitem_basic" />
+                android:text="@string/activity_repairmanageitem_basic"
+                android:drawableLeft="@drawable/ic_item_groupread" />
 
             <TextView style="@style/item_divide" />
 
@@ -27,7 +28,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_name" />
+                    android:text="@string/activity_repairmanageitem_name"
+                    android:drawableLeft="@drawable/ic_item_device" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_name"
@@ -42,7 +44,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_type" />
+                    android:text="@string/activity_repairmanageitem_type"
+                    android:drawableLeft="@drawable/ic_item_devicetype" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_type"
@@ -57,7 +60,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_sn" />
+                    android:text="@string/activity_repairmanageitem_sn"
+                    android:drawableLeft="@drawable/ic_item_devicesn" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_sn"
@@ -72,7 +76,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_position" />
+                    android:text="@string/activity_repairmanageitem_position"
+                    android:drawableLeft="@drawable/ic_item_construction" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_position"
@@ -87,7 +92,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_starttime" />
+                    android:text="@string/activity_repairmanageitem_starttime"
+                    android:drawableLeft="@drawable/ic_item_time" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_starttime"
@@ -102,7 +108,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_manufacturer" />
+                    android:text="@string/activity_repairmanageitem_manufacturer"
+                    android:drawableLeft="@drawable/ic_item_manufature" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_manufacturer"
@@ -116,7 +123,8 @@
 
             <TextView
                 style="@style/activity_repairmanageitem_textview_group"
-                android:text="@string/activity_repairmanageitem_fault" />
+                android:text="@string/activity_repairmanageitem_fault"
+                android:drawableLeft="@drawable/ic_item_groupread" />
 
             <TextView style="@style/item_divide" />
 
@@ -126,7 +134,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_faulttime" />
+                    android:text="@string/activity_repairmanageitem_faulttime"
+                    android:drawableLeft="@drawable/ic_item_time" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_faulttime"
@@ -141,7 +150,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_faultphenomenon" />
+                    android:text="@string/activity_repairmanageitem_faultphenomenon"
+                    android:drawableLeft="@drawable/ic_item_phenomenon" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_faultphenomenon"
@@ -156,7 +166,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_handlestep" />
+                    android:text="@string/activity_repairmanageitem_handlestep"
+                    android:drawableLeft="@drawable/ic_item_steps" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_handlestep"
@@ -171,7 +182,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_otherstep" />
+                    android:text="@string/activity_repairmanageitem_otherstep"
+                    android:drawableLeft="@drawable/ic_item_otherstep" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_otherstep"
@@ -185,7 +197,8 @@
 
             <TextView
                 style="@style/activity_repairmanageitem_textview_group"
-                android:text="@string/activity_repairmanageitem_people" />
+                android:text="@string/activity_repairmanageitem_people"
+                android:drawableLeft="@drawable/ic_item_groupread" />
 
             <TextView style="@style/item_divide" />
 
@@ -195,7 +208,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_taskpeople" />
+                    android:text="@string/activity_repairmanageitem_taskpeople"
+                    android:drawableLeft="@drawable/ic_item_person" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_taskpeople"
@@ -209,7 +223,8 @@
 
             <TextView
                 style="@style/activity_repairmanageitem_textview_group"
-                android:text="@string/activity_repairmanageitem_repair" />
+                android:text="@string/activity_repairmanageitem_repair"
+                android:drawableLeft="@drawable/ic_item_groupread" />
 
             <TextView style="@style/item_divide" />
 
@@ -219,7 +234,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_repairsttime" />
+                    android:text="@string/activity_repairmanageitem_repairsttime"
+                    android:drawableLeft="@drawable/ic_item_time" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_repairsttime"
@@ -234,7 +250,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_repairsender" />
+                    android:text="@string/activity_repairmanageitem_repairsender"
+                    android:drawableLeft="@drawable/ic_item_person" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_repairpeople"
@@ -249,7 +266,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_repairtimecost" />
+                    android:text="@string/activity_repairmanageitem_repairtimecost"
+                    android:drawableLeft="@drawable/ic_item_hours" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_repairtimecost"
@@ -264,7 +282,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_repaircontent" />
+                    android:text="@string/activity_repairmanageitem_repaircontent"
+                    android:drawableLeft="@drawable/ic_item_content" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_repaircontent"
@@ -279,7 +298,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_repairresult" />
+                    android:text="@string/activity_repairmanageitem_repairresult"
+                    android:drawableLeft="@drawable/ic_item_result" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_repairresult"
@@ -294,7 +314,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_repairendtime" />
+                    android:text="@string/activity_repairmanageitem_repairendtime"
+                    android:drawableLeft="@drawable/ic_item_time" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_repairendtime"
@@ -309,7 +330,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_repairthingcost" />
+                    android:text="@string/activity_repairmanageitem_repairthingcost"
+                    android:drawableLeft="@drawable/ic_item_things" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_repairthingcost"
@@ -324,7 +346,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_repairmoneycost" />
+                    android:text="@string/activity_repairmanageitem_repairmoneycost"
+                    android:drawableLeft="@drawable/ic_item_money" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_repairmoneycost"
@@ -338,7 +361,8 @@
 
             <TextView
                 style="@style/activity_repairmanageitem_textview_group"
-                android:text="@string/activity_repairmanageitem_verify" />
+                android:text="@string/activity_repairmanageitem_verify"
+                android:drawableLeft="@drawable/ic_item_groupread" />
 
             <TextView style="@style/item_divide" />
 
@@ -348,7 +372,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_verifyresult" />
+                    android:text="@string/activity_repairmanageitem_verifyresult"
+                    android:drawableLeft="@drawable/ic_item_approve" />
 
                 <Switch
                     android:id="@+id/activity_repairmanageitem_verifyresult"
@@ -366,7 +391,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_verifypeople" />
+                    android:text="@string/activity_repairmanageitem_verifypeople"
+                    android:drawableLeft="@drawable/ic_item_person" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_verifypeople"
@@ -381,7 +407,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_equipmentopinion" />
+                    android:text="@string/activity_repairmanageitem_equipmentopinion"
+                    android:drawableLeft="@drawable/ic_item_opinion" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_equipmentopinion"
@@ -396,7 +423,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_productionopinion" />
+                    android:text="@string/activity_repairmanageitem_productionopinion"
+                    android:drawableLeft="@drawable/ic_item_opinion" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_productionopinion"
@@ -411,7 +439,8 @@
 
                 <TextView
                     style="@style/activity_repairmanageitem_textview_item"
-                    android:text="@string/activity_repairmanageitem_plantopinion" />
+                    android:text="@string/activity_repairmanageitem_plantopinion"
+                    android:drawableLeft="@drawable/ic_item_opinion" />
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_plantopinion"

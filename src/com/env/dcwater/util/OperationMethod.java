@@ -32,6 +32,7 @@ public class OperationMethod {
 		map.put(UserRight.RightCode, UserRight.USERINFORMATION.getCode()+"");
 		map.put(UserRight.RightAction, UserRight.USERINFORMATION.getAction());		
 		map.put(UserRight.RightResourceID, UserRight.USERINFORMATION.getResourceID()+"");		
+		map.put(UserRight.RightTaskCount, "");		
 		data.add(map);
 		
 		
@@ -46,6 +47,7 @@ public class OperationMethod {
 			map.put(UserRight.RightCode, UserRight.MACHINEINFO.getCode()+"");
 			map.put(UserRight.RightAction, UserRight.MACHINEINFO.getAction());
 			map.put(UserRight.RightResourceID, UserRight.MACHINEINFO.getResourceID()+"");
+			map.put(UserRight.RightTaskCount, "");
 			data.add(map);
 			
 			if (PositionID == UserRole.PRODUCTIONOPERATION.getState()) {
@@ -57,6 +59,7 @@ public class OperationMethod {
 				map.put(UserRight.RightCode, UserRight.UPKEEPSEND.getCode()+"");
 				map.put(UserRight.RightAction, UserRight.UPKEEPSEND.getAction());
 				map.put(UserRight.RightResourceID, UserRight.UPKEEPSEND.getResourceID()+"");
+				map.put(UserRight.RightTaskCount, "");
 				data.add(map);
 				//审核保养工单
 				map = new HashMap<String, String>();
@@ -64,6 +67,7 @@ public class OperationMethod {
 				map.put(UserRight.RightCode, UserRight.UPKEEPAPPROVE.getCode()+"");
 				map.put(UserRight.RightAction, UserRight.UPKEEPAPPROVE.getAction());
 				map.put(UserRight.RightResourceID, UserRight.UPKEEPAPPROVE.getResourceID()+"");
+				map.put(UserRight.RightTaskCount, "");
 				data.add(map);
 				
 			}else if (PositionID == UserRole.PRODUCTIONCHIEF.getState()) {
@@ -75,6 +79,7 @@ public class OperationMethod {
 				map.put(UserRight.RightCode, UserRight.UPKEEPREPORT.getCode()+"");
 				map.put(UserRight.RightAction, UserRight.UPKEEPREPORT.getAction());
 				map.put(UserRight.RightResourceID, UserRight.UPKEEPREPORT.getResourceID()+"");
+				map.put(UserRight.RightTaskCount, "");
 				data.add(map);
 				
 			}else if (PositionID == UserRole.PLANTER.getState()) {
@@ -88,6 +93,7 @@ public class OperationMethod {
 		map.put(UserRight.RightCode, UserRight.REPAIRMANAGE.getCode()+"");
 		map.put(UserRight.RightAction, UserRight.REPAIRMANAGE.getAction());
 		map.put(UserRight.RightResourceID, UserRight.REPAIRMANAGE.getResourceID()+"");
+		map.put(UserRight.RightTaskCount, "");
 		data.add(map);
 		//维修记录
 		map = new HashMap<String, String>();
@@ -95,6 +101,7 @@ public class OperationMethod {
 		map.put(UserRight.RightCode, UserRight.MAINTAINHISTORY.getCode()+"");
 		map.put(UserRight.RightAction, UserRight.MAINTAINHISTORY.getAction());
 		map.put(UserRight.RightResourceID, UserRight.MAINTAINHISTORY.getResourceID()+"");
+		map.put(UserRight.RightTaskCount, "");
 		data.add(map);
 		//养护记录
 		map = new HashMap<String, String>();
@@ -102,6 +109,7 @@ public class OperationMethod {
 		map.put(UserRight.RightCode, UserRight.UPKEEPHISTORY.getCode()+"");
 		map.put(UserRight.RightAction, UserRight.UPKEEPHISTORY.getAction());
 		map.put(UserRight.RightResourceID, UserRight.UPKEEPHISTORY.getResourceID()+"");
+		map.put(UserRight.RightTaskCount, "");
 		data.add(map);
 		//用户设置
 		map = new HashMap<String, String>();
@@ -109,6 +117,7 @@ public class OperationMethod {
 		map.put(UserRight.RightCode, UserRight.USERCONFIG.getCode()+"");
 		map.put(UserRight.RightAction, UserRight.USERCONFIG.getAction());
 		map.put(UserRight.RightResourceID, UserRight.USERCONFIG.getResourceID()+"");
+		map.put(UserRight.RightTaskCount, "");
 		data.add(map);
 		//注销
 		map = new HashMap<String, String>();
@@ -116,9 +125,46 @@ public class OperationMethod {
 		map.put(UserRight.RightCode, "");
 		map.put(UserRight.RightAction, "");
 		map.put(UserRight.RightResourceID, R.drawable.ic_logout+"");
+		map.put(UserRight.RightTaskCount, "");
 		data.add(map);
 		return data;
 		
+	}
+	
+	/**
+	 * 添加用户任务数量
+	 * @param data
+	 * @param taskcountObject
+	 * @return
+	 * @throws JSONException 
+	 */
+	public static ArrayList<HashMap<String, String>> addUserTaskCountInfor(ArrayList<HashMap<String, String>> data, JSONObject taskcountObject) {
+		try {
+			HashMap<String, String> map = null;
+			int repair = LogicMethod.getRightInt(taskcountObject.getString("RepairTaskCount"));
+			int send = LogicMethod.getRightInt(taskcountObject.getString("MaintainTaskNeedSendCount"));
+			int approve = LogicMethod.getRightInt(taskcountObject.getString("MaintainTaskApproveCount"));
+			int report = LogicMethod.getRightInt(taskcountObject.getString("MaintainTaskReceiptCount"));
+			for(int i =0;i<data.size();i++){
+				map = data.get(i);
+				if(map.get(UserRight.RightName).equals(UserRight.REPAIRMANAGE.getName())){
+					map.put(UserRight.RightTaskCount, repair>0?repair+"":"");
+					continue;
+				}else if(map.get(UserRight.RightName).equals(UserRight.UPKEEPAPPROVE.getName())){
+					map.put(UserRight.RightTaskCount, approve>0?approve+"":"");
+					continue;
+				}else if (map.get(UserRight.RightName).equals(UserRight.UPKEEPREPORT.getName())) {
+					map.put(UserRight.RightTaskCount, report>0?report+"":"");
+					continue;
+				}else if (map.get(UserRight.RightName).equals(UserRight.UPKEEPSEND.getName())) {
+					map.put(UserRight.RightTaskCount, send>0?send+"":"");
+					continue;
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return data;
 	}
 	
 	/**
