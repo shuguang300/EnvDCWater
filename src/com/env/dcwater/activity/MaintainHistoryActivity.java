@@ -2,21 +2,16 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -60,7 +54,6 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	private String receivedAction;
 	private HashMap<String, String> receivedData;
 	private TextView titleMessage;
-	private SpannableString spannableString;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -336,23 +329,13 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 			}
 			HashMap<String, String> map = getItem(position);
 			TextView name = (TextView)convertView.findViewById(R.id.item_maintainhistory_name);
-			spannableString = new SpannableString("故障设备："+map.get("DeviceName"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			name.setText(spannableString);
+			name.setText(map.get("DeviceName"));
 			TextView sttime = (TextView)convertView.findViewById(R.id.item_maintainhistory_faulttime);
-			spannableString = new SpannableString("故障时间："+map.get("AccidentOccurTime"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			sttime.setText(spannableString);
+			sttime.setText(map.get("AccidentOccurTime")+"故障");
 			TextView endtime = (TextView)convertView.findViewById(R.id.item_maintainhistory_endtime);
-			spannableString = new SpannableString("完成时间："+map.get("RepairedTime"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			endtime.setText(spannableString);
-			TextView info = (TextView)convertView.findViewById(R.id.item_maintainhistory_info);
-			spannableString = new SpannableString("故障现象："+map.get("AccidentDetail"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			info.setText(spannableString);
-			TextView state = (TextView)convertView.findViewById(R.id.item_maintainhistory_state);
-			state.setText(map.get("StateDescription"));
+			endtime.setText(map.get("RepairedTime")+"完成");
+//			TextView phenomenon = (TextView)convertView.findViewById(R.id.item_maintainhistory_phenomenon);
+//			phenomenon.setText(map.get("AccidentDetail"));
 			return convertView;
 		}
 	}

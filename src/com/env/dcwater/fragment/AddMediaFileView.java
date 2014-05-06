@@ -56,7 +56,7 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 		
 		setWidth(LayoutParams.MATCH_PARENT);
 		setHeight(LayoutParams.WRAP_CONTENT);
-		setAnimationStyle(R.style.popupwindow_anim);
+		setAnimationStyle(R.style.Popupwindow_anim);
 		
 		btVoice = (Button)mView.findViewById(R.id.view_addmediafile_voice);
 		btPhoto = (Button)mView.findViewById(R.id.view_addmediafile_photo);

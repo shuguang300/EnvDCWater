@@ -1,48 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-	<style name="fragmentcontroll_item">
-	    <item name="android:layout_width">match_parent</item>
-	    <item name="android:layout_height">wrap_content</item>
-	    <item name="android:layout_weight">1</item>
-	    <item name="android:textColor">@color/white</item>
-	    <item name="android:button">@null</item>
-	    <item name="android:gravity">center_horizontal</item>
-	    <item name="android:textSize">@dimen/ii_small</item>
-	</style>
+	
 	<!-- popupwindow 特效 -->
-	<style name="popupwindow_anim" parent="android:Animation">
+	<style name="Popupwindow_anim" parent="android:Animation">
        	<item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
     
-	<style name="activity_titlebar">
-	    <item name="android:layout_width">match_parent</item>
-	    <item name="android:layout_height">@dimen/ii_large</item>
-	    <item name="android:gravity">center_vertical</item>
-	    <item name="android:background">@color/lightblack</item>
-	</style>
-	<style name="fragmentitem_titlepart">
-	    <item name="android:layout_width">wrap_content</item>
-	    <item name="android:layout_height">wrap_content</item>
-	    <item name="android:layout_alignParentLeft">true</item>
-	    <item name="android:layout_centerVertical">true</item>
-	    <item name="android:textSize">@dimen/large</item>
-	</style>
-	<style name="fragmentitem_valuepart">
-	    <item name="android:layout_width">wrap_content</item>
-	    <item name="android:layout_height">wrap_content</item>
-	    <item name="android:layout_alignParentRight">true</item>
-	    <item name="android:layout_centerVertical">true</item>
-	    <item name="android:textSize">@dimen/large</item>
-	</style>
+	
 	<!---->
-	<style name="inforitem_withallconner">
+	<style name="ItemBlueBgWithAllConner">
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:padding">10dp</item>
 	    <item name="android:layout_marginTop">5dp</item>
 	    <item name="android:clickable">true</item>
-	    <item name="android:background">@drawable/inforitem_withallconner_blue_bg</item>
+	    <item name="android:background">@drawable/item_bg_withallcorner_blue</item>
+	</style>
+	
+	<!-- 设备维修单个记录查看界面中的 每一横列的样式-->
+	<style name="ItemLineStyle">
+	    <item name="android:layout_width">match_parent</item>
+	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:clickable">true</item>
+	    <item name="android:background">@drawable/item_bg_withnocorner_blue</item>
 	</style>
 	
 	<!--  -->
@@ -65,46 +46,31 @@
     </style>
 	
 	<!-- 筛选控件的 条件样式 -->
-	<style name="view_datafilter_tablerow">
+	<style name="ViewDatafilterTablerow">
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:padding">15dp</item>
 	    <item name="android:clickable">true</item>
-	    <item name="android:background">@drawable/inforitem_withnoconner_blue_bg</item>
+	    <item name="android:background">@drawable/item_bg_withnocorner_blue</item>
 	</style>
 	
 	<!-- 切换fragment的radio的样式 -->
-	<style name="fragment_button">
+	<style name="WebviewController">
 	    <item name="android:layout_width">wrap_content</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:layout_weight">1</item>
-	</style>
-	<!-- 主界面 用户权限的模块的样式 -->
-	<style name="activity_userright_group">
-	    <item name="android:layout_width">match_parent</item>
-	    <item name="android:layout_height">wrap_content</item>
-	    <item name="android:layout_margin">5dp</item>
-	    <item name="android:padding">5dp</item>
-	    <item name="android:background">@drawable/inforitem_withallconner_blue_bg</item>
-	</style>
-	
-	<!-- 设备维修单个记录查看界面中的 每一横列的样式-->
-	<style name="activity_repairmanageitem_tablerow">
-	    <item name="android:layout_width">match_parent</item>
-	    <item name="android:layout_height">wrap_content</item>
-	    <item name="android:clickable">true</item>
-	    <item name="android:background">@drawable/inforitem_withnoconner_blue_bg</item>
+	    <item name="android:background">@drawable/btn_style_green</item>
 	</style>
 	
 	<!-- 分隔符 样式-->
-	<style name="item_divide">
+	<style name="ItemDivider">
    	    <item name="android:background">@color/gray</item>
    	    <item name="android:layout_height">1dp</item>
    	    <item name="android:layout_width">match_parent</item>
    	</style>
    	
 	<!-- 设备维修单个记录查看界面中的 表头信息 -->
-	<style name="activity_repairmanageitem_textview_item">
+	<style name="ItemTitleStyle">
 	    <item name="android:layout_width">0dp</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:layout_weight">1</item>
@@ -115,7 +81,7 @@
 	</style>
 	
 	<!-- 设备维修单个记录查看界面中的 编辑菜单样式 -->
-	<style name="activity_repairmanageitem_textview">
+	<style name="ItemValueStyle">
 	    <item name="android:layout_width">0dp</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:layout_weight">1</item>
@@ -127,7 +93,7 @@
 	</style>
 	
 	<!-- 设备维修单个记录查看界面中的 三个大表单的描述信息 -->
-	<style name="activity_repairmanageitem_textview_group">
+	<style name="ItemGroupTitleStyle">
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:padding">5dp</item>
@@ -138,7 +104,7 @@
 	</style>
 	
 	<!-- 设备维修单个记录查看界面中的 3个大表单的样式 -->
-	<style name="activity_repairmanageitem_tablelayout">
+	<style name="ItemGroupStyle">
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:layout_margin">5dp</item>
@@ -147,6 +113,14 @@
 	    <item name="android:orientation">vertical</item>
 	</style>
 	
+	<style name="ItemLayout">
+	    <item name="android:layout_width">match_parent</item>
+	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:gravity">left|center_vertical</item>
+	    <item name="android:layout_marginLeft">10dp</item>
+	    <item name="android:padding">2dp</item>
+	    <item name="android:textSize">@dimen/middle</item>
+	</style>
 	
 	<style name="SubmitButtonStyle" parent="@android:style/Widget.Button">
 	    <item name="android:background">@drawable/btn_style_red</item>
@@ -157,7 +131,7 @@
 	    <item name="android:layout_width">wrap_content</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:layout_margin">5dp</item>
-	    <item name="android:background">@drawable/ic_launcher</item>
+	    <item name="android:background">@drawable/btn_style_green</item>
 	</style>
 	
 	

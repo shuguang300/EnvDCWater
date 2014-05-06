@@ -10,7 +10,7 @@
 
         <TableRow 
             android:id="@+id/view_datafilter_tablerow_fasttime"
-            style="@style/view_datafilter_tablerow" >
+            style="@style/ViewDatafilterTablerow" >
 
             <TextView
                 android:gravity="center_vertical"
@@ -25,11 +25,11 @@
                 android:text="@string/view_datafilter_fasttime" />
         </TableRow>
         
-        <TextView style="@style/item_divide"/>
+        <TextView style="@style/ItemDivider"/>
 
         <TableRow 
             android:id="@+id/view_datafilter_tablerow_starttime"
-            style="@style/view_datafilter_tablerow" >
+            style="@style/ViewDatafilterTablerow" >
 
             <TextView
                 android:gravity="center_vertical"
@@ -43,11 +43,11 @@
                 android:layout_weight="1" />
         </TableRow>
         
-        <TextView style="@style/item_divide"/>
+        <TextView style="@style/ItemDivider"/>
 
         <TableRow 
             android:id="@+id/view_datafilter_tablerow_endtime"
-            style="@style/view_datafilter_tablerow" >
+            style="@style/ViewDatafilterTablerow" >
 
             <TextView
                 android:layout_weight="1"
@@ -61,11 +61,11 @@
                 android:layout_weight="1" />
         </TableRow>
         
-        <TextView style="@style/item_divide"/>
+        <TextView style="@style/ItemDivider"/>
 
         <TableRow 
             android:id="@+id/view_datafilter_tablerow_pos"
-            style="@style/view_datafilter_tablerow" >
+            style="@style/ViewDatafilterTablerow" >
 
             <TextView
                 android:layout_weight="1"
@@ -80,12 +80,12 @@
             
         </TableRow>
 
-        <TextView style="@style/item_divide"/>
+        <TextView style="@style/ItemDivider"/>
         
 
         <TableRow 
             android:id="@+id/view_datafilter_tablerow_state"
-            style="@style/view_datafilter_tablerow" >
+            style="@style/ViewDatafilterTablerow" >
 
             <TextView
                 android:layout_weight="1"
@@ -100,7 +100,7 @@
             
         </TableRow>
         
-        <TextView style="@style/item_divide"/>
+        <TextView style="@style/ItemDivider"/>
         
     </TableLayout>
 

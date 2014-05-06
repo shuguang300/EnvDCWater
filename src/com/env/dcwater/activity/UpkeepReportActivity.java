@@ -2,21 +2,16 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -55,7 +49,6 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 	private GetServerConsData getServerConsData;
 	private ArrayList<HashMap<String, String>> data;
 	private ProgressDialog mProgressDialog;
-	private SpannableString spannableString;
 	private UpkeepReportItemAdapter adapter;
 	private boolean filter = true;
 	@Override
@@ -263,22 +256,14 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 				convertView = LayoutInflater.from(UpkeepReportActivity.this).inflate(R.layout.item_upkeepreport, null);
 			}
 			HashMap<String, String> map = data.get(position);
-			TextView textView1 = (TextView)convertView.findViewById(R.id.item_upkeepreport_name);
-			spannableString = new SpannableString("设备名称："+map.get("DeviceName"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			textView1.setText(spannableString);
-			TextView textView2 = (TextView)convertView.findViewById(R.id.item_upkeepreport_mtpos);
-			spannableString = new SpannableString("养护部位："+map.get("MaintainPosition"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			textView2.setText(spannableString);
-			TextView textView3 = (TextView)convertView.findViewById(R.id.item_upkeepreport_mtneedtime);
-			spannableString = new SpannableString("养护要求："+map.get("TaskDetail"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			textView3.setText(spannableString);
-			TextView textView4 = (TextView)convertView.findViewById(R.id.item_upkeepreport_mtperiod);
-			spannableString = new SpannableString("养护期限："+map.get("NeedComplete"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			textView4.setText(spannableString);
+			TextView name = (TextView)convertView.findViewById(R.id.item_upkeepreport_name);
+			name.setText(map.get("DeviceName"));
+			TextView mtpos = (TextView)convertView.findViewById(R.id.item_upkeepreport_mtpos);
+			mtpos.setText(map.get("MaintainPosition"));
+//			TextView require = (TextView)convertView.findViewById(R.id.item_upkeepreport_require);
+//			require.setText(map.get("TaskDetail"));
+//			TextView needtime = (TextView)convertView.findViewById(R.id.item_upkeepreport_needtime);
+//			needtime.setText("于"+map.get("NeedComplete")+"之前完成");
 			TextView textView5 = (TextView)convertView.findViewById(R.id.item_upkeepreport_state);
 			textView5.setText(map.get("StateDescription"));
 			return convertView;

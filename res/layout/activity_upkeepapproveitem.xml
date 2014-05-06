@@ -15,78 +15,78 @@
 
         <TableLayout
             android:id="@+id/activity_upkeepapproveitem_approvegroup"
-            style="@style/activity_repairmanageitem_tablelayout" >
+            style="@style/ItemGroupStyle" >
 
             <TextView
-                style="@style/activity_repairmanageitem_textview_group"
+                style="@style/ItemGroupTitleStyle"
                 android:text="@string/activity_upkeephistoryitem_approvegroup"
                 android:drawableLeft="@drawable/ic_item_groupedit" />
 
-            <TextView style="@style/item_divide" />
+            <TextView style="@style/ItemDivider" />
 
             <TableRow
                 android:id="@+id/activity_upkeepapproveitem_approveperson_tr"
-                style="@style/activity_repairmanageitem_tablerow" >
+                style="@style/ItemLineStyle" >
 
                 <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
+                    style="@style/ItemTitleStyle"
                     android:text="@string/activity_upkeephistoryitem_approveperson"
                     android:drawableLeft="@drawable/ic_item_person" />
 
                 <TextView
                     android:id="@+id/activity_upkeepapproveitem_approveperson"
-                    style="@style/activity_repairmanageitem_textview" />
+                    style="@style/ItemValueStyle" />
             </TableRow>
 
-            <TextView style="@style/item_divide" />
+            <TextView style="@style/ItemDivider" />
 
             <TableRow
                 android:id="@+id/activity_upkeepapproveitem_approveresult_tr"
-                style="@style/activity_repairmanageitem_tablerow" >
+                style="@style/ItemLineStyle" >
 
                 <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
+                    style="@style/ItemTitleStyle"
                     android:text="@string/activity_upkeephistoryitem_approveresult"
                     android:drawableLeft="@drawable/ic_item_approve" />
 
                 <Switch
                     android:id="@+id/activity_upkeepapproveitem_approveresult"
-                    style="@style/activity_repairmanageitem_textview"
+                    style="@style/ItemValueStyle"
                     android:drawableRight="@drawable/ic_item_warning"
                     android:textOff="未通过"
                     android:textOn="通过" />
             </TableRow>
 
-            <TextView style="@style/item_divide" />
+            <TextView style="@style/ItemDivider" />
 
             <TableRow
                 android:id="@+id/activity_upkeepapproveitem_approvetime_tr"
-                style="@style/activity_repairmanageitem_tablerow" >
+                style="@style/ItemLineStyle" >
 
                 <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
+                    style="@style/ItemTitleStyle"
                     android:text="@string/activity_upkeephistoryitem_approvetime"
                     android:drawableLeft="@drawable/ic_item_time" />
 
                 <TextView
                     android:id="@+id/activity_upkeepapproveitem_approvetime"
-                    style="@style/activity_repairmanageitem_textview" />
+                    style="@style/ItemValueStyle" />
             </TableRow>
 
-            <TextView style="@style/item_divide" />
+            <TextView style="@style/ItemDivider" />
 
             <TableRow
                 android:id="@+id/activity_upkeepapproveitem_ddopinion_tr"
-                style="@style/activity_repairmanageitem_tablerow" >
+                style="@style/ItemLineStyle" >
 
                 <TextView
-                    style="@style/activity_repairmanageitem_textview_item"
+                    style="@style/ItemTitleStyle"
                     android:text="@string/activity_upkeephistoryitem_ddopinion"
                     android:drawableLeft="@drawable/ic_item_opinion" />
 
                 <TextView
                     android:id="@+id/activity_upkeepapproveitem_ddopinion"
-                    style="@style/activity_repairmanageitem_textview"
+                    style="@style/ItemValueStyle"
                     android:drawableRight="@drawable/ic_item_warning" />
             </TableRow>
         </TableLayout>
@@ -112,213 +112,213 @@
 
             <TableLayout
                 android:id="@+id/activity_upkeepapproveitem_devicegroup"
-                style="@style/activity_repairmanageitem_tablelayout" >
+                style="@style/ItemGroupStyle" >
 
                 <TextView
-                    style="@style/activity_repairmanageitem_textview_group"
+                    style="@style/ItemGroupTitleStyle"
                     android:text="@string/activity_upkeephistoryitem_devicegroup"
                     android:drawableLeft="@drawable/ic_item_groupread" />
 
-                <TextView style="@style/item_divide" />
+                <TextView style="@style/ItemDivider" />
 
                 <TableRow
                     android:id="@+id/activity_upkeepapproveitem_name_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                    style="@style/ItemLineStyle" >
 
                     <TextView
-                        style="@style/activity_repairmanageitem_textview_item"
+                        style="@style/ItemTitleStyle"
                         android:text="@string/activity_upkeephistoryitem_devicename"
                         android:drawableLeft="@drawable/ic_item_device" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_devicename"
-                        style="@style/activity_repairmanageitem_textview" />
+                        style="@style/ItemValueStyle" />
                 </TableRow>
 
-                <TextView style="@style/item_divide" />
+                <TextView style="@style/ItemDivider" />
 
                 <TableRow
                     android:id="@+id/activity_upkeepapproveitem_installpos_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                    style="@style/ItemLineStyle" >
 
                     <TextView
-                        style="@style/activity_repairmanageitem_textview_item"
+                        style="@style/ItemTitleStyle"
                         android:text="@string/activity_upkeephistoryitem_installpos"
                         android:drawableLeft="@drawable/ic_item_construction" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_installpos"
-                        style="@style/activity_repairmanageitem_textview" />
+                        style="@style/ItemValueStyle" />
                 </TableRow>
 
-                <TextView style="@style/item_divide" />
+                <TextView style="@style/ItemDivider" />
 
                 <TableRow
                     android:id="@+id/activity_upkeepapproveitem_maintainpos_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                    style="@style/ItemLineStyle" >
 
                     <TextView
-                        style="@style/activity_repairmanageitem_textview_item"
+                        style="@style/ItemTitleStyle"
                         android:text="@string/activity_upkeephistoryitem_maintainpos"
                         android:drawableLeft="@drawable/ic_item_mtposition" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_maintainpos"
-                        style="@style/activity_repairmanageitem_textview" />
+                        style="@style/ItemValueStyle" />
                 </TableRow>
 
-                <TextView style="@style/item_divide" />
+                <TextView style="@style/ItemDivider" />
 
                 <TableRow
                     android:id="@+id/activity_upkeepapproveitem_maintaindetail_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                    style="@style/ItemLineStyle" >
 
                     <TextView
-                        style="@style/activity_repairmanageitem_textview_item"
+                        style="@style/ItemTitleStyle"
                         android:text="@string/activity_upkeephistoryitem_taskdetail"
                         android:drawableLeft="@drawable/ic_item_require" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_taskdetail"
-                        style="@style/activity_repairmanageitem_textview" />
+                        style="@style/ItemValueStyle" />
                 </TableRow>
             </TableLayout>
 
             <TableLayout
                 android:id="@+id/activity_upkeepapproveitem_taskgroup"
-                style="@style/activity_repairmanageitem_tablelayout" >
+                style="@style/ItemGroupStyle" >
 
                 <TextView
-                    style="@style/activity_repairmanageitem_textview_group"
+                    style="@style/ItemGroupTitleStyle"
                     android:text="@string/activity_upkeephistoryitem_taskgroup"
                     android:drawableLeft="@drawable/ic_item_groupread" />
 
-                <TextView style="@style/item_divide" />
+                <TextView style="@style/ItemDivider" />
 
                 <TableRow
                     android:id="@+id/activity_upkeepapproveitem_sendtime_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                    style="@style/ItemLineStyle" >
 
                     <TextView
-                        style="@style/activity_repairmanageitem_textview_item"
+                        style="@style/ItemTitleStyle"
                         android:text="@string/activity_upkeephistoryitem_sendtime"
                         android:drawableLeft="@drawable/ic_item_time" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_sendtime"
-                        style="@style/activity_repairmanageitem_textview" />
+                        style="@style/ItemValueStyle" />
                 </TableRow>
 
-                <TextView style="@style/item_divide" />
+                <TextView style="@style/ItemDivider" />
 
                 <TableRow
                     android:id="@+id/activity_upkeepapproveitem_sendperson_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                    style="@style/ItemLineStyle" >
 
                     <TextView
-                        style="@style/activity_repairmanageitem_textview_item"
+                        style="@style/ItemTitleStyle"
                         android:text="@string/activity_upkeephistoryitem_sendperson"
                         android:drawableLeft="@drawable/ic_item_person" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_sendperson"
-                        style="@style/activity_repairmanageitem_textview" />
+                        style="@style/ItemValueStyle" />
                 </TableRow>
 
-                <TextView style="@style/item_divide" />
+                <TextView style="@style/ItemDivider" />
 
                 <TableRow
                     android:id="@+id/activity_upkeepapproveitem_needhour_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                    style="@style/ItemLineStyle" >
 
                     <TextView
-                        style="@style/activity_repairmanageitem_textview_item"
+                        style="@style/ItemTitleStyle"
                         android:text="@string/activity_upkeephistoryitem_needhour"
                         android:drawableLeft="@drawable/ic_item_hours" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_needhour"
-                        style="@style/activity_repairmanageitem_textview" />
+                        style="@style/ItemValueStyle" />
                 </TableRow>
 
-                <TextView style="@style/item_divide" />
+                <TextView style="@style/ItemDivider" />
 
                 <TableRow
                     android:id="@+id/activity_upkeepapproveitem_needfinishtime_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                    style="@style/ItemLineStyle" >
 
                     <TextView
-                        style="@style/activity_repairmanageitem_textview_item"
+                        style="@style/ItemTitleStyle"
                         android:text="@string/activity_upkeephistoryitem_needfinishtime"
                         android:drawableLeft="@drawable/ic_item_time" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_needfinishtime"
-                        style="@style/activity_repairmanageitem_textview" />
+                        style="@style/ItemValueStyle" />
                 </TableRow>
 
-                <TextView style="@style/item_divide" />
+                <TextView style="@style/ItemDivider" />
 
                 <TableRow
                     android:id="@+id/activity_upkeepapproveitem_maintainperson_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                    style="@style/ItemLineStyle" >
 
                     <TextView
-                        style="@style/activity_repairmanageitem_textview_item"
+                        style="@style/ItemTitleStyle"
                         android:text="@string/activity_upkeephistoryitem_maintainperson"
                         android:drawableLeft="@drawable/ic_item_person" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_maintainperson"
-                        style="@style/activity_repairmanageitem_textview" />
+                        style="@style/ItemValueStyle" />
                 </TableRow>
 
-                <TextView style="@style/item_divide" />
+                <TextView style="@style/ItemDivider" />
 
                 <TableRow
                     android:id="@+id/activity_upkeepapproveitem_backperson_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                    style="@style/ItemLineStyle" >
 
                     <TextView
-                        style="@style/activity_repairmanageitem_textview_item"
+                        style="@style/ItemTitleStyle"
                         android:text="@string/activity_upkeephistoryitem_backperson"
                         android:drawableLeft="@drawable/ic_item_person" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_backperson"
-                        style="@style/activity_repairmanageitem_textview" />
+                        style="@style/ItemValueStyle" />
                 </TableRow>
 
-                <TextView style="@style/item_divide" />
+                <TextView style="@style/ItemDivider" />
 
                 <TableRow
                     android:id="@+id/activity_upkeepapproveitem_actualhour_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                    style="@style/ItemLineStyle" >
 
                     <TextView
-                        style="@style/activity_repairmanageitem_textview_item"
+                        style="@style/ItemTitleStyle"
                         android:text="@string/activity_upkeephistoryitem_actualhour"
                         android:drawableLeft="@drawable/ic_item_hours" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_actualhour"
-                        style="@style/activity_repairmanageitem_textview" />
+                        style="@style/ItemValueStyle" />
                 </TableRow>
 
-                <TextView style="@style/item_divide" />
+                <TextView style="@style/ItemDivider" />
 
                 <TableRow
                     android:id="@+id/activity_upkeepapproveitem_maintainresult_tr"
-                    style="@style/activity_repairmanageitem_tablerow" >
+                    style="@style/ItemLineStyle" >
 
                     <TextView
-                        style="@style/activity_repairmanageitem_textview_item"
+                        style="@style/ItemTitleStyle"
                         android:text="@string/activity_upkeephistoryitem_maintainresult"
                         android:drawableLeft="@drawable/ic_item_result" />
 
                     <TextView
                         android:id="@+id/activity_upkeepapproveitem_maintainresult"
-                        style="@style/activity_repairmanageitem_textview" />
+                        style="@style/ItemValueStyle" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>

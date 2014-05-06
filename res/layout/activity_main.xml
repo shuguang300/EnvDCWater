@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:background="@color/white"
-            android:listSelector="@drawable/inforitem_withnoconner_blue_bg" />
+            android:listSelector="@drawable/item_bg_withnocorner_blue" />
         
     </android.support.v4.widget.DrawerLayout>
     

@@ -12,22 +12,22 @@
 
         <Button
             android:id="@+id/activity_main_back"
-            style="@style/fragment_button"
+            style="@style/WebviewController"
             android:text="@string/view_webview_back" />
 
         <Button
             android:id="@+id/activity_main_forward"
-            style="@style/fragment_button"
+            style="@style/WebviewController"
             android:text="@string/view_webview_forward" />
 
         <Button
             android:id="@+id/activity_main_refresh"
-            style="@style/fragment_button"
+            style="@style/WebviewController"
             android:text="@string/view_webview_refresh" />
 
         <Button
             android:id="@+id/activity_main_stop"
-            style="@style/fragment_button"
+            style="@style/WebviewController"
             android:text="@string/view_webview_stop" />
     </LinearLayout>
 

@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="v_large">80dp</dimen>
-    <dimen name="iv_large">72dp</dimen>
-    <dimen name="iii_large">60dp</dimen>
-    <dimen name="ii_large">48dp</dimen>
-    <dimen name="i_large">24dp</dimen>
-    <dimen name="large">20dp</dimen>
-    <dimen name="middle">16dp</dimen>
-    <dimen name="small">14dp</dimen>
-    <dimen name="i_small">12dp</dimen>
-    <dimen name="ii_small">10dp</dimen>
-    <dimen name="iii_small">8dp</dimen>
-    <dimen name="iv_small">6dp</dimen>
-    <dimen name="v_small">4dp</dimen>
+    <!-- 表单中的表头的图片大小 -->
+    <dimen name="ic_itemtitle_logo">32dp</dimen>
+    <!-- 表单中的表单名称的图片大小 -->
+    <dimen name="ic_itemgroup_logo">48dp</dimen>
+    <!-- 导航布局中的图片大小  -->
+    <dimen name="ic_navibar_logo">48dp</dimen>
+    <!-- 导航布局中的 提醒图片大小  -->
+    <dimen name="ic_navibar_noti">32dp</dimen>
+    <!-- listview的布局中，图片的大小 -->
+    <dimen name="ic_menu">32dp</dimen>
+    <!-- listview的布局中，图片的大小 -->
+    <dimen name="ic_activity_logo">48dp</dimen>
+    <!-- listview的布局中，图片的大小 -->
+    <dimen name="ic_adapter_pic">48dp</dimen>
     
-    <dimen name="ic_18dp">18dp</dimen>
-    <dimen name="ic_24dp">24dp</dimen>
-    <dimen name="ic_32dp">32dp</dimen>
-    <dimen name="ic_36dp">36dp</dimen>
-    <dimen name="ic_48dp">48dp</dimen>
-    <dimen name="ic_64dp">64dp</dimen>
-    <dimen name="ic_72dp">72dp</dimen>
 </resources>

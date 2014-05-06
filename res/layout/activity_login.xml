@@ -11,7 +11,7 @@
         android:id="@+id/activity_login_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_login_account"
+        android:drawableLeft="@drawable/ic_pic_account"
         android:drawablePadding="10dp"
         android:inputType="text" >
     </EditText>
@@ -20,7 +20,7 @@
         android:id="@+id/activity_login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_login_password"
+        android:drawableLeft="@drawable/ic_pic_password"
         android:drawablePadding="10dp"
         android:inputType="textPassword" />
 

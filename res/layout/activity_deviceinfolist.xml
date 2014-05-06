@@ -14,7 +14,7 @@
             android:id="@+id/activity_deviceinfolist_devicelist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:listSelector="@drawable/inforitem_withnoconner_blue_bg" >
+            android:listSelector="@drawable/item_bg_withnocorner_blue" >
         </com.env.dcwater.fragment.PullToRefreshView>
 
         <com.env.dcwater.fragment.PullToRefreshView
@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:background="@color/white"
-            android:listSelector="@drawable/inforitem_withnoconner_blue_bg" >
+            android:listSelector="@drawable/item_bg_withnocorner_blue" >
         </com.env.dcwater.fragment.PullToRefreshView>
         
     </android.support.v4.widget.DrawerLayout>

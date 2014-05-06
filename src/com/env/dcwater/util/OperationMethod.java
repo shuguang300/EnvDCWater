@@ -124,7 +124,7 @@ public class OperationMethod {
 		map.put(UserRight.RightName, "注销");
 		map.put(UserRight.RightCode, "");
 		map.put(UserRight.RightAction, "");
-		map.put(UserRight.RightResourceID, R.drawable.ic_logout+"");
+		map.put(UserRight.RightResourceID, R.drawable.ic_act_logout+"");
 		map.put(UserRight.RightTaskCount, "");
 		data.add(map);
 		return data;

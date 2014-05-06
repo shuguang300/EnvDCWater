@@ -40,7 +40,7 @@
         
     </RelativeLayout>
 
-    <TextView style="@style/item_divide" />
+    <TextView style="@style/ItemDivider" />
 
     <RelativeLayout
         android:paddingLeft="10dp"
@@ -65,7 +65,7 @@
             android:spinnerMode="dialog" />
     </RelativeLayout>
 
-    <TextView style="@style/item_divide" />
+    <TextView style="@style/ItemDivider" />
 
     <Button
         style="@style/SubmitButtonStyle"
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:text="@string/activity_deviceselect_search" />
 
-    <TextView style="@style/item_divide" />
+    <TextView style="@style/ItemDivider" />
 
     <com.env.dcwater.fragment.PullToRefreshView
         android:id="@+id/activity_deviceselect_list"

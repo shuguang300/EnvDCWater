@@ -1,56 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="10dp" >
 
-    <TextView
-        android:id="@+id/item_upkeephistory_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:drawableRight="@drawable/activity_machinemanage_arrowright"
-        android:gravity="right|center_vertical"
-        android:textSize="@dimen/middle"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/item_upkeephistory_pic"
+        android:layout_width="@dimen/ic_adapter_pic"
+        android:layout_height="@dimen/ic_adapter_pic"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/item_upkeephistory_state"
+        android:src="@drawable/ic_pic_default" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/item_upkeephistory_pic"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/item_upkeephistory_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:textSize="@dimen/middle" />
+            style="@style/ItemLayout"
+            android:drawableLeft="@drawable/ic_item_device" />
 
-        <TextView
+        <!-- <TextView
             android:id="@+id/item_upkeephistory_actualmanhours"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:textSize="@dimen/middle" />
+            style="@style/ItemLayout"
+            android:drawableLeft="@drawable/ic_item_hours" /> -->
 
         <TextView
             android:id="@+id/item_upkeephistory_maintaindetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:textSize="@dimen/middle" />
+           style="@style/ItemLayout"
+            android:drawableLeft="@drawable/ic_item_result" />
 
         <TextView
             android:id="@+id/item_upkeephistory_ddopinion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:singleLine="false"
-            android:textSize="@dimen/middle" />
+            style="@style/ItemLayout"
+            android:drawableLeft="@drawable/ic_item_opinion" />
     </LinearLayout>
 
 </RelativeLayout>

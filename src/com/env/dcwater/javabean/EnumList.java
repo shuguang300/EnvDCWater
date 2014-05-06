@@ -14,44 +14,44 @@ public class EnumList {
 		/**
 		 * 个人信息
 		 */
-		USERINFORMATION(99, "个人信息","com.env.dcwater.activity.UserInformationAcivity",R.drawable.ic_userinformation),
+		USERINFORMATION(99, "个人信息","com.env.dcwater.activity.UserInformationAcivity",R.drawable.ic_act_userinformation),
 		/**
 		 * 设置
 		 */
-		USERCONFIG(100, "设置","com.env.dcwater.activity.UserConfigActivity",R.drawable.ic_userconfig),
+		USERCONFIG(100, "设置","com.env.dcwater.activity.UserConfigActivity",R.drawable.ic_act_userconfig),
 		
 		/**
 		 * 设备信息枚举对象
 		 */
-		MACHINEINFO(0, "设备信息查看","com.env.dcwater.activity.DeviceInfoListActivity",R.drawable.ic_devicelist),
+		MACHINEINFO(0, "设备信息查看","com.env.dcwater.activity.DeviceInfoListActivity",R.drawable.ic_act_devicelist),
 		/**
 		 * 报修管理枚举对象
 		 */
-		REPAIRMANAGE(1, "设备维修管理","com.env.dcwater.activity.RepairManageActivity",R.drawable.ic_repair),
+		REPAIRMANAGE(1, "设备维修管理","com.env.dcwater.activity.RepairManageActivity",R.drawable.ic_act_repair),
 		
 		/**
 		 * 保养工单派发
 		 */
-		UPKEEPSEND(2, "保养工单派发","com.env.dcwater.activity.UpkeepSendActivity",R.drawable.ic_upkeepsend),
+		UPKEEPSEND(2, "保养工单派发","com.env.dcwater.activity.UpkeepSendActivity",R.drawable.ic_act_upkeepsend),
 		
 		/**
 		 * 保养工单填写
 		 */
-		UPKEEPREPORT(3, "保养工单填写","com.env.dcwater.activity.UpkeepReportActivity",R.drawable.ic_upkeepreport),
+		UPKEEPREPORT(3, "保养工单填写","com.env.dcwater.activity.UpkeepReportActivity",R.drawable.ic_act_upkeepreport),
 		
 		/**
 		 * 保养工单审核
 		 */
-		UPKEEPAPPROVE(4, "保养工单审核","com.env.dcwater.activity.UpkeepApproveActivity",R.drawable.ic_upkeepapprove),
+		UPKEEPAPPROVE(4, "保养工单审核","com.env.dcwater.activity.UpkeepApproveActivity",R.drawable.ic_act_upkeepapprove),
 		
 		/**
 		 * 维修记录枚举对象
 		 */
-		MAINTAINHISTORY(5, "维修历史记录","com.env.dcwater.activity.MaintainHistoryActivity",R.drawable.ic_repairhistory),
+		MAINTAINHISTORY(5, "维修历史记录","com.env.dcwater.activity.MaintainHistoryActivity",R.drawable.ic_act_repairhistory),
 		/**
 		 * 保养记录枚举对象
 		 */
-		UPKEEPHISTORY(6, "保养历史记录","com.env.dcwater.activity.UpkeepHistoryActivity",R.drawable.ic_upkeephistory);
+		UPKEEPHISTORY(6, "保养历史记录","com.env.dcwater.activity.UpkeepHistoryActivity",R.drawable.ic_act_upkeephistory);
 
 		/**
 		 * 权限名称

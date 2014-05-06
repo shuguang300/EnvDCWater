@@ -2,11 +2,9 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,14 +13,10 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.StyleSpan;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -37,7 +31,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -154,7 +147,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private int userPositionID;
 	private String [] dateFilters,nfcCardAction = {"查看设备信息","设备故障上报"};
 	private AlertDialog.Builder actionChoose;
-	private SpannableString spannableString;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -613,19 +605,13 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			}
 			HashMap<String, String> map = getItem(position);
 			TextView name = (TextView)convertView.findViewById(R.id.item_repairmanage_name);
-			spannableString = new SpannableString("故障设备："+map.get("DeviceName"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			name.setText(spannableString);
-			TextView time = (TextView)convertView.findViewById(R.id.item_repairmanage_time);
-			spannableString = new SpannableString("故障时间："+map.get("AccidentOccurTime"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			time.setText(spannableString);
+			name.setText(map.get("DeviceName"));
+//			TextView time = (TextView)convertView.findViewById(R.id.item_repairmanage_time);
+//			time.setText(map.get("AccidentOccurTime")+"发生故障");
 			TextView state = (TextView)convertView.findViewById(R.id.item_repairmanage_state);
 			state.setText(map.get("StateDescription"));
-			TextView info = (TextView)convertView.findViewById(R.id.item_repairmanage_info);
-			spannableString = new SpannableString("故障现象："+map.get("AccidentDetail"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			info.setText(spannableString);
+			TextView phenomenon = (TextView)convertView.findViewById(R.id.item_repairmanage_phenomenon);
+			phenomenon.setText(map.get("AccidentDetail"));
 			return convertView;
 		}
 	}

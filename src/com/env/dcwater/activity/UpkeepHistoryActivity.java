@@ -2,21 +2,16 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -59,7 +53,6 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	private TextView titleMessage;
 	private ProgressDialog mProgressDialog;
 	private GetUpkeepHistoryData getUpkeepHistoryData;
-	private SpannableString spannableString;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -338,23 +331,13 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 			}
 			HashMap<String, String> map = getItem(position);
 			TextView name = (TextView)convertView.findViewById(R.id.item_upkeephistory_name);
-			spannableString = new SpannableString("设备名称："+map.get("DeviceName"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			name.setText(spannableString);
-			TextView sttime = (TextView)convertView.findViewById(R.id.item_upkeephistory_maintaindetail);
-			spannableString = new SpannableString("完成情况："+map.get("MaintainDetail"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			sttime.setText(spannableString);
-			TextView endtime = (TextView)convertView.findViewById(R.id.item_upkeephistory_actualmanhours);
-			spannableString = new SpannableString("实际工时："+map.get("ActualManHours"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			endtime.setText(spannableString);
-			TextView info = (TextView)convertView.findViewById(R.id.item_upkeephistory_ddopinion);
-			spannableString = new SpannableString("科长意见："+map.get("DDOpinion"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			info.setText(spannableString);
-			TextView state = (TextView)convertView.findViewById(R.id.item_upkeephistory_state);
-			state.setText(map.get("StateDescription"));
+			name.setText(map.get("DeviceName"));
+			TextView maintaindetail = (TextView)convertView.findViewById(R.id.item_upkeephistory_maintaindetail);
+			maintaindetail.setText(map.get("MaintainDetail"));
+//			TextView actualmanhours = (TextView)convertView.findViewById(R.id.item_upkeephistory_actualmanhours);
+//			actualmanhours.setText(map.get("ActualManHours"));
+			TextView opinion = (TextView)convertView.findViewById(R.id.item_upkeephistory_ddopinion);
+			opinion.setText(map.get("DDOpinion"));
 			return convertView;
 		}
 	}

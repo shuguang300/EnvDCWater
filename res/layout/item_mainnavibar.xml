@@ -17,8 +17,8 @@
     
     <TextView 
         android:id="@+id/item_mainnavibar_taskcount"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="@dimen/ic_navibar_noti"
+        android:layout_height="@dimen/ic_navibar_noti"
         android:textSize="@dimen/large"
         android:textColor="@color/white"
         android:gravity="center"

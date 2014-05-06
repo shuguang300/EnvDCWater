@@ -9,7 +9,7 @@
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_alignParentLeft="true"
-        android:background="@drawable/ic_launcher"/>
+        android:background="@drawable/ic_pic_default"/>
 	<LinearLayout 
 	    android:layout_height="72dp"
 	    android:layout_width="match_parent"

@@ -2,21 +2,16 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -51,7 +45,6 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 	private UpkeepSendItemAdapter adapter;
 	private GetUpkeepSendData getUpkeepSendData;
 	private ProgressDialog mProgressDialog;
-	private SpannableString spannableString;
 	private boolean filter = true;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -233,21 +226,13 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 			}
 			HashMap<String, String> map = data.get(position);
 			TextView name = (TextView)convertView.findViewById(R.id.item_upkeepsend_name);
-			spannableString = new SpannableString("设备名称："+map.get("DeviceName"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			name.setText(spannableString);
-			TextView sttime = (TextView)convertView.findViewById(R.id.item_upkeepsend_mtpos);
-			spannableString = new SpannableString("养护部位："+map.get("MaintainPosition"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			sttime.setText(spannableString);
-			TextView endtime = (TextView)convertView.findViewById(R.id.item_upkeepsend_mtdetail);
-			spannableString = new SpannableString("养护内容："+map.get("MaintainSpecification"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			endtime.setText(spannableString);
-			TextView info = (TextView)convertView.findViewById(R.id.item_upkeepsend_mtperiod);
-			spannableString = new SpannableString("养护周期："+map.get("MaintainPeriod"));
-			spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			info.setText(spannableString);
+			name.setText(map.get("DeviceName"));
+			TextView mtpos = (TextView)convertView.findViewById(R.id.item_upkeepsend_mtpos);
+			mtpos.setText(map.get("MaintainPosition"));
+//			TextView mtdetail = (TextView)convertView.findViewById(R.id.item_upkeepsend_mtdetail);
+//			mtdetail.setText(map.get("MaintainSpecification"));
+//			TextView mtperiod = (TextView)convertView.findViewById(R.id.item_upkeepsend_mtperiod);
+//			mtperiod.setText(map.get("MaintainPeriod"));
 			TextView state = (TextView)convertView.findViewById(R.id.item_upkeepsend_state);
 			state.setText(map.get("MaintainStateDescription"));
 			return convertView;

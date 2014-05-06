@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="v_large">80dp</dimen>
+    <dimen name="iv_large">72dp</dimen>
+    <dimen name="iii_large">60dp</dimen>
+    <dimen name="ii_large">48dp</dimen>
+    <dimen name="i_large">24dp</dimen>
+    <dimen name="large">20dp</dimen>
+    <dimen name="middle">16dp</dimen>
+    <dimen name="small">14dp</dimen>
+    <dimen name="i_small">12dp</dimen>
+    <dimen name="ii_small">10dp</dimen>
+    <dimen name="iii_small">8dp</dimen>
+    <dimen name="iv_small">6dp</dimen>
+    <dimen name="v_small">4dp</dimen>
+    
+    
+</resources>
