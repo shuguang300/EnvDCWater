@@ -8,28 +8,25 @@
     <RelativeLayout
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:background="@color/blue"
+    	android:background="@color/transblack"
     	android:id="@+id/view_datetimepick_command">
         <Button 
             android:id="@+id/view_datetimepick_ok"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/btn_style_green"
+            style="@style/GreenButtonStyle"
             android:text="@string/view_datetimepick_ok"/>
         <Button 
             android:id="@+id/view_datetimepick_reset"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/btn_style_green"
+            style="@style/RedButtonStyle"
             android:text="@string/view_datetimepick_reset"/>
         <Button
             android:id="@+id/view_datetimepick_cancel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/btn_style_green"
+            style="@style/GreenButtonStyle"
             android:text="@string/view_datetimepick_cancel"/>
     </RelativeLayout>
     

@@ -388,10 +388,9 @@
         </TableLayout>
 
         <Button
-            style="@style/SubmitButtonStyle"
+            style="@style/RedButtonStyle"
             android:id="@+id/activity_repairmanageitem_submit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/activity_repairmanageitem_submit" />
         
     </LinearLayout>

@@ -1,4 +1,7 @@
 package com.env.dcwater.util;
+import com.env.dcwater.activity.LoginActivity;
+import com.env.dcwater.component.SystemParams;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -144,6 +147,11 @@ public class SystemMethod {
 		actionBar.setHomeButtonEnabled(show);
 	}
 	
+	public static void logOut(Context context){
+		SystemParams.getInstance().setLoggedUserInfo(null);
+		context.startActivity(new Intent(LoginActivity.ACTION_STRING));
+		((Activity) context).finish();
+	}
 	
 	/**
 	 * 打开GPS设置界面

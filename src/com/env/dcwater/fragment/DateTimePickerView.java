@@ -48,7 +48,7 @@ public class DateTimePickerView extends PopupWindow{
 	private void iniView(){
 		setWidth(LayoutParams.MATCH_PARENT);
 		setHeight(LayoutParams.MATCH_PARENT);
-		setAnimationStyle(R.style.Popupwindow_anim);
+		setAnimationStyle(R.style.PopupwindowAnim);
 		setBackgroundDrawable(null);
 		mSubmit = (Button)mView.findViewById(R.id.view_datetimepick_ok);
 		mCancel = (Button)mView.findViewById(R.id.view_datetimepick_cancel);

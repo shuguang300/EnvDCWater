@@ -2,22 +2,29 @@ package com.env.dcwater.fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import com.env.dcwater.R;
+import com.env.dcwater.activity.MainActivity;
 import com.env.dcwater.javabean.EnumList.UserRight;
+import com.env.dcwater.util.SystemMethod;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class NaviBarAdapter extends BaseAdapter{
+public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickListener{
 
 	private ArrayList<HashMap<String, String>> mUserRightData;
 	private Context mContext;
+	private String mAction;
 	
-	public NaviBarAdapter (Context context,ArrayList<HashMap<String, String>> userRightData){
+	public NaviBarAdapter (Context context,ArrayList<HashMap<String, String>> userRightData,String action){
 		mUserRightData = userRightData;
 		mContext = context;
+		mAction = action;
 	}
 
 	@Override
@@ -35,6 +42,7 @@ public class NaviBarAdapter extends BaseAdapter{
 		return position;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if(convertView==null){
@@ -47,11 +55,34 @@ public class NaviBarAdapter extends BaseAdapter{
 		name.setCompoundDrawablesWithIntrinsicBounds(mContext.getResources().getDrawable(Integer.valueOf(map.get(UserRight.RightResourceID))), null, null, null);
 		count.setText(map.get(UserRight.RightTaskCount));
 		if(map.get(UserRight.RightTaskCount).length()>0){
-			count.setBackground(mContext.getResources().getDrawable(R.drawable.ic_item_notification));
+			count.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.ic_item_notification));
 		}else {
-			count.setBackground(null);
+			count.setBackgroundDrawable(null);
 		}
 		return convertView;
 	}
 
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+		if(position==mUserRightData.size()-1){
+			SystemMethod.logOut(mContext);
+		}else if(mUserRightData.get(position).get(UserRight.RightAction).equals(mAction)){
+			doNothing();
+		}else {
+			if(mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.REPAIRMANAGE.getName())){
+				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
+			}else if(mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPAPPROVE.getName())){
+				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
+			}else if (mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPREPORT.getName())) {
+				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
+			}else if (mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPSEND.getName())) {
+				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
+			}
+			Intent intent = new Intent(mUserRightData.get(position).get(UserRight.RightAction));
+			intent.putExtra("action", MainActivity.ACTION_STRING);
+			mContext.startActivity(intent);
+		}
+	}
+	
+	public abstract void doNothing();
 }

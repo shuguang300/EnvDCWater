@@ -40,7 +40,7 @@
         <ProgressBar
             android:id="@+id/activity_main_webviewprogress"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/ii_small"
+            android:layout_height="@dimen/progressbarheight_webview"
             android:max="100"
             android:progress="0"
             android:visibility="gone"

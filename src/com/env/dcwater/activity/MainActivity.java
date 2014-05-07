@@ -18,20 +18,16 @@ import android.view.View.OnClickListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool.GetTaskCountByUserPositionID;
 import com.env.dcwater.fragment.NaviBarAdapter;
-import com.env.dcwater.javabean.EnumList.UserRight;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
@@ -40,7 +36,7 @@ import com.env.dcwater.util.SystemMethod;
  * 登录后的主界面，
  * @author sk
  */
-public class MainActivity extends NfcActivity implements OnItemClickListener,OnClickListener{
+public class MainActivity extends NfcActivity implements OnClickListener{
 	
 	public static final String TAG_STRING = "MainActivity";
 	public static final String ACTION_STRING = "com.env.dcwater.activity.MainActivity";
@@ -79,12 +75,14 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 	 */
 	private void iniData(){
 		data = OperationMethod.getViewByUserRole(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID")));
-		naviBarAdapter = new NaviBarAdapter(MainActivity.this,data);
+		SystemParams.getInstance().setUserRightData(data);
+		
 		getTaskCount = new GetTaskCountByUserPositionID() {
 			@Override
 			public void onPostExecute(JSONObject result) {
 				if(result!=null){
 					data = OperationMethod.addUserTaskCountInfor(data, result);
+					SystemParams.getInstance().setUserRightData(data);
 					naviBarAdapter.notifyDataSetChanged();
 				}
 			}
@@ -106,8 +104,14 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 		stop = (Button)findViewById(R.id.activity_main_stop);
 		progressBar = (ProgressBar)findViewById(R.id.activity_main_webviewprogress);
 		
+		naviBarAdapter = new NaviBarAdapter(MainActivity.this,data,ACTION_STRING){
+			@Override
+			public void doNothing() {
+				drawerLayout.closeDrawer(Gravity.LEFT);
+			}
+		};
 		naviListView.setAdapter(naviBarAdapter);
-		naviListView.setOnItemClickListener(this);
+		naviListView.setOnItemClickListener(naviBarAdapter);
 		
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.getSettings().setDefaultTextEncodingName("utf-8");
@@ -141,13 +145,6 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 		refresh.setOnClickListener(this);
 		stop.setOnClickListener(this);
 	}
-	
-	private void logOut(){
-		SystemParams.getInstance().setLoggedUserInfo(null);
-		startActivity(new Intent(LoginActivity.ACTION_STRING));
-		finish();
-	}
-	
 	
 	@Override
 	protected void onStart() {
@@ -219,26 +216,6 @@ public class MainActivity extends NfcActivity implements OnItemClickListener,OnC
 		}
 	}
 	
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		if(position==data.size()-1){
-			logOut();
-		}else {
-			if(data.get(position).get(UserRight.RightName).equals(UserRight.REPAIRMANAGE.getName())){
-				data.get(position).put(UserRight.RightTaskCount, "");
-			}else if(data.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPAPPROVE.getName())){
-				data.get(position).put(UserRight.RightTaskCount, "");
-			}else if (data.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPREPORT.getName())) {
-				data.get(position).put(UserRight.RightTaskCount, "");
-			}else if (data.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPSEND.getName())) {
-				data.get(position).put(UserRight.RightTaskCount, "");
-			}
-			Intent intent = new Intent(data.get(position).get(UserRight.RightAction));
-			intent.putExtra("action", ACTION_STRING);
-			startActivity(intent);
-		}
-		
-	}
 
 	@Override
 	public void onClick(View v) {

@@ -75,5 +75,20 @@ public class SystemParams {
 	public void setConstructionList(ArrayList<HashMap<String, String>> constructionList) {
 		mConstructionList = constructionList;
 	}
+	
+	private ArrayList<HashMap<String, String>> mUserRightData;
 
+	/**
+	 * @return the userRightData
+	 */
+	public ArrayList<HashMap<String, String>> getUserRightData() {
+		return mUserRightData;
+	}
+
+	/**
+	 * @param userRightData the userRightData to set
+	 */
+	public void setUserRightData(ArrayList<HashMap<String, String>> userRightData) {
+		mUserRightData = userRightData;
+	} 
 }

@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="v_large">80dp</dimen>
-    <dimen name="iv_large">72dp</dimen>
-    <dimen name="iii_large">60dp</dimen>
-    <dimen name="ii_large">48dp</dimen>
-    <dimen name="i_large">24dp</dimen>
-    <dimen name="large">20dp</dimen>
-    <dimen name="middle">16dp</dimen>
-    <dimen name="small">14dp</dimen>
-    <dimen name="i_small">12dp</dimen>
-    <dimen name="ii_small">10dp</dimen>
-    <dimen name="iii_small">8dp</dimen>
-    <dimen name="iv_small">6dp</dimen>
-    <dimen name="v_small">4dp</dimen>
-    
+	<!-- 大号字体 -->
+    <dimen name="fontsize_large">20dp</dimen>
+    <!-- 中号字体 -->
+    <dimen name="fontsize_normal">16dp</dimen>
+    <!-- 小号字体 -->
+    <dimen name="fontsize_small">12dp</dimen>
+    <!-- webview中progressbar的大小 -->
+    <dimen name="progressbarheight_webview">10dp</dimen>
+    <!-- 按钮的高度 -->
+    <dimen name="buttonheight">48dp</dimen>
     
 </resources>

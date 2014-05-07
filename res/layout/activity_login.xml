@@ -32,17 +32,15 @@
         <Button
             android:id="@+id/activity_login_submit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/btn_style_green"
+            style="@style/GreenButtonStyle"
             android:text="@string/activity_login_summit" />
 
         <Button
             android:id="@+id/activity_login_reset"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/btn_style_red"
+            style="@style/RedButtonStyle"
             android:text="@string/activity_login_reset"
             android:textColor="@color/white" />
     </LinearLayout>

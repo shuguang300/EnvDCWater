@@ -89,10 +89,9 @@
         </TableLayout>
 
         <Button
-            style="@style/SubmitButtonStyle"
+            style="@style/RedButtonStyle"
             android:id="@+id/activity_upkeepreportitem_report"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/activity_upkeephistoryitem_report" />
     </LinearLayout>
 

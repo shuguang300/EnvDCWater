@@ -2,23 +2,13 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 	
 	<!-- popupwindow 特效 -->
-	<style name="Popupwindow_anim" parent="android:Animation">
+	<style name="PopupwindowAnim" parent="android:Animation">
        	<item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
     
 	
-	<!---->
-	<style name="ItemBlueBgWithAllConner">
-	    <item name="android:layout_width">match_parent</item>
-	    <item name="android:layout_height">wrap_content</item>
-	    <item name="android:padding">10dp</item>
-	    <item name="android:layout_marginTop">5dp</item>
-	    <item name="android:clickable">true</item>
-	    <item name="android:background">@drawable/item_bg_withallcorner_blue</item>
-	</style>
-	
-	<!-- 设备维修单个记录查看界面中的 每一横列的样式-->
+	<!-- 单个记看界面中的 每一横列的样式-->
 	<style name="ItemLineStyle">
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
@@ -26,7 +16,7 @@
 	    <item name="android:background">@drawable/item_bg_withnocorner_blue</item>
 	</style>
 	
-	<!--  -->
+	<!-- 自定义对话框activity样式 -->
 	<style name="DialogActivityStyle" parent="@android:style/Theme.Dialog">
    	    <item name="android:windowFrame">@null</item><!-- 边框 -->  
         <item name="android:windowIsFloating">true</item><!-- 是否浮现在activity之上 -->  
@@ -35,7 +25,7 @@
         <item name="android:backgroundDimEnabled">false</item><!-- 模糊 --> 
     </style>
     
-	<!--  -->
+	<!-- 自定义对话框样式  -->
    	<style name="CustomDialogStyle" parent="@android:style/Theme.Holo.Light.Dialog">
    	    <item name="android:windowFrame">@null</item><!-- 边框 -->  
         <item name="android:windowIsFloating">true</item><!-- 是否浮现在activity之上 -->  
@@ -45,7 +35,7 @@
         <item name="android:windowBackground">@color/white</item><!-- 模糊 --> 
     </style>
 	
-	<!-- 筛选控件的 条件样式 -->
+	<!-- 筛选控件的 条形 样式 -->
 	<style name="ViewDatafilterTablerow">
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
@@ -54,10 +44,10 @@
 	    <item name="android:background">@drawable/item_bg_withnocorner_blue</item>
 	</style>
 	
-	<!-- 切换fragment的radio的样式 -->
+	<!-- webview中下方的按钮样式 -->
 	<style name="WebviewController">
 	    <item name="android:layout_width">wrap_content</item>
-	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:layout_height">@dimen/buttonheight</item>
 	    <item name="android:layout_weight">1</item>
 	    <item name="android:background">@drawable/btn_style_green</item>
 	</style>
@@ -65,11 +55,11 @@
 	<!-- 分隔符 样式-->
 	<style name="ItemDivider">
    	    <item name="android:background">@color/gray</item>
-   	    <item name="android:layout_height">1dp</item>
+   	    <item name="android:layout_height">@dimen/thinline</item>
    	    <item name="android:layout_width">match_parent</item>
    	</style>
    	
-	<!-- 设备维修单个记录查看界面中的 表头信息 -->
+	<!-- 单个记录界面中的 表头信息 -->
 	<style name="ItemTitleStyle">
 	    <item name="android:layout_width">0dp</item>
 	    <item name="android:layout_height">wrap_content</item>
@@ -77,22 +67,22 @@
 	    <item name="android:gravity">center_vertical|left</item>
 	    <item name="android:layout_gravity">center_vertical</item>
 	    <item name="android:padding">5dp</item>
-	    <item name="android:textSize">@dimen/middle</item>
+	    <item name="android:textSize">@dimen/fontsize_normal</item>
 	</style>
 	
-	<!-- 设备维修单个记录查看界面中的 编辑菜单样式 -->
+	<!-- 单个记录界面中的 值 的样式 -->
 	<style name="ItemValueStyle">
 	    <item name="android:layout_width">0dp</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:layout_weight">1</item>
 	    <item name="android:singleLine">false</item>
-	    <item name="android:textSize">@dimen/middle</item>
+	    <item name="android:textSize">@dimen/fontsize_normal</item>
 	    <item name="android:paddingRight">5dp</item>
 	    <item name="android:layout_gravity">center_vertical</item>
 	    <item name="android:gravity">center_vertical|right</item>
 	</style>
 	
-	<!-- 设备维修单个记录查看界面中的 三个大表单的描述信息 -->
+	<!-- 单个记录查看界面中的 三个大表单的描述信息 -->
 	<style name="ItemGroupTitleStyle">
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
@@ -100,10 +90,10 @@
 	    <item name="android:gravity">center_vertical</item>
 	    <item name="android:layout_gravity">center_vertical</item>
 	    <item name="android:background">@color/gray</item>
-	    <item name="android:textSize">@dimen/large</item>
+	    <item name="android:textSize">@dimen/fontsize_large</item>
 	</style>
 	
-	<!-- 设备维修单个记录查看界面中的 3个大表单的样式 -->
+	<!-- 单个记录查看界面中的 3个大表单的样式 -->
 	<style name="ItemGroupStyle">
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
@@ -113,23 +103,34 @@
 	    <item name="android:orientation">vertical</item>
 	</style>
 	
+	<!-- listview中item的布局样式 -->
 	<style name="ItemLayout">
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:gravity">left|center_vertical</item>
 	    <item name="android:layout_marginLeft">10dp</item>
 	    <item name="android:padding">2dp</item>
-	    <item name="android:textSize">@dimen/middle</item>
+	    <item name="android:textSize">@dimen/fontsize_normal</item>
 	</style>
 	
-	<style name="SubmitButtonStyle" parent="@android:style/Widget.Button">
+	<!-- 红色按钮的样式-->
+	<style name="RedButtonStyle" parent="@android:style/Widget.Button">
 	    <item name="android:background">@drawable/btn_style_red</item>
 	    <item name="android:textColor">@color/white</item>
+	    <item name="android:layout_height">@dimen/buttonheight</item>
 	</style>
 	
+	<!-- 绿色按钮的样式 -->
+	<style name="GreenButtonStyle" parent="@android:style/Widget.Button">
+	    <item name="android:background">@drawable/btn_style_green</item>
+	    <item name="android:textColor">@color/black</item>
+	    <item name="android:layout_height">@dimen/buttonheight</item>
+	</style>
+	
+	<!-- 添加多媒体附件的buttonstyle-->
 	<style name="MediaFileViewButtonStyle" parent="@android:style/Widget.Button">
 	    <item name="android:layout_width">wrap_content</item>
-	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:layout_height">@dimen/buttonheight</item>
 	    <item name="android:layout_margin">5dp</item>
 	    <item name="android:background">@drawable/btn_style_green</item>
 	</style>
@@ -146,6 +147,7 @@
      <!--    <item name="android:homeAsUpIndicator">@drawable/activity_machinemanage_arrowleft</item> -->
     </style>  
     
+	<!-- 缩放menu的图标 -->
 	<style name="CustomOverFlowButtonStyle" parent="@android:style/Widget.ActionButton.Overflow">
 	    <item name="android:src">@drawable/ic_menu_more</item>
 	</style>

@@ -9,14 +9,14 @@
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/middle"
+        android:textSize="@dimen/fontsize_normal"
         android:id="@+id/item_deviceinfo_key"/>
     <TextView 
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/middle"
+        android:textSize="@dimen/fontsize_normal"
         android:id="@+id/item_deviceinfo_value"/>
 
 </RelativeLayout>

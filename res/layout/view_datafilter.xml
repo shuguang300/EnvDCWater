@@ -107,9 +107,8 @@
     <Button
         android:id="@+id/view_datafilter_submit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/view_datafilter_ok"
-        android:background="@drawable/btn_style_green" />
+        style="@style/GreenButtonStyle" />
 
 </LinearLayout>

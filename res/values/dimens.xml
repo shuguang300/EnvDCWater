@@ -14,5 +14,8 @@
     <dimen name="ic_activity_logo">48dp</dimen>
     <!-- listview的布局中，图片的大小 -->
     <dimen name="ic_adapter_pic">48dp</dimen>
-    
+    <!-- 细边框 -->
+    <dimen name="thinline">1dp</dimen>
+    <!-- 粗边框 -->
+    <dimen name="boldline">2dp</dimen>
 </resources>
