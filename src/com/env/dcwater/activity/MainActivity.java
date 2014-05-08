@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -23,6 +24,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -77,17 +79,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		data = OperationMethod.getViewByUserRole(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID")));
 		SystemParams.getInstance().setUserRightData(data);
 		
-		getTaskCount = new GetTaskCountByUserPositionID() {
-			@Override
-			public void onPostExecute(JSONObject result) {
-				if(result!=null){
-					data = OperationMethod.addUserTaskCountInfor(data, result);
-					SystemParams.getInstance().setUserRightData(data);
-					naviBarAdapter.notifyDataSetChanged();
-				}
-			}
-		};
-		getTaskCount.execute(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID")));
+		
 	}
 	
 	/**
@@ -146,6 +138,25 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		stop.setOnClickListener(this);
 	}
 	
+	private void setTaskCountInfor(){
+		getTaskCount = new GetTaskCountByUserPositionID() {
+			@Override
+			public void onPostExecute(JSONObject result) {
+				if(result!=null){
+					data = OperationMethod.addUserTaskCountInfor(data, result);
+					SystemParams.getInstance().setUserRightData(data);
+					naviBarAdapter.notifyDataSetChanged();
+				}
+			}
+		};
+		getTaskCount.execute(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID")));
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
+	
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -154,7 +165,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	@Override
 	protected void onResume() {
 		super.onResume();
-		naviBarAdapter.notifyDataSetChanged();
+		setTaskCountInfor();
 	}
 	
 	@Override

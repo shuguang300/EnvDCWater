@@ -37,11 +37,11 @@ public class DataCenterHelper {
 	/**
 	 * 服务器地址
 	 */
-	public static final String IPADDR_STRING = "http://192.168.200.50/dcwater";
+	public static final String IPADDR_STRING = "http://183.81.180.26:9999/dcwater";
 	/**
 	 * webservice数据中心地址
 	 */
-	public static final String URL_STRING = "http://192.168.200.50/dcwater/MobileDataCenter.asmx";
+	public static final String URL_STRING = "http://183.81.180.26:9999/dcwater/MobileDataCenter.asmx";
 	
 	/**
 	 * 连接超时

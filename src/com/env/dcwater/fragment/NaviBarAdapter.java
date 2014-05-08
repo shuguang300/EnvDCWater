@@ -69,15 +69,15 @@ public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickL
 		}else if(mUserRightData.get(position).get(UserRight.RightAction).equals(mAction)){
 			doNothing();
 		}else {
-			if(mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.REPAIRMANAGE.getName())){
-				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
-			}else if(mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPAPPROVE.getName())){
-				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
-			}else if (mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPREPORT.getName())) {
-				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
-			}else if (mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPSEND.getName())) {
-				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
-			}
+//			if(mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.REPAIRMANAGE.getName())){
+//				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
+//			}else if(mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPAPPROVE.getName())){
+//				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
+//			}else if (mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPREPORT.getName())) {
+//				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
+//			}else if (mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPSEND.getName())) {
+//				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
+//			}
 			Intent intent = new Intent(mUserRightData.get(position).get(UserRight.RightAction));
 			intent.putExtra("action", MainActivity.ACTION_STRING);
 			mContext.startActivity(intent);
