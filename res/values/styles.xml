@@ -67,6 +67,7 @@
 	    <item name="android:gravity">center_vertical|left</item>
 	    <item name="android:layout_gravity">center_vertical</item>
 	    <item name="android:padding">5dp</item>
+	    <item name="android:singleLine">false</item>
 	    <item name="android:textSize">@dimen/fontsize_normal</item>
 	</style>
 	

@@ -238,6 +238,7 @@ public class RepairManageItemActivity extends NfcActivity{
 			setGroupVerifyShow(false);
 			break;
 		case EnumList.RepairState.STATEBEENINGREPAIRED:
+			setGroupRepairTaskShow(false);
 		case EnumList.RepairState.STATEHASBEENREPAIRED:
 			setGroupVerifyShow(false);
 			break;

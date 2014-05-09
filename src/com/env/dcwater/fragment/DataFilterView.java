@@ -38,7 +38,7 @@ public class DataFilterView extends LinearLayout{
 	private Builder mBuilder;
 	private Button mSubmit;
 	private Calendar mStartTime,mEndTime;
-	private TextView tvFastTime,tvStartTime,tvEndTime,tvState,tvPos;
+	private TextView tvFastTime,tvStartTime,tvEndTime,tvState,tvPos,tvTTStartTime,tvTTEndTime,tvTTState,tvTTPos;
 	private int selectFastTimePos,selectStatePos,selectPosPos;
 	private String [] mStateList,mPosList,mFastTimeList;
 	private String[] months_big = { "1", "3", "5", "7", "8", "10", "12" };
@@ -91,6 +91,11 @@ public class DataFilterView extends LinearLayout{
 		tvEndTime = (TextView)mView.findViewById(R.id.view_datafilter_tv_endtime);
 		tvState = (TextView)mView.findViewById(R.id.view_datafilter_tv_state);
 		tvPos = (TextView)mView.findViewById(R.id.view_datafilter_tv_pos);
+		
+		tvTTStartTime = (TextView)findViewById(R.id.view_datafilter_tv_starttime_title);
+		tvTTEndTime = (TextView)findViewById(R.id.view_datafilter_tv_endtime_title);
+		tvTTState = (TextView)findViewById(R.id.view_datafilter_tv_state_title);
+		tvTTPos = (TextView)findViewById(R.id.view_datafilter_tv_pos_title);
 		
 		mSubmit = (Button)mView.findViewById(R.id.view_datafilter_submit);
 		
@@ -210,6 +215,35 @@ public class DataFilterView extends LinearLayout{
 		mPosList = posList;
 		selectPosPos = defaultPos;
 		tvPos.setText(mPosList[selectPosPos]);
+	}
+	
+	/**
+	 * 设置开始时间的标头
+	 * @param arg0
+	 */
+	public void setStartTimeTitle(String arg0){
+		tvTTStartTime.setText(arg0);
+	}
+	/**
+	 * 设置结束时间的标头
+	 * @param arg0
+	 */
+	public void setEndTimeTitle(String arg0){
+		tvTTEndTime.setText(arg0);
+	}
+	/**
+	 * 设置构筑物的标头
+	 * @param arg0
+	 */
+	public void setPosTitle(String arg0){
+		tvTTPos.setText(arg0);
+	}
+	/**
+	 * 设置表单状态标头
+	 * @param arg0
+	 */
+	public void setStateTitle(String arg0){
+		tvTTState.setText(arg0);
 	}
 	
 	/**
