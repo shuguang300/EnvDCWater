@@ -334,9 +334,7 @@ public class RepairManageItemDataActivity extends NfcActivity implements OnClick
 	 * 跳转到选取设备列表的界面
 	 */
 	private void gotoSelectDevice(HashMap<String, String> data){
-		Intent intent = new Intent(this, DeviceSelectActivity.class);
-		intent.putExtra("data", data);
-		startActivityForResult(intent, 1);
+		
 	}
 	
 	/**

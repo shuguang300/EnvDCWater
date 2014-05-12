@@ -59,7 +59,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	/**
 	 * 操作工删除工单
 	 */
-	public static final String METHOD_DELETE_STRING = "Delete";
+//	public static final String METHOD_DELETE_STRING = "Delete";
 	
 	/**
 	 * 操作工更新工单
@@ -132,6 +132,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	 * 历史浏览模式
 	 */
 	public static final int REPAIRMANAGE_HISTORY_INTEGER = 3;
+	
 	private TextView menuMessage;
 	private ActionBar mActionBar;
 	private ThreadPool.GetServerConsData getServerConsData;
@@ -339,15 +340,14 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private void sendIntent(int code,HashMap<String, String> data){
 		switch (code) {
 		case REPAIRMANAGE_ADD_INTEGER:
-			sendedIntent = new Intent(RepairManageActivity.this, RepairManageItemDataActivity.class);
-			sendedIntent.putExtra("MethodName", RepairManageActivity.METHOD_ADD_STRING);
+			sendedIntent = new Intent(RepairManageActivity.this, RepairManageItemActivity.class);
 			break;
 		case REPAIRMANAGE_NORMAL_INTEGER:
 			sendedIntent = new Intent(RepairManageActivity.this, RepairManageItemActivity.class);
-			sendedIntent.putExtra("RequestCode", code);
-			sendedIntent.putExtra("Data", data);
 			break;
 		}
+		sendedIntent.putExtra("RequestCode", code);
+		sendedIntent.putExtra("Data", data);
 		startActivityForResult(sendedIntent, code);
 	}
 	
