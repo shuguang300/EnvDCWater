@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/view_repair_send"
+    android:id="@+id/view_repair_ddopinion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -10,11 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-
+        
         <TableLayout
-            style="@style/ItemGroupStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            style="@style/ItemGroupStyle" >
 
             <TextView
                 style="@style/ItemGroupTitleStyle"
@@ -24,33 +22,60 @@
             <TextView style="@style/ItemDivider" />
 
             <TableRow
-                android:id="@+id/view_repair_send_repairsttime_tr"
+                android:id="@+id/view_repair_ddopinion_money_tr"
                 style="@style/ItemLineStyle" >
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:drawableLeft="@drawable/ic_item_time"
-                    android:text="@string/activity_repairmanageitem_repairsttime" />
+                    android:drawableLeft="@drawable/ic_item_money"
+                    android:text="@string/activity_repairmanageitem_repairmoneycost" />
 
                 <TextView
-                    android:id="@+id/view_repair_send_repairsttime"
-                    android:enabled="false"
+                    android:id="@+id/view_repair_ddopinion_money"
+                    android:drawableRight="@drawable/ic_item_warning"
                     style="@style/ItemValueStyle" />
+            </TableRow>
+
+        </TableLayout>
+
+        <TableLayout
+            style="@style/ItemGroupStyle" >
+
+            <TextView
+                style="@style/ItemGroupTitleStyle"
+                android:drawableLeft="@drawable/ic_item_groupedit"
+                android:text="@string/activity_repairmanageitem_verify" />
+
+            <TextView style="@style/ItemDivider" />
+
+            <TableRow
+                style="@style/ItemLineStyle" >
+
+                <TextView
+                    style="@style/ItemTitleStyle"
+                    android:drawableLeft="@drawable/ic_item_approve"
+                    android:text="@string/activity_repairmanageitem_verifyresult" />
+
+                <Switch
+                    android:id="@+id/view_repair_ddopinion_verifyresult"
+                    style="@style/ItemValueStyle"
+                    android:drawableRight="@drawable/ic_item_warning"
+                    android:textOff="审核未通过"
+                    android:textOn="审核通过" />
             </TableRow>
 
             <TextView style="@style/ItemDivider" />
 
             <TableRow
-                android:id="@+id/view_repair_send_repairpeople_tr"
                 style="@style/ItemLineStyle" >
 
                 <TextView
                     style="@style/ItemTitleStyle"
                     android:drawableLeft="@drawable/ic_item_person"
-                    android:text="@string/activity_repairmanageitem_repairsender" />
+                    android:text="@string/activity_repairmanageitem_verifypeople" />
 
                 <TextView
-                    android:id="@+id/view_repair_send_repairpeople"
+                    android:id="@+id/view_repair_ddopinion_verifypeople"
                     android:enabled="false"
                     style="@style/ItemValueStyle" />
             </TableRow>
@@ -58,33 +83,16 @@
             <TextView style="@style/ItemDivider" />
 
             <TableRow
-                android:id="@+id/view_repair_send_repairtimecost_tr"
+                android:id="@+id/view_repair_ddopinion_opinion_tr"
                 style="@style/ItemLineStyle" >
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:drawableLeft="@drawable/ic_item_hours"
-                    android:text="@string/activity_repairmanageitem_repairtimecost" />
+                    android:drawableLeft="@drawable/ic_item_opinion"
+                    android:text="@string/activity_repairmanageitem_equipmentopinion" />
 
                 <TextView
-                    android:id="@+id/view_repair_send_repairtimecost"
-                    android:drawableRight="@drawable/ic_item_warning"
-                    style="@style/ItemValueStyle" />
-            </TableRow>
-
-            <TextView style="@style/ItemDivider" />
-
-            <TableRow
-                android:id="@+id/view_repair_send_repaircontent_tr"
-                style="@style/ItemLineStyle" >
-
-                <TextView
-                    style="@style/ItemTitleStyle"
-                    android:drawableLeft="@drawable/ic_item_content"
-                    android:text="@string/activity_repairmanageitem_repaircontent" />
-
-                <TextView
-                    android:id="@+id/view_repair_send_repaircontent"
+                    android:id="@+id/view_repair_ddopinion_opinion"
                     android:drawableRight="@drawable/ic_item_warning"
                     style="@style/ItemValueStyle" />
             </TableRow>
@@ -95,7 +103,6 @@
             android:id="@+id/view_repair_submit"
             style="@style/RedButtonStyle"
             android:layout_width="match_parent" />
-
     </LinearLayout>
 
 </ScrollView>

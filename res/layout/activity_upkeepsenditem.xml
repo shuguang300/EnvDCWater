@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"
         android:id="@+id/activity_upkeepsenditem_operationpart" >
 
         <TableLayout

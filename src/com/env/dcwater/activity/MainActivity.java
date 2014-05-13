@@ -68,7 +68,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	 */
 	private void iniActionBar(){
 		mActionBar = getActionBar();
-		mActionBar.setTitle(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+		mActionBar.setTitle(getResources().getString(R.string.app_name));
 		SystemMethod.setActionBarHomeButton(true, mActionBar);
 	}
 	
@@ -193,6 +193,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		titleMessage = (TextView)menu.getItem(0).getActionView();
 		titleMessage.setTextColor(getResources().getColor(R.color.white));
+		titleMessage.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName")+"\n"+SystemParams.getInstance().getLoggedUserInfo().get("PositionName"));
 //		titleMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.i_small));
 		return super.onCreateOptionsMenu(menu);
 	}

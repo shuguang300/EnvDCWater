@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_repair_pdopinion"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fillViewport="true" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TableLayout
+            style="@style/ItemGroupStyle" >
+
+            <TextView
+                style="@style/ItemGroupTitleStyle"
+                android:text="@string/activity_repairmanageitem_verify"
+                android:drawableLeft="@drawable/ic_item_groupedit" />
+            
+			 <TextView style="@style/ItemDivider" />
+			 
+            <TableRow
+                android:id="@+id/view_repair_pdopinion_opinion_tr"
+                style="@style/ItemLineStyle" >
+
+                <TextView
+                    style="@style/ItemTitleStyle"
+                    android:text="@string/activity_repairmanageitem_productionopinion"
+                    android:drawableLeft="@drawable/ic_item_opinion" />
+
+                <TextView
+                    android:id="@+id/view_repair_pdopinion_opinion"
+                    android:drawableRight="@drawable/ic_item_warning"
+                    style="@style/ItemValueStyle" />
+            </TableRow>
+
+        </TableLayout>
+
+        <Button
+            style="@style/RedButtonStyle"
+            android:id="@+id/view_repair_submit"
+            android:layout_width="match_parent" />
+        
+    </LinearLayout>
+
+</ScrollView>

@@ -161,20 +161,6 @@
             </intent-filter>
         </activity>
         
-        <!-- 完成工单填报界面 -->
-        <activity
-            android:name="com.env.dcwater.activity.RepairManageItemDataActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
-            android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_act_repair" >
-            <intent-filter >
-                <action android:name="com.env.dcwater.activity.RepairManageItemDataActivity"/>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        
         <!-- 设备选择界面-->
         <activity
             android:name="com.env.dcwater.activity.DeviceSelectActivity"

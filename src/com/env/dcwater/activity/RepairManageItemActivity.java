@@ -27,14 +27,15 @@ import android.view.View;
 import android.view.ViewStub;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.env.dcwater.R;
-import com.env.dcwater.R.id;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.fragment.DateTimePickerView;
@@ -52,8 +53,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	public static final String ACTION_STRING = "RepairManageItemActivity";
 	private ProgressDialog mProgressDialog;
 	private DateTimePickerView dateTimePickerView;
-	private AlertDialog.Builder mUpdateConfirm;
-	private AlertDialog.Builder mHandleContent;
+	private AlertDialog.Builder mUpdateConfirm,mHandleContent;
 	private ActionBar mActionBar;
 	private HashMap<String, String> receivedData;
 	private Intent receivedIntent;
@@ -66,9 +66,11 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	private String [] handleStepContent = {"尝试手动启动","关闭主电源","拍下急停按钮","悬挂警示标识牌","关闭故障设备工艺段进水"};
 	private boolean [] handleStepSelected = {false,false,false,false,false},tempStepSelected;
 	private TextView etName,etType,etSN,etPosition,etStartTime,etManufacture,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep,etSendTime,etSender,etTimeCost,etContent,etResult,etFinishTime,etThing,etMoney,etVerifyPeople,etEquipmentOpinion,etProductionOpinion,etPlantOpinion;
-	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trResult,trFinishTime,trThingCost,trMoneyCost,trEquipmentOpinion,trProductionOpinion,trPlantOpinion,trTimeCost,trContent;
-	private Switch swVerifyResult;
-	private Button submit;
+	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trResult,trFinishTime,trThingCost,trMoneyCost,trProductionOpinion,trPlantOpinion;
+	private TextView EPtvMoney,EPtvVerifyPerson,EPtvDDOpinion,EPtvPDOpinion,EPtvPMOpinion,EPtvResult,EPtvFinishTime,EPtvThing,EPtvSendTime,EPtvSender,EPtvTime,EPtvContent;
+	private TableRow EPtrMoney,EPtrDDOpinion,EPtrPDOpinion,EPtrPMOpinion,EPtrResult,EPtrFinishTime,EPtrThing,EPtrTime,EPtrContent;
+	private Switch swVerifyResult,EPswVerify;
+	private Button confirmSubmit,inputSubmit;
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -115,7 +117,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 						if(taskState==EnumList.RepairState.STATEHASBEENCONFIRMED||
 						taskState==EnumList.RepairState.STATEHASBEENREPORTED){
 							methodName = RepairManageActivity.METHOD_SENDTASK_STRING;
-						}else if (taskState==EnumList.RepairState.STATEHASBEENREPORTED) {
+						}else if (taskState==EnumList.RepairState.STATEHASBEENREPAIRED) {
 							methodName = RepairManageActivity.METHOD_DDAPPROVE_STRING;
 						}
 						break;
@@ -213,136 +215,188 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	/**
 	 * 初始化各个控件
 	 */
-	private void findAndIniView(){
-		
-		etName = (TextView)findViewById(R.id.activity_repairmanageitem_name);
-		etFaultTime = (TextView)findViewById(R.id.activity_repairmanageitem_faulttime);
-		etFaultPhenomenon = (TextView)findViewById(R.id.activity_repairmanageitem_faultphenomenon);
-		etHandleStep = (TextView)findViewById(R.id.activity_repairmanageitem_handlestep);
-		etOtherStep = (TextView)findViewById(R.id.activity_repairmanageitem_otherstep);
-		etPeople = (TextView)findViewById(R.id.activity_repairmanageitem_taskpeople);
-		
-		if(methodName.equals(RepairManageActivity.METHOD_DETAIL_STRING)||methodName.equals(RepairManageActivity.METHOD_HISTORY_STRING)){
-			
-		}else {
-//			submit = (Button)findViewById(R.id.activity_repairmanageitem_submit);
-//			submit.setText(methodDesc);
-//			submit.setOnClickListener(this);
-			
-			viewStub = (ViewStub)findViewById(R.id.activity_repairmanageitem_editpart);
-			
-			if(methodName.equals(RepairManageActivity.METHOD_ADD_STRING)){
-				
-				trName = (TableRow)findViewById(R.id.activity_repairmanageitem_name_tr);
-				trFaultTime = (TableRow)findViewById(R.id.activity_repairmanageitem_faulttime_tr);
-				trFaultPhenomenon = (TableRow)findViewById(R.id.activity_repairmanageitem_faultphenomenon_tr);
-				trHandleStep = (TableRow)findViewById(R.id.activity_repairmanageitem_handlestep_tr);
-				trOtherStep = (TableRow)findViewById(R.id.activity_repairmanageitem_otherstep_tr);
-				
+	private void findAndIniView() {
+
+		etName = (TextView) findViewById(R.id.activity_repairmanageitem_name);
+		etFaultTime = (TextView) findViewById(R.id.activity_repairmanageitem_faulttime);
+		etFaultPhenomenon = (TextView) findViewById(R.id.activity_repairmanageitem_faultphenomenon);
+		etHandleStep = (TextView) findViewById(R.id.activity_repairmanageitem_handlestep);
+		etOtherStep = (TextView) findViewById(R.id.activity_repairmanageitem_otherstep);
+		etPeople = (TextView) findViewById(R.id.activity_repairmanageitem_taskpeople);
+
+		mGroupInfo = (TableLayout) findViewById(R.id.activity_repairmanageitem_repairgroupinfo);
+		mGroupVerify = (TableLayout) findViewById(R.id.activity_repairmanageitem_repairgroupverify);
+
+		etType = (TextView) findViewById(R.id.activity_repairmanageitem_type);
+
+		etSN = (TextView) findViewById(R.id.activity_repairmanageitem_sn);
+
+		etPosition = (TextView) findViewById(R.id.activity_repairmanageitem_position);
+
+		etStartTime = (TextView) findViewById(R.id.activity_repairmanageitem_starttime);
+
+		etManufacture = (TextView) findViewById(R.id.activity_repairmanageitem_manufacturer);
+
+		etSendTime = (TextView) findViewById(R.id.activity_repairmanageitem_repairsttime);
+
+		etSender = (TextView) findViewById(R.id.activity_repairmanageitem_repairpeople);
+		etTimeCost = (TextView) findViewById(R.id.activity_repairmanageitem_repairtimecost);
+
+		etContent = (TextView) findViewById(R.id.activity_repairmanageitem_repaircontent);
+
+		trResult = (TableRow) findViewById(R.id.activity_repairmanageitem_repairresult_tr);
+		etResult = (TextView) findViewById(R.id.activity_repairmanageitem_repairresult);
+
+		trFinishTime = (TableRow) findViewById(R.id.activity_repairmanageitem_repairendtime_tr);
+		etFinishTime = (TextView) findViewById(R.id.activity_repairmanageitem_repairendtime);
+
+		trThingCost = (TableRow) findViewById(R.id.activity_repairmanageitem_repairthingcost_tr);
+		etThing = (TextView) findViewById(R.id.activity_repairmanageitem_repairthingcost);
+
+		trMoneyCost = (TableRow) findViewById(R.id.activity_repairmanageitem_repairmoneycost_tr);
+		etMoney = (TextView) findViewById(R.id.activity_repairmanageitem_repairmoneycost);
+
+		swVerifyResult = (Switch) findViewById(R.id.activity_repairmanageitem_verifyresult);
+
+		etVerifyPeople = (TextView) findViewById(R.id.activity_repairmanageitem_verifypeople);
+
+		etEquipmentOpinion = (TextView) findViewById(R.id.activity_repairmanageitem_equipmentopinion);
+
+		etProductionOpinion = (TextView) findViewById(R.id.activity_repairmanageitem_productionopinion);
+		trProductionOpinion = (TableRow) findViewById(R.id.activity_repairmanageitem_productionopinion_tr);
+
+		trPlantOpinion = (TableRow) findViewById(R.id.activity_repairmanageitem_plantopinion_tr);
+		etPlantOpinion = (TextView) findViewById(R.id.activity_repairmanageitem_plantopinion);
+
+		if (methodName.equals(RepairManageActivity.METHOD_DETAIL_STRING) || methodName.equals(RepairManageActivity.METHOD_HISTORY_STRING)) {
+
+		} else {
+
+
+			if (methodName.equals(RepairManageActivity.METHOD_ADD_STRING)) {
+
+				trName = (TableRow) findViewById(R.id.activity_repairmanageitem_name_tr);
+				trFaultTime = (TableRow) findViewById(R.id.activity_repairmanageitem_faulttime_tr);
+				trFaultPhenomenon = (TableRow) findViewById(R.id.activity_repairmanageitem_faultphenomenon_tr);
+				trHandleStep = (TableRow) findViewById(R.id.activity_repairmanageitem_handlestep_tr);
+				trOtherStep = (TableRow) findViewById(R.id.activity_repairmanageitem_otherstep_tr);
+
 				trName.setOnClickListener(this);
 				trFaultTime.setOnClickListener(this);
 				trFaultPhenomenon.setOnClickListener(this);
 				trHandleStep.setOnClickListener(this);
 				trOtherStep.setOnClickListener(this);
+
+			} else {
 				
-			}else {
+				viewStub = (ViewStub) findViewById(R.id.activity_repairmanageitem_editpart);
 				
-				mGroupInfo = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgroupinfo);
-				mGroupVerify = (TableLayout)findViewById(R.id.activity_repairmanageitem_repairgroupverify);
-				
-				etType = (TextView)findViewById(R.id.activity_repairmanageitem_type);
-				
-				etSN = (TextView)findViewById(R.id.activity_repairmanageitem_sn);
-				
-				etPosition = (TextView)findViewById(R.id.activity_repairmanageitem_position);
-				
-				etStartTime = (TextView)findViewById(R.id.activity_repairmanageitem_starttime);
-				
-				etManufacture = (TextView)findViewById(R.id.activity_repairmanageitem_manufacturer);
-				
-				etSendTime = (TextView)findViewById(R.id.activity_repairmanageitem_repairsttime);
-				
-				etSender = (TextView)findViewById(R.id.activity_repairmanageitem_repairpeople);
-				etTimeCost = (TextView)findViewById(R.id.activity_repairmanageitem_repairtimecost);
-				trTimeCost = (TableRow)findViewById(R.id.activity_repairmanageitem_repairtimecost_tr);
-				
-				etContent = (TextView)findViewById(R.id.activity_repairmanageitem_repaircontent);
-				trContent = (TableRow)findViewById(R.id.activity_repairmanageitem_repaircontent_tr);
-				
-				trResult = (TableRow)findViewById(R.id.activity_repairmanageitem_repairresult_tr);
-				etResult = (TextView)findViewById(R.id.activity_repairmanageitem_repairresult);
-				
-				trFinishTime = (TableRow)findViewById(R.id.activity_repairmanageitem_repairendtime_tr);
-				etFinishTime = (TextView)findViewById(R.id.activity_repairmanageitem_repairendtime);
-				
-				trThingCost = (TableRow)findViewById(R.id.activity_repairmanageitem_repairthingcost_tr);
-				etThing = (TextView)findViewById(R.id.activity_repairmanageitem_repairthingcost);
-				
-				trMoneyCost = (TableRow)findViewById(R.id.activity_repairmanageitem_repairmoneycost_tr);
-				etMoney = (TextView)findViewById(R.id.activity_repairmanageitem_repairmoneycost);
-				
-				swVerifyResult = (Switch)findViewById(R.id.activity_repairmanageitem_verifyresult);
-				
-				etVerifyPeople = (TextView)findViewById(R.id.activity_repairmanageitem_verifypeople);
-				
-				etEquipmentOpinion = (TextView)findViewById(R.id.activity_repairmanageitem_equipmentopinion);
-				trEquipmentOpinion = (TableRow)findViewById(R.id.activity_repairmanageitem_equipmentopinion_tr);
-				
-				etProductionOpinion = (TextView)findViewById(R.id.activity_repairmanageitem_productionopinion);
-				trProductionOpinion = (TableRow)findViewById(R.id.activity_repairmanageitem_productionopinion_tr);
-				
-				trPlantOpinion = (TableRow)findViewById(R.id.activity_repairmanageitem_plantopinion_tr);
-				etPlantOpinion = (TextView)findViewById(R.id.activity_repairmanageitem_plantopinion);
-				
-				if(methodName.equals(RepairManageActivity.METHOD_SENDTASK_STRING)){
+				if (methodName.equals(RepairManageActivity.METHOD_SENDTASK_STRING)) {
 					viewStub.setLayoutResource(R.layout.view_repair_send);
 					viewStub.inflate();
-//					etSendTime = (TextView)findViewById(R.id.view_repair_send_repairsttime);
-//					etSender = (TextView)findViewById(R.id.view_repair_send_repairpeople);
-//					etTimeCost = (TextView)findViewById(R.id.view_repair_send_repairsttime);
-//					etContent = (TextView)findViewById(R.id.view_repair_send_repaircontent);
-//					
-//					trTimeCost = (TableRow)findViewById(R.id.view_repair_send_repairsttime_tr);
-//					trContent = (TableRow)findViewById(R.id.view_repair_send_repaircontent_tr);
-					
-					
-					
-				}else if (methodName.equals(RepairManageActivity.METHOD_RECEIVE_STRING)) {
-					
-				}else if (methodName.equals(RepairManageActivity.METHOD_PDCONFIRM_STRING)) {
-					
-				}else if (methodName.equals(RepairManageActivity.METHOD_PMAPPROVE_STRING)) {
-					
-				}else if (methodName.equals(RepairManageActivity.METHOD_PDAPPROVE_STRING)) {
-					
-				}else if (methodName.equals(RepairManageActivity.METHOD_REPAIRTASK_STRING)) {
-					
-				}else if (methodName.equals(RepairManageActivity.METHOD_DDAPPROVE_STRING)) {
-					
-				}else if (methodName.equals(RepairManageActivity.METHOD_REREPAIRTASK_STRING)) {
-					
+
+					EPtvSendTime = (TextView) findViewById(R.id.view_repair_send_repairsttime);
+					EPtvSendTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
+					EPtvSender = (TextView) findViewById(R.id.view_repair_send_repairpeople);
+					EPtvSender.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+					EPtvTime = (TextView) findViewById(R.id.view_repair_send_repairtimecost);
+					EPtvTime.setText(receivedData.get("RequiredManHours"));
+					EPtvContent = (TextView) findViewById(R.id.view_repair_send_repaircontent);
+					EPtvContent.setText(receivedData.get("TaskDetail"));
+
+					EPtrTime = (TableRow) findViewById(R.id.view_repair_send_repairtimecost_tr);
+					EPtrContent = (TableRow) findViewById(R.id.view_repair_send_repaircontent_tr);
+
+					EPtrTime.setOnClickListener(this);
+					EPtrContent.setOnClickListener(this);
+
+				} else if (methodName.equals(RepairManageActivity.METHOD_RECEIVE_STRING) || methodName.equals(RepairManageActivity.METHOD_PDCONFIRM_STRING)) {
+					confirmSubmit = (Button) findViewById(R.id.activity_repairmanageitem_submit);
+					confirmSubmit.setText(methodDesc);
+					confirmSubmit.setOnClickListener(this);
+					confirmSubmit.setVisibility(View.VISIBLE);
+
+				} else if (methodName.equals(RepairManageActivity.METHOD_PMAPPROVE_STRING)) {
+					viewStub.setLayoutResource(R.layout.view_repair_pmopinion);
+					viewStub.inflate();
+
+					EPtvPMOpinion = (TextView) findViewById(R.id.view_repair_pmopinion_opinion);
+					EPtvPMOpinion.setText(receivedData.get("PMOpinion"));
+
+					EPtrPMOpinion = (TableRow) findViewById(R.id.view_repair_pmopinion_opinion_tr);
+
+					EPtrPMOpinion.setOnClickListener(this);
+
+				} else if (methodName.equals(RepairManageActivity.METHOD_PDAPPROVE_STRING)) {
+					viewStub.setLayoutResource(R.layout.view_repair_pdopinion);
+					viewStub.inflate();
+
+					EPtvPDOpinion = (TextView) findViewById(R.id.view_repair_pdopinion_opinion);
+					EPtvPDOpinion.setText(receivedData.get("PDOpinion"));
+
+					EPtrPDOpinion = (TableRow) findViewById(R.id.view_repair_pdopinion_opinion_tr);
+
+					EPtrPDOpinion.setOnClickListener(this);
+
+				} else if (methodName.equals(RepairManageActivity.METHOD_DDAPPROVE_STRING)) {
+					viewStub.setLayoutResource(R.layout.view_repair_ddopinion);
+					viewStub.inflate();
+
+					EPtvMoney = (TextView) findViewById(R.id.view_repair_ddopinion_money);
+					EPtvMoney.setText(receivedData.get("RepairCost"));
+					EPswVerify = (Switch) findViewById(R.id.view_repair_ddopinion_verifyresult);
+					EPswVerify.setChecked(receivedData.get("ApproveResult").equals("1") ? true : false);
+					EPtvVerifyPerson = (TextView) findViewById(R.id.view_repair_ddopinion_verifypeople);
+					EPtvVerifyPerson.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+					EPtvDDOpinion = (TextView) findViewById(R.id.view_repair_ddopinion_opinion);
+					EPtvDDOpinion.setText(receivedData.get("DDOpinion"));
+
+					EPtrMoney = (TableRow) findViewById(R.id.view_repair_ddopinion_money_tr);
+					EPtrDDOpinion = (TableRow) findViewById(R.id.view_repair_ddopinion_opinion_tr);
+
+					EPswVerify.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+						@Override
+						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+							EPswVerify.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+						}
+					});
+					EPtrMoney.setOnClickListener(this);
+					EPtrDDOpinion.setOnClickListener(this);
+
+				} else if (methodName.equals(RepairManageActivity.METHOD_REREPAIRTASK_STRING) || methodName.equals(RepairManageActivity.METHOD_REPAIRTASK_STRING)) {
+					viewStub.setLayoutResource(R.layout.view_repair_report);
+					viewStub.inflate();
+
+					EPtvResult = (TextView) findViewById(R.id.view_repair_report_result);
+					EPtvResult.setText(receivedData.get("RepairDetail"));
+					EPtvFinishTime = (TextView) findViewById(R.id.view_repair_report_finishtime);
+					if (receivedData.get("RepairedTime").equals("")) {
+						EPtvFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
+					} else {
+						EPtvFinishTime.setText(receivedData.get("RepairedTime"));
+					}
+					EPtvThing = (TextView) findViewById(R.id.view_repair_report_thing);
+					EPtvThing.setText(receivedData.get("AccessoryUsed"));
+
+					EPtrResult = (TableRow) findViewById(R.id.view_repair_report_result_tr);
+					EPtrFinishTime = (TableRow) findViewById(R.id.view_repair_report_finishtime_tr);
+					EPtrThing = (TableRow) findViewById(R.id.view_repair_report_thing_tr);
+
+					EPtrResult.setOnClickListener(this);
+					EPtrFinishTime.setOnClickListener(this);
+					EPtrThing.setOnClickListener(this);
 				}
-				
-				
-				trTimeCost.setOnClickListener(this);
-				trContent.setOnClickListener(this);
-				trResult.setOnClickListener(this);
-				trFinishTime.setOnClickListener(this);
-				trThingCost.setOnClickListener(this);
-				trMoneyCost.setOnClickListener(this);
-				trEquipmentOpinion.setOnClickListener(this);
-				trProductionOpinion.setOnClickListener(this);
-				trPlantOpinion.setOnClickListener(this);
+				if(!methodName.equals(RepairManageActivity.METHOD_RECEIVE_STRING) && !methodName.equals(RepairManageActivity.METHOD_PDCONFIRM_STRING)){
+					inputSubmit = (Button) findViewById(R.id.view_repair_submit);
+					inputSubmit.setText(methodDesc);
+					inputSubmit.setOnClickListener(this);
+				}
 			}
-			
-			
-			
+
 		}
-		
-		
+
 		fillViewData(mRequestCode);
 		setViewState(mRequestCode);
-		
 	}
 	
 	/**
@@ -401,6 +455,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				setGroupVerifyPMShow(false);
 				break;
 			case EnumList.RepairState.STATEDEVICETHROUGH:
+				setGroupVerifyPDShow(false);
 			case EnumList.RepairState.STATEPRODUCTIONTHROUGH:
 				setGroupVerifyPMShow(false);
 				break;
@@ -721,10 +776,98 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode==RESULT_OK){
-			setResult(RESULT_OK);
-			finish();
+		if(requestCode==0&&resultCode==RESULT_OK){
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> temp = (HashMap<String, String>)data.getSerializableExtra("data");
+			String key = temp.get("Key");
+			String value = temp.get("Value");
+			if (key.equals("AccidentDetail")) {
+				etFaultPhenomenon.setText(value);
+				if(!value.equals("")){
+					etFaultPhenomenon.setCompoundDrawables(null, null, null, null);
+				}
+			}else if(key.equals("Otherstep")){
+				etOtherStep.setText(value);
+				receivedData.put("EmergencyMeasures", combineEmergencyMeasures());
+				if(!value.equals("")){
+					etOtherStep.setCompoundDrawables(null, null, null, null);
+				}
+			}else if (key.equals("RequiredManHours")) {
+				try {
+					Integer.parseInt(value);
+					EPtvTime.setCompoundDrawables(null, null, null, null);
+					EPtvTime.setText(value);
+				} catch (Exception e) {
+				}
+			}else if (key.equals("TaskDetail")) {
+				EPtvContent.setText(value);
+				if(!value.equals("")){
+					EPtvContent.setCompoundDrawables(null, null, null, null);
+				}
+			}else if (key.equals("RepairDetail")){
+				EPtvResult.setText(value);
+				if(!value.equals("")){
+					EPtvResult.setCompoundDrawables(null, null, null, null);
+				}
+			}else if (key.equals("AccessoryUsed")) {
+				EPtvThing.setText(value);
+				if(!value.equals("")){
+					EPtvThing.setCompoundDrawables(null, null, null, null);
+				}
+			}else if (key.equals("RepairCost")) {
+				try {
+					Integer.parseInt(value);
+					EPtvMoney.setCompoundDrawables(null, null, null, null);
+					EPtvMoney.setText(value);
+				} catch (Exception e) {
+					
+				}
+			}else if (key.equals("DDOpinion")) {
+				EPtvDDOpinion.setText(value);
+				if(!value.equals("")){
+					EPtvDDOpinion.setCompoundDrawables(null, null, null, null);
+				}
+			}else if (key.equals("PDOpinion")) {
+				EPtvPDOpinion.setText(value);
+				if(!value.equals("")){
+					EPtvPDOpinion.setCompoundDrawables(null, null, null, null);
+				}
+			}else if (key.equals("PMOpinion")) {
+				EPtvPMOpinion.setText(value);
+				if(!value.equals("")){
+					EPtvPMOpinion.setCompoundDrawables(null, null, null, null);
+				}
+			}
+			receivedData.put(key, value);
+		}else if (requestCode==1&&resultCode==RESULT_OK) {
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> temp = (HashMap<String, String>)data.getSerializableExtra("data");
+			receivedData.put("DeviceID", temp.get("DeviceID"));
+			receivedData.put("DeviceName", temp.get("DeviceName"));
+			etName.setText(receivedData.get("DeviceName"));
+			if(!etName.getText().equals("")){
+				etName.setCompoundDrawables(null, null, null, null);
+			}
 		}
+	}
+	
+	/**
+	 * 完成紧急措施和其他措施的合并
+	 * @return
+	 */
+	private String combineEmergencyMeasures() {
+		String EmergencyMeasures = "";
+		for(int i = 0;i<handleStepSelected.length;i++){
+			if (handleStepSelected[i]) {
+				EmergencyMeasures = EmergencyMeasures + String.valueOf(i+1) + ",";
+			}
+		}
+		if(EmergencyMeasures.equals("")&&!etOtherStep.getText().toString().equals("")){
+			EmergencyMeasures = "," + etOtherStep.getText().toString()+"(an)";
+		}else if (!EmergencyMeasures.equals("")&&!etOtherStep.getText().toString().equals("")) {
+			EmergencyMeasures = EmergencyMeasures + etOtherStep.getText().toString()+"(an)";
+		}
+		return EmergencyMeasures;
 	}
 	
 	@Override
@@ -739,6 +882,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				startActivityForResult(intent, 1);
 				break;
 			case R.id.activity_repairmanageitem_faulttime_tr:
+				etFaultTime.setCompoundDrawables(null, null, null, null);
 				if(dateTimePickerView==null){
 					dateTimePickerView = new DateTimePickerView(RepairManageItemActivity.this);
 				}
@@ -767,8 +911,9 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				dateTimePickerView.iniWheelView(fualtTimeCL);
 				dateTimePickerView.showAtLocation(findViewById(R.id.activity_repairmanageitem_main), Gravity.BOTTOM, 0, 0);
 				break;
-			case R.id.activity_repairmanageitem_repairendtime_tr:
-				if(!etFinishTime.getText().toString().equals("")){
+			case R.id.view_repair_report_finishtime_tr:
+				EPtvFinishTime.setCompoundDrawables(null, null, null, null);
+				if(!EPtvFinishTime.getText().toString().equals("")){
 					try {
 						mFinishTime = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(etFinishTime.getText().toString());
 					} catch (ParseException e) {
@@ -782,7 +927,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 						@Override
 						public void onClick(View v) {
 							mFinishTime = dateTimePickerView.getSelectedDate();
-							etFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(mFinishTime));
+							EPtvFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).format(mFinishTime));
 							dateTimePickerView.dismiss();
 						}
 					}, new OnClickListener() {
@@ -831,6 +976,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 								}
 							}
 							etHandleStep.setText(mHandleStep);
+							etHandleStep.setCompoundDrawables(null, null, null, null);
 						}
 					});
 				}
@@ -850,56 +996,56 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				otherstep.put("Value", etOtherStep.getText().toString());
 				startDataInputActivity(otherstep);
 				break;
-			case R.id.activity_repairmanageitem_repairtimecost_tr:
+			case R.id.view_repair_send_repairtimecost_tr:
 				HashMap<String, String> repairtimecost = new HashMap<String, String>();
 				repairtimecost.put("Key", "RequiredManHours");
 				repairtimecost.put("Name", "所需工时");
 				repairtimecost.put("Value", receivedData.get("RequiredManHours"));
 				startDataInputActivity(repairtimecost);
 				break;
-			case R.id.activity_repairmanageitem_repaircontent_tr:
+			case R.id.view_repair_send_repaircontent_tr:
 				HashMap<String, String> repaircontent = new HashMap<String, String>();
 				repaircontent.put("Key", "TaskDetail");
 				repaircontent.put("Name", "维修内容及要求");
 				repaircontent.put("Value", receivedData.get("TaskDetail"));
 				startDataInputActivity(repaircontent);
 				break;
-			case R.id.activity_repairmanageitem_repairresult_tr:
+			case R.id.view_repair_report_result_tr:
 				HashMap<String, String> repairresult = new HashMap<String, String>();
 				repairresult.put("Key", "RepairDetail");
 				repairresult.put("Name", "工作完成情况及处理措施");
 				repairresult.put("Value", receivedData.get("RepairDetail"));
 				startDataInputActivity(repairresult);
 				break;
-			case R.id.activity_repairmanageitem_repairthingcost_tr:
+			case R.id.view_repair_report_thing_tr:
 				HashMap<String, String> repairthingcost = new HashMap<String, String>();
 				repairthingcost.put("Key", "AccessoryUsed");
 				repairthingcost.put("Name", "物品备件使用情况");
 				repairthingcost.put("Value", receivedData.get("AccessoryUsed"));
 				startDataInputActivity(repairthingcost);
 				break;
-			case R.id.activity_repairmanageitem_repairmoneycost_tr:
+			case R.id.view_repair_ddopinion_money_tr:
 				HashMap<String, String> repairmoneycost = new HashMap<String, String>();
 				repairmoneycost.put("Key", "RepairCost");
 				repairmoneycost.put("Name", "维修金额");
 				repairmoneycost.put("Value", receivedData.get("RepairCost"));
 				startDataInputActivity(repairmoneycost);
 				break;
-			case R.id.activity_repairmanageitem_equipmentopinion_tr:
+			case R.id.view_repair_ddopinion_opinion_tr:
 				HashMap<String, String> equipmentopinion = new HashMap<String, String>();
 				equipmentopinion.put("Key", "DDOpinion");
 				equipmentopinion.put("Name", "设备科意见");
 				equipmentopinion.put("Value", receivedData.get("DDOpinion"));
 				startDataInputActivity(equipmentopinion);
 				break;
-			case R.id.activity_repairmanageitem_productionopinion_tr:
+			case R.id.view_repair_pdopinion_opinion_tr:
 				HashMap<String, String> productionopinion = new HashMap<String, String>();
 				productionopinion.put("Key", "PDOpinion");
 				productionopinion.put("Name", "生产科意见");
 				productionopinion.put("Value", receivedData.get("PDOpinion"));
 				startDataInputActivity(productionopinion);
 				break;
-			case R.id.activity_repairmanageitem_plantopinion_tr:
+			case R.id.view_repair_pmopinion_opinion_tr:
 				HashMap<String, String> plantopinion = new HashMap<String, String>();
 				plantopinion.put("Key", "PMOpinion");
 				plantopinion.put("Name", "厂领导意见");
@@ -907,6 +1053,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				startDataInputActivity(plantopinion);
 				break;
 			case R.id.activity_repairmanageitem_submit:
+			case R.id.view_repair_submit:
 				if(mUpdateConfirm==null){
 					mUpdateConfirm = new AlertDialog.Builder(RepairManageItemActivity.this);
 				}
@@ -922,9 +1069,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				break;
 			}
 		}
-		
-	
-		
 	}
 	
 	private class UpdateServerData extends AsyncTask<String, String, String>{
@@ -943,6 +1087,90 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					param.put("CheckPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
 					param.put("OldState", Integer.valueOf(receivedData.get("State")));
 					result = DataCenterHelper.HttpPostData("ValidationReport", param);
+				}else if(methodName.equals(RepairManageActivity.METHOD_ADD_STRING)){
+					param.put("PlantID", SystemParams.PLANTID_INT);
+					param.put("RepairTaskID","");
+					JSONObject repairDataString = new JSONObject();
+					int postionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+					if(postionID==EnumList.UserRole.PRODUCTIONOPERATION.getState()){
+						repairDataString.put("RepairTaskType", EnumList.RepairTaskType.PRODUCTIONSECTION.getType());
+					}else if (postionID==EnumList.UserRole.EQUIPMENTOPERATION.getState()) {
+						repairDataString.put("RepairTaskType", EnumList.RepairTaskType.EQUIPMENTSECTION.getType());
+					}
+					String EmergencyMeasures = combineEmergencyMeasures();
+					repairDataString.put("DeviceID", receivedData.get("DeviceID"));
+					repairDataString.put("EmergencyMeasures", EmergencyMeasures);
+					repairDataString.put("AccidentOccurTime", etFaultTime.getText().toString());
+					repairDataString.put("AccidentDetail",etFaultPhenomenon.getText().toString());
+					repairDataString.put("ReportPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					param.put("RepairDataString", repairDataString.toString());
+					param.put("OldState", -1);
+					result = DataCenterHelper.HttpPostData("InsertRepairTaskData", param);
+				}else if (methodName.equals(RepairManageActivity.METHOD_UPDATE_STRING)) {
+					param.put("PlantID", SystemParams.PLANTID_INT);
+					param.put("RepairTaskID", Integer.valueOf(receivedData.get("RepairTaskID")));
+					JSONObject repairDataString = new JSONObject();
+					String EmergencyMeasures = combineEmergencyMeasures();
+					repairDataString.put("RepairTaskType", receivedData.get("RepairTaskType"));
+					repairDataString.put("DeviceID", receivedData.get("DeviceID"));
+					repairDataString.put("EmergencyMeasures", EmergencyMeasures);
+					repairDataString.put("AccidentOccurTime", etFaultTime.getText().toString());
+					repairDataString.put("AccidentDetail",etFaultPhenomenon.getText().toString());
+					repairDataString.put("ReportPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					param.put("RepairDataString", repairDataString.toString());
+					param.put("OldState", receivedData.get("State"));
+					result = DataCenterHelper.HttpPostData("InsertRepairTaskData", param);
+				}else if (methodName.equals(RepairManageActivity.METHOD_SENDTASK_STRING)) {
+					param.put("PlantID", SystemParams.PLANTID_INT);
+					param.put("RepairTaskID", Integer.valueOf(receivedData.get("RepairTaskID")));
+					JSONObject repairDataString = new JSONObject();
+					repairDataString.put("TaskCreateTime", EPtvSendTime.getText().toString());
+					repairDataString.put("CreatePerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					repairDataString.put("RequiredManHours", EPtvTime.getText().toString());
+					repairDataString.put("TaskDetail", EPtvContent.getText().toString());
+					param.put("RepairDataString", repairDataString.toString());
+					param.put("State", EnumList.RepairState.STATEHASBEENDISTRIBUTED);
+					param.put("OldState", receivedData.get("State"));
+					result = DataCenterHelper.HttpPostData("UpdateRepairDataforEdit", param);
+				}else if (methodName.equals(RepairManageActivity.METHOD_REPAIRTASK_STRING)) {
+					param.put("PlantID", SystemParams.PLANTID_INT);
+					param.put("RepairTaskID", Integer.valueOf(receivedData.get("RepairTaskID")));
+					JSONObject repairDataString = new JSONObject();
+					repairDataString.put("RepairDetail", EPtvResult.getText().toString());
+					repairDataString.put("RepairedTime", EPtvFinishTime.getText().toString());
+					repairDataString.put("AccessoryUsed", EPtvThing.getText().toString());
+					repairDataString.put("RepairPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					param.put("RepairDataString", repairDataString.toString());
+					param.put("State", EnumList.RepairState.STATEHASBEENREPAIRED);
+					param.put("OldState", receivedData.get("State"));
+					result = DataCenterHelper.HttpPostData("UpdateRepairDataforWrite", param);
+				}else if (methodName.equals(RepairManageActivity.METHOD_PDAPPROVE_STRING)) {
+					param.put("RepairTaskID", Integer.valueOf(receivedData.get("RepairTaskID")));
+					JSONObject repairDataString = new JSONObject();
+					repairDataString.put("PDOpinion", EPtvPDOpinion.getText().toString());
+					repairDataString.put("RepairCost", EPtvMoney.getText().toString());
+					param.put("RepairDataString", repairDataString.toString());
+					param.put("State", EnumList.RepairState.STATEPRODUCTIONTHROUGH);
+					param.put("OldState", receivedData.get("State"));
+					result = DataCenterHelper.HttpPostData("UpdateAuditingRepairDataforUser2", param);
+				}else if (methodName.equals(RepairManageActivity.METHOD_PMAPPROVE_STRING)) {
+					param.put("RepairTaskID", Integer.valueOf(receivedData.get("RepairTaskID")));
+					JSONObject repairDataString = new JSONObject();
+					repairDataString.put("PMOpinion", EPtvPMOpinion.getText().toString());
+					param.put("RepairDataString", repairDataString.toString());
+					param.put("State", EnumList.RepairState.STATEDIRECTORTHROUGH);
+					param.put("OldState", receivedData.get("State"));
+					result = DataCenterHelper.HttpPostData("UpdateAuditingRepairDataforUser3", param);
+				}else if (methodName.equals(RepairManageActivity.METHOD_DDAPPROVE_STRING)) {
+					param.put("RepairTaskID", Integer.valueOf(receivedData.get("RepairTaskID")));
+					JSONObject repairDataString = new JSONObject();
+					repairDataString.put("ApproveResult", EPswVerify.isChecked()?"1":"2");
+					repairDataString.put("ApprovePerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					repairDataString.put("DDOpinion", EPtvDDOpinion.getText().toString());
+					param.put("RepairDataString", repairDataString.toString());
+					param.put("State", EPswVerify.isChecked()?EnumList.RepairState.STATEDEVICETHROUGH:EnumList.RepairState.STATEFORCORRECTION);
+					param.put("OldState", receivedData.get("State"));
+					result = DataCenterHelper.HttpPostData("UpdateAuditingRepairDataforUser7", param);
 				}
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
@@ -973,14 +1201,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					switch (code) {
 					case EnumList.DataCenterResult.CODE_SUCCESS:
 						Toast.makeText(RepairManageItemActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
-						if (methodName.equals(RepairManageActivity.METHOD_RECEIVE_STRING)) {
-							receivedData.put("State",EnumList.RepairState.STATEBEENINGREPAIRED+"");
-							receivedData.put("StateDescription", EnumList.RepairState.BEENINGREPAIRED.getStateDescription());
-						}else if(methodName.equals(RepairManageActivity.METHOD_PDCONFIRM_STRING)){
-							receivedData.put("State",EnumList.RepairState.STATEHASBEENCONFIRMED+"");
-							receivedData.put("StateDescription", EnumList.RepairState.HASBEENCONFIRMED.getStateDescription());
-							receivedData.put("CanUpdate", "false");
-						}
 						setResult(RESULT_OK);
 						finish();
 						break;

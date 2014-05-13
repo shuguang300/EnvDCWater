@@ -10,4 +10,5 @@
 	<color name="lightgray">#595959</color>
 	<color name="transblack">#50000000</color>
 	<color name="orange">#FF7F24</color>
+	<color name="red">#FF4A4A</color>
 </resources>

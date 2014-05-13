@@ -283,7 +283,7 @@ public class OperationMethod {
 			switch (taskType) {
 			case EnumList.RepairTaskType.TASKTYPE_PRODUCTION:
 				if(taskState==EnumList.RepairState.STATEHASBEENREPORTED
-//				taskState==EnumList.RepairState.STATEDEVICETHROUGH||
+				||taskState==EnumList.RepairState.STATEDEVICETHROUGH
 //				taskState==EnumList.RepairState.STATEPRODUCTIONTHROUGH
 				){
 					arg=true;

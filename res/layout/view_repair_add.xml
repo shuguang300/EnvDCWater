@@ -33,6 +33,7 @@
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_name"
+                    android:drawableRight="@drawable/ic_item_warning"
                     style="@style/ItemValueStyle" />
             </TableRow>
 
@@ -49,6 +50,7 @@
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_faulttime"
+                    android:drawableRight="@drawable/ic_item_warning"
                     style="@style/ItemValueStyle" />
             </TableRow>
 
@@ -65,6 +67,7 @@
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_faultphenomenon"
+                    android:drawableRight="@drawable/ic_item_warning"
                     style="@style/ItemValueStyle" />
             </TableRow>
 
@@ -81,6 +84,7 @@
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_handlestep"
+                    android:drawableRight="@drawable/ic_item_warning"
                     style="@style/ItemValueStyle" />
             </TableRow>
 
@@ -97,6 +101,7 @@
 
                 <TextView
                     android:id="@+id/activity_repairmanageitem_otherstep"
+                    android:drawableRight="@drawable/ic_item_warning"
                     style="@style/ItemValueStyle" />
             </TableRow>
 
@@ -120,7 +125,7 @@
 
         <Button
             style="@style/RedButtonStyle"
-            android:id="@+id/activity_repairmanageitem_submit"
+            android:id="@+id/view_repair_submit"
             android:layout_width="match_parent" />
         
     </LinearLayout>

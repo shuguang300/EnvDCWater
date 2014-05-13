@@ -1,8 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_repair_report"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
+    android:background="@color/white"
+    android:fillViewport="true" >
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TableLayout style="@style/ItemGroupStyle" >
+
+            <TextView
+                style="@style/ItemGroupTitleStyle"
+                android:drawableLeft="@drawable/ic_item_groupedit"
+                android:text="@string/activity_repairmanageitem_repair" />
+
+            <TextView style="@style/ItemDivider" />
+
+            <TableRow
+                android:id="@+id/view_repair_report_result_tr"
+                style="@style/ItemLineStyle" >
+
+                <TextView
+                    style="@style/ItemTitleStyle"
+                    android:drawableLeft="@drawable/ic_item_result"
+                    android:text="@string/activity_repairmanageitem_repairresult" />
+
+                <TextView
+                    android:id="@+id/view_repair_report_result"
+                    android:drawableRight="@drawable/ic_item_warning"
+                    style="@style/ItemValueStyle" />
+            </TableRow>
+
+            <TextView style="@style/ItemDivider" />
+
+            <TableRow
+                android:id="@+id/view_repair_report_finishtime_tr"
+                style="@style/ItemLineStyle" >
+
+                <TextView
+                    style="@style/ItemTitleStyle"
+                    android:drawableLeft="@drawable/ic_item_time"
+                    android:text="@string/activity_repairmanageitem_repairendtime" />
+
+                <TextView
+                    android:id="@+id/view_repair_report_finishtime"
+                    android:drawableRight="@drawable/ic_item_warning"
+                    style="@style/ItemValueStyle" />
+            </TableRow>
+
+            <TextView style="@style/ItemDivider" />
+
+            <TableRow
+                android:id="@+id/view_repair_report_thing_tr"
+                style="@style/ItemLineStyle" >
+
+                <TextView
+                    style="@style/ItemTitleStyle"
+                    android:drawableLeft="@drawable/ic_item_things"
+                    android:text="@string/activity_repairmanageitem_repairthingcost" />
+
+                <TextView
+                    android:id="@+id/view_repair_report_thing"
+                    android:drawableRight="@drawable/ic_item_warning"
+                    style="@style/ItemValueStyle" />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/view_repair_submit"
+            style="@style/RedButtonStyle"
+            android:layout_width="match_parent" />
+    </LinearLayout>
+
+</ScrollView>
