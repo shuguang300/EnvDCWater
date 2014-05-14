@@ -2,16 +2,16 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,36 +22,42 @@ import android.view.inputmethod.EditorInfo;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.fragment.PullToRefreshView;
+import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
 
-public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextListener,OnItemClickListener {
+public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextListener,OnItemClickListener,OnItemSelectedListener, IXListViewListener{
 	
 	public static final String ACTION_STRING = "DeviceInfoListActivity";
 	private ProgressDialog mProgressDialog;
 	private ActionBar actionBar;
+	private Spinner consList;
 	private ArrayList<HashMap<String, String>> deviceArrayList,consArrayList;
 	private GetServerDeviceData getServerDeviceData;
-	private DrawerLayout drawerLayout;
-	private PullToRefreshView deviceListView,consListView;
+	private PullToRefreshView deviceListView;
 	private ConstructionAdapter constructionAdapter;
 	private DeviceListAdapter deviceListAdapter;
 	private ThreadPool.GetServerConsData getServerConsData;
 	private SearchView mSearchView;
 	private ImageView mSearchHintIcon;
+	private String selectCons = "";
+	private boolean spinnerIni = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,35 +92,20 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	 * 
 	 */
 	private void iniView(){
-		drawerLayout = (DrawerLayout)findViewById(R.id.activity_deviceinfolist_drawlayout);
+		consList = (Spinner)findViewById(R.id.activity_deviceinfolist_conslist);
+		
 		deviceListView = (PullToRefreshView)findViewById(R.id.activity_deviceinfolist_devicelist);
-		consListView = (PullToRefreshView)findViewById(R.id.activity_deviceinfolist_conslist);
-		consListView.setXListViewListener(new PullToRefreshView.IXListViewListener(){
-			@Override
-			public void onRefresh() {
-				getServerConsList();
-			}
-		});
 		
-		consListView.setOnItemClickListener(this);
-		
-		deviceListView.setXListViewListener(new PullToRefreshView.IXListViewListener() {
-			@Override
-			public void onRefresh() {
-				if(actionBar.getTitle().equals("设备列表")){
-					getServerDeviceList("");
-				}else {
-					getServerDeviceList(actionBar.getTitle().toString());
-				}
-			}
-		});
+		deviceListView.setXListViewListener(this);
 		
 		deviceListView.setOnItemClickListener(this);
 		
 		deviceListView.setTextFilterEnabled(false);
 		
+		consList.setOnItemSelectedListener(this);
+		
 		deviceListView.setAdapter(deviceListAdapter);
-		consListView.setAdapter(constructionAdapter);
+		consList.setAdapter(constructionAdapter);
 	}
 	
 	private void iniSearchView(){
@@ -177,7 +168,6 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 					consArrayList = result;
 					constructionAdapter.notifyDataSetChanged();
 				}
-				consListView.stopRefresh();
 			}
 
 			@Override
@@ -287,7 +277,6 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		drawerLayout.closeDrawer(Gravity.RIGHT);
 		return super.onPrepareOptionsMenu(menu);
 	}
 	
@@ -303,25 +292,13 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		case R.id.menu_deviceinfolist_upkeephistory:
 			startUpkeepHistoryActivity();
 			break;
-		case R.id.menu_deviceinfolist_showcons:
-			if(drawerLayout.isDrawerOpen(Gravity.RIGHT)){
-				drawerLayout.closeDrawer(Gravity.RIGHT);
-			}else {
-				drawerLayout.openDrawer(Gravity.RIGHT);
-			}
-			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override
 	public void onBackPressed() {
-		if(drawerLayout.isDrawerOpen(Gravity.RIGHT)||!mSearchView.isIconified()){
-			drawerLayout.closeDrawer(Gravity.RIGHT);
-			mSearchView.setIconified(true);
-		}else {
-			super.onBackPressed();
-		}
+		super.onBackPressed();
 	}
 	
 	/**
@@ -404,7 +381,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			JSONObject object = new JSONObject();
 			ArrayList<HashMap<String, String>> data = null;
 			try {
-				object.put("PlantID", 1);
+				object.put("PlantID", SystemParams.PLANTID_INT);
 				String result = DataCenterHelper.HttpPostData("GetDeviceInfoList", object);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
@@ -460,23 +437,30 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		if(parent==deviceListView){
-			if(position!=0){
-				Intent intent = new Intent(DeviceInfoListActivity.this,DeviceInfoItemActivity.class);
-				intent.putExtra("data", deviceListAdapter.getItem(position-1));
-				startActivity(intent);
-			}
-		}else if (parent==consListView) {
-			if(position!=0){
-				drawerLayout.closeDrawer(Gravity.RIGHT);
-				if(position==1){
-					actionBar.setTitle("设备列表");
-				}else {
-					actionBar.setTitle(consArrayList.get(position-1).get("StructureName"));
-				}
-				getServerDeviceList(consArrayList.get(position-1).get("StructureName"));
-			}
+		if(position!=0){
+			Intent intent = new Intent(DeviceInfoListActivity.this,DeviceInfoItemActivity.class);
+			intent.putExtra("data", deviceListAdapter.getItem(position-1));
+			startActivity(intent);
+		}
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		if(spinnerIni){
+			selectCons = consArrayList.get(position).get("StructureName");
+			getServerDeviceList(selectCons);
 		}
 		
+		spinnerIni = true;
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+		
+	}
+
+	@Override
+	public void onRefresh() {
+		getServerDeviceList(selectCons);
 	}
 }

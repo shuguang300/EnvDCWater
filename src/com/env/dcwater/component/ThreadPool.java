@@ -30,7 +30,7 @@ public class ThreadPool {
 		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
 			JSONObject object = new JSONObject();
 			try {
-				object.put("PlantID", 1);
+				object.put("PlantID", SystemParams.PLANTID_INT);
 				String result = DataCenterHelper.HttpPostData("GetStructureByPlantID", object);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);

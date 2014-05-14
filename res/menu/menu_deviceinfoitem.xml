@@ -2,9 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item 
         android:id="@+id/menu_deviceinfoitem_maintainhistory"
-        android:title="@string/menu_deviceinfoitem_maintainhistory"/>
+        android:title="@string/menu_deviceinfoitem_maintainhistory"
+        android:icon="@drawable/ic_menu_repairhistory"
+        android:showAsAction="always"/>
     
     <item
         android:id="@+id/menu_deviceinfoitem_upkeephistory"
-        android:title="@string/menu_deviceinfoitem_upkeephistory"/>
+        android:title="@string/menu_deviceinfoitem_upkeephistory"
+        android:icon="@drawable/ic_menu_upkeephistory"
+        android:showAsAction="always"/>
 </menu>

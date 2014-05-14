@@ -6,13 +6,14 @@
         android:actionViewClass="android.widget.SearchView"/>
     <item 
         android:id="@+id/menu_deviceinfolist_maintainhistory"
-        android:title="@string/menu_deviceinfolist_maintainhistory"/>
+        android:title="@string/menu_deviceinfolist_maintainhistory"
+        android:icon="@drawable/ic_menu_repairhistory"
+        android:showAsAction="always"/>
     
     <item
         android:id="@+id/menu_deviceinfolist_upkeephistory"
-        android:title="@string/menu_deviceinfolist_upkeephistory"/>
+        android:title="@string/menu_deviceinfolist_upkeephistory"
+        android:icon="@drawable/ic_menu_upkeephistory"
+        android:showAsAction="always"/>
     
-    <item
-        android:id="@+id/menu_deviceinfolist_showcons"
-        android:title="@string/menu_deviceinfolist_showcons"/>
 </menu>
