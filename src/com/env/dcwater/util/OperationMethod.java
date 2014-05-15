@@ -1,12 +1,13 @@
 package com.env.dcwater.util;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import com.env.dcwater.R;
+import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryPlanState;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryState;
@@ -1195,5 +1196,52 @@ public class OperationMethod {
 			
 		}
 		return map;
+	}
+	
+	public static HashMap<String, String> getLocalUserInfo(SharedPreferences sp){
+		HashMap<String, String> map = null;
+		if(sp!=null){
+			try {
+				map = new HashMap<String, String>();
+				map.put("UserName", sp.getString(DCWaterApp.PREFERENCE_USERNAME_STRING, ""));
+				map.put("UserPassword", sp.getString(DCWaterApp.PREFERENCE_USERPSW_STRING, ""));
+				map.put("UserRole", sp.getString(DCWaterApp.PREFERENCE_USERROLE_STRING, ""));
+				map.put("UserID", sp.getString(DCWaterApp.PREFERENCE_USERID_STRING, ""));
+				map.put("PlantID", sp.getString(DCWaterApp.PREFERENCE_PLANTID_STRING, ""));
+				map.put("PlantName", sp.getString(DCWaterApp.PREFERENCE_PLANTNAME_STRING, ""));
+				map.put("PlantType", sp.getString(DCWaterApp.PREFERENCE_PLANTTYPE_STRING, ""));
+				map.put("RealUserName", sp.getString(DCWaterApp.PREFERENCE_REALNAME_STRING, ""));
+				map.put("AccountState", sp.getString(DCWaterApp.PREFERENCE_ACTSTATE_STRING, ""));
+				map.put("PositionID", sp.getString(DCWaterApp.PREFERENCE_POSITIONID_STRING, ""));
+				map.put("PositionName", sp.getString(DCWaterApp.PREFERENCE_POSITIONNAME_STRING, ""));
+			} catch (Exception e) {
+				
+			}
+		}
+		return map;
+	}
+	
+	public static boolean setLocalUserInfo(Editor et,HashMap<String, String> map){
+		boolean ok = false;
+		if(et!=null){
+			try{
+				et.putString(DCWaterApp.PREFERENCE_USERNAME_STRING, map.get("UserName"));
+				et.putString(DCWaterApp.PREFERENCE_USERPSW_STRING, map.get("UserPassword"));
+				et.putString(DCWaterApp.PREFERENCE_USERROLE_STRING, map.get("UserRole"));
+				et.putString(DCWaterApp.PREFERENCE_USERID_STRING, map.get("UserID"));
+				et.putString(DCWaterApp.PREFERENCE_PLANTID_STRING, map.get("PlantID"));
+				et.putString(DCWaterApp.PREFERENCE_PLANTNAME_STRING, map.get("PlantName"));
+				et.putString(DCWaterApp.PREFERENCE_PLANTTYPE_STRING, map.get("PlantType"));
+				et.putString(DCWaterApp.PREFERENCE_REALNAME_STRING, map.get("RealUserName"));
+				et.putString(DCWaterApp.PREFERENCE_ACTSTATE_STRING, map.get("AccountState"));
+				et.putString(DCWaterApp.PREFERENCE_POSITIONID_STRING, map.get("PositionID"));
+				et.putString(DCWaterApp.PREFERENCE_POSITIONNAME_STRING, map.get("PositionName"));
+				et.putBoolean(DCWaterApp.PREFERENCE_ISLOGIN_STRING, true);
+				ok = et.commit();
+			}catch(Exception e){
+				
+			}
+		}
+		return ok;
 	}
 }

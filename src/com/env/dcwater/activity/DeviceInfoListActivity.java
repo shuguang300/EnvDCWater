@@ -450,7 +450,6 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			selectCons = consArrayList.get(position).get("StructureName");
 			getServerDeviceList(selectCons);
 		}
-		
 		spinnerIni = true;
 	}
 

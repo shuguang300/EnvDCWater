@@ -87,6 +87,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		mHistoryList.setXListViewListener(this);
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_upkeephistory_drawlayout);
 		mDataFilterView =(DataFilterView)findViewById(R.id.activity_upkeephistory_datafilter);
+		mDataFilterView.setFastTimeTitle("工单派发时间");
 		mDataFilterView.hideTaskStatePicker();
 		mDataFilterView.setSubmitEvent(new OnClickListener() {
 			@Override

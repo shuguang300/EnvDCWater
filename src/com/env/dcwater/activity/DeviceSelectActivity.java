@@ -12,19 +12,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -42,7 +37,7 @@ import com.env.dcwater.util.SystemMethod;
  * @author sk
  *
  */
-public class DeviceSelectActivity extends NfcActivity implements IXListViewListener,OnItemClickListener,OnClickListener{
+public class DeviceSelectActivity extends NfcActivity implements IXListViewListener,OnItemSelectedListener,OnItemClickListener{
 	
 	public static final String GET_DEVICE_STRING = "getDevice";
 	public static final String GET_CONS_STRING = "getCons";
@@ -52,12 +47,11 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	private GetServerDeviceData getServerDeviceData;
 	private ThreadPool.GetServerConsData getServerConsData;
 	private PullToRefreshView mListView;
-	private EditText etDeviceName;
 	private Spinner spConstruction;
-	private Button btSearch;
-	private ImageView btClear;
 	private ConstructionAdapter constructionAdapter;
 	private DeviceAdapter deviceAdapter;
+	private String selectCons;
+	private boolean spinnerIni =false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,17 +79,20 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		consDataArrayList = new ArrayList<HashMap<String,String>>();
 		constructionAdapter = new ConstructionAdapter();
 		deviceAdapter = new DeviceAdapter();
-		if(SystemParams.getInstance().getMachineList()==null){
-			getServerDeviceList("","");
-		}else {
-			deviceDataArrayList = SystemParams.getInstance().getMachineList();
-			
-		}
+		selectCons = "";
+		
 		if(SystemParams.getInstance().getConstructionList()==null){
 			getServerConsList();
 		}else {
 			consDataArrayList = SystemParams.getInstance().getConstructionList();
 		}
+		
+		if(SystemParams.getInstance().getMachineList()==null){
+			getServerDeviceList("",selectCons);
+		}else {
+			deviceDataArrayList = SystemParams.getInstance().getMachineList();
+		}
+		
 		
 	}
 	
@@ -104,36 +101,14 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	 */
 	private void initialView(){
 		mListView = (PullToRefreshView)findViewById(R.id.activity_deviceselect_list);
-		etDeviceName = (EditText)findViewById(R.id.activity_deviceselect_devicename);
 		spConstruction = (Spinner)findViewById(R.id.activity_deviceselect_construction);
-		btSearch = (Button)findViewById(R.id.activity_deviceselect_submit);
-		btClear = (ImageView)findViewById(R.id.activity_deviceselect_devicename_clear);
 		
 		mListView.setXListViewListener(this);
 		mListView.setOnItemClickListener(this);
-		
-		btSearch.setOnClickListener(this);
-		btClear.setOnClickListener(this);
-		
 		mListView.setAdapter(deviceAdapter);
+		
 		spConstruction.setAdapter(constructionAdapter);
-		etDeviceName.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-			}
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,int after) {
-			}
-			@Override
-			public void afterTextChanged(Editable s) {
-				int count = etDeviceName.getText().toString().length();
-				if(count==0){
-					btClear.setVisibility(View.GONE);
-				}else {
-					btClear.setVisibility(View.VISIBLE);
-				}
-			}
-		});
+		spConstruction.setOnItemSelectedListener(this);
 		
 	}
 	
@@ -156,10 +131,8 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 					constructionAdapter.notifyDataSetChanged();
 				}
 			}
-
 			@Override
 			protected void onPreExecute() {
-				// TODO Auto-generated method stub
 				
 			}
 		};
@@ -207,7 +180,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	
 	@Override
 	public void onRefresh() {
-		getServerDeviceList(etDeviceName.getText().toString(),consDataArrayList.get(spConstruction.getSelectedItemPosition()).get("StructureName"));
+		getServerDeviceList("",consDataArrayList.get(spConstruction.getSelectedItemPosition()).get("StructureName"));
 	}
 
 	@Override
@@ -218,19 +191,6 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		finish();
 	}
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.activity_deviceselect_devicename_clear:
-			etDeviceName.setText("");
-			SystemMethod.hideSoftInput(DeviceSelectActivity.this);
-			break;
-		case R.id.activity_deviceselect_submit:
-			onRefresh();
-			break;
-		}
-	}
-	
 	
 	/**
 	 * @author sk
@@ -309,12 +269,11 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 			JSONObject object = new JSONObject();
 			ArrayList<HashMap<String, String>> data = null;
 			try {
-				object.put("PlantID", 1);
+				object.put("PlantID",SystemParams.PLANTID_INT);
 				String result = DataCenterHelper.HttpPostData("GetDeviceInfoList", object);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
 					data = OperationMethod.parseDeviceDataToList(jsonObject,params[0],params[1]);
-					deviceDataArrayList = data;
 				}
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -339,10 +298,27 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
 			super.onPostExecute(result);
 			if(result!=null){
+				deviceDataArrayList = result;
 				deviceAdapter.notifyDataSetChanged();
+				if(selectCons.equals(consDataArrayList.get(0).get("StructureName")));{
+					SystemParams.getInstance().setMachineList(result);
+				}
 			}
 			hideProgressDialog();
 			mListView.stopRefresh();
 		}
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		if(spinnerIni){
+			selectCons = consDataArrayList.get(position).get("StructureName");
+			getServerDeviceList("",selectCons);
+		}
+		spinnerIni = true;
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
 	}
 }

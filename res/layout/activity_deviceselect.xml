@@ -5,46 +5,11 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:paddingLeft="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/activity_deviceselect_devicename_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical|left"
-            android:drawableLeft="@drawable/ic_item_device"
-            android:text="@string/activity_deviceselect_devicename" />
-        
-        <EditText
-            android:id="@+id/activity_deviceselect_devicename"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:paddingRight="10dp"
-            android:textSize="@dimen/fontsize_large"
-            android:layout_toRightOf="@id/activity_deviceselect_devicename_title"
-            android:inputType="text" />
-        
-        <ImageView
-            android:id="@+id/activity_deviceselect_devicename_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:visibility="gone"
-            android:background="@drawable/ic_item_delete" />
-        
-    </RelativeLayout>
-
-    <TextView style="@style/ItemDivider" />
+  
 
     <RelativeLayout
         android:paddingLeft="10dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -64,18 +29,13 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/activity_deviceselect_consname_title"
             android:prompt="@string/activity_deviceselect_construction"
-            android:spinnerMode="dialog" />
+            android:background="@drawable/spn_style_dropdown"
+        	android:spinnerMode="dropdown"
+       		android:dropDownSelector="@color/lightblue" />
     </RelativeLayout>
 
     <TextView style="@style/ItemDivider" />
 
-    <Button
-        style="@style/RedButtonStyle"
-        android:id="@+id/activity_deviceselect_submit"
-        android:layout_width="match_parent"
-        android:text="@string/activity_deviceselect_search" />
-
-    <TextView style="@style/ItemDivider" />
 
     <com.env.dcwater.fragment.PullToRefreshView
         android:id="@+id/activity_deviceselect_list"

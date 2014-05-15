@@ -78,8 +78,6 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	private void iniData(){
 		data = OperationMethod.getViewByUserRole(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID")));
 		SystemParams.getInstance().setUserRightData(data);
-		
-		
 	}
 	
 	/**

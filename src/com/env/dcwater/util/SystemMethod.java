@@ -1,11 +1,13 @@
 package com.env.dcwater.util;
 import com.env.dcwater.activity.LoginActivity;
+import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.SystemParams;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.location.Criteria;
 import android.location.Location;
@@ -148,6 +150,9 @@ public class SystemMethod {
 	}
 	
 	public static void logOut(Context context){
+		Editor editor = context.getSharedPreferences(DCWaterApp.PREFERENCE_STRING, Context.MODE_PRIVATE).edit();
+		editor.putBoolean(DCWaterApp.PREFERENCE_ISLOGIN_STRING, false);
+		editor.commit();
 		SystemParams.getInstance().setLoggedUserInfo(null);
 		context.startActivity(new Intent(LoginActivity.ACTION_STRING));
 		((Activity) context).finish();

@@ -218,6 +218,13 @@ public class DataFilterView extends LinearLayout{
 	}
 	
 	/**
+	 * 设置快速选择时间的标头
+	 * @param arg0
+	 */
+	public void setFastTimeTitle(String arg0){
+		tvFastTime.setText(arg0);
+	}
+	/**
 	 * 设置开始时间的标头
 	 * @param arg0
 	 */

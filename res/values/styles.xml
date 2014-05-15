@@ -121,6 +121,16 @@
 	    <item name="android:layout_height">@dimen/buttonheight</item>
 	</style>
 	
+	<style name="ViewPagerRadioButtonStyle">
+	    <item name="android:layout_weight">1</item>
+	    <item name="android:layout_width">0dp</item>
+	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:button">@null</item>
+	    <item name="android:textColor">@color/white</item>
+	    <item name="android:gravity">center</item>
+	    <item name="android:drawableTop">@drawable/rdb_style_letter</item>
+	</style>
+	
 	<!-- 绿色按钮的样式 -->
 	<style name="GreenButtonStyle" parent="@android:style/Widget.Button">
 	    <item name="android:background">@drawable/btn_style_green</item>

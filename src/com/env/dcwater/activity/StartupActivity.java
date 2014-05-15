@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.NfcActivity;
@@ -16,8 +15,6 @@ import com.env.dcwater.component.NfcActivity;
 public class StartupActivity extends NfcActivity{
 	
 	public static final String TAG_STRING = "StartupActivity";
-	
-	private Intent loginIntent;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -26,7 +23,7 @@ public class StartupActivity extends NfcActivity{
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				startLogin();
+				 startLogin();
 			}
 		}, DCWaterApp.StartupStayTime);
 	}
@@ -65,8 +62,8 @@ public class StartupActivity extends NfcActivity{
 	 *  登陆
 	 */
 	private void startLogin() {
-		loginIntent = new Intent(StartupActivity.this, LoginActivity.class);
-		startActivity(loginIntent);
+		Intent login = new Intent(StartupActivity.this, LoginActivity.class);
+		startActivity(login);
 		finish();
 	}
 }

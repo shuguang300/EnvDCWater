@@ -1,20 +1,24 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.ThreadPool;
@@ -26,18 +30,25 @@ import com.env.dcwater.util.SystemMethod;
  * 设备信息查看
  * @author sk
  */
-public class DeviceInfoItemActivity extends NfcActivity implements IXListViewListener{
+public class DeviceInfoItemActivity extends NfcActivity implements IXListViewListener,OnPageChangeListener,OnCheckedChangeListener{
 	
 	public static final String ACTION_STRING = "DeviceInfoItemActivity";
 	
 	private Intent receivedIntent;
 	private HashMap<String, String> receivedDevice;
-	private PullToRefreshView infoListView;
+	private PullToRefreshView property,params,files;
 	private ArrayList<HashMap<String, String>> deviceParams;
+	private ViewPager viewPager;
+	private ArrayList<View> views;
+	private View propertyView,paramsView,filesView;
 	private DeviceInfoAdapter deviceInfoAdapter;
 	private ActionBar mActionBar;
+	private DevicePagerAdapter devicePagerAdapter;
 	private ProgressDialog mProgressDialog;
 	private ThreadPool.GetDeviceDetailData getDeviceDetailData;
+	private String [] titles = {"基本参数","技术参数","参考文献"};
+	private RadioGroup titlegGroup;
+	private RadioButton fileButton,paramsButton,propertyButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,18 +65,44 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	private void iniActionBar(){
 		mActionBar = getActionBar();
 		SystemMethod.setActionBarHomeButton(true, mActionBar);
-		mActionBar.setTitle(receivedDevice.get("DeviceName"));
+		mActionBar.setTitle(receivedDevice.get("DeviceName")+titles[0]);
 	}
 	
 	/**
 	 * 初始化view
 	 */
 	private void iniView(){
-		infoListView = (PullToRefreshView)findViewById(R.id.activity_deviceinfoitem_info);
+		titlegGroup = (RadioGroup)findViewById(R.id.activity_deviceinfoitem_title);
+		fileButton = (RadioButton)findViewById(R.id.activity_deviceinfoitem_title_file);
+		fileButton.setText(titles[2]);
+		propertyButton = (RadioButton)findViewById(R.id.activity_deviceinfoitem_title_property);
+		propertyButton.setText(titles[0]);
+		paramsButton = (RadioButton)findViewById(R.id.activity_deviceinfoitem_title_params);
+		paramsButton.setText(titles[1]);
+		
+		viewPager =  (ViewPager)findViewById(R.id.activity_deviceinfoitem);
+		LayoutInflater layoutInflater = LayoutInflater.from(this);
+		
+		propertyView = layoutInflater.inflate(R.layout.view_device_property, null);
+		filesView = layoutInflater.inflate(R.layout.view_device_files, null);
+		paramsView = layoutInflater.inflate(R.layout.view_device_params, null);
+		views.add(paramsView);
+		views.add(propertyView);
+		views.add(filesView);
+		
+		devicePagerAdapter = new DevicePagerAdapter();
+		viewPager.setAdapter(devicePagerAdapter);
+		
+		property = (PullToRefreshView)propertyView.findViewById(R.id.view_device_property);
+		files = (PullToRefreshView)filesView.findViewById(R.id.view_device_files);
+		params = (PullToRefreshView)paramsView.findViewById(R.id.view_device_params);
 		
 		deviceInfoAdapter =  new DeviceInfoAdapter();
-		infoListView.setAdapter(deviceInfoAdapter);
-		infoListView.setXListViewListener(this);
+		property.setAdapter(deviceInfoAdapter);
+		params.setAdapter(deviceInfoAdapter);
+		files.setAdapter(deviceInfoAdapter);
+		viewPager.setOnPageChangeListener(this);
+		titlegGroup.setOnCheckedChangeListener(this);
 	}
 	
 	/**
@@ -76,6 +113,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		receivedIntent = getIntent();
 		receivedDevice = (HashMap<String, String>) receivedIntent.getExtras().getSerializable("data");
 		setDeviceParams(receivedDevice);
+		views = new ArrayList<View>();
 		
 	}
 	
@@ -95,7 +133,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 					Toast.makeText(DeviceInfoItemActivity.this, "更新失败", Toast.LENGTH_SHORT).show();
 				}
 				hideProgressDialog();
-				infoListView.stopRefresh();
+				property.stopRefresh();
 			}
 		};
 		getDeviceDetailData.execute(receivedDevice.get("DeviceID"));
@@ -321,6 +359,77 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 			keyTextView.setText(map.get("Name"));
 			valueTextView.setText(map.get("Value"));
 			return convertView;
+		}
+	}
+	
+	private class DevicePagerAdapter extends PagerAdapter {
+
+		@Override
+		public int getCount() {
+			return views.size();
+		}
+
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == arg1;
+		}
+		
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			((ViewPager)container).removeView(views.get(position));
+		}
+		
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return titles[position].toString();
+		}
+		
+		
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+			((ViewPager)container).addView(views.get(position));
+			return views.get(position);
+		}
+		
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int arg0) {
+	}
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+		
+	}
+
+	@Override
+	public void onPageSelected(int arg0) {
+		switch (arg0) {
+		case 0:
+			titlegGroup.check(R.id.activity_deviceinfoitem_title_property);
+			break;
+		case 1:
+			titlegGroup.check(R.id.activity_deviceinfoitem_title_params);
+			break;
+		case 2:
+			titlegGroup.check(R.id.activity_deviceinfoitem_title_file);
+			break;
+		}
+		mActionBar.setTitle(receivedDevice.get("DeviceName")+titles[arg0]);
+	}
+
+	@Override
+	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		switch (checkedId) {
+		case R.id.activity_deviceinfoitem_title_property:
+			viewPager.setCurrentItem(0);
+			break;
+		case R.id.activity_deviceinfoitem_title_params:
+			viewPager.setCurrentItem(1);
+			break;
+		case R.id.activity_deviceinfoitem_title_file:
+			viewPager.setCurrentItem(2);
+			break;
 		}
 	}
 	

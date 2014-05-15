@@ -102,6 +102,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_maintainhistory_drawlayout);
 		mDataFilterView = (DataFilterView)findViewById(R.id.activity_maintainhistory_datafilter);
 		mDataFilterView.hideTaskStatePicker();
+		mDataFilterView.setFastTimeTitle("故障发生时间");
 		mDataFilterView.setSubmitEvent(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

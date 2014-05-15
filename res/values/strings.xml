@@ -205,11 +205,11 @@
     <string name="menu_upkeephistory_drawshow">筛选条件</string>
     <string name="menu_datainput_save">保存</string>
     <string name="menu_datainput_add">添加</string>
-    <string name="menu_upkeepsend_filter">只显示到期</string>
+    <string name="menu_upkeepsend_filter">只显示到期养护</string>
     <string name="menu_upkeepsend_showdrawer">筛选条件</string>
-    <string name="menu_upkeepreport_filter">只显示可操作</string>
+    <string name="menu_upkeepreport_filter">只显示可填写工单</string>
     <string name="menu_upkeepreport_showdrawer">筛选条件</string>
-    <string name="menu_upkeepapprove_filter">只显示可操作</string>
+    <string name="menu_upkeepapprove_filter">只显示可审核工单</string>
     <string name="menu_upkeepapprove_showdrawer">筛选条件</string>
     
     

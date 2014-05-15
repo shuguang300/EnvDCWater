@@ -6,12 +6,15 @@
     android:orientation="vertical" >
 
     <Spinner
+        android:layout_marginTop="10dp"
         android:id="@+id/activity_deviceinfolist_conslist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/spn_style_dropdown"
         android:spinnerMode="dropdown"
         android:dropDownSelector="@color/lightblue" />
+    
+    <TextView style="@style/ItemDivider" />
 
     <com.env.dcwater.fragment.PullToRefreshView
         android:id="@+id/activity_deviceinfolist_devicelist"

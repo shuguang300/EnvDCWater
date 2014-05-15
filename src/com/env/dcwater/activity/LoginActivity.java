@@ -8,7 +8,10 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.transport.HttpResponseException;
 import org.xmlpull.v1.XmlPullParserException;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -18,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.env.dcwater.R;
+import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.util.DataCenterHelper;
@@ -36,14 +40,26 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	private Intent userRightIntent;
 	private EditText accountView,passwordView;
 	private String mAccount,mPassword;
+	private HashMap<String, String> user;
 	private ProgressDialog mLoginProgressDialog;
 	private LoginAsyncTask mLoginAsyncTask;
+	private SharedPreferences sp;
+	private Editor editor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
 		ini();
+		
+		if(sp.getBoolean(DCWaterApp.PREFERENCE_ISLOGIN_STRING, false)){
+			user = OperationMethod.getLocalUserInfo(sp);
+			accountView.setText(user.get("UserName"));
+			passwordView.setText(user.get("UserPassword"));
+			onClick(loginButton);
+		}
+		
 		
 	}
 	
@@ -87,6 +103,9 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	 * 初始化控件，设置控件的点击事件和数据
 	 */
 	private void ini(){
+		sp = getSharedPreferences(DCWaterApp.PREFERENCE_STRING, Context.MODE_PRIVATE);
+		editor = sp.edit();
+		
 		loginButton = (Button)findViewById(R.id.activity_login_submit);
 		loginButton.setOnClickListener(this);
 		resetButton = (Button)findViewById(R.id.activity_login_reset);
@@ -244,13 +263,14 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 								Toast.makeText(LoginActivity.this, "您的账号未启用", Toast.LENGTH_SHORT).show();
 							}else {
 								SystemParams.getInstance().setLoggedUserInfo(map);
+								OperationMethod.setLocalUserInfo(editor, map);
 								entranceMainActivity();
 							}
 						}
 					}
 				}
+				hideProgressDialog();
 			}
-			hideProgressDialog();
 		}
 	}
 	
