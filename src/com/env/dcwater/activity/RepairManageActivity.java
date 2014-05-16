@@ -170,8 +170,12 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	 * 初始化数据
 	 */
 	private void iniData(){
+		
 		mData = new ArrayList<HashMap<String,String>>();
 		userPositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+		if(userPositionID == EnumList.UserRole.USERROLEEQUIPMENTOPERATION||userPositionID==EnumList.UserRole.USERROLEPRODUCTIONOPERATION){
+			isFilter = false;
+		}
 	}
 	
 	/**
@@ -398,9 +402,9 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		menuMessage = (TextView)menu.getItem(2).getActionView();
 		menuMessage.setTextColor(getResources().getColor(R.color.white));
 //		menuMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.small));
-		int positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
-		if(positionID == EnumList.UserRole.USERROLEEQUIPMENTOPERATION||positionID==EnumList.UserRole.USERROLEPRODUCTIONOPERATION){
+		if(userPositionID == EnumList.UserRole.USERROLEEQUIPMENTOPERATION||userPositionID==EnumList.UserRole.USERROLEPRODUCTIONOPERATION){
 			menu.getItem(0).setVisible(true);
+			menu.findItem(R.id.menu_repairmanage_filter).setVisible(false);
 		}else {
 			menu.getItem(0).setVisible(false);
 		}

@@ -1,11 +1,14 @@
 package com.env.dcwater.util;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.javabean.EnumList;
@@ -387,60 +390,206 @@ public class OperationMethod {
 		return data;
 	}
 	
-	public static HashMap<String, String> parseDeviceDataToHashMap(JSONObject jsonObject) throws JSONException{
-		JSONObject device = new JSONObject(jsonObject.getString("d"));
+	/**
+	 * 获取设备基本参数
+	 * @param device
+	 * @return
+	 * @throws JSONException
+	 */
+	public static HashMap<String, String> parseDevicePropertyToHashMap(JSONObject device) throws JSONException{
+		
 		HashMap<String, String> map = new HashMap<String, String>();
-		
+		//设备id
 		map.put("DeviceID", device.get("DeviceID").toString());
-		
+		//设备编号：
 		map.put("DeviceSN", device.get("DeviceSN").toString());
-		
+		//设备名称
 		map.put("DeviceName", device.get("DeviceName").toString());
-		
-		
+		//厂id
 		map.put("PlantID", device.get("PlantID").toString());
-		
+		//使用部门
 		map.put("Department", LogicMethod.getRightString(device.get("Department").toString()));
-		
+		//设备型号
+		map.put("Specification", LogicMethod.getRightString(device.get("Specification").toString()));
+		//固定资产编号
 		map.put("FixedAssets", LogicMethod.getRightString(device.get("FixedAssets").toString()));
-		
+		//安装位置的名称
 		map.put("InstallPosition", LogicMethod.getRightString(device.get("InstallPosition").toString()));
-		
+		//安装位置
 		map.put("InstallPositionforMobile", LogicMethod.getRightString(device.get("InstallPositionforMobile").toString()));
 		
 		map.put("TechnicalParameter", LogicMethod.getRightString(device.get("TechnicalParameter").toString()));
-		
+		//生产厂家
 		map.put("Manufacturer", LogicMethod.getRightString(device.get("Manufacturer").toString()));
-		
+		//设备价格
 		map.put("Price", LogicMethod.getRightString(device.get("Price").toString()));
-		
+		//建档时间：
 		map.put("FilingTime", LogicMethod.getRightString(device.get("FilingTime").toString().replace("T", " ")));
-		
+		//安装试车时间
 		map.put("InstallTime", LogicMethod.getRightString(device.get("InstallTime").toString().replace("T", " ")));
-		
+		//开始使用时间
 		map.put("StartUseTime", LogicMethod.getRightString(device.get("StartUseTime").toString().replace("T", " ")));
-		
+		//开始停用时间
 		map.put("StopUseTime", LogicMethod.getRightString(device.get("StopUseTime").toString().replace("T", " ")));
-		
+		//设备报废时间
 		map.put("ScrapTime", LogicMethod.getRightString(device.get("ScrapTime").toString().replace("T", " ")));
-		
+		//设备折旧年限
 		map.put("DepreciationPeriod", LogicMethod.getRightString(device.get("DepreciationPeriod").toString()));
-		
+		//设备质量
 		map.put("Quality", LogicMethod.getRightString(device.get("Quality").toString()));
 		
 		map.put("ReMark", LogicMethod.getRightString(device.get("ReMark").toString()));
-		
+		//正常运行的标准
 		map.put("StandardNorOperation", LogicMethod.getRightString(device.get("StandardNorOperation").toString()));
-		
+		//运行管理及操作要点:
 		map.put("OperatManagAndOperatPoint", LogicMethod.getRightString(device.get("OperatManagAndOperatPoint").toString()));
-		
+		//常见问题及对策:
 		map.put("ComProbAndSolutions", LogicMethod.getRightString(device.get("ComProbAndSolutions").toString()));
-		
+		//设备类型
 		map.put("DeviceClassType", LogicMethod.getRightString(device.get("DeviceClassType").toString()));
-		
+		//随机附件及数量
 		map.put("AccessoryInfo", LogicMethod.getRightString(device.get("AccessoryInfo").toString()));
+		//图片地址
+		map.put("PicURL", LogicMethod.getRightString(device.get("PicURL").toString()));
+		//所属小类:
+		map.put("DeviceSmallClassName", LogicMethod.getRightString(device.get("DeviceSmallClassName").toString()));
+		//所属大类：
+		map.put("DeviceLargeClassName", LogicMethod.getRightString(device.get("DeviceLargeClassName").toString()));
+		//数量
+		map.put("Amount", LogicMethod.getRightString(device.get("Amount").toString()));
 		
 		return map;
+	}
+	
+	/**
+	 * @param map
+	 * @return
+	 */
+	public static ArrayList<HashMap<String, String>> parseDevicePropertyToList(HashMap<String, String> maps){
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("Name", "设备名称");
+		map.put("Value", maps.get("DeviceName"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "建档时间");
+		map.put("Value", maps.get("FilingTime"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "固定资产编号");
+		map.put("Value", maps.get("FixedAssets"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "安装位置");
+		map.put("Value", maps.get("InstallPosition"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "生产厂家");
+		map.put("Value", maps.get("Manufacturer"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "开始使用时间");
+		map.put("Value", maps.get("StartUseTime"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "设备报废时间");
+		map.put("Value", maps.get("ScrapTime"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "设备质量");
+		map.put("Value", maps.get("Quality"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "设备类型");
+		map.put("Value", maps.get("DeviceClassType"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "设备编号");
+		map.put("Value", maps.get("DeviceSN"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "型号（规格）");
+		map.put("Value", maps.get("Specification"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "使用部门");
+		map.put("Value", maps.get("Department"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "安装试车时间");
+		map.put("Value", maps.get("InstallTime"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "开始停用时间");
+		map.put("Value", maps.get("StopUseTime"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "设备折旧年限");
+		map.put("Value", maps.get("DepreciationPeriod"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "设备价格");
+		map.put("Value", maps.get("Price"));
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "随机附件及数量");
+		map.put("Value", maps.get("AccessoryInfo"));
+		data.add(map);
+		
+		return data;
+	}
+	/**
+	 * 获取设备技术参数
+	 * @return
+	 * @throws JSONException 
+	 */
+	public static ArrayList<HashMap<String, String>> parseDeviceParamsToList(JSONArray devices) throws JSONException{
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
+		JSONObject device ;
+		HashMap<String, String> map ;
+		for (int i =0;i<devices.length();i++) {
+			device = devices.getJSONObject(i);
+			map = new HashMap<String, String>();
+			map.put("ParameterName", LogicMethod.getRightString(device.get("ParameterName").toString()));
+			map.put("ParameterValue", LogicMethod.getRightString(device.get("ParameterValue").toString()));
+			map.put("Remark", LogicMethod.getRightString(device.get("Remark").toString()));
+			data.add(map);
+		}
+		return data;
+	}
+	
+	/**
+	 * 获取设备技术文档
+	 * @return
+	 * @throws JSONException 
+	 */
+	public static ArrayList<HashMap<String, String>> parseDeviceFilesToList(JSONArray devices) throws JSONException{
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
+		JSONObject device ;
+		HashMap<String, String> map ;
+		for (int i =0;i<devices.length();i++) {
+			device = devices.getJSONObject(i);
+			map = new HashMap<String, String>();
+			map.put("TechnicalData", LogicMethod.getRightString(device.getString("TechnicalData").toString()));
+			data.add(map);
+		}
+		return data;
 	}
 	
 	/**
@@ -462,7 +611,6 @@ public class OperationMethod {
 			HashMap<String, String> map = null;
 			for(int i =0;i<jsonArray.length();i++){
 				device = jsonArray.getJSONObject(i);
-				map = new HashMap<String, String>();
 				
 				//添加过滤条件
 				if(!deviceName.equals("")&&!device.get("DeviceName").toString().contains(deviceName)){
@@ -481,55 +629,7 @@ public class OperationMethod {
 						continue;
 					}
 				}
-				
-				map.put("DeviceID", device.get("DeviceID").toString());
-				
-				map.put("DeviceSN", device.get("DeviceSN").toString());
-				
-				map.put("DeviceName", device.get("DeviceName").toString());
-				
-				
-				map.put("PlantID", device.get("PlantID").toString());
-				
-				map.put("Department", LogicMethod.getRightString(device.get("Department").toString()));
-				
-				map.put("FixedAssets", LogicMethod.getRightString(device.get("FixedAssets").toString()));
-				
-				map.put("InstallPosition", LogicMethod.getRightString(device.get("InstallPosition").toString()));
-				
-				map.put("InstallPositionforMobile", LogicMethod.getRightString(device.get("InstallPositionforMobile").toString()));
-				
-				map.put("TechnicalParameter", LogicMethod.getRightString(device.get("TechnicalParameter").toString()));
-				
-				map.put("Manufacturer", LogicMethod.getRightString(device.get("Manufacturer").toString()));
-				
-				map.put("Price", LogicMethod.getRightString(device.get("Price").toString()));
-				
-				map.put("FilingTime", LogicMethod.getRightString(device.get("FilingTime").toString().replace("T", " ")));
-				
-				map.put("InstallTime", LogicMethod.getRightString(device.get("InstallTime").toString().replace("T", " ")));
-				
-				map.put("StartUseTime", LogicMethod.getRightString(device.get("StartUseTime").toString().replace("T", " ")));
-				
-				map.put("StopUseTime", LogicMethod.getRightString(device.get("StopUseTime").toString().replace("T", " ")));
-				
-				map.put("ScrapTime", LogicMethod.getRightString(device.get("ScrapTime").toString().replace("T", " ")));
-				
-				map.put("DepreciationPeriod", LogicMethod.getRightString(device.get("DepreciationPeriod").toString()));
-				
-				map.put("Quality", LogicMethod.getRightString(device.get("Quality").toString()));
-				
-				map.put("ReMark", LogicMethod.getRightString(device.get("ReMark").toString()));
-				
-				map.put("StandardNorOperation", LogicMethod.getRightString(device.get("StandardNorOperation").toString()));
-				
-				map.put("OperatManagAndOperatPoint", LogicMethod.getRightString(device.get("OperatManagAndOperatPoint").toString()));
-				
-				map.put("ComProbAndSolutions", LogicMethod.getRightString(device.get("ComProbAndSolutions").toString()));
-				
-				map.put("DeviceClassType", LogicMethod.getRightString(device.get("DeviceClassType").toString()));
-				
-				map.put("AccessoryInfo", LogicMethod.getRightString(device.get("AccessoryInfo").toString()));
+				map = parseDevicePropertyToHashMap(device);
 				
 				data.add(map);
 			}
@@ -1198,6 +1298,11 @@ public class OperationMethod {
 		return map;
 	}
 	
+	/**
+	 * 从本地获取用户信息
+	 * @param sp
+	 * @return
+	 */
 	public static HashMap<String, String> getLocalUserInfo(SharedPreferences sp){
 		HashMap<String, String> map = null;
 		if(sp!=null){
@@ -1221,6 +1326,12 @@ public class OperationMethod {
 		return map;
 	}
 	
+	/**
+	 * 记录用户信息到本地
+	 * @param et
+	 * @param map
+	 * @return
+	 */
 	public static boolean setLocalUserInfo(Editor et,HashMap<String, String> map){
 		boolean ok = false;
 		if(et!=null){

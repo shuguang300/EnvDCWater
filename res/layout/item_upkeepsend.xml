@@ -39,9 +39,9 @@
             style="@style/ItemLayout"
             android:drawableLeft="@drawable/ic_item_period" /> -->
         <TextView
-            android:id="@+id/item_upkeepsend_state"
+            android:id="@+id/item_upkeepsend_nexttime"
             style="@style/ItemLayout"
-            android:drawableLeft="@drawable/ic_item_state" />
+            android:drawableLeft="@drawable/ic_item_time" />
         
     </LinearLayout>
 

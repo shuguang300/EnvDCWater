@@ -1,6 +1,7 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,16 +15,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
+import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
 
 /**
@@ -32,21 +36,37 @@ import com.env.dcwater.util.SystemMethod;
  */
 public class DeviceInfoItemActivity extends NfcActivity implements IXListViewListener,OnPageChangeListener,OnCheckedChangeListener{
 	
+	static class FileViewHolder{
+		public TextView code = null;  
+        public TextView name = null;  
+        public Button dl = null;  
+        public Button pre = null; 
+	}
+	static class ParamViewHoler{
+		public TextView code = null;  
+        public TextView name = null;  
+        public TextView value = null;  
+        public TextView remark = null; 
+	}
+	
 	public static final String ACTION_STRING = "DeviceInfoItemActivity";
 	
 	private Intent receivedIntent;
 	private HashMap<String, String> receivedDevice;
 	private PullToRefreshView property,params,files;
-	private ArrayList<HashMap<String, String>> deviceParams;
+	private HashMap<String, ArrayList<HashMap<String, String>>> detailData;
+	private ArrayList<HashMap<String, String>> deviceFiles,deviceProperty,deviceParams;
 	private ViewPager viewPager;
 	private ArrayList<View> views;
 	private View propertyView,paramsView,filesView;
-	private DeviceInfoAdapter deviceInfoAdapter;
+	private DevicePropertyAdapter devicePropertyAdapter;
+	private DeviceParamAdapter deviceParamAdapter;
+	private DeviceFilesAdapter deviceFilesAdapter;
 	private ActionBar mActionBar;
 	private DevicePagerAdapter devicePagerAdapter;
 	private ProgressDialog mProgressDialog;
 	private ThreadPool.GetDeviceDetailData getDeviceDetailData;
-	private String [] titles = {"基本参数","技术参数","参考文献"};
+	private String [] titles = {"基本参数","技术参数","技术文档"};
 	private RadioGroup titlegGroup;
 	private RadioButton fileButton,paramsButton,propertyButton;
 	
@@ -57,6 +77,20 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		iniData();
  		iniActionBar();
 		iniView();
+	}
+	
+	/**
+	 * 初始化数据
+	 */
+	@SuppressWarnings("unchecked")
+	private void iniData(){
+		receivedIntent = getIntent();
+		receivedDevice = (HashMap<String, String>) receivedIntent.getExtras().getSerializable("data");
+		getServerDeviceData();
+		deviceProperty = OperationMethod.parseDevicePropertyToList(receivedDevice);
+		deviceParams = new ArrayList<HashMap<String,String>>();
+		deviceFiles = new ArrayList<HashMap<String,String>>();
+		views = new ArrayList<View>();
 	}
 	
 	/**
@@ -73,10 +107,13 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	 */
 	private void iniView(){
 		titlegGroup = (RadioGroup)findViewById(R.id.activity_deviceinfoitem_title);
+		
 		fileButton = (RadioButton)findViewById(R.id.activity_deviceinfoitem_title_file);
 		fileButton.setText(titles[2]);
+		
 		propertyButton = (RadioButton)findViewById(R.id.activity_deviceinfoitem_title_property);
 		propertyButton.setText(titles[0]);
+		
 		paramsButton = (RadioButton)findViewById(R.id.activity_deviceinfoitem_title_params);
 		paramsButton.setText(titles[1]);
 		
@@ -86,9 +123,12 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		propertyView = layoutInflater.inflate(R.layout.view_device_property, null);
 		filesView = layoutInflater.inflate(R.layout.view_device_files, null);
 		paramsView = layoutInflater.inflate(R.layout.view_device_params, null);
-		views.add(paramsView);
+		
 		views.add(propertyView);
+		views.add(paramsView);
 		views.add(filesView);
+		
+		
 		
 		devicePagerAdapter = new DevicePagerAdapter();
 		viewPager.setAdapter(devicePagerAdapter);
@@ -97,25 +137,24 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		files = (PullToRefreshView)filesView.findViewById(R.id.view_device_files);
 		params = (PullToRefreshView)paramsView.findViewById(R.id.view_device_params);
 		
-		deviceInfoAdapter =  new DeviceInfoAdapter();
-		property.setAdapter(deviceInfoAdapter);
-		params.setAdapter(deviceInfoAdapter);
-		files.setAdapter(deviceInfoAdapter);
+		
+		devicePropertyAdapter = new DevicePropertyAdapter();
+		deviceParamAdapter = new DeviceParamAdapter();
+		deviceFilesAdapter = new DeviceFilesAdapter();
+		
+		property.setAdapter(devicePropertyAdapter);
+		property.setXListViewListener(this);
+		
+		params.setAdapter(deviceParamAdapter);
+		params.setXListViewListener(this);
+		
+		files.setAdapter(deviceFilesAdapter);
+		files.setXListViewListener(this);
+		
 		viewPager.setOnPageChangeListener(this);
 		titlegGroup.setOnCheckedChangeListener(this);
 	}
 	
-	/**
-	 * 初始化数据
-	 */
-	@SuppressWarnings("unchecked")
-	private void iniData(){
-		receivedIntent = getIntent();
-		receivedDevice = (HashMap<String, String>) receivedIntent.getExtras().getSerializable("data");
-		setDeviceParams(receivedDevice);
-		views = new ArrayList<View>();
-		
-	}
 	
 	private void getServerDeviceData(){
 		getDeviceDetailData = new ThreadPool.GetDeviceDetailData() {
@@ -124,112 +163,37 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 				showProgressDialog(false);
 			}
 			@Override
-			protected void onPostExecute(HashMap<String, String> result) {
+			protected void onPostExecute(HashMap<String, ArrayList<HashMap<String, String>>> result) {
 				if(result!=null){
-					setDeviceParams(result);
-					deviceInfoAdapter.notifyDataSetChanged();
+					detailData = result;
+					deviceFiles = detailData.get("DeviceFile");
+					deviceParams = detailData.get("DeviceParam");
+					deviceProperty = detailData.get("DeviceProperty");
+					int i =viewPager.getCurrentItem();
+					switch (i) {
+					case 0:
+						devicePropertyAdapter.notifyDataSetChanged();
+						break;
+					case 1:
+						deviceParamAdapter.notifyDataSetChanged();
+						break;
+					case 2:
+						deviceFilesAdapter.notifyDataSetChanged();
+						break;
+					}
 					Toast.makeText(DeviceInfoItemActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
 				}else {
 					Toast.makeText(DeviceInfoItemActivity.this, "更新失败", Toast.LENGTH_SHORT).show();
 				}
 				hideProgressDialog();
 				property.stopRefresh();
+				params.stopRefresh();
+				files.stopRefresh();
 			}
 		};
 		getDeviceDetailData.execute(receivedDevice.get("DeviceID"));
 	}
-	
-	/**
-	 * 构造参数列表
-	 * @param selectedMachine
-	 */
-	private void setDeviceParams(HashMap<String, String> selectedMachine){
-		deviceParams = new ArrayList<HashMap<String,String>>();
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("Name", "设备名称");
-		map.put("Value", selectedMachine.get("DeviceName"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "建档时间");
-		map.put("Value", selectedMachine.get("FilingTime"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "固定资产编号");
-		map.put("Value", selectedMachine.get("FixedAssets"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "安装位置");
-		map.put("Value", selectedMachine.get("InstallPosition"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "生产厂家");
-		map.put("Value", selectedMachine.get("Manufacturer"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "开始使用时间");
-		map.put("Value", selectedMachine.get("StartUseTime"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "设备报废时间");
-		map.put("Value", selectedMachine.get("ScrapTime"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "设备质量");
-		map.put("Value", selectedMachine.get("Quality"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "设备类型");
-		map.put("Value", selectedMachine.get("DeviceClassType"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "设备编号");
-		map.put("Value", selectedMachine.get("DeviceSN"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "型号（规格）");
-		map.put("Value", selectedMachine.get("Specification"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "使用部门");
-		map.put("Value", selectedMachine.get("Department"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "安装试车时间");
-		map.put("Value", selectedMachine.get("InstallTime"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "开始停用时间");
-		map.put("Value", selectedMachine.get("StopUseTime"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "设备折旧年限");
-		map.put("Value", selectedMachine.get("DepreciationPeriod"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "设备价格");
-		map.put("Value", selectedMachine.get("Price"));
-		deviceParams.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "随机附件及数量");
-		map.put("Value", selectedMachine.get("AccessoryInfo"));
-		deviceParams.add(map);
-	}
+
 	
 	/**
 	 * 获取数据时，弹出进度对话框
@@ -335,7 +299,37 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	 * 自定义设备参数列表的adapter
 	 * @author sk
 	 */
-	private class DeviceInfoAdapter extends BaseAdapter{
+	private class DevicePropertyAdapter extends BaseAdapter{
+		@Override
+		public int getCount() {
+			return deviceProperty.size();
+		}
+		@Override
+		public HashMap<String, String> getItem(int position) {
+			return deviceProperty.get(position);
+		}
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if(convertView ==null){
+				convertView = LayoutInflater.from(DeviceInfoItemActivity.this).inflate(R.layout.item_deviceproperty, null);
+			}
+			HashMap<String, String> map = getItem(position);
+			TextView keyTextView = (TextView)convertView.findViewById(R.id.item_deviceproperty_key);
+			TextView valueTextView = (TextView)convertView.findViewById(R.id.item_deviceproperty_value);
+			keyTextView.setText(map.get("Name"));
+			valueTextView.setText(map.get("Value"));
+			return convertView;
+		}
+	}
+	/**
+	 * 自定义设备参数列表的adapter
+	 * @author sk
+	 */
+	private class DeviceParamAdapter extends BaseAdapter{
 		@Override
 		public int getCount() {
 			return deviceParams.size();
@@ -350,20 +344,66 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		}
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			if(convertView ==null){
-				convertView = LayoutInflater.from(DeviceInfoItemActivity.this).inflate(R.layout.item_deviceinfo, null);
-			}
+			ParamViewHoler viewHoler ;
 			HashMap<String, String> map = getItem(position);
-			TextView keyTextView = (TextView)convertView.findViewById(R.id.item_deviceinfo_key);
-			TextView valueTextView = (TextView)convertView.findViewById(R.id.item_deviceinfo_value);
-			keyTextView.setText(map.get("Name"));
-			valueTextView.setText(map.get("Value"));
+			if(convertView ==null){
+				convertView = LayoutInflater.from(DeviceInfoItemActivity.this).inflate(R.layout.item_deviceparam, null);
+				viewHoler = new ParamViewHoler();
+				viewHoler.code = (TextView)convertView.findViewById(R.id.item_deviceparam_code);
+				viewHoler.name = (TextView)convertView.findViewById(R.id.item_deviceparam_name);
+				viewHoler.value = (TextView)convertView.findViewById(R.id.item_deviceparam_value);
+				viewHoler.remark = (TextView)convertView.findViewById(R.id.item_deviceparam_remark);
+				convertView.setTag(viewHoler);
+			}else {
+				viewHoler = (ParamViewHoler)convertView.getTag();
+			}
+			viewHoler.code.setText(position+"");
+			viewHoler.name.setText(map.get("ParameterName"));
+			viewHoler.value.setText(map.get("ParameterValue"));
+			viewHoler.remark.setText(map.get("Remark"));
+			return convertView;
+		}
+	}
+	/**
+	 * 自定义设备参数列表的adapter
+	 * @author sk
+	 */
+	private class DeviceFilesAdapter extends BaseAdapter{
+		@Override
+		public int getCount() {
+			return deviceFiles.size();
+		}
+		@Override
+		public HashMap<String, String> getItem(int position) {
+			return deviceFiles.get(position);
+		}
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			FileViewHolder viewHolder;
+			HashMap<String, String> map = getItem(position);
+			if(convertView ==null){
+				convertView = LayoutInflater.from(DeviceInfoItemActivity.this).inflate(R.layout.item_devicefile, null);
+				viewHolder = new FileViewHolder();
+				viewHolder.code = (TextView)convertView.findViewById(R.id.item_devicefiles_code);
+				viewHolder.name = (TextView)convertView.findViewById(R.id.item_devicefiles_name);
+				viewHolder.dl = (Button)convertView.findViewById(R.id.item_devicefiles_dl);
+				viewHolder.pre = (Button)convertView.findViewById(R.id.item_devicefiles_pre);
+				convertView.setTag(viewHolder);
+			}else {
+				viewHolder = (FileViewHolder)convertView.getTag();
+			}
+			viewHolder.code.setText(position+"");
+			viewHolder.name.setText(map.get("TechnicalData"));
+			viewHolder.dl.setVisibility(map.get("WhetherDownload").equals("true")?View.VISIBLE:View.GONE);
 			return convertView;
 		}
 	}
 	
 	private class DevicePagerAdapter extends PagerAdapter {
-
 		@Override
 		public int getCount() {
 			return views.size();

@@ -233,8 +233,8 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 //			mtdetail.setText(map.get("MaintainSpecification"));
 //			TextView mtperiod = (TextView)convertView.findViewById(R.id.item_upkeepsend_mtperiod);
 //			mtperiod.setText(map.get("MaintainPeriod"));
-			TextView state = (TextView)convertView.findViewById(R.id.item_upkeepsend_state);
-			state.setText(map.get("MaintainStateDescription"));
+			TextView nexttime = (TextView)convertView.findViewById(R.id.item_upkeepsend_nexttime);
+			nexttime.setText("下次保养时间为"+map.get("Maintaintimenext"));
 			return convertView;
 		}
 		

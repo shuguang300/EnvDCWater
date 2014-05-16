@@ -1,35 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">滇池水务</string>
     <string name="system_name">滇池智慧水务信息系统</string>
-    
-   
-    
-    <string name="fragment_machinemanage_name">设备名称</string>
-    <string name="fragment_machinemanage_pos">安装位置</string>
-    <string name="fragment_machinemanage_mode">型号</string>
-    <string name="fragment_machinemanage_manufacture">生产厂商</string>
-    <string name="fragment_machinemanage_add">添加</string>
-    <string name="fragment_machinemanage_more">详情</string>
-    <string name="fragment_machinemanage_update">修改</string>
-    <string name="fragment_machinemanage_delete">删除</string>
-    
-    <string name="fragment_consmanage_name">构筑物名称</string>
-    <string name="fragment_consmanage_size">构筑物尺寸</string>
-    <string name="fragment_consmanage_area">有效容积</string>
-    <string name="fragment_consmanage_remark">备注</string>
-    <string name="fragment_consmanage_more">查看</string>
-    <string name="fragment_consmanage_update">编辑</string>
-    <string name="fragment_consmanage_delete">删除</string>
-    
-    
-    
-     <string name="activity_machinemanage_radiogroup_machinemanage">设备信息管理</string>
+    <string name="activity_machinemanage_radiogroup_machinemanage">设备信息管理</string>
     <string name="activity_machinemanage_radiogroup_consmanage">构筑物管理</string>
     <string name="activity_machinemanage_radiogroup_machineinfo">设备信息查看</string>
     <string name="activity_machinemanage_radiogroup_planmanage">保养计划管理</string>
-    
-    
     <string name="activity_config_title">设置</string>
     <string name="activity_userright_title">功能导航区</string>
     <string name="activity_userright_group_machinemanage">设备管理</string>
@@ -37,9 +14,6 @@
     <string name="activity_userright_item_repairmanage">设备维修管理</string>
     <string name="activity_userright_item_maintainhistory">维修历史记录</string>
     <string name="activity_userright_item_upkeephistory">保养历史记录</string>
-    
-    
-    
     <string name="activity_repairmanageitem_verify">审核信息</string>
     <string name="activity_repairmanageitem_repair">维修信息</string>
     <string name="activity_repairmanageitem_people">人员信息</string>
@@ -76,12 +50,10 @@
     <string name="activity_deviceselect_search">查询</string>
     <string name="activity_deviceselect_devicename">设备名称</string>
     <string name="activity_deviceselect_consname">构筑物</string>
-    
     <string name="activity_upkeephistoryitem_devicegroup">设备信息</string>
     <string name="activity_upkeephistoryitem_maintaingroup">养护信息</string>
     <string name="activity_upkeephistoryitem_taskgroup">工单信息</string>
     <string name="activity_upkeephistoryitem_approvegroup">审核信息</string>
-    
     <string name="activity_upkeephistoryitem_installpos">安装位置</string>
     <string name="activity_upkeephistoryitem_devicename">设备名称</string>
     <string name="activity_upkeephistoryitem_maintainpos">养护部位</string>
@@ -104,37 +76,27 @@
     <string name="activity_upkeephistoryitem_send">派发工单</string>
     <string name="activity_upkeephistoryitem_report">上报工单</string>
     <string name="activity_upkeephistoryitem_approve">审核工单</string>
-    
-    
     <string name="view_datetimepick_ok">确定</string>
     <string name="view_datetimepick_cancel">取消</string>
     <string name="view_datetimepick_reset">重置</string>
-    
-    
     <string name="view_addmediafile_takephoto">拍照</string>
     <string name="view_addmediafile_photo">图片</string>
     <string name="view_addmediafile_voice">音频</string>
     <string name="view_addmediafile_video">视频</string>
     <string name="view_addmediafile_file">文件</string>
     <string name="view_addmediafile_location">位置</string>
-    
     <string name="view_userright_group_performance">绩效管理</string>
     <string name="view_userright_group_analysis">生产统计分析</string>
-    
     <string name="activity_config_logout">注销</string>
-    
     <string name="activity_login_summit">登    录</string>
     <string name="activity_login_reset">重    置</string>
-    
     <string name="activity_datainput_add">添加</string>
-    
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
     <string name="xlistview_header_hint_loading">正在加载。。。</string>
     <string name="xlistview_header_last_time">上次更新时间：</string>
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
-    
     <string name="view_datafilter_fasttime">快速选择</string>
     <string name="view_datafilter_time">时间选择</string>
     <string name="view_datafilter_starttime">开始时间</string>
@@ -143,12 +105,20 @@
     <string name="view_datafilter_state">工单状态</string>
     <string name="view_datafilter_name">设备名称</string>
     <string name="view_datafilter_ok">搜    索</string>
-    
     <string name="view_webview_back">返    回</string>
     <string name="view_webview_forward">前    进</string>
     <string name="view_webview_stop">停    止</string>
     <string name="view_webview_refresh">刷    新</string>
-    
+    <string name="item_deviceparam_code">编    号</string>
+    <string name="item_deviceparam_name">参数名称</string>
+    <string name="item_deviceparam_value">参数值</string>
+    <string name="item_deviceparam_remark">备    注</string>
+    <string name="item_devicefiles_code">编号</string>
+    <string name="item_devicefiles_name">文件名</string>
+    <string name="item_devicefiles_operation">操作</string>
+    <string name="item_devicefiles_dl">下    载</string>
+    <string name="item_devicefiles_pre">浏    览</string>
+
     <string-array name="view_datafilter_fasttimelist">
         <item>请选择</item>
         <item>今天</item>
@@ -159,37 +129,34 @@
         <item>最近7天</item>
         <item>最近1月</item>
     </string-array>
-    
     <string-array name="view_datafilter_upkeepplanstatelist">
-        <item >不限</item>
-        <item >已列入计划</item>
-        <item >养护中</item>
-        <item >审核未通过</item>
-        <item >完成</item>
-        <item >回单待审核</item>
+        <item>不限</item>
+        <item>已列入计划</item>
+        <item>养护中</item>
+        <item>审核未通过</item>
+        <item>完成</item>
+        <item>回单待审核</item>
     </string-array>
-    
     <string-array name="view_datafilter_upkeepstatelist">
-        <item >不限</item>
-        <item >已派发工单</item>
-        <item >已回单</item>
-        <item >审核通过</item>
-        <item >审核未通过</item>
-        <item >已填写待上报</item>
+        <item>不限</item>
+        <item>已派发工单</item>
+        <item>已回单</item>
+        <item>审核通过</item>
+        <item>审核未通过</item>
+        <item>已填写待上报</item>
     </string-array>
-    
     <string-array name="view_datafilter_repairstatelist">
-        <item >不限</item>
-        <item >报修单已上报</item>
-        <item >报修单已确认</item>
-        <item >维修单已派发</item>
-        <item >维修单填写中</item>
-        <item >维修单已上报</item>
-        <item >维修单返回修改</item>
-        <item >设备科长审核通过</item>
-        <item >生产科长已确认</item>
+        <item>不限</item>
+        <item>报修单已上报</item>
+        <item>报修单已确认</item>
+        <item>维修单已派发</item>
+        <item>维修单填写中</item>
+        <item>维修单已上报</item>
+        <item>维修单返回修改</item>
+        <item>设备科长审核通过</item>
+        <item>生产科长已确认</item>
     </string-array>
-    
+
     <string name="menu_deviceinfoitem_maintainhistory">维修历史</string>
     <string name="menu_deviceinfoitem_upkeephistory">保养历史</string>
     <string name="menu_deviceinfoitem_showdevice">选择设备</string>
@@ -211,8 +178,6 @@
     <string name="menu_upkeepreport_showdrawer">筛选条件</string>
     <string name="menu_upkeepapprove_filter">只显示可审核工单</string>
     <string name="menu_upkeepapprove_showdrawer">筛选条件</string>
-    
-    
     <string name="cm_rm_op_update">修改</string>
     <string name="cm_rm_op_delete">删除</string>
     <string name="cm_rm_dd_send">派发工单</string>
@@ -222,6 +187,5 @@
     <string name="cm_rm_rm_receive">确认维修</string>
     <string name="cm_rm_rm_repair">填写工单</string>
     <string name="cm_rm_pm_confirm">厂长确认</string>
-    
-    
+
 </resources>

@@ -2,14 +2,13 @@ package com.env.dcwater.component;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.client.ClientProtocolException;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.os.AsyncTask;
-
 import com.env.dcwater.util.DataCenterHelper;
+import com.env.dcwater.util.LogicMethod;
 import com.env.dcwater.util.OperationMethod;
 
 /**
@@ -67,10 +66,10 @@ public class ThreadPool {
 	 * @author sk
 	 *
 	 */
-	public static abstract class GetDeviceDetailData extends AsyncTask<String, String, HashMap<String, String>>{
+	public static abstract class GetDeviceDetailData extends AsyncTask<String, String, HashMap<String, ArrayList<HashMap<String, String>>>>{
 		@Override
-		protected HashMap<String, String> doInBackground(String... params) {
-			HashMap<String, String> map = null;
+		protected HashMap<String, ArrayList<HashMap<String, String>>> doInBackground(String... params) {
+			HashMap<String, ArrayList<HashMap<String, String>>> data = null;
 			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
 			JSONObject param = new JSONObject();
 			try {
@@ -79,26 +78,46 @@ public class ThreadPool {
 				result = DataCenterHelper.HttpPostData("GetDeviceInfo", param);
 				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					JSONObject jsonObject = new JSONObject(result);
-					map = OperationMethod.parseDeviceDataToHashMap(jsonObject);
+					JSONObject deviceJsonObject = new JSONObject(jsonObject.getString("d"));
+					JSONObject devicePropertyJsonObject = new JSONObject(deviceJsonObject.getString("Decivice"));
+					data = new HashMap<String, ArrayList<HashMap<String,String>>>();
+					ArrayList<HashMap<String, String>> deviceproperty= new ArrayList<HashMap<String,String>>();
+					ArrayList<HashMap<String, String>> deviceparam = new ArrayList<HashMap<String,String>>();
+					ArrayList<HashMap<String, String>> devicefiles = new ArrayList<HashMap<String,String>>();
+					
+					deviceproperty = OperationMethod.parseDevicePropertyToList(OperationMethod.parseDevicePropertyToHashMap(devicePropertyJsonObject));
+					if(!LogicMethod.getRightString(deviceJsonObject.getString("DecivicePara")).equals("")){
+						JSONArray deviceParams = new JSONArray(deviceJsonObject.getString("DecivicePara"));
+						deviceparam = OperationMethod.parseDeviceParamsToList(deviceParams);
+					}
+					if(!LogicMethod.getRightString(deviceJsonObject.getString("AnnualReportk")).equals("")){
+						JSONArray deviceFiles = new JSONArray(deviceJsonObject.getString("AnnualReportk"));
+						devicefiles = OperationMethod.parseDeviceFilesToList(deviceFiles);
+					}
+					data.put("DeviceProperty", deviceproperty);
+					data.put("DeviceParam", deviceparam);
+					data.put("DeviceFile", devicefiles);
+					
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
-				map = null;
+				data = null;
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
-				map = null;
+				data = null;
 			} catch (IOException e) {
 				e.printStackTrace();
-				map = null;
+				data = null;
 			}
-			return map;
+			return data;
 		}
 		
 		@Override
 		protected abstract void onPreExecute();
 		
 		@Override
-		protected abstract void onPostExecute(HashMap<String, String> result);
+		protected abstract void onPostExecute(HashMap<String, ArrayList<HashMap<String, String>>> result);
+		
 	}
 	
 	/**
@@ -178,5 +197,4 @@ public class ThreadPool {
 		@Override
 		public abstract void onPostExecute(JSONObject result);
 	}
-
 }

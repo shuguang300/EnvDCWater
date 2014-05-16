@@ -1,7 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.env.dcwater.fragment.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/view_device_files"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:listSelector="@drawable/item_bg_withnocorner_blue" >
-</com.env.dcwater.fragment.PullToRefreshView>
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightblue"
+        android:padding="10dp" >
+
+        <TextView
+            style="@style/ItemDeviceDetailFormHead"
+            android:layout_weight="1"
+            android:text="@string/item_devicefiles_code" />
+
+        <TextView style="@style/ItemDividerVertical" />
+
+        <TextView
+            style="@style/ItemDeviceDetailFormHead"
+            android:layout_weight="2"
+            android:text="@string/item_devicefiles_name" />
+
+        <TextView style="@style/ItemDividerVertical" />
+
+        <TextView
+            style="@style/ItemDeviceDetailFormHead"
+            android:layout_weight="1"
+            android:text="@string/item_devicefiles_operation" />
+
+    </LinearLayout>
+
+    <com.env.dcwater.fragment.PullToRefreshView
+        android:id="@+id/view_device_files"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@drawable/item_bg_withnocorner_blue" >
+    </com.env.dcwater.fragment.PullToRefreshView>
+
+</LinearLayout>
