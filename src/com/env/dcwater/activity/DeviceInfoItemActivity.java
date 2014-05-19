@@ -2,6 +2,8 @@ package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.xml.sax.XMLReader;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -9,10 +11,14 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.Editable;
+import android.text.Html;
+import android.text.Html.TagHandler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -36,18 +42,42 @@ import com.env.dcwater.util.SystemMethod;
  */
 public class DeviceInfoItemActivity extends NfcActivity implements IXListViewListener,OnPageChangeListener,OnCheckedChangeListener{
 	
-	static class FileViewHolder{
+	private class PropertyViewHolder{
+		public TextView name = null;
+		public TextView value = null;
+	}
+	
+	private class FileViewHolder{
 		public TextView code = null;  
         public TextView name = null;  
         public Button dl = null;  
         public Button pre = null; 
 	}
-	static class ParamViewHoler{
+	private class ParamViewHoler{
 		public TextView code = null;  
         public TextView name = null;  
         public TextView value = null;  
         public TextView remark = null; 
 	}
+	
+	private class MyTagHandler implements TagHandler  {
+		int contentIndex = 0;
+		int count = 0;
+		@Override
+		public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
+			if(tag.equalsIgnoreCase("li")){
+				if(opening){
+					contentIndex = output.length();
+					count++;
+				}else {
+					int length = output.length();
+					String content = output.subSequence(contentIndex, length).toString();
+					String spanStr = count+"."+content+"\n";
+					output.replace(contentIndex, length, spanStr);
+				}
+			}
+		}
+	};
 	
 	public static final String ACTION_STRING = "DeviceInfoItemActivity";
 	
@@ -127,8 +157,6 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		views.add(propertyView);
 		views.add(paramsView);
 		views.add(filesView);
-		
-		
 		
 		devicePagerAdapter = new DevicePagerAdapter();
 		viewPager.setAdapter(devicePagerAdapter);
@@ -314,14 +342,24 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		}
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			if(convertView ==null){
-				convertView = LayoutInflater.from(DeviceInfoItemActivity.this).inflate(R.layout.item_deviceproperty, null);
-			}
+			PropertyViewHolder viewHolder;
 			HashMap<String, String> map = getItem(position);
-			TextView keyTextView = (TextView)convertView.findViewById(R.id.item_deviceproperty_key);
-			TextView valueTextView = (TextView)convertView.findViewById(R.id.item_deviceproperty_value);
-			keyTextView.setText(map.get("Name"));
-			valueTextView.setText(map.get("Value"));
+			if(convertView ==null){
+				viewHolder = new PropertyViewHolder();
+				convertView = LayoutInflater.from(DeviceInfoItemActivity.this).inflate(R.layout.item_deviceproperty, null);
+				viewHolder.name = (TextView)convertView.findViewById(R.id.item_deviceproperty_key);
+				viewHolder.value = (TextView)convertView.findViewById(R.id.item_deviceproperty_value);
+				convertView.setTag(viewHolder);
+			}else {
+				viewHolder = (PropertyViewHolder)convertView.getTag();
+			}
+			if(map.get("Key").equals("ComProbAndSolutions")||map.get("Key").equals("OperatManagAndOperatPoint")||map.get("Key").equals("StandardNorOperation")){
+				viewHolder.value.setText(Html.fromHtml(map.get("Value"),null,new MyTagHandler()));
+			}else {
+				viewHolder.value.setText(map.get("Value"));
+			}
+			viewHolder.name.setText(map.get("Name"));
+			
 			return convertView;
 		}
 	}
@@ -392,13 +430,26 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 				viewHolder.name = (TextView)convertView.findViewById(R.id.item_devicefiles_name);
 				viewHolder.dl = (Button)convertView.findViewById(R.id.item_devicefiles_dl);
 				viewHolder.pre = (Button)convertView.findViewById(R.id.item_devicefiles_pre);
+				
+				viewHolder.dl.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Toast.makeText(DeviceInfoItemActivity.this, "下载", Toast.LENGTH_SHORT).show();
+					}
+				});
+				viewHolder.pre.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Toast.makeText(DeviceInfoItemActivity.this, "浏览", Toast.LENGTH_SHORT).show();
+					}
+				});
 				convertView.setTag(viewHolder);
 			}else {
 				viewHolder = (FileViewHolder)convertView.getTag();
 			}
+			viewHolder.dl.setVisibility(map.get("WhetherDownload").equals("true")?View.VISIBLE:View.GONE);
 			viewHolder.code.setText(position+1+"");
 			viewHolder.name.setText(map.get("TechnicalData"));
-			viewHolder.dl.setVisibility(map.get("WhetherDownload").equals("true")?View.VISIBLE:View.GONE);
 			return convertView;
 		}
 	}
@@ -430,6 +481,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 			((ViewPager)container).addView(views.get(position));
 			return views.get(position);
 		}
+		
 		
 	}
 

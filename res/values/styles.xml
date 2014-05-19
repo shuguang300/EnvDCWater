@@ -22,7 +22,7 @@
         <item name="android:layout_width">0dp</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:singleLine">false</item>
-	    <item name="android:gravity">center</item>
+	    <item name="android:gravity">center_vertical|center_horizontal</item>
     </style>
     
     <!-- 设备信息文件样式-->
@@ -30,7 +30,7 @@
         <item name="android:layout_width">0dp</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:singleLine">false</item>
-	    <item name="android:gravity">center</item>
+	    <item name="android:gravity">center_vertical|center_horizontal</item>
     </style>
     
 	<!-- 单个记看界面中的 每一横列的样式-->

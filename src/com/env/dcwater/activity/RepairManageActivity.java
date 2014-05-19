@@ -447,7 +447,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		super.onCreateContextMenu(menu, v, menuInfo);
 		//不需要为headerview注册上下文菜单，所以进行判断
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-		
 		if(info.position!=0&&mData.get(info.position-1).get("CanUpdate").equals("true")){
 			int positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
 			int taskState = Integer.valueOf(mData.get(info.position-1).get("State"));
@@ -503,68 +502,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		//获得contextmenu的触发控件
 //		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
 //		selectedPos = info.position-1;
-//		switch (item.getItemId()) {
-//		case R.id.cm_rm_op_update:
-//			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_UPDATE_STRING);
-//			break;
-//		case R.id.cm_rm_dd_send:
-//			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_SENDTASK_STRING);
-//			break;
-//		case R.id.cm_rm_dd_approve:
-//			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_DDAPPROVE_STRING);
-//			break;
-//		case R.id.cm_rm_pd_approve:
-//			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_PDAPPROVE_STRING);
-//			break;
-//		case R.id.cm_rm_rm_repair:
-//			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_REPAIRTASK_STRING);
-//			break;
-//		case R.id.cm_rm_pm_confirm:
-//			sendIntent(REPAIRMANAGE_UPDATE_INTEGER,mData.get(selectedPos),METHOD_PMAPPROVE_STRING);
-//			break;
-//		case R.id.cm_rm_pd_confirm:
-//			if(mUpdateConfirm==null){
-//				mUpdateConfirm = new AlertDialog.Builder(RepairManageActivity.this);
-//			}
-//			mUpdateConfirm.setTitle("确认").setMessage("确认上报工单吗？");
-//			mUpdateConfirm.setPositiveButton("确定", new OnClickListener() {
-//				@Override
-//				public void onClick(DialogInterface dialog, int which) {
-//					updateServerData(METHOD_PDCONFIRM_STRING);
-//				}
-//			}).setNegativeButton("取消", null);
-//			mUpdateConfirm.create();
-//			mUpdateConfirm.show();
-//			break;
-//		case R.id.cm_rm_rm_receive:
-//			if(mUpdateConfirm==null){
-//				mUpdateConfirm = new AlertDialog.Builder(RepairManageActivity.this);
-//			}
-//			mUpdateConfirm.setTitle("确认").setMessage("确认维修吗？");
-//			mUpdateConfirm.setPositiveButton("确定", new OnClickListener() {
-//				@Override
-//				public void onClick(DialogInterface dialog, int which) {
-//					updateServerData(METHOD_RECEIVE_STRING);
-//				}
-//			}).setNegativeButton("取消", null);
-//			mUpdateConfirm.create();
-//			mUpdateConfirm.show();
-//			break;
-//		case R.id.cm_rm_op_delete:
-//			if(mUpdateConfirm==null){
-//				mUpdateConfirm = new AlertDialog.Builder(RepairManageActivity.this);
-//			}
-//			mUpdateConfirm.setTitle("确认").setMessage("确认删除吗？");
-//			mUpdateConfirm.setPositiveButton("确定", new OnClickListener() {
-//				@Override
-//				public void onClick(DialogInterface dialog, int which) {
-//					updateServerData(METHOD_DELETE_STRING);
-//				}
-//			}).setNegativeButton("取消", null);
-//			mUpdateConfirm.create();
-//			mUpdateConfirm.show();
-//			break;
-//		}
 		return super.onContextItemSelected(item);
 	}
 	
@@ -610,8 +547,8 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			HashMap<String, String> map = getItem(position);
 			TextView name = (TextView)convertView.findViewById(R.id.item_repairmanage_name);
 			name.setText(map.get("DeviceName"));
-//			TextView time = (TextView)convertView.findViewById(R.id.item_repairmanage_time);
-//			time.setText(map.get("AccidentOccurTime")+"发生故障");
+			TextView time = (TextView)convertView.findViewById(R.id.item_repairmanage_faulttime);
+			time.setText(map.get("AccidentOccurTime")+"发生故障");
 			TextView state = (TextView)convertView.findViewById(R.id.item_repairmanage_state);
 			state.setText(map.get("StateDescription"));
 			TextView phenomenon = (TextView)convertView.findViewById(R.id.item_repairmanage_phenomenon);

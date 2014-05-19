@@ -13,6 +13,7 @@
             style="@style/ViewDatafilterTablerow" >
 
             <TextView
+                android:id="@+id/view_datafilter_tv_fasttime_title"
                 android:gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="@string/view_datafilter_time"
@@ -32,7 +33,6 @@
             style="@style/ViewDatafilterTablerow" >
 
             <TextView
-                android:id="@+id/view_datafilter_tv_starttime_title"
                 android:gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="@string/view_datafilter_starttime"
@@ -51,7 +51,6 @@
             style="@style/ViewDatafilterTablerow" >
 
             <TextView
-                android:id="@+id/view_datafilter_tv_endtime_title"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="@string/view_datafilter_endtime"

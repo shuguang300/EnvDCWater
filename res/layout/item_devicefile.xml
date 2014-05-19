@@ -13,13 +13,11 @@
     <TextView
         android:id="@+id/item_devicefiles_name"
         style="@style/ItemDeviceFile"
-        android:layout_weight="2"
-        android:gravity="left|center_vertical" />
+        android:layout_weight="2" />
 
     <LinearLayout 
         style="@style/ItemDeviceFile"
         android:layout_weight="2"
-        android:gravity="center"
         android:orientation="horizontal" >
         
         <Button

@@ -40,7 +40,6 @@ public class OperationMethod {
 		data.add(map);
 		
 		
-		
 		if(PositionID == UserRole.EQUIPMENTOPERATION.getState()){
 			
 			
@@ -470,86 +469,145 @@ public class OperationMethod {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("Name", "设备名称");
 		map.put("Value", maps.get("DeviceName"));
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "建档时间");
-		map.put("Value", maps.get("FilingTime"));
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "固定资产编号");
-		map.put("Value", maps.get("FixedAssets"));
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "安装位置");
-		map.put("Value", maps.get("InstallPosition"));
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "生产厂家");
-		map.put("Value", maps.get("Manufacturer"));
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "开始使用时间");
-		map.put("Value", maps.get("StartUseTime"));
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "设备报废时间");
-		map.put("Value", maps.get("ScrapTime"));
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "设备质量");
-		map.put("Value", maps.get("Quality"));
+		map.put("Key", "DeviceName");
 		data.add(map);
 		
 		map = new HashMap<String, String>();
 		map.put("Name", "设备类型");
 		map.put("Value", maps.get("DeviceClassType"));
+		map.put("Key", "DeviceClassType");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "建档时间");
+		map.put("Value", maps.get("FilingTime"));
+		map.put("Key", "FilingTime");
 		data.add(map);
 		
 		map = new HashMap<String, String>();
 		map.put("Name", "设备编号");
 		map.put("Value", maps.get("DeviceSN"));
+		map.put("Key", "DeviceSN");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "固定资产编号");
+		map.put("Value", maps.get("FixedAssets"));
+		map.put("Key", "FixedAssets");
 		data.add(map);
 		
 		map = new HashMap<String, String>();
 		map.put("Name", "型号（规格）");
 		map.put("Value", maps.get("Specification"));
+		map.put("Key", "Specification");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "安装位置");
+		map.put("Value", maps.get("InstallPosition"));
+		map.put("Key", "InstallPosition");
 		data.add(map);
 		
 		map = new HashMap<String, String>();
 		map.put("Name", "使用部门");
 		map.put("Value", maps.get("Department"));
+		map.put("Key", "Department");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "生产厂家");
+		map.put("Value", maps.get("Manufacturer"));
+		map.put("Key", "Manufacturer");
 		data.add(map);
 		
 		map = new HashMap<String, String>();
 		map.put("Name", "安装试车时间");
 		map.put("Value", maps.get("InstallTime"));
+		map.put("Key", "InstallTime");
 		data.add(map);
 		
 		map = new HashMap<String, String>();
-		map.put("Name", "开始停用时间");
+		map.put("Name", "开始使用时间");
+		map.put("Value", maps.get("StartUseTime"));
+		map.put("Key", "StartUseTime");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "停用时间");
 		map.put("Value", maps.get("StopUseTime"));
+		map.put("Key", "StopUseTime");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "设备报废时间");
+		map.put("Value", maps.get("ScrapTime"));
+		map.put("Key", "ScrapTime");
 		data.add(map);
 		
 		map = new HashMap<String, String>();
 		map.put("Name", "设备折旧年限");
 		map.put("Value", maps.get("DepreciationPeriod"));
+		map.put("Key", "DepreciationPeriod");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "设备质量");
+		map.put("Value", maps.get("Quality"));
+		map.put("Key", "Quality");
 		data.add(map);
 		
 		map = new HashMap<String, String>();
 		map.put("Name", "设备价格");
 		map.put("Value", maps.get("Price"));
+		map.put("Key", "Price");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "同型号台数");
+		map.put("Value", maps.get("Amount"));
+		map.put("Key", "Amount");
 		data.add(map);
 		
 		map = new HashMap<String, String>();
 		map.put("Name", "随机附件及数量");
 		map.put("Value", maps.get("AccessoryInfo"));
+		map.put("Key", "AccessoryInfo");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "所属大类");
+		map.put("Value", maps.get("DeviceLargeClassName"));
+		map.put("Key", "DeviceLargeClassName");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "所属小类");
+		map.put("Value", maps.get("DeviceSmallClassName"));
+		map.put("Key", "DeviceSmallClassName");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "正常运行的标准");
+		map.put("Value", maps.get("StandardNorOperation"));
+		map.put("Key", "StandardNorOperation");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "运行管理及操作要点");
+		map.put("Value", maps.get("OperatManagAndOperatPoint"));
+		map.put("Key", "OperatManagAndOperatPoint");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "常见问题及对策");
+		map.put("Value", maps.get("ComProbAndSolutions"));
+		map.put("Key", "ComProbAndSolutions");
+		data.add(map);
+		
+		map = new HashMap<String, String>();
+		map.put("Name", "设备图片名");
+		map.put("Value", maps.get("PicURL"));
+		map.put("Key", "PicURL");
 		data.add(map);
 		
 		return data;

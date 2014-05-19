@@ -19,17 +19,31 @@
         android:layout_toRightOf="@id/item_upkeepreport_pic"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/item_upkeepreport_name"
-            style="@style/ItemLayout"
-            android:drawableLeft="@drawable/ic_item_device" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/item_upkeepreport_name"
+                style="@style/ItemLayout"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_item_device" />
+
+            <TextView
+                android:id="@+id/item_upkeepreport_state"
+                style="@style/ItemLayout"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_item_state" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/item_upkeepreport_mtpos"
             style="@style/ItemLayout"
             android:drawableLeft="@drawable/ic_item_mtposition" />
 
-        <!-- <TextView
+        <!--
+        <TextView
             android:id="@+id/item_upkeepreport_require"
             style="@style/ItemLayout"
             android:drawableLeft="@drawable/ic_item_require" />
@@ -37,12 +51,9 @@
         <TextView
             android:id="@+id/item_upkeepreport_needtime"
             style="@style/ItemLayout"
-            android:drawableLeft="@drawable/ic_item_time" /> -->
-        
-        <TextView
-            android:id="@+id/item_upkeepreport_state"
-            style="@style/ItemLayout"
-            android:drawableLeft="@drawable/ic_item_state" />
+            android:drawableLeft="@drawable/ic_item_time" />
+        -->
+
     </LinearLayout>
 
 </RelativeLayout>

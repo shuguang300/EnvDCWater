@@ -129,7 +129,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 				progressBar.setProgress(newProgress);
 			}
 		});
-		webView.loadUrl(DataCenterHelper.IPADDR_STRING+"/MobileMainPage.htm");
+		webView.loadUrl(DataCenterHelper.URL_STRING+"/MobileMainPage.htm");
 		back.setOnClickListener(this);
 		forward.setOnClickListener(this);
 		refresh.setOnClickListener(this);

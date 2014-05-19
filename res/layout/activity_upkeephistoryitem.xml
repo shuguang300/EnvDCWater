@@ -29,7 +29,7 @@
                 <TextView
                     style="@style/ItemTitleStyle"
                     android:text="@string/activity_upkeephistoryitem_devicename"
-                     />
+                    android:drawableLeft="@drawable/ic_item_device" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_devicename"
@@ -44,7 +44,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_installpos" />
+                    android:text="@string/activity_upkeephistoryitem_installpos"
+                    android:drawableLeft="@drawable/ic_item_construction" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_installpos"
@@ -59,7 +60,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_maintainpos" />
+                    android:text="@string/activity_upkeephistoryitem_maintainpos"
+                    android:drawableLeft="@drawable/ic_item_mtposition" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_maintainpos"
@@ -74,7 +76,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_maintaindetail" />
+                    android:text="@string/activity_upkeephistoryitem_maintaindetail"
+                    android:drawableLeft="@drawable/ic_item_content" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_maintaindetail"
@@ -100,7 +103,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_sendtime" />
+                    android:text="@string/activity_upkeephistoryitem_sendtime"
+                    android:drawableLeft="@drawable/ic_item_time" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_sendtime"
@@ -115,7 +119,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_sendperson" />
+                    android:text="@string/activity_upkeephistoryitem_sendperson"
+                    android:drawableLeft="@drawable/ic_item_person" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_sendperson"
@@ -130,7 +135,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_needhour" />
+                    android:text="@string/activity_upkeephistoryitem_needhour"
+                    android:drawableLeft="@drawable/ic_item_hours" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_needhour"
@@ -145,7 +151,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_needfinishtime" />
+                    android:text="@string/activity_upkeephistoryitem_needfinishtime"
+                    android:drawableLeft="@drawable/ic_item_time" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_needfinishtime"
@@ -161,7 +168,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_maintainperson" />
+                    android:text="@string/activity_upkeephistoryitem_maintainperson"
+                    android:drawableLeft="@drawable/ic_item_person" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_maintainperson"
@@ -176,7 +184,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_backperson" />
+                    android:text="@string/activity_upkeephistoryitem_backperson"
+                    android:drawableLeft="@drawable/ic_item_person"/>
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_backperson"
@@ -191,7 +200,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_actualhour" />
+                    android:text="@string/activity_upkeephistoryitem_actualhour"
+                    android:drawableLeft="@drawable/ic_item_hours" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_actualhour"
@@ -206,7 +216,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_maintainresult" />
+                    android:text="@string/activity_upkeephistoryitem_maintainresult"
+                    android:drawableLeft="@drawable/ic_item_result" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_maintainresult"
@@ -234,7 +245,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_approveperson" />
+                    android:text="@string/activity_upkeephistoryitem_approveperson"
+                    android:drawableLeft="@drawable/ic_item_person" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_approveperson"
@@ -249,7 +261,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_approvetime" />
+                    android:text="@string/activity_upkeephistoryitem_approvetime"
+                    android:drawableLeft="@drawable/ic_item_time" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_approvetime"
@@ -264,7 +277,8 @@
 
                 <TextView
                     style="@style/ItemTitleStyle"
-                    android:text="@string/activity_upkeephistoryitem_ddopinion" />
+                    android:text="@string/activity_upkeephistoryitem_ddopinion"
+                    android:drawableLeft="@drawable/ic_item_opinion" />
 
                 <TextView
                     android:id="@+id/activity_upkeephistoryitem_ddopinion"

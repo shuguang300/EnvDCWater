@@ -38,7 +38,7 @@ public class DataFilterView extends LinearLayout{
 	private Builder mBuilder;
 	private Button mSubmit;
 	private Calendar mStartTime,mEndTime;
-	private TextView tvFastTime,tvStartTime,tvEndTime,tvState,tvPos,tvTTStartTime,tvTTEndTime,tvTTState,tvTTPos;
+	private TextView tvFastTime,tvStartTime,tvEndTime,tvState,tvPos,tvTTFastTime,tvTTState,tvTTPos;
 	private int selectFastTimePos,selectStatePos,selectPosPos;
 	private String [] mStateList,mPosList,mFastTimeList;
 	private String[] months_big = { "1", "3", "5", "7", "8", "10", "12" };
@@ -92,11 +92,9 @@ public class DataFilterView extends LinearLayout{
 		tvState = (TextView)mView.findViewById(R.id.view_datafilter_tv_state);
 		tvPos = (TextView)mView.findViewById(R.id.view_datafilter_tv_pos);
 		
-		tvTTStartTime = (TextView)findViewById(R.id.view_datafilter_tv_starttime_title);
-		tvTTEndTime = (TextView)findViewById(R.id.view_datafilter_tv_endtime_title);
 		tvTTState = (TextView)findViewById(R.id.view_datafilter_tv_state_title);
 		tvTTPos = (TextView)findViewById(R.id.view_datafilter_tv_pos_title);
-		
+		tvTTFastTime = (TextView)findViewById(R.id.view_datafilter_tv_fasttime_title);
 		mSubmit = (Button)mView.findViewById(R.id.view_datafilter_submit);
 		
 		//初始化控件的内容
@@ -222,22 +220,22 @@ public class DataFilterView extends LinearLayout{
 	 * @param arg0
 	 */
 	public void setFastTimeTitle(String arg0){
-		tvFastTime.setText(arg0);
+		tvTTFastTime.setText(arg0);
 	}
 	/**
 	 * 设置开始时间的标头
 	 * @param arg0
 	 */
-	public void setStartTimeTitle(String arg0){
-		tvTTStartTime.setText(arg0);
-	}
+//	public void setStartTimeTitle(String arg0){
+//		tvTTStartTime.setText(arg0);
+//	}
 	/**
 	 * 设置结束时间的标头
 	 * @param arg0
 	 */
-	public void setEndTimeTitle(String arg0){
-		tvTTEndTime.setText(arg0);
-	}
+//	public void setEndTimeTitle(String arg0){
+//		tvTTEndTime.setText(arg0);
+//	}
 	/**
 	 * 设置构筑物的标头
 	 * @param arg0
