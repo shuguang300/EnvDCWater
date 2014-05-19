@@ -109,6 +109,8 @@
     <string name="view_webview_forward">前    进</string>
     <string name="view_webview_stop">停    止</string>
     <string name="view_webview_refresh">刷    新</string>
+    <string name="item_deviceproperty_name">参    数    名    称</string>
+    <string name="item_deviceproperty_value">参    数    值</string>
     <string name="item_deviceparam_code">编    号</string>
     <string name="item_deviceparam_name">参数名称</string>
     <string name="item_deviceparam_value">参数值</string>

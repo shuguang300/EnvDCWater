@@ -7,16 +7,14 @@
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="left"
+        android:gravity="center"
         android:singleLine="false"
-        android:textSize="@dimen/fontsize_normal"
         android:id="@+id/item_deviceproperty_key"/>
     <TextView 
         android:layout_weight="2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="right|center_vertical"
+        android:gravity="center"
         android:singleLine="false"
-        android:textSize="@dimen/fontsize_normal"
         android:id="@+id/item_deviceproperty_value"/>
 </LinearLayout>

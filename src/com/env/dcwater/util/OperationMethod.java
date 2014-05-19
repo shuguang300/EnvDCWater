@@ -569,6 +569,8 @@ public class OperationMethod {
 			map.put("ParameterName", LogicMethod.getRightString(device.get("ParameterName").toString()));
 			map.put("ParameterValue", LogicMethod.getRightString(device.get("ParameterValue").toString()));
 			map.put("Remark", LogicMethod.getRightString(device.get("Remark").toString()));
+			map.put("DeviceParameterID", LogicMethod.getRightString(device.get("Remark").toString()));
+			map.put("DeviceID", LogicMethod.getRightString(device.get("Remark").toString()));
 			data.add(map);
 		}
 		return data;
@@ -586,7 +588,10 @@ public class OperationMethod {
 		for (int i =0;i<devices.length();i++) {
 			device = devices.getJSONObject(i);
 			map = new HashMap<String, String>();
+			map.put("TechnicalDataID", LogicMethod.getRightString(device.getString("TechnicalDataID").toString()));
 			map.put("TechnicalData", LogicMethod.getRightString(device.getString("TechnicalData").toString()));
+			map.put("WhetherDownload", LogicMethod.getRightString(device.getString("WhetherDownload").toString()));
+			map.put("DeviceID", LogicMethod.getRightString(device.getString("DeviceID").toString()));
 			data.add(map);
 		}
 		return data;

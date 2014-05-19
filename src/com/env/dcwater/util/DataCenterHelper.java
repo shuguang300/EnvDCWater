@@ -37,7 +37,7 @@ public class DataCenterHelper {
 	/**
 	 * 服务器地址
 	 */
-	public static final String IPADDR_STRING = "http://183.81.180.26:8080/dcwater";
+	public static final String IPADDR_STRING = "http://192.168.200.50/dcwater";
 	/**
 	 * webservice数据中心地址
 	 */

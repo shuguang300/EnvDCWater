@@ -357,7 +357,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 			}else {
 				viewHoler = (ParamViewHoler)convertView.getTag();
 			}
-			viewHoler.code.setText(position+"");
+			viewHoler.code.setText(position+1+"");
 			viewHoler.name.setText(map.get("ParameterName"));
 			viewHoler.value.setText(map.get("ParameterValue"));
 			viewHoler.remark.setText(map.get("Remark"));
@@ -396,7 +396,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 			}else {
 				viewHolder = (FileViewHolder)convertView.getTag();
 			}
-			viewHolder.code.setText(position+"");
+			viewHolder.code.setText(position+1+"");
 			viewHolder.name.setText(map.get("TechnicalData"));
 			viewHolder.dl.setVisibility(map.get("WhetherDownload").equals("true")?View.VISIBLE:View.GONE);
 			return convertView;
@@ -447,12 +447,15 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		switch (arg0) {
 		case 0:
 			titlegGroup.check(R.id.activity_deviceinfoitem_title_property);
+			devicePropertyAdapter.notifyDataSetChanged();
 			break;
 		case 1:
 			titlegGroup.check(R.id.activity_deviceinfoitem_title_params);
+			deviceParamAdapter.notifyDataSetChanged();
 			break;
 		case 2:
 			titlegGroup.check(R.id.activity_deviceinfoitem_title_file);
+			deviceFilesAdapter.notifyDataSetChanged();
 			break;
 		}
 		mActionBar.setTitle(receivedDevice.get("DeviceName")+titles[arg0]);
