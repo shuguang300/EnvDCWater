@@ -1,7 +1,10 @@
 package com.env.dcwater.fragment;
 import java.io.File;
 import java.util.Calendar;
+
 import com.env.dcwater.R;
+import com.env.dcwater.component.DCWaterApp;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -84,7 +87,7 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 	 */
 	private void iniPath(){
 		String pathLevel1 = Environment.getExternalStorageDirectory().getAbsolutePath();
-		String pathLevel2 = pathLevel1+File.separator+"EnvDCWater"+File.separator+"Picture";
+		String pathLevel2 = pathLevel1+File.separator+DCWaterApp.ROOT_PATH_STRING+File.separator+"Picture";
 		File folder = new File(pathLevel2);
 		if(!folder.exists()){
 			folder.mkdirs();

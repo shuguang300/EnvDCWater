@@ -2,15 +2,10 @@ package com.env.dcwater.activity;
 
 import android.app.ActionBar;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
-import com.env.dcwater.component.SystemParams;
-import com.env.dcwater.fragment.NaviBarAdapter;
 import com.env.dcwater.util.SystemMethod;
 
 public class UserConfigActivity extends NfcActivity{
@@ -28,9 +23,10 @@ public class UserConfigActivity extends NfcActivity{
 //		iniView();
 	}
 	
-	private void iniData(){
-		
-	}
+//	private void iniData(){
+//		
+//	}
+	
 	private void iniActionBar(){
 		mActionBar = getActionBar();
 		SystemMethod.setActionBarHomeButton(true, mActionBar);

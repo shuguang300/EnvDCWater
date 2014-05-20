@@ -210,25 +210,48 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	 * 登录的异步方法
 	 * @author sk
 	 */
-	class LoginAsyncTask extends AsyncTask<String, ProgressDialog, SoapObject>{
+	class LoginAsyncTask extends AsyncTask<String, ProgressDialog, Integer>{
 		@Override
-		protected SoapObject doInBackground(String... params) {
+		protected Integer doInBackground(String... params) {
+			int status = 0;
 			HashMap<String, String> param = new HashMap<String, String>();
 			SoapObject soapObject = null;
 			param.put("UserName", mAccount);
 			param.put("Pwd", mPassword);
 			try {
 				soapObject = DataCenterHelper.SoapRequest("GetUserByNamePwd", param);
+				if(soapObject==null){
+					status = 0;
+				}else if(soapObject.getPropertyAsString(0).equals("1")){
+					status = 1;
+				}else if (soapObject.getPropertyAsString(0).equals("2")) {
+					status = 2;
+				}else {
+					 HashMap<String, String> map = OperationMethod.parseSoapObject(new JSONObject(soapObject.getPropertyAsString(0)),mAccount,mPassword);
+					 if(map.get("AccountState").toString().equals("0")){
+						 status = 3;
+					 }else {
+						 SystemParams.getInstance().setLoggedUserInfo(map);
+						 OperationMethod.setLocalUserInfo(editor, map);
+						 status = 4;
+					}
+				}
 			} catch (HttpResponseException e) {
 				e.printStackTrace();
+				status = 0;
 			} catch (IOException e) {
 				e.printStackTrace();
+				status = 2;
 			} catch (XmlPullParserException e) {
 				e.printStackTrace();
+				status = 2;
+			} catch (JSONException e) {
+				e.printStackTrace();
+				status = 2;
 			}finally{
 				
 			}
-			return soapObject;
+			return status;
 		}
 		
 		@Override
@@ -238,38 +261,28 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 		}
 		
 		@Override
-		protected void onPostExecute(SoapObject result) {
+		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
 			if(mLoginProgressDialog.isShowing()){
-				if(result==null){
-					Toast.makeText(LoginActivity.this, "网络连接失败，请重试", Toast.LENGTH_SHORT).show();
-				}else {
-					if(result.getPropertyAsString(0).equals("1")){
-						Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
-					}else if(result.getPropertyAsString(0).equals("2")){
-						Toast.makeText(LoginActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
-					}else {
-						HashMap<String, String> map = null;
-						try {
-							map = OperationMethod.parseSoapObject(new JSONObject(result.getPropertyAsString(0)),mAccount,mPassword);
-						} catch (JSONException e) {
-							map = null;
-							e.printStackTrace();
-						}
-						if(map==null){
-							Toast.makeText(LoginActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
-						}else {
-							if(map.get("AccountState").toString().equals("0")){
-								Toast.makeText(LoginActivity.this, "您的账号未启用", Toast.LENGTH_SHORT).show();
-							}else {
-								SystemParams.getInstance().setLoggedUserInfo(map);
-								OperationMethod.setLocalUserInfo(editor, map);
-								entranceMainActivity();
-							}
-						}
-					}
-				}
 				hideProgressDialog();
+				switch (result) {
+				case 0:
+					Toast.makeText(LoginActivity.this, "网络连接失败，请重试", Toast.LENGTH_SHORT).show();
+					break;
+				case 1:
+					Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
+					break;
+				case 2:
+					Toast.makeText(LoginActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+					break;
+				case 3:
+					Toast.makeText(LoginActivity.this, "您的账号未启用", Toast.LENGTH_SHORT).show();
+					break;
+				case 4:
+					Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+					entranceMainActivity();
+					break;
+				}
 			}
 		}
 	}

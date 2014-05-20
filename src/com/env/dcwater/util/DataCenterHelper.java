@@ -1,9 +1,10 @@
 package com.env.dcwater.util;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -20,7 +21,6 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpResponseException;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
-
 
 /**
  * @author sk
@@ -66,14 +66,14 @@ public class DataCenterHelper {
 	public static final String RESPONSE_FALSE_STRING = "false";
 	
 	/**
-	 * @param method 请求的webservice的方法
+	 * @param method 请求的WebService的方法
 	 * @param params 请求的参数
 	 * @return 返回请求字符串
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
 	public static String HttpPostData(String method,JSONObject params) throws ClientProtocolException, IOException{
-		HttpPost request = new HttpPost(URL_STRING+"/"+method);
+		HttpPost request = new HttpPost(DATA_URL_STRING+"/"+method);
 		request.addHeader(HTTP.CONTENT_TYPE, "application/json; charset=utf-8");
 		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_INTEGER);
 		request.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, SO_TIMEOUT_INTEGER);
@@ -90,7 +90,33 @@ public class DataCenterHelper {
 	}
 	
 	/**
-	 * @param method 请求的webservice的方法
+	 * 使用HttpUrlConnection get的方法获取 服务器上的文件
+	 * @param filePath
+	 * @throws IOException
+	 */
+	public static void HttpGetDownloadFile(String filePath) throws IOException{
+		URL url = new URL(filePath);
+		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+		conn.setConnectTimeout(CONNECTION_TIMEOUT_INTEGER);
+		conn.setReadTimeout(SO_TIMEOUT_INTEGER);
+		conn.setRequestMethod("GET");
+	} 
+	
+	/**
+	 * 使用HttpUrlConnection post的方法获取 服务器上的文件
+	 * @param filePath
+	 * @throws IOException
+	 */
+	public static void HttpPostDownloadFile(String filePath) throws IOException{
+		URL url = new URL(filePath);
+		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+		conn.setConnectTimeout(CONNECTION_TIMEOUT_INTEGER);
+		conn.setReadTimeout(SO_TIMEOUT_INTEGER);
+		conn.setRequestMethod("GET");
+	} 
+	
+	/**
+	 * @param method 请求的WebService的方法
 	 * @param params 请求的参数
 	 * @return 返回请求的soap对象
 	 * @throws HttpResponseException
@@ -110,7 +136,7 @@ public class DataCenterHelper {
 		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 		envelope.dotNet = true;
 		envelope.bodyOut = request;
-		HttpTransportSE ht = new HttpTransportSE(URL_STRING, CONNECTION_TIMEOUT_INTEGER);
+		HttpTransportSE ht = new HttpTransportSE(DATA_URL_STRING, CONNECTION_TIMEOUT_INTEGER);
 		ht.debug = true;
 		ht.call(SOAP_NAMESPACE_STRING+method, envelope);
 		SoapObject soapObject = (SoapObject)envelope.bodyIn;

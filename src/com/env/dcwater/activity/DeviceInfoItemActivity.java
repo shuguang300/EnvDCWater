@@ -75,6 +75,8 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 					String spanStr = count+"."+content+"\n";
 					output.replace(contentIndex, length, spanStr);
 				}
+			}else if(tag.equalsIgnoreCase("ol")&&!opening){
+				output.replace(output.length()-1, output.length(), "");
 			}
 		}
 	};
