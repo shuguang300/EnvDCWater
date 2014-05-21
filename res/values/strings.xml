@@ -115,6 +115,10 @@
     <string name="item_deviceparam_name">参数名称</string>
     <string name="item_deviceparam_value">参数值</string>
     <string name="item_deviceparam_remark">备    注</string>
+    <string name="item_devicestatu_code">编    号</string>
+    <string name="item_devicestatu_name">参数名称</string>
+    <string name="item_devicestatu_value">参数值</string>
+    <string name="item_devicestatu_remark">备    注</string>
     <string name="item_devicefiles_code">编号</string>
     <string name="item_devicefiles_name">文件名</string>
     <string name="item_devicefiles_operation">操作</string>

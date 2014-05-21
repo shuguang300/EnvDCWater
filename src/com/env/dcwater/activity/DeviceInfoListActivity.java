@@ -2,11 +2,9 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -31,11 +29,11 @@ import android.widget.Spinner;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool;
+import com.env.dcwater.component.ThreadPool.GetDevicePic;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
@@ -208,8 +206,8 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			mProgressDialog.setTitle("提交中");
 			mProgressDialog.setMessage("正在向服务器提交，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
+			mProgressDialog.setCancelable(cancelable);
 		}
-		mProgressDialog.setCancelable(cancelable);
 		mProgressDialog.show();
 	}
 	
@@ -334,6 +332,12 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		
 	}
 	
+	private class DeviceViewHolder{
+		TextView name = null;
+		TextView cons = null;
+		ImageView pic = null;
+	}
+	
 	/**
 	 * 自定义设备列表的adapter
 	 * @author sk
@@ -360,13 +364,24 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		}
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
+			DeviceViewHolder deviceViewHolder ;
+			HashMap<String, String> map = mData.get(position);
 			if(convertView ==null){
+				deviceViewHolder = new DeviceViewHolder();
 				convertView = LayoutInflater.from(DeviceInfoListActivity.this).inflate(R.layout.item_devicelist, null);
+				deviceViewHolder.name =(TextView)convertView.findViewById(R.id.item_devicelist_name);
+				deviceViewHolder.cons =(TextView)convertView.findViewById(R.id.item_devicelist_cons);
+				deviceViewHolder.pic = (ImageView)convertView.findViewById(R.id.item_devicelist_pic);
+				convertView.setTag(deviceViewHolder);
+			}else {
+				deviceViewHolder = (DeviceViewHolder)convertView.getTag();
 			}
-			TextView nameTextView = (TextView)convertView.findViewById(R.id.item_devicelist_name);
-			nameTextView.setText(mData.get(position).get("DeviceName").toString());
-			TextView consTextView = (TextView)convertView.findViewById(R.id.item_devicelist_cons);
-			consTextView.setText(mData.get(position).get("InstallPosition").toString());
+			deviceViewHolder.name.setText(map.get("DeviceName").toString());
+			deviceViewHolder.cons.setText(map.get("InstallPosition").toString());
+			if(!map.get("PicURL").equals("")){
+				GetDevicePic getDevicePic = new GetDevicePic(deviceViewHolder.pic);
+				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
+			}
 			return convertView;
 		}
 	}
@@ -407,22 +422,25 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			showProgressDialog(false);
+			showProgressDialog(true);
 		}
 		
 		@Override
 		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
 			super.onPostExecute(result);
-			if(result!=null){
-				deviceArrayList = result;
-				deviceListAdapter = new DeviceListAdapter(deviceArrayList);
-				deviceListView.setAdapter(deviceListAdapter);
+			if(mProgressDialog!=null&&mProgressDialog.isShowing()){
+				if(result!=null){
+					deviceArrayList = result;
+					deviceListAdapter = new DeviceListAdapter(deviceArrayList);
+					deviceListView.setAdapter(deviceListAdapter);
+				}
+				deviceListView.stopRefresh();
+				hideProgressDialog();
 			}
-			deviceListView.stopRefresh();
-			hideProgressDialog();
 		}
 	}
-
+	
+	
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		

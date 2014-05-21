@@ -21,6 +21,10 @@
             style="@style/ViewPagerRadioButtonStyle">
         </RadioButton>
         <RadioButton 
+            android:id="@+id/activity_deviceinfoitem_title_statu"
+            style="@style/ViewPagerRadioButtonStyle">
+        </RadioButton>
+        <RadioButton 
             android:id="@+id/activity_deviceinfoitem_title_file"
             style="@style/ViewPagerRadioButtonStyle">
         </RadioButton>

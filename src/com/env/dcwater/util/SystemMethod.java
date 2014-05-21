@@ -1,11 +1,16 @@
 package com.env.dcwater.util;
+import java.io.File;
+
 import com.env.dcwater.activity.LoginActivity;
 import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.SystemParams;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
@@ -15,6 +20,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Environment;
 import android.provider.Settings;
 import android.view.inputmethod.InputMethodManager;
 
@@ -45,6 +51,12 @@ public class SystemMethod {
 	public static int getActionbarTitleTextViewID(Context context){
 		int titleID = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
 		return titleID;
+	}
+	
+	public static String getLocalTempPath(){
+		String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+		String result = root+File.separator+DCWaterApp.ROOT_PATH_STRING+File.separator+DCWaterApp.CACHE_PATH_STRING;
+		return result;
 	}
 	
 	/**
@@ -149,14 +161,32 @@ public class SystemMethod {
 		actionBar.setHomeButtonEnabled(show);
 	}
 	
-	public static void logOut(Context context){
-		Editor editor = context.getSharedPreferences(DCWaterApp.PREFERENCE_STRING, Context.MODE_PRIVATE).edit();
-		editor.putBoolean(DCWaterApp.PREFERENCE_ISLOGIN_STRING, false);
-		editor.commit();
-		SystemParams.getInstance().setLoggedUserInfo(null);
-		context.startActivity(new Intent(LoginActivity.ACTION_STRING));
-		((Activity) context).finish();
+	/**
+	 * 注销的方法
+	 * @param context
+	 */
+	public static void logOut(final Context context){
+		AlertDialog.Builder adb = new AlertDialog.Builder(context);
+		adb.setTitle("系统通知").setMessage("确认注销吗？");
+		adb.setPositiveButton("确定", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Editor editor = context.getSharedPreferences(DCWaterApp.PREFERENCE_STRING, Context.MODE_PRIVATE).edit();
+				editor.putBoolean(DCWaterApp.PREFERENCE_ISLOGIN_STRING, false);
+				editor.commit();
+				SystemParams.getInstance().setLoggedUserInfo(null);
+				context.startActivity(new Intent(LoginActivity.ACTION_STRING));
+				((Activity) context).finish();
+			}
+		}).setNegativeButton("取消", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+		}).create();
+		adb.show();
 	}
+	
 	
 	/**
 	 * 打开GPS设置界面

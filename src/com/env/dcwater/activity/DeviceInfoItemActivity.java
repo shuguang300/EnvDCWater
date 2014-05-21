@@ -47,17 +47,25 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		public TextView value = null;
 	}
 	
-	private class FileViewHolder{
-		public TextView code = null;  
-        public TextView name = null;  
-        public Button dl = null;  
-        public Button pre = null; 
-	}
 	private class ParamViewHoler{
 		public TextView code = null;  
         public TextView name = null;  
         public TextView value = null;  
         public TextView remark = null; 
+	}
+	
+	private class StatuViewHoler{
+		public TextView code = null;  
+		public TextView name = null;  
+		public TextView value = null;  
+		public TextView remark = null; 
+	}
+	
+	private class FileViewHolder{
+		public TextView code = null;  
+        public TextView name = null;  
+        public Button dl = null;  
+        public Button pre = null; 
 	}
 	
 	private class MyTagHandler implements TagHandler  {
@@ -85,22 +93,23 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	
 	private Intent receivedIntent;
 	private HashMap<String, String> receivedDevice;
-	private PullToRefreshView property,params,files;
+	private PullToRefreshView property,params,files,statu;
 	private HashMap<String, ArrayList<HashMap<String, String>>> detailData;
-	private ArrayList<HashMap<String, String>> deviceFiles,deviceProperty,deviceParams;
+	private ArrayList<HashMap<String, String>> deviceFiles,deviceProperty,deviceParams,deviceStatu;
 	private ViewPager viewPager;
 	private ArrayList<View> views;
-	private View propertyView,paramsView,filesView;
+	private View propertyView,paramsView,filesView,statuView;
 	private DevicePropertyAdapter devicePropertyAdapter;
 	private DeviceParamAdapter deviceParamAdapter;
 	private DeviceFilesAdapter deviceFilesAdapter;
+	private DeviceStatuAdapter deviceStatuAdapter;
 	private ActionBar mActionBar;
 	private DevicePagerAdapter devicePagerAdapter;
 	private ProgressDialog mProgressDialog;
 	private ThreadPool.GetDeviceDetailData getDeviceDetailData;
-	private String [] titles = {"基本参数","技术参数","技术文档"};
+	private String [] titles = {"基本参数","技术参数","运行参数","技术文档"};
 	private RadioGroup titlegGroup;
-	private RadioButton fileButton,paramsButton,propertyButton;
+	private RadioButton fileButton,paramsButton,propertyButton,statuButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +131,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		deviceProperty = OperationMethod.parseDevicePropertyToList(receivedDevice);
 		deviceParams = new ArrayList<HashMap<String,String>>();
 		deviceFiles = new ArrayList<HashMap<String,String>>();
+		deviceStatu = new ArrayList<HashMap<String,String>>();
 		views = new ArrayList<View>();
 	}
 	
@@ -140,24 +150,29 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	private void iniView(){
 		titlegGroup = (RadioGroup)findViewById(R.id.activity_deviceinfoitem_title);
 		
-		fileButton = (RadioButton)findViewById(R.id.activity_deviceinfoitem_title_file);
-		fileButton.setText(titles[2]);
-		
 		propertyButton = (RadioButton)findViewById(R.id.activity_deviceinfoitem_title_property);
 		propertyButton.setText(titles[0]);
 		
 		paramsButton = (RadioButton)findViewById(R.id.activity_deviceinfoitem_title_params);
 		paramsButton.setText(titles[1]);
 		
+		statuButton = (RadioButton)findViewById(R.id.activity_deviceinfoitem_title_statu);
+		statuButton.setText(titles[2]);
+		
+		fileButton = (RadioButton)findViewById(R.id.activity_deviceinfoitem_title_file);
+		fileButton.setText(titles[3]);
+		
 		viewPager =  (ViewPager)findViewById(R.id.activity_deviceinfoitem);
 		LayoutInflater layoutInflater = LayoutInflater.from(this);
 		
 		propertyView = layoutInflater.inflate(R.layout.view_device_property, null);
 		filesView = layoutInflater.inflate(R.layout.view_device_files, null);
+		statuView = layoutInflater.inflate(R.layout.view_device_statu, null);
 		paramsView = layoutInflater.inflate(R.layout.view_device_params, null);
 		
 		views.add(propertyView);
 		views.add(paramsView);
+		views.add(statuView);
 		views.add(filesView);
 		
 		devicePagerAdapter = new DevicePagerAdapter();
@@ -166,11 +181,14 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		property = (PullToRefreshView)propertyView.findViewById(R.id.view_device_property);
 		files = (PullToRefreshView)filesView.findViewById(R.id.view_device_files);
 		params = (PullToRefreshView)paramsView.findViewById(R.id.view_device_params);
+		statu = (PullToRefreshView)statuView.findViewById(R.id.view_device_statu);
+		
 		
 		
 		devicePropertyAdapter = new DevicePropertyAdapter();
 		deviceParamAdapter = new DeviceParamAdapter();
 		deviceFilesAdapter = new DeviceFilesAdapter();
+		deviceStatuAdapter = new DeviceStatuAdapter();
 		
 		property.setAdapter(devicePropertyAdapter);
 		property.setXListViewListener(this);
@@ -180,6 +198,9 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		
 		files.setAdapter(deviceFilesAdapter);
 		files.setXListViewListener(this);
+		
+		statu.setAdapter(deviceStatuAdapter);
+		statu.setXListViewListener(this);
 		
 		viewPager.setOnPageChangeListener(this);
 		titlegGroup.setOnCheckedChangeListener(this);
@@ -208,10 +229,12 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 						deviceParamAdapter.notifyDataSetChanged();
 						break;
 					case 2:
+						deviceStatuAdapter.notifyDataSetChanged();
+						break;
+					case 3:
 						deviceFilesAdapter.notifyDataSetChanged();
 						break;
 					}
-					Toast.makeText(DeviceInfoItemActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
 				}else {
 					Toast.makeText(DeviceInfoItemActivity.this, "更新失败", Toast.LENGTH_SHORT).show();
 				}
@@ -219,6 +242,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 				property.stopRefresh();
 				params.stopRefresh();
 				files.stopRefresh();
+				statu.stopRefresh();
 			}
 		};
 		getDeviceDetailData.execute(receivedDevice.get("DeviceID"));
@@ -408,6 +432,45 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	 * 自定义设备参数列表的adapter
 	 * @author sk
 	 */
+	private class DeviceStatuAdapter extends BaseAdapter{
+		@Override
+		public int getCount() {
+			return deviceStatu.size();
+		}
+		@Override
+		public HashMap<String, String> getItem(int position) {
+			return deviceStatu.get(position);
+		}
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			StatuViewHoler viewHoler ;
+			HashMap<String, String> map = getItem(position);
+			if(convertView ==null){
+				convertView = LayoutInflater.from(DeviceInfoItemActivity.this).inflate(R.layout.item_devicestatu, null);
+				viewHoler = new StatuViewHoler();
+				viewHoler.code = (TextView)convertView.findViewById(R.id.item_devicestatu_code);
+				viewHoler.name = (TextView)convertView.findViewById(R.id.item_devicestatu_name);
+				viewHoler.value = (TextView)convertView.findViewById(R.id.item_devicestatu_value);
+				viewHoler.remark = (TextView)convertView.findViewById(R.id.item_devicestatu_remark);
+				convertView.setTag(viewHoler);
+			}else {
+				viewHoler = (StatuViewHoler)convertView.getTag();
+			}
+			viewHoler.code.setText(position+1+"");
+//			viewHoler.name.setText(map.get("ParameterName"));
+//			viewHoler.value.setText(map.get("ParameterValue"));
+//			viewHoler.remark.setText(map.get("Remark"));
+			return convertView;
+		}
+	}
+	/**
+	 * 自定义设备参数列表的adapter
+	 * @author sk
+	 */
 	private class DeviceFilesAdapter extends BaseAdapter{
 		@Override
 		public int getCount() {
@@ -432,7 +495,6 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 				viewHolder.name = (TextView)convertView.findViewById(R.id.item_devicefiles_name);
 				viewHolder.dl = (Button)convertView.findViewById(R.id.item_devicefiles_dl);
 				viewHolder.pre = (Button)convertView.findViewById(R.id.item_devicefiles_pre);
-				
 				viewHolder.dl.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -508,6 +570,10 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 			deviceParamAdapter.notifyDataSetChanged();
 			break;
 		case 2:
+			titlegGroup.check(R.id.activity_deviceinfoitem_title_statu);
+			deviceParamAdapter.notifyDataSetChanged();
+			break;
+		case 3:
 			titlegGroup.check(R.id.activity_deviceinfoitem_title_file);
 			deviceFilesAdapter.notifyDataSetChanged();
 			break;
@@ -524,8 +590,11 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		case R.id.activity_deviceinfoitem_title_params:
 			viewPager.setCurrentItem(1);
 			break;
-		case R.id.activity_deviceinfoitem_title_file:
+		case R.id.activity_deviceinfoitem_title_statu:
 			viewPager.setCurrentItem(2);
+			break;
+		case R.id.activity_deviceinfoitem_title_file:
+			viewPager.setCurrentItem(3);
 			break;
 		}
 	}

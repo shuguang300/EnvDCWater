@@ -115,13 +115,13 @@ public class OperationMethod {
 		map.put(UserRight.RightTaskCount, "");
 		data.add(map);
 		//用户设置
-		map = new HashMap<String, String>();
-		map.put(UserRight.RightName, UserRight.USERCONFIG.getName());
-		map.put(UserRight.RightCode, UserRight.USERCONFIG.getCode()+"");
-		map.put(UserRight.RightAction, UserRight.USERCONFIG.getAction());
-		map.put(UserRight.RightResourceID, UserRight.USERCONFIG.getResourceID()+"");
-		map.put(UserRight.RightTaskCount, "");
-		data.add(map);
+//		map = new HashMap<String, String>();
+//		map.put(UserRight.RightName, UserRight.USERCONFIG.getName());
+//		map.put(UserRight.RightCode, UserRight.USERCONFIG.getCode()+"");
+//		map.put(UserRight.RightAction, UserRight.USERCONFIG.getAction());
+//		map.put(UserRight.RightResourceID, UserRight.USERCONFIG.getResourceID()+"");
+//		map.put(UserRight.RightTaskCount, "");
+//		data.add(map);
 		//注销
 		map = new HashMap<String, String>();
 		map.put(UserRight.RightName, "注销");

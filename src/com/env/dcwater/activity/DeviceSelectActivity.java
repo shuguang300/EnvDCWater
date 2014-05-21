@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool;
+import com.env.dcwater.component.ThreadPool.GetDevicePic;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
@@ -142,13 +144,13 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	/**
 	 * 提交数据时，弹出进度对话框
 	 */
-	private void showProgressDialog(){
+	private void showProgressDialog(boolean cancel){
 		if(mProgressDialog==null){
 			mProgressDialog = new ProgressDialog(DeviceSelectActivity.this);
 			mProgressDialog.setTitle("获取数据中");
 			mProgressDialog.setMessage("正在努力加载数据，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
-			mProgressDialog.setCancelable(false);
+			mProgressDialog.setCancelable(cancel);
 		}
 		mProgressDialog.show();
 	}
@@ -225,6 +227,13 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		
 	}
 	
+	
+	private class DeviceViewHolder{
+		TextView name = null;
+		TextView cons = null;
+		ImageView pic = null;
+	}
+	
 	/**
 	 * @author sk
 	 *
@@ -251,10 +260,24 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 			if(convertView==null){
 				convertView = LayoutInflater.from(DeviceSelectActivity.this).inflate(R.layout.item_devicelist, null);
 			}
-			TextView nameTextView = (TextView)convertView.findViewById(R.id.item_devicelist_name);
-			nameTextView.setText(deviceDataArrayList.get(position).get("DeviceName").toString());
-			TextView consTextView = (TextView)convertView.findViewById(R.id.item_devicelist_cons);
-			consTextView.setText(deviceDataArrayList.get(position).get("InstallPosition").toString());
+			DeviceViewHolder deviceViewHolder ;
+			HashMap<String, String> map = deviceDataArrayList.get(position);
+			if(convertView ==null){
+				deviceViewHolder = new DeviceViewHolder();
+				convertView = LayoutInflater.from(DeviceSelectActivity.this).inflate(R.layout.item_devicelist, null);
+				deviceViewHolder.name =(TextView)convertView.findViewById(R.id.item_devicelist_name);
+				deviceViewHolder.cons =(TextView)convertView.findViewById(R.id.item_devicelist_cons);
+				deviceViewHolder.pic = (ImageView)convertView.findViewById(R.id.item_devicelist_pic);
+				convertView.setTag(deviceViewHolder);
+			}else {
+				deviceViewHolder = (DeviceViewHolder)convertView.getTag();
+			}
+			deviceViewHolder.name.setText(map.get("DeviceName").toString());
+			deviceViewHolder.cons.setText(map.get("InstallPosition").toString());
+			if(!map.get("PicURL").equals("")){
+				GetDevicePic getDevicePic = new GetDevicePic(deviceViewHolder.pic);
+				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
+			}
 			return convertView;
 		}
 	}
@@ -291,21 +314,23 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			showProgressDialog();
+			showProgressDialog(true);
 		}
 		
 		@Override
 		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
 			super.onPostExecute(result);
-			if(result!=null){
-				deviceDataArrayList = result;
-				deviceAdapter.notifyDataSetChanged();
-				if(selectCons.equals(consDataArrayList.get(0).get("StructureName")));{
-					SystemParams.getInstance().setMachineList(result);
+			if(mProgressDialog!=null&&mProgressDialog.isShowing()){
+				if(result!=null){
+					deviceDataArrayList = result;
+					deviceAdapter.notifyDataSetChanged();
+					if(selectCons.equals(consDataArrayList.get(0).get("StructureName")));{
+						SystemParams.getInstance().setMachineList(result);
+					}
 				}
+				hideProgressDialog();
+				mListView.stopRefresh();
 			}
-			hideProgressDialog();
-			mListView.stopRefresh();
 		}
 	}
 

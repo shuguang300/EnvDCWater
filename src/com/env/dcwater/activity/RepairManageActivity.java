@@ -238,8 +238,8 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			mProgressDialog.setTitle("提交中");
 			mProgressDialog.setMessage("正在向服务器提交，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
+			mProgressDialog.setCancelable(cancelable);
 		}
-		mProgressDialog.setCancelable(cancelable);
 		mProgressDialog.show();
 	}
 	
@@ -594,23 +594,25 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			showProgressDialog(false);
+			showProgressDialog(true);
 		}
 		
 		@Override
 		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
 			super.onPostExecute(result);
-			int count = 0;
-			if(result!=null){
-				mData = result;
-				mListViewAdapter.notifyDataSetChanged();
-				count = mData.size();
-			}else {
-				Toast.makeText(RepairManageActivity.this, "获取数据失败，请重试", Toast.LENGTH_SHORT).show();
+			if(mProgressDialog!=null&&mProgressDialog.isShowing()){
+				int count = 0;
+				if(result!=null){
+					mData = result;
+					mListViewAdapter.notifyDataSetChanged();
+					count = mData.size();
+				}else {
+					Toast.makeText(RepairManageActivity.this, "获取数据失败，请重试", Toast.LENGTH_SHORT).show();
+				}
+				mListView.stopRefresh();
+				hideProgressDialog();
+				menuMessage.setText("当前共有"+count+"条任务");
 			}
-			mListView.stopRefresh();
-			hideProgressDialog();
-			menuMessage.setText("当前共有"+count+"条任务");
 		}
 		
 	}

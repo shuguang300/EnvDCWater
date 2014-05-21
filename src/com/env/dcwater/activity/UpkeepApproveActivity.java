@@ -160,11 +160,11 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 	private void showProgressDialog(boolean cancelable){
 		if(mProgressDialog==null){
 			mProgressDialog = new ProgressDialog(UpkeepApproveActivity.this);
-			mProgressDialog.setTitle("提交中");
-			mProgressDialog.setMessage("正在向服务器提交，请稍后");
+			mProgressDialog.setTitle("获取中");
+			mProgressDialog.setMessage("正在向服务器获取最新的数据，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
+			mProgressDialog.setCancelable(cancelable);
 		}
-		mProgressDialog.setCancelable(cancelable);
 		mProgressDialog.show();
 	}
 	
@@ -300,18 +300,20 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			showProgressDialog(false);
+			showProgressDialog(true);
 		}
 		
 		@Override
 		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
 			super.onPostExecute(result);
-			if(result!=null){
-				data = result;
-				adapter.notifyDataSetChanged();
+			if(mProgressDialog!=null&&mProgressDialog.isShowing()){
+				if(result!=null){
+					data = result;
+					adapter.notifyDataSetChanged();
+				}
+				hideProgressDialog();
+				dataListView.stopRefresh();
 			}
-			hideProgressDialog();
-			dataListView.stopRefresh();
 		}
 	}
 

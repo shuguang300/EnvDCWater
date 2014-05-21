@@ -187,7 +187,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		if(receivedAction.equals(MainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
 			getServerTaskHistoryData.execute(plantID,startTime,endTime,"",consName);
 		}else if (receivedAction.equals(DeviceInfoItemActivity.ACTION_STRING)) {
-			getServerTaskHistoryData.execute("",startTime,endTime,receivedData.get("DeviceID"),consName);
+			getServerTaskHistoryData.execute(plantID,startTime,endTime,receivedData.get("DeviceID"),consName);
 		}
 	}
 	
@@ -201,8 +201,8 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 			mProgressDialog.setTitle("提交中");
 			mProgressDialog.setMessage("正在向服务器提交，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
+			mProgressDialog.setCancelable(cancelable);
 		}
-		mProgressDialog.setCancelable(cancelable);
 		mProgressDialog.show();
 	}
 	
@@ -384,21 +384,23 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			showProgressDialog(false);
+			showProgressDialog(true);
 		}
 		
 		@Override
 		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
 			super.onPostExecute(result);
-			int count = 0;
-			if(result!=null){
-				mHistoryArrayList = result;
-				mAdapter.notifyDataSetChanged();
-				count = mHistoryArrayList.size();
+			if(mProgressDialog!=null&&mProgressDialog.isShowing()){
+				int count = 0;
+				if(result!=null){
+					mHistoryArrayList = result;
+					mAdapter.notifyDataSetChanged();
+					count = mHistoryArrayList.size();
+				}
+				hideProgressDialog();
+				mHistoryList.stopRefresh();
+				titleMessage.setText("当前共有"+count+"条记录");
 			}
-			hideProgressDialog();
-			mHistoryList.stopRefresh();
-			titleMessage.setText("当前共有"+count+"条记录");
 		}
 		
 	}

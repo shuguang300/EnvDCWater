@@ -1,12 +1,18 @@
 package com.env.dcwater.component;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.widget.ImageView;
+
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.LogicMethod;
 import com.env.dcwater.util.OperationMethod;
@@ -196,5 +202,45 @@ public class ThreadPool {
 		
 		@Override
 		public abstract void onPostExecute(JSONObject result);
+	}
+	
+	
+	/**
+	 * @author sk
+	 * @param  params[0] 本地路径
+	 * @param  params[1] 文件名
+	 * @param  params[2] 远程路径(路径全称，包括文件名)
+	 */
+	public static class GetDevicePic extends AsyncTask<String, Integer, File>{
+		private ImageView imageView;
+		
+		public GetDevicePic (ImageView iv){
+			imageView = iv;
+		}
+		
+		@Override
+		protected File doInBackground(String... params) {
+			String path = params[0]+File.separator+params[1];
+			File file = new File(path);
+			if(file.exists()){
+			}else {
+				try {
+					file = DataCenterHelper.HttpGetDownloadFile(params[2], params[0], params[1]);
+				} catch (IOException e) {
+					e.printStackTrace();
+					file = null;
+				}
+			}
+			return file;
+		}
+		
+		@Override
+		protected void onPostExecute(File result) {
+			super.onPostExecute(result);
+			if(result!=null){
+				imageView.setImageURI(Uri.fromFile(result));
+			}
+		}
+		
 	}
 }

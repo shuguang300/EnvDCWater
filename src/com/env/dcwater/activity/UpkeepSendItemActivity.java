@@ -120,7 +120,7 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 		tvInstallPos.setText(receivedData.get("StructureName"));
 		tvMTPos.setText(receivedData.get("MaintainPosition"));
 		tvMTDetail.setText(receivedData.get("MaintainSpecification"));
-		tvMTPeriod.setText(receivedData.get("MaintainPeriod"));
+		tvMTPeriod.setText(receivedData.get("MaintainPeriod")+"小时");
 		tvMTNext.setText(receivedData.get("Maintaintimenext"));
 		
 		tvSendTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(sendDate));
@@ -162,7 +162,6 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 						int code = jsonObject.getInt("d");
 						switch (code) {
 						case EnumList.DataCenterResult.CODE_SUCCESS:
-							Toast.makeText(UpkeepSendItemActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
 							setResult(Activity.RESULT_OK);
 							finish();
 							break;
@@ -299,7 +298,7 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 			break;
 		case R.id.activity_upkeepsenditem_taskdetail_tr:
 			HashMap<String, String> taskdetail= new HashMap<String, String>();
-			taskdetail.put("Name", "保养要求");
+			taskdetail.put("Name", "备注");
 			taskdetail.put("Key", "TaskDetail");
 			taskdetail.put("Value", tvTaskDetail.getText().toString());
 			startDataInputActivity(taskdetail);

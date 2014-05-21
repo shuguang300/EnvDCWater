@@ -1,16 +1,24 @@
 package com.env.dcwater.util;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.Header;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
@@ -66,6 +74,7 @@ public class DataCenterHelper {
 	public static final String RESPONSE_FALSE_STRING = "false";
 	
 	/**
+	 * 使用HttpClient的post方法获取数据
 	 * @param method 请求的WebService的方法
 	 * @param params 请求的参数
 	 * @return 返回请求字符串
@@ -90,16 +99,57 @@ public class DataCenterHelper {
 	}
 	
 	/**
-	 * 使用HttpUrlConnection get的方法获取 服务器上的文件
-	 * @param filePath
+	 * 使用HttpClient的get方法获取数据
+	 * @param url
+	 * @return
+	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static void HttpGetDownloadFile(String filePath) throws IOException{
-		URL url = new URL(filePath);
+	public static String HttpGetData(String url) throws ClientProtocolException, IOException{
+		HttpGet get = new HttpGet(url);
+		get.addHeader(HTTP.CONTENT_TYPE, "application/json; charset=utf-8");
+		get.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_INTEGER);
+		get.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, SO_TIMEOUT_INTEGER);
+		HttpResponse response = new DefaultHttpClient().execute(get);
+		if(response.getStatusLine().getStatusCode()==200){
+			return EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
+		}else {
+			return RESPONSE_FALSE_STRING;
+		}
+	}
+	
+	/**
+	 * 使用HttpUrlConnection get的方法获取 服务器上的文件
+	 * @param fileServerPath 服务器上的路径+文件名
+	 * @param fileLocalPath 本地的路径
+	 * @param fileName 文件名
+	 * @throws IOException
+	 */
+	public static File HttpGetDownloadFile(String fileServerPath,String fileLocalPath,String fileName) throws IOException{
+		File file = null ;
+		URL url = new URL(fileServerPath);
 		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 		conn.setConnectTimeout(CONNECTION_TIMEOUT_INTEGER);
 		conn.setReadTimeout(SO_TIMEOUT_INTEGER);
 		conn.setRequestMethod("GET");
+		conn.setDoInput(true);
+		if(conn.getResponseCode()==200){
+			InputStream os = conn.getInputStream();
+			if(os.available()>0){
+				file = new File(fileLocalPath+File.separator+fileName);
+				FileOutputStream fos = new FileOutputStream(file);
+				byte [] temp = new byte[8192]; 
+				int len = 0;
+				while ((len =os.read(temp))!=-1) {
+					fos.write(temp, 0, len);
+				}
+				fos.flush();
+				fos.close();
+			}
+			os.close();
+		}
+		return file;
+		
 	} 
 	
 	/**
@@ -112,7 +162,9 @@ public class DataCenterHelper {
 		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 		conn.setConnectTimeout(CONNECTION_TIMEOUT_INTEGER);
 		conn.setReadTimeout(SO_TIMEOUT_INTEGER);
-		conn.setRequestMethod("GET");
+		conn.setRequestMethod("POST");
+		conn.setDoInput(true);
+		conn.setDoOutput(false);
 	} 
 	
 	/**

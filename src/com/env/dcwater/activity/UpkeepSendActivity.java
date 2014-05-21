@@ -157,8 +157,9 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 			mProgressDialog.setTitle("提交中");
 			mProgressDialog.setMessage("正在向服务器提交，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
+			mProgressDialog.setCancelable(cancelable);
 		}
-		mProgressDialog.setCancelable(cancelable);
+		
 		mProgressDialog.show();
 	}
 	
@@ -299,18 +300,20 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			showProgressDialog(false);
+			showProgressDialog(true);
 		}
 		
 		@Override
 		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
 			super.onPostExecute(result);
-			if(result!=null){
-				data = result;
-				adapter.notifyDataSetChanged();
+			if(mProgressDialog!=null&&mProgressDialog.isShowing()){
+				if(result!=null){
+					data = result;
+					adapter.notifyDataSetChanged();
+				}
+				hideProgressDialog();
+				dataListView.stopRefresh();
 			}
-			hideProgressDialog();
-			dataListView.stopRefresh();
 		}
 	}
 

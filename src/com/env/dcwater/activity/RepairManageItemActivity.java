@@ -206,8 +206,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			mActionBar.setTitle("修改维修单");
 			methodDesc = "修改维修单";
 		}else if (methodName.equals(RepairManageActivity.METHOD_SENDTASK_STRING)) {
-			mActionBar.setTitle("发送维修单");
-			methodDesc = "发送维修单";
+			mActionBar.setTitle("派发维修单");
+			methodDesc = "派发维修单";
 		}
 	}
 	
@@ -1200,7 +1200,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					int code =object.getInt("d");
 					switch (code) {
 					case EnumList.DataCenterResult.CODE_SUCCESS:
-						Toast.makeText(RepairManageItemActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
 						setResult(RESULT_OK);
 						finish();
 						break;
