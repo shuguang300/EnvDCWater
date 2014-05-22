@@ -6,11 +6,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -27,14 +25,11 @@ import android.view.View;
 import android.view.ViewStub;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -354,12 +349,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					EPtrMoney = (TableRow) findViewById(R.id.view_repair_ddopinion_money_tr);
 					EPtrDDOpinion = (TableRow) findViewById(R.id.view_repair_ddopinion_opinion_tr);
 
-					EPswVerify.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-						@Override
-						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-							EPswVerify.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-						}
-					});
 					EPtrMoney.setOnClickListener(this);
 					EPtrDDOpinion.setOnClickListener(this);
 
@@ -721,8 +710,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			mProgressDialog.setTitle("提交中");
 			mProgressDialog.setMessage("正在向服务器提交，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
+			mProgressDialog.setCancelable(cancelable);
 		}
-		mProgressDialog.setCancelable(cancelable);
 		mProgressDialog.show();
 	}
 	

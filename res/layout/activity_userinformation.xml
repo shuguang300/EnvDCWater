@@ -1,25 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="@dimen/layout_margin"
+    tools:ignore="ContentDescription" >
 
-    <!-- <android.support.v4.widget.DrawerLayout
-        android:id="@+id/activity_userinfor_drawlayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin" >
+
+        <ImageView
+            android:id="@+id/activity_userinfor_pic"
+            android:layout_width="@dimen/ic_user_pic"
+            android:layout_height="@dimen/ic_user_pic"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_pic_default" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/activity_userinfor_pic"
+            android:textSize="@dimen/fontsize_large" />
+    </RelativeLayout>
 
-        <ListView
-            android:id="@+id/activity_userinfor_navibar"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:background="@color/white"
-            android:listSelector="@drawable/item_bg_withnocorner_blue" />
-    </android.support.v4.widget.DrawerLayout> -->
+    <TextView style="@style/ItemDivider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/activity_userinfor_acc"
+            android:textSize="@dimen/fontsize_large" />
+
+        <TextView
+            android:id="@+id/activity_userinfor_acc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/lightblack"
+            android:textSize="@dimen/fontsize_large" />
+    </RelativeLayout>
+
+    <TextView style="@style/ItemDivider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/activity_userinfor_name"
+            android:textSize="@dimen/fontsize_large" />
+
+        <TextView
+            android:id="@+id/activity_userinfor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/lightblack"
+            android:textSize="@dimen/fontsize_large" />
+    </RelativeLayout>
+
+    <TextView style="@style/ItemDivider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/activity_userinfor_role"
+            android:textSize="@dimen/fontsize_large" />
+
+        <TextView
+            android:id="@+id/activity_userinfor_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/lightblack"
+            android:textSize="@dimen/fontsize_large" />
+    </RelativeLayout>
+
+    <TextView style="@style/ItemDivider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/activity_userinfor_plant"
+            android:textSize="@dimen/fontsize_large" />
+
+        <TextView
+            android:id="@+id/activity_userinfor_plant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/lightblack"
+            android:textSize="@dimen/fontsize_large" />
+    </RelativeLayout>
+
+    <TextView style="@style/ItemDivider" />
 
 </LinearLayout>

@@ -191,7 +191,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		titleMessage = (TextView)menu.getItem(0).getActionView();
 		titleMessage.setTextColor(getResources().getColor(R.color.white));
-		titleMessage.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName")+"\n"+SystemParams.getInstance().getLoggedUserInfo().get("PositionName"));
+		titleMessage.setText(SystemParams.getInstance().getLoggedUserInfo().get("PlantName"));
 //		titleMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.i_small));
 		return super.onCreateOptionsMenu(menu);
 	}

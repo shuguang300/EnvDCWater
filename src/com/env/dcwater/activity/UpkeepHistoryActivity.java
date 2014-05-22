@@ -21,12 +21,14 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool;
+import com.env.dcwater.component.ThreadPool.GetDevicePic;
 import com.env.dcwater.fragment.DataFilterView;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
@@ -53,6 +55,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	private TextView titleMessage;
 	private ProgressDialog mProgressDialog;
 	private GetUpkeepHistoryData getUpkeepHistoryData;
+	private int dpi;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -127,6 +130,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	 */
 	@SuppressWarnings("unchecked")
 	private void iniData(){
+		dpi = SystemMethod.getDpi(getWindowManager());
 		receivedIntent = getIntent();
 		receivedAction = receivedIntent.getExtras().getString("action");
 		receivedData = (HashMap<String, String>)receivedIntent.getExtras().getSerializable("data");
@@ -197,8 +201,8 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	private void showProgressDialog(boolean cancelable){
 		if(mProgressDialog==null){
 			mProgressDialog = new ProgressDialog(UpkeepHistoryActivity.this);
-			mProgressDialog.setTitle("提交中");
-			mProgressDialog.setMessage("正在向服务器提交，请稍后");
+			mProgressDialog.setTitle("获取数据中");
+			mProgressDialog.setMessage("正在努力加载数据，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
 			mProgressDialog.setCancelable(cancelable);
 		}
@@ -306,6 +310,14 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		}
 	}
 	
+	
+	private class ViewHolder {
+		TextView lefttop = null;
+		TextView righttop = null;
+		TextView leftbottom = null;
+		ImageView pic = null;
+	}
+	
 	/**
 	 * 保养记录的自定义adapter 
 	 * @author sk
@@ -328,18 +340,28 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			if(convertView==null){
-				convertView = LayoutInflater.from(UpkeepHistoryActivity.this).inflate(R.layout.item_upkeephistory, null);
-			}
 			HashMap<String, String> map = getItem(position);
-			TextView name = (TextView)convertView.findViewById(R.id.item_upkeephistory_name);
-			name.setText(map.get("DeviceName"));
-			TextView maintaindetail = (TextView)convertView.findViewById(R.id.item_upkeephistory_maintaindetail);
-			maintaindetail.setText(map.get("MaintainDetail"));
-//			TextView actualmanhours = (TextView)convertView.findViewById(R.id.item_upkeephistory_actualmanhours);
-//			actualmanhours.setText(map.get("ActualManHours"));
-			TextView opinion = (TextView)convertView.findViewById(R.id.item_upkeephistory_ddopinion);
-			opinion.setText(map.get("DDOpinion"));
+			ViewHolder viewHolder ;
+			if(convertView == null){
+				viewHolder = new ViewHolder();
+				convertView = LayoutInflater.from(UpkeepHistoryActivity.this).inflate(R.layout.item_upkeephistory, null);
+				viewHolder.lefttop = (TextView)convertView.findViewById(R.id.item_upkeephistory_lefttop);
+				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_upkeephistory_righttop);
+				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_upkeephistory_leftbottom);
+				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_upkeephistory_pic);
+				convertView.setTag(viewHolder);
+			}else {
+				viewHolder = (ViewHolder)convertView.getTag();
+			}
+			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
+			viewHolder.leftbottom.setText(OperationMethod.getUpkeepHistoryContent(map));
+			viewHolder.righttop.setText("");
+			if(map.get("PicURL").equals("")){
+				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
+			}else {
+				GetDevicePic getDevicePic = new GetDevicePic(viewHolder.pic,dpi,UpkeepHistoryActivity.this);
+				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
+			}
 			return convertView;
 		}
 	}

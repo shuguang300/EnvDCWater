@@ -21,12 +21,14 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool;
+import com.env.dcwater.component.ThreadPool.GetDevicePic;
 import com.env.dcwater.component.ThreadPool.GetServerConsData;
 import com.env.dcwater.fragment.DataFilterView;
 import com.env.dcwater.fragment.PullToRefreshView;
@@ -50,6 +52,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 	private ProgressDialog mProgressDialog;
 	private UpkeepApproveItemAdapter adapter;
 	private boolean filter = true;
+	private int dpi;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 		getServerData();
 	}
 	private void iniData(){
+		dpi = SystemMethod.getDpi(getWindowManager());
 		data = new ArrayList<HashMap<String,String>>();
 		adapter = new UpkeepApproveItemAdapter();
 	}
@@ -160,8 +164,8 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 	private void showProgressDialog(boolean cancelable){
 		if(mProgressDialog==null){
 			mProgressDialog = new ProgressDialog(UpkeepApproveActivity.this);
-			mProgressDialog.setTitle("获取中");
-			mProgressDialog.setMessage("正在向服务器获取最新的数据，请稍后");
+			mProgressDialog.setTitle("获取数据中");
+			mProgressDialog.setMessage("正在努力加载数据，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
 			mProgressDialog.setCancelable(cancelable);
 		}
@@ -230,6 +234,13 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 		}
 	}
 	
+	private class ViewHolder {
+		TextView lefttop = null;
+		TextView righttop = null;
+		TextView leftbottom = null;
+		ImageView pic = null;
+	}
+	
 	private class UpkeepApproveItemAdapter extends BaseAdapter{
 		@Override
 		public int getCount() {
@@ -237,7 +248,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 		}
 
 		@Override
-		public Object getItem(int position) {
+		public HashMap<String, String> getItem(int position) {
 			return data.get(position);
 		}
 
@@ -248,20 +259,28 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			if(convertView==null){
+			HashMap<String, String> map = getItem(position);
+			ViewHolder viewHolder ;
+			if(convertView == null){
+				viewHolder = new ViewHolder();
 				convertView = LayoutInflater.from(UpkeepApproveActivity.this).inflate(R.layout.item_upkeepapprove, null);
+				viewHolder.lefttop = (TextView)convertView.findViewById(R.id.item_upkeepapprove_lefttop);
+				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_upkeepapprove_righttop);
+				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_upkeepapprove_leftbottom);
+				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_upkeepapprove_pic);
+				convertView.setTag(viewHolder);
+			}else {
+				viewHolder = (ViewHolder)convertView.getTag();
 			}
-			HashMap<String, String> map = data.get(position);
-			TextView name = (TextView)convertView.findViewById(R.id.item_upkeepapprove_name);
-			name.setText(map.get("DeviceName"));
-			TextView mtpos = (TextView)convertView.findViewById(R.id.item_upkeepapprove_mtpos);
-			mtpos.setText(map.get("MaintainPosition"));
-//			TextView mtdetail = (TextView)convertView.findViewById(R.id.item_upkeepapprove_mtdetail);
-//			mtdetail.setText(map.get("MaintainDetail"));
-//			TextView mttime = (TextView)convertView.findViewById(R.id.item_upkeepapprove_mttime);
-//			mttime.setText(map.get("CheckTime")+"完成养护");
-			TextView state = (TextView)convertView.findViewById(R.id.item_upkeepapprove_state);
-			state.setText(map.get("StateDescription"));
+			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
+			viewHolder.leftbottom.setText(OperationMethod.getUpkeepApproveContent(map));
+			viewHolder.righttop.setText(map.get("StateDescription"));
+			if(map.get("PicURL").equals("")){
+				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
+			}else {
+				GetDevicePic getDevicePic = new GetDevicePic(viewHolder.pic,dpi,UpkeepApproveActivity.this);
+				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
+			}
 			return convertView;
 		}
 		

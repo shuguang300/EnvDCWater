@@ -9,6 +9,9 @@
     <!-- webview中progressbar的大小 -->
     <dimen name="progressbarheight_webview">10dp</dimen>
     <!-- 按钮的高度 -->
-    <dimen name="buttonheight">48dp</dimen>
-    
+    <dimen name="buttonheight">72dp</dimen>
+    <!-- 布局之间的间隔 -->
+    <dimen name="layout_margin">15dp</dimen>
+    <!-- 布局之间的间隔 (小)-->
+    <dimen name="layout_margin_short">10dp</dimen>
 </resources>

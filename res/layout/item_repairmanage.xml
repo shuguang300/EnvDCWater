@@ -1,53 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    tools:ignore="ContentDescription" >
+    android:padding="@dimen/layout_margin" >
 
     <ImageView
         android:id="@+id/item_repairmanage_pic"
         android:layout_width="@dimen/ic_adapter_pic"
         android:layout_height="@dimen/ic_adapter_pic"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_pic_default" />
+        android:layout_centerVertical="true" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/item_repairmanage_pic"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/item_repairmanage_name"
-                style="@style/ItemLayout"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_item_device" />
-
-            <TextView
-                android:id="@+id/item_repairmanage_state"
-                style="@style/ItemLayout"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_item_state" />
-        </LinearLayout>
+        android:layout_marginLeft="@dimen/layout_margin"
+        android:layout_toRightOf="@id/item_repairmanage_pic" >
 
         <TextView
-            android:id="@+id/item_repairmanage_faulttime"
+            android:id="@+id/item_repairmanage_lefttop"
             style="@style/ItemLayout"
-            android:drawableLeft="@drawable/ic_item_time" />
+            android:layout_alignParentLeft="true"
+            android:textSize="@dimen/fontsize_large" />
 
         <TextView
-            android:id="@+id/item_repairmanage_phenomenon"
+            android:id="@+id/item_repairmanage_righttop"
             style="@style/ItemLayout"
-            android:drawableLeft="@drawable/ic_item_phenomenon" />
-    </LinearLayout>
+            android:layout_alignParentRight="true"
+            android:textColor="@color/lightgray"
+            android:textSize="@dimen/fontsize_normal" />
+
+        <TextView
+            android:id="@+id/item_repairmanage_leftbottom"
+            style="@style/ItemLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/item_repairmanage_lefttop"
+            android:layout_toLeftOf="@id/item_repairmanage_righttop"
+            android:textColor="@color/lightgray"
+            android:textSize="@dimen/fontsize_normal" />
+    </RelativeLayout>
 
 </RelativeLayout>

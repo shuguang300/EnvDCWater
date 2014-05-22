@@ -56,6 +56,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	private ImageView mSearchHintIcon;
 	private String selectCons = "";
 	private boolean spinnerIni = false;
+	private int dpi;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		consArrayList = new ArrayList<HashMap<String,String>>();
 		constructionAdapter = new ConstructionAdapter();
 		deviceListAdapter = new DeviceListAdapter(deviceArrayList);
+		dpi = SystemMethod.getDpi(getWindowManager());
 	}
 	
 	/**
@@ -203,8 +205,8 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	private void showProgressDialog(boolean cancelable){
 		if(mProgressDialog==null){
 			mProgressDialog = new ProgressDialog(DeviceInfoListActivity.this);
-			mProgressDialog.setTitle("提交中");
-			mProgressDialog.setMessage("正在向服务器提交，请稍后");
+			mProgressDialog.setTitle("获取数据中");
+			mProgressDialog.setMessage("正在努力加载数据，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
 			mProgressDialog.setCancelable(cancelable);
 		}
@@ -378,8 +380,10 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			}
 			deviceViewHolder.name.setText(map.get("DeviceName").toString());
 			deviceViewHolder.cons.setText(map.get("InstallPosition").toString());
-			if(!map.get("PicURL").equals("")){
-				GetDevicePic getDevicePic = new GetDevicePic(deviceViewHolder.pic);
+			if(map.get("PicURL").equals("")){
+				deviceViewHolder.pic.setImageResource(R.drawable.ic_pic_default);
+			}else {
+				GetDevicePic getDevicePic = new GetDevicePic(deviceViewHolder.pic,dpi,DeviceInfoListActivity.this);
 				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
 			}
 			return convertView;

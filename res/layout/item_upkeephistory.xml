@@ -2,42 +2,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp" >
+    android:padding="@dimen/layout_margin" >
 
     <ImageView
         android:id="@+id/item_upkeephistory_pic"
         android:layout_width="@dimen/ic_adapter_pic"
         android:layout_height="@dimen/ic_adapter_pic"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_pic_default" />
+        android:layout_centerVertical="true" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/item_upkeephistory_pic"
-        android:orientation="vertical" >
+        android:layout_marginLeft="@dimen/layout_margin"
+        android:layout_toRightOf="@id/item_upkeephistory_pic" >
 
         <TextView
-            android:id="@+id/item_upkeephistory_name"
+            android:id="@+id/item_upkeephistory_lefttop"
             style="@style/ItemLayout"
-            android:drawableLeft="@drawable/ic_item_device" />
-
-        <!-- <TextView
-            android:id="@+id/item_upkeephistory_actualmanhours"
-            style="@style/ItemLayout"
-            android:drawableLeft="@drawable/ic_item_hours" /> -->
+            android:layout_alignParentLeft="true"
+            android:textSize="@dimen/fontsize_large" />
 
         <TextView
-            android:id="@+id/item_upkeephistory_maintaindetail"
-           style="@style/ItemLayout"
-            android:drawableLeft="@drawable/ic_item_result" />
+            android:id="@+id/item_upkeephistory_righttop"
+            style="@style/ItemLayout"
+            android:layout_alignParentRight="true" 
+            android:textColor="@color/lightgray"
+            android:textSize="@dimen/fontsize_normal"/>
 
         <TextView
-            android:id="@+id/item_upkeephistory_ddopinion"
+            android:id="@+id/item_upkeephistory_leftbottom"
             style="@style/ItemLayout"
-            android:drawableLeft="@drawable/ic_item_opinion" />
-    </LinearLayout>
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/item_upkeephistory_lefttop"
+            android:layout_toLeftOf="@id/item_upkeephistory_righttop"
+            android:textColor="@color/lightgray"
+            android:textSize="@dimen/fontsize_normal" />
+    </RelativeLayout>
 
 </RelativeLayout>

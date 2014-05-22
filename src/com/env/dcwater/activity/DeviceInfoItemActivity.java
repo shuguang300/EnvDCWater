@@ -56,9 +56,9 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	
 	private class StatuViewHoler{
 		public TextView code = null;  
-		public TextView name = null;  
-		public TextView value = null;  
-		public TextView remark = null; 
+//		public TextView name = null;  
+//		public TextView value = null;  
+//		public TextView remark = null; 
 	}
 	
 	private class FileViewHolder{
@@ -448,14 +448,14 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			StatuViewHoler viewHoler ;
-			HashMap<String, String> map = getItem(position);
+//			HashMap<String, String> map = getItem(position);
 			if(convertView ==null){
 				convertView = LayoutInflater.from(DeviceInfoItemActivity.this).inflate(R.layout.item_devicestatu, null);
 				viewHoler = new StatuViewHoler();
 				viewHoler.code = (TextView)convertView.findViewById(R.id.item_devicestatu_code);
-				viewHoler.name = (TextView)convertView.findViewById(R.id.item_devicestatu_name);
-				viewHoler.value = (TextView)convertView.findViewById(R.id.item_devicestatu_value);
-				viewHoler.remark = (TextView)convertView.findViewById(R.id.item_devicestatu_remark);
+//				viewHoler.name = (TextView)convertView.findViewById(R.id.item_devicestatu_name);
+//				viewHoler.value = (TextView)convertView.findViewById(R.id.item_devicestatu_value);
+//				viewHoler.remark = (TextView)convertView.findViewById(R.id.item_devicestatu_remark);
 				convertView.setTag(viewHoler);
 			}else {
 				viewHoler = (StatuViewHoler)convertView.getTag();

@@ -1,5 +1,6 @@
 package com.env.dcwater.util;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import com.env.dcwater.activity.LoginActivity;
 import com.env.dcwater.component.DCWaterApp;
@@ -14,6 +15,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -22,6 +25,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 /**
@@ -148,6 +153,45 @@ public class SystemMethod {
 		if(imm.isActive()){
 			imm.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getApplicationWindowToken(), 0);
 		}
+	}
+	
+	/**
+	 * 获取dpi值
+	 * @param wm
+	 * @return
+	 */
+	public static int getDpi (WindowManager wm){
+		DisplayMetrics dm = new DisplayMetrics();
+		wm.getDefaultDisplay().getMetrics(dm);
+		return dm.densityDpi;
+	}
+	
+	/**
+	 * 压缩图片，避免oom
+	 * @param pic
+	 * @param width 期望的宽
+	 * @param height 期望的长
+	 * @return
+	 * @throws FileNotFoundException
+	 */
+	public static Bitmap compressBitmap (File pic,float width,float height) throws FileNotFoundException{
+		Bitmap bitmap = null;
+		BitmapFactory.Options ops = new BitmapFactory.Options();
+		ops.inJustDecodeBounds = true;
+		bitmap = BitmapFactory.decodeFile(pic.getAbsolutePath(),ops);
+		float old_width = ops.outWidth;
+		float old_height = ops.outHeight;
+		int scale=1; 
+		if(old_width>=old_height){
+			scale = (int)(old_width/width);
+		}else {
+			scale = (int)(height/old_height);
+		}
+		if(scale<1)scale = 1;
+		ops.inSampleSize = scale;
+		ops.inJustDecodeBounds = false;
+		bitmap = BitmapFactory.decodeFile(pic.getAbsolutePath(),ops);
+		return bitmap;
 	}
 	
 	/**

@@ -29,12 +29,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool;
+import com.env.dcwater.component.ThreadPool.GetDevicePic;
 import com.env.dcwater.fragment.DataFilterView;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
@@ -145,7 +147,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private GetServerTaskData getServerTaskData;
 	private boolean isFilter = true,actionChooseIsShow = false;;
 	private ProgressDialog mProgressDialog;
-	private int userPositionID;
+	private int userPositionID,dpi;
 	private String [] dateFilters,nfcCardAction = {"查看设备信息","设备故障上报"};
 	private AlertDialog.Builder actionChoose;
 	@Override
@@ -170,7 +172,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	 * 初始化数据
 	 */
 	private void iniData(){
-		
+		dpi = SystemMethod.getDpi(getWindowManager());
 		mData = new ArrayList<HashMap<String,String>>();
 		userPositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
 		if(userPositionID == EnumList.UserRole.USERROLEEQUIPMENTOPERATION||userPositionID==EnumList.UserRole.USERROLEPRODUCTIONOPERATION){
@@ -235,8 +237,8 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private void showProgressDialog(boolean cancelable){
 		if(mProgressDialog==null){
 			mProgressDialog = new ProgressDialog(RepairManageActivity.this);
-			mProgressDialog.setTitle("提交中");
-			mProgressDialog.setMessage("正在向服务器提交，请稍后");
+			mProgressDialog.setTitle("获取数据中");
+			mProgressDialog.setMessage("正在努力加载数据，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
 			mProgressDialog.setCancelable(cancelable);
 		}
@@ -526,6 +528,13 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		}
 	}
 	
+	private class ViewHolder {
+		TextView lefttop = null;
+		TextView righttop = null;
+		TextView leftbottom = null;
+		ImageView pic = null;
+	}
+	
 	private class RepairManageItemAdapter extends BaseAdapter{
 		@Override
 		public int getCount() {
@@ -541,18 +550,28 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		}
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			if(convertView==null){
-				convertView = LayoutInflater.from(RepairManageActivity.this).inflate(R.layout.item_repairmanage, null);
-			}
 			HashMap<String, String> map = getItem(position);
-			TextView name = (TextView)convertView.findViewById(R.id.item_repairmanage_name);
-			name.setText(map.get("DeviceName"));
-			TextView time = (TextView)convertView.findViewById(R.id.item_repairmanage_faulttime);
-			time.setText(map.get("AccidentOccurTime")+"发生故障");
-			TextView state = (TextView)convertView.findViewById(R.id.item_repairmanage_state);
-			state.setText(map.get("StateDescription"));
-			TextView phenomenon = (TextView)convertView.findViewById(R.id.item_repairmanage_phenomenon);
-			phenomenon.setText(map.get("AccidentDetail"));
+			ViewHolder viewHolder ;
+			if(convertView == null){
+				viewHolder = new ViewHolder();
+				convertView = LayoutInflater.from(RepairManageActivity.this).inflate(R.layout.item_repairmanage, null);
+				viewHolder.lefttop = (TextView)convertView.findViewById(R.id.item_repairmanage_lefttop);
+				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_repairmanage_righttop);
+				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_repairmanage_leftbottom);
+				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_repairmanage_pic);
+				convertView.setTag(viewHolder);
+			}else {
+				viewHolder = (ViewHolder)convertView.getTag();
+			}
+			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("InstallPosition")+")");
+			viewHolder.leftbottom.setText(OperationMethod.getRepairTaskContent(map));
+			viewHolder.righttop.setText(map.get("StateDescription"));
+			if(map.get("PicURL").equals("")){
+				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
+			}else {
+				GetDevicePic getDevicePic = new GetDevicePic(viewHolder.pic,dpi,RepairManageActivity.this);
+				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
+			}
 			return convertView;
 		}
 	}

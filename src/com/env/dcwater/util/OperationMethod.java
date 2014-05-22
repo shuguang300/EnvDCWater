@@ -1,6 +1,9 @@
 package com.env.dcwater.util;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +14,7 @@ import android.content.SharedPreferences.Editor;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.DCWaterApp;
+import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryPlanState;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryState;
@@ -828,6 +832,8 @@ public class OperationMethod {
 				//设备类型
 				map.put("DeviceClassType", LogicMethod.getRightString(report.get("DeviceClassType").toString()));
 				
+				map.put("PicURL", LogicMethod.getRightString(report.get("PicURL").toString()));
+				
 				data.add(map);
 			}
 		}
@@ -953,6 +959,8 @@ public class OperationMethod {
 				map.put("Department", LogicMethod.getRightString(report.get("Department").toString()));
 				//设备类型
 				map.put("DeviceClassType", LogicMethod.getRightString(report.get("DeviceClassType").toString()));
+				//设备类型
+				map.put("PicURL", LogicMethod.getRightString(report.get("PicURL").toString()));
 				
 				data.add(map);
 			}
@@ -1068,6 +1076,8 @@ public class OperationMethod {
 				//
 				map.put("NeedCompleteTotaDay", LogicMethod.getRightString(report.get("NeedCompleteTotaDay").toString()));
 				
+				map.put("PicURL", LogicMethod.getRightString(report.get("PicURL").toString()));
+				
 				data.add(map);
 			}
 		}
@@ -1146,7 +1156,7 @@ public class OperationMethod {
 				map.put("DeviceName", LogicMethod.getRightString(json2.get("DeviceName").toString()));
 				map.put("InstallPosition", LogicMethod.getRightString(json2.get("InstallPosition").toString()));
 				map.put("StructureID", LogicMethod.getRightString(json2.get("StructureID").toString()));
-				
+				map.put("PicURL", LogicMethod.getRightString(json2.get("PicURL").toString()));
 				data.add(map);
 			}
 		}
@@ -1234,7 +1244,7 @@ public class OperationMethod {
 				map.put("MaintainType", LogicMethod.getRightString(json2.get("MaintainType").toString()));
 				map.put("DeviceName", LogicMethod.getRightString(json2.get("DeviceName").toString()));
 				map.put("DeviceID", LogicMethod.getRightString(json2.get("DeviceID").toString()));
-				
+				map.put("PicURL", LogicMethod.getRightString(json2.get("PicURL").toString()));
 				data.add(map);
 			}
 		}
@@ -1324,7 +1334,7 @@ public class OperationMethod {
 				map.put("MaintainType", LogicMethod.getRightString(json2.get("MaintainType").toString()));
 				map.put("DeviceName", LogicMethod.getRightString(json2.get("DeviceName").toString()));
 				map.put("DeviceID", LogicMethod.getRightString(json2.get("DeviceID").toString()));
-				
+				map.put("PicURL", LogicMethod.getRightString(json2.get("PicURL").toString()));
 				data.add(map);
 			}
 		}
@@ -1417,5 +1427,91 @@ public class OperationMethod {
 			}
 		}
 		return ok;
+	}
+	
+	/**
+	 * 获取维修历史的描述信息
+	 * @param map
+	 * @return
+	 */
+	public static String getMaintainHistoryContent(HashMap<String, String> map){
+		StringBuilder sb = new StringBuilder();
+		sb.append("该设备于").append(map.get("AccidentOccurTime")).
+		append("发生故障").append("。故障现象为：").append(map.get("AccidentDetail")).append("，");
+		try {
+			Date date1 = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(map.get("AccidentOccurTime"));
+			Date date2 = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(map.get("RepairedTime"));;
+			sb.append("故障持续").append(LogicMethod.getTimeSpan(date1, date2));
+		} catch (Exception e) {
+			
+		}
+		return sb.toString();
+	}
+	
+	/**
+	 * 获取维修任务的描述信息
+	 * @param map
+	 * @return
+	 */
+	public static String getRepairTaskContent(HashMap<String, String> map){
+		StringBuilder sb = new StringBuilder();
+		sb.append("该设备于").append(map.get("AccidentOccurTime")).
+		append("发生故障").append("。故障现象为：").append(map.get("AccidentDetail")).append("，");
+		try {
+			Date date1 = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(map.get("AccidentOccurTime"));
+			Date date2 ;
+			if(map.get("RepairedTime").equals("")){
+				date2 = new Date();
+			}else {
+				date2 = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(map.get("RepairedTime"));
+			}
+			sb.append("故障持续").append(LogicMethod.getTimeSpan(date1, date2));
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return sb.toString();
+	} 
+	
+	/**
+	 * 获取保养历史的描述信息
+	 * @param map
+	 * @return
+	 */
+	public static String getUpkeepHistoryContent(HashMap<String, String> map){
+		StringBuilder sb = new StringBuilder();
+		sb.append("设备的").append(map.get("MaintainPosition")).append("于").append(map.get("CreateTime")).append("开始保养。");
+		sb.append("保养内容是：").append(map.get("MaintainSpecification")).append("，耗时")
+		.append(LogicMethod.getHoursDescrible(map.get("ActualManHours")));
+		return sb.toString();
+	}
+	
+	/**
+	 * 获取保养工单派发的描述信息
+	 * @param map
+	 * @return
+	 */
+	public static String getUpkeepSendContent(HashMap<String, String> map){
+		StringBuilder sb = new StringBuilder();
+		return sb.toString();
+	}
+	/**
+	 * 获取保养工单填写的描述信息
+	 * @param map
+	 * @return
+	 */
+	public static String getUpkeepReportContent(HashMap<String, String> map){
+		StringBuilder sb = new StringBuilder();
+		sb.append("设备的").append(map.get("MaintainPosition")).append("需在")
+		.append(map.get("NeedComplete")).append("前完成保养");
+		return sb.toString();
+	}
+	/**
+	 * 获取保养工单审核的描述信息
+	 * @param map
+	 * @return
+	 */
+	public static String getUpkeepApproveContent(HashMap<String, String> map){
+		StringBuilder sb = new StringBuilder();
+		return sb.toString();
 	}
 }

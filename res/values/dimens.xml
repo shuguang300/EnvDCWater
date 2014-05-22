@@ -8,12 +8,14 @@
     <dimen name="ic_navibar_logo">48dp</dimen>
     <!-- 导航布局中的 提醒图片大小  -->
     <dimen name="ic_navibar_noti">32dp</dimen>
-    <!-- listview的布局中，图片的大小 -->
+    <!-- menu的图片大小 -->
     <dimen name="ic_menu">32dp</dimen>
     <!-- listview的布局中，图片的大小 -->
     <dimen name="ic_activity_logo">48dp</dimen>
     <!-- listview的布局中，图片的大小 -->
-    <dimen name="ic_adapter_pic">48dp</dimen>
+    <dimen name="ic_adapter_pic">60dp</dimen>
+    <!-- 用户头像 图片的大小 -->
+    <dimen name="ic_user_pic">60dp</dimen>
     <!-- 细边框 -->
     <dimen name="thinline">1dp</dimen>
     <!-- 粗边框 -->

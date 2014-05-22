@@ -59,7 +59,6 @@
                 <Switch
                     android:id="@+id/view_repair_ddopinion_verifyresult"
                     style="@style/ItemValueStyle"
-                    android:drawableRight="@drawable/ic_item_warning"
                     android:textOff="审核未通过"
                     android:textOn="审核通过" />
             </TableRow>

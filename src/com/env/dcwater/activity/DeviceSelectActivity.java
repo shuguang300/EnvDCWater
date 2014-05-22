@@ -54,6 +54,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	private DeviceAdapter deviceAdapter;
 	private String selectCons;
 	private boolean spinnerIni =false;
+	private int dpi;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	 * 
 	 */
 	private void initialData(){
+		dpi = SystemMethod.getDpi(getWindowManager());
 		deviceDataArrayList = new ArrayList<HashMap<String,String>>();
 		consDataArrayList = new ArrayList<HashMap<String,String>>();
 		constructionAdapter = new ConstructionAdapter();
@@ -274,8 +276,10 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 			}
 			deviceViewHolder.name.setText(map.get("DeviceName").toString());
 			deviceViewHolder.cons.setText(map.get("InstallPosition").toString());
-			if(!map.get("PicURL").equals("")){
-				GetDevicePic getDevicePic = new GetDevicePic(deviceViewHolder.pic);
+			if(map.get("PicURL").equals("")){
+				deviceViewHolder.pic.setImageResource(R.drawable.ic_pic_default);
+			}else {
+				GetDevicePic getDevicePic = new GetDevicePic(deviceViewHolder.pic,dpi,DeviceSelectActivity.this);
 				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
 			}
 			return convertView;

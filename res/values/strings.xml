@@ -124,6 +124,11 @@
     <string name="item_devicefiles_operation">操作</string>
     <string name="item_devicefiles_dl">下    载</string>
     <string name="item_devicefiles_pre">浏    览</string>
+    <string name="activity_userinfor_pic">头    像</string>
+    <string name="activity_userinfor_acc">账    号</string>
+    <string name="activity_userinfor_name">姓    名</string>
+    <string name="activity_userinfor_role">岗    位</string>
+    <string name="activity_userinfor_plant">厂    名</string>
 
     <string-array name="view_datafilter_fasttimelist">
         <item>请选择</item>

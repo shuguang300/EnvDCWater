@@ -2,9 +2,11 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,12 +23,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool;
+import com.env.dcwater.component.ThreadPool.GetDevicePic;
 import com.env.dcwater.fragment.DataFilterView;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
@@ -54,6 +59,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	private String receivedAction;
 	private HashMap<String, String> receivedData;
 	private TextView titleMessage;
+	private int dpi;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	 */
 	@SuppressWarnings("unchecked")
 	private void iniData() {
+		dpi = SystemMethod.getDpi(getWindowManager());
 		receivedIntent = getIntent();
 		receivedAction = receivedIntent.getExtras().getString("action");
 		receivedData = (HashMap<String,String>)receivedIntent.getExtras().getSerializable("data");
@@ -159,7 +166,6 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 
 				@Override
 				protected void onPreExecute() {
-					// TODO Auto-generated method stub
 					
 				}
 			};
@@ -198,8 +204,8 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	private void showProgressDialog(boolean cancelable){
 		if(mProgressDialog==null){
 			mProgressDialog = new ProgressDialog(MaintainHistoryActivity.this);
-			mProgressDialog.setTitle("提交中");
-			mProgressDialog.setMessage("正在向服务器提交，请稍后");
+			mProgressDialog.setTitle("获取数据中");
+			mProgressDialog.setMessage("正在努力加载数据，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
 			mProgressDialog.setCancelable(cancelable);
 		}
@@ -306,6 +312,13 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		getServerHistoryData();
 	}
 	
+	private class ViewHolder {
+		TextView lefttop = null;
+		TextView righttop = null;
+		TextView leftbottom = null;
+		ImageView pic = null;
+	}
+	
 	/**
 	 * 维修历史的自定义adapter
 	 * @author sk
@@ -325,18 +338,28 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		}
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			if(convertView == null){
-				convertView = LayoutInflater.from(MaintainHistoryActivity.this).inflate(R.layout.item_maintainhistory, null);
-			}
 			HashMap<String, String> map = getItem(position);
-			TextView name = (TextView)convertView.findViewById(R.id.item_maintainhistory_name);
-			name.setText(map.get("DeviceName"));
-			TextView sttime = (TextView)convertView.findViewById(R.id.item_maintainhistory_faulttime);
-			sttime.setText(map.get("AccidentOccurTime")+"故障");
-			TextView endtime = (TextView)convertView.findViewById(R.id.item_maintainhistory_endtime);
-			endtime.setText(map.get("RepairedTime")+"完成");
-//			TextView phenomenon = (TextView)convertView.findViewById(R.id.item_maintainhistory_phenomenon);
-//			phenomenon.setText(map.get("AccidentDetail"));
+			ViewHolder viewHolder ;
+			if(convertView == null){
+				viewHolder = new ViewHolder();
+				convertView = LayoutInflater.from(MaintainHistoryActivity.this).inflate(R.layout.item_maintainhistory, null);
+				viewHolder.lefttop = (TextView)convertView.findViewById(R.id.item_maintainhistory_lefttop);
+				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_maintainhistory_righttop);
+				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_maintainhistory_leftbottom);
+				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_maintainhistory_pic);
+				convertView.setTag(viewHolder);
+			}else {
+				viewHolder = (ViewHolder)convertView.getTag();
+			}
+			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("InstallPosition")+")");
+			viewHolder.leftbottom.setText(OperationMethod.getMaintainHistoryContent(map));
+			viewHolder.righttop.setText("");
+			if(map.get("PicURL").equals("")){
+				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
+			}else {
+				GetDevicePic getDevicePic = new GetDevicePic(viewHolder.pic,dpi,MaintainHistoryActivity.this);
+				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
+			}
 			return convertView;
 		}
 	}

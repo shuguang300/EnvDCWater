@@ -1,4 +1,7 @@
 package com.env.dcwater.util;
+
+import java.util.Date;
+
 /**
  * 一个用于存储 算法，一般逻辑方法的类
  * @author sk
@@ -74,5 +77,45 @@ public class LogicMethod {
 			}
 		}
 		return count;
+	}
+	
+	/**
+	 * 获取2个时间间隔的描述信息
+	 * @return
+	 */
+	public static String getTimeSpan(Date date1,Date date2){
+		long timespan = (date2.getTime()-date1.getTime())/3600000;
+		String result = "";
+		if(timespan<1&&timespan>=0){
+			result = ((date2.getTime()-date1.getTime())/60000) +"分钟";
+		}else if (timespan>=1&&timespan<24) {
+			result = timespan + "小时";
+		}else if (timespan>=24) {
+			result = (timespan/24)+"天"+(timespan%24==0?"":timespan%24+"小时");
+		}else {
+			result = "";
+		}
+		return result;
+	}
+	
+	/**
+	 * 获取小时数的描述
+	 * @param hours
+	 * @return
+	 */
+	public static String getHoursDescrible(String hours){
+		int hour = 0;
+		String result ="";
+		try{
+			hour = Integer.parseInt(hours);
+			if(hour<24){
+				result = hours+"小时";
+			}else {
+				result = (hour/24)+"天"+(hour%24==0?"":hour%24+"小时");
+			}
+		}catch(Exception e){
+			hour = 0;
+		}
+		return result;
 	}
 }

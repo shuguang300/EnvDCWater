@@ -10,7 +10,8 @@
     <item 
         android:id="@+id/menu_upkeephistory_showdraw"
         android:title="@string/menu_upkeephistory_drawshow"
-        android:showAsAction="never" />
+        android:icon="@drawable/ic_menu_more"
+        android:showAsAction="always" />
     
     
 </menu>

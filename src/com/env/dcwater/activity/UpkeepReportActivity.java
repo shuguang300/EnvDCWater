@@ -21,12 +21,14 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool;
+import com.env.dcwater.component.ThreadPool.GetDevicePic;
 import com.env.dcwater.component.ThreadPool.GetServerConsData;
 import com.env.dcwater.fragment.DataFilterView;
 import com.env.dcwater.fragment.PullToRefreshView;
@@ -51,6 +53,7 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 	private ProgressDialog mProgressDialog;
 	private UpkeepReportItemAdapter adapter;
 	private boolean filter = true;
+	private int dpi;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,6 +65,7 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 	}
 	
 	private void iniData(){
+		dpi = SystemMethod.getDpi(getWindowManager());
 		data = new ArrayList<HashMap<String,String>>();
 		adapter = new UpkeepReportItemAdapter();
 	}
@@ -159,8 +163,8 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 	private void showProgressDialog(boolean cancelable){
 		if(mProgressDialog==null){
 			mProgressDialog = new ProgressDialog(UpkeepReportActivity.this);
-			mProgressDialog.setTitle("提交中");
-			mProgressDialog.setMessage("正在向服务器提交，请稍后");
+			mProgressDialog.setTitle("获取数据中");
+			mProgressDialog.setMessage("正在努力加载数据，请稍后");
 			mProgressDialog.setCanceledOnTouchOutside(false);
 			mProgressDialog.setCancelable(cancelable);
 		}
@@ -233,6 +237,18 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 		}
 	}
 	
+	
+	private class ViewHolder {
+		TextView lefttop = null;
+		TextView righttop = null;
+		TextView leftbottom = null;
+		ImageView pic = null;
+	}
+	
+	/**
+	 * 填写养护工单的adapter
+	 * @author sk
+	 */
 	private class UpkeepReportItemAdapter extends BaseAdapter{
 
 		@Override
@@ -241,7 +257,7 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 		}
 
 		@Override
-		public Object getItem(int position) {
+		public HashMap<String, String> getItem(int position) {
 			return data.get(position);
 		}
 
@@ -252,20 +268,28 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			if(convertView==null){
+			HashMap<String, String> map = getItem(position);
+			ViewHolder viewHolder ;
+			if(convertView == null){
+				viewHolder = new ViewHolder();
 				convertView = LayoutInflater.from(UpkeepReportActivity.this).inflate(R.layout.item_upkeepreport, null);
+				viewHolder.lefttop = (TextView)convertView.findViewById(R.id.item_upkeepreport_lefttop);
+				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_upkeepreport_righttop);
+				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_upkeepreport_leftbottom);
+				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_upkeepreport_pic);
+				convertView.setTag(viewHolder);
+			}else {
+				viewHolder = (ViewHolder)convertView.getTag();
 			}
-			HashMap<String, String> map = data.get(position);
-			TextView name = (TextView)convertView.findViewById(R.id.item_upkeepreport_name);
-			name.setText(map.get("DeviceName"));
-			TextView mtpos = (TextView)convertView.findViewById(R.id.item_upkeepreport_mtpos);
-			mtpos.setText(map.get("MaintainPosition"));
-//			TextView require = (TextView)convertView.findViewById(R.id.item_upkeepreport_require);
-//			require.setText(map.get("TaskDetail"));
-//			TextView needtime = (TextView)convertView.findViewById(R.id.item_upkeepreport_needtime);
-//			needtime.setText("于"+map.get("NeedComplete")+"之前完成");
-			TextView textView5 = (TextView)convertView.findViewById(R.id.item_upkeepreport_state);
-			textView5.setText(map.get("StateDescription"));
+			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
+			viewHolder.leftbottom.setText(OperationMethod.getUpkeepReportContent(map));
+			viewHolder.righttop.setText(map.get("StateDescription"));
+			if(map.get("PicURL").equals("")){
+				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
+			}else {
+				GetDevicePic getDevicePic = new GetDevicePic(viewHolder.pic,dpi,UpkeepReportActivity.this);
+				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
+			}
 			return convertView;
 		}
 		

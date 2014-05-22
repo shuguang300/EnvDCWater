@@ -279,7 +279,6 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 					Toast.makeText(LoginActivity.this, "您的账号未启用", Toast.LENGTH_SHORT).show();
 					break;
 				case 4:
-					Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
 					entranceMainActivity();
 					break;
 				}

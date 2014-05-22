@@ -1,21 +1,21 @@
 package com.env.dcwater.component;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.net.Uri;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.ImageView;
-
+import com.env.dcwater.R;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.LogicMethod;
 import com.env.dcwater.util.OperationMethod;
+import com.env.dcwater.util.SystemMethod;
 
 /**
  * 线程及异步方法的管理 
@@ -213,9 +213,10 @@ public class ThreadPool {
 	 */
 	public static class GetDevicePic extends AsyncTask<String, Integer, File>{
 		private ImageView imageView;
-		
-		public GetDevicePic (ImageView iv){
+		private float size ;
+		public GetDevicePic (ImageView iv,int dpi,Context context){
 			imageView = iv;
+			size = context.getResources().getDimension(R.dimen.ic_adapter_pic)*dpi/160;
 		}
 		
 		@Override
@@ -238,7 +239,11 @@ public class ThreadPool {
 		protected void onPostExecute(File result) {
 			super.onPostExecute(result);
 			if(result!=null){
-				imageView.setImageURI(Uri.fromFile(result));
+				try {
+					imageView.setImageBitmap(SystemMethod.compressBitmap(result,size ,size));
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		
