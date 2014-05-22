@@ -1502,7 +1502,7 @@ public class OperationMethod {
 	public static String getUpkeepReportContent(HashMap<String, String> map){
 		StringBuilder sb = new StringBuilder();
 		sb.append("设备的").append(map.get("MaintainPosition")).append("需在")
-		.append(map.get("NeedComplete")).append("前完成保养");
+		.append(map.get("NeedComplete")).append("前完成保养。");
 		return sb.toString();
 	}
 	/**
@@ -1512,6 +1512,8 @@ public class OperationMethod {
 	 */
 	public static String getUpkeepApproveContent(HashMap<String, String> map){
 		StringBuilder sb = new StringBuilder();
+		sb.append("设备的").append(map.get("MaintainPosition")).append("需在")
+		.append(map.get("NeedComplete")).append("前完成保养。");
 		return sb.toString();
 	}
 }
