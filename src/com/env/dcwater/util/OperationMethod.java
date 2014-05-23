@@ -660,6 +660,28 @@ public class OperationMethod {
 	}
 	
 	/**
+	 * 获取设备运行参数
+	 * @return
+	 * @throws JSONException 
+	 */
+	public static ArrayList<HashMap<String, String>> parseDeviceStatuToList(JSONArray devices) throws JSONException{
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
+		JSONObject device ;
+		HashMap<String, String> map ;
+		for (int i =0;i<devices.length();i++) {
+			device = devices.getJSONObject(i);
+			map = new HashMap<String, String>();
+			map.put("DeviceOperatingParameterID", LogicMethod.getRightString(device.getString("DeviceOperatingParameterID").toString()));
+			map.put("DeviceSmallClassID", LogicMethod.getRightString(device.getString("DeviceSmallClassID").toString()));
+			map.put("DeviceOperatingParameterName", LogicMethod.getRightString(device.getString("DeviceOperatingParameterName").toString()));
+			map.put("DeviceOperatingParameterValue", LogicMethod.getRightString(device.getString("DeviceOperatingParameterValue").toString()));
+			map.put("DeviceID", LogicMethod.getRightString(device.getString("DeviceID").toString()));
+			data.add(map);
+		}
+		return data;
+	}
+	
+	/**
 	 * @param jsonObject
 	 * @param deviceName
 	 * @param consName
@@ -1492,6 +1514,22 @@ public class OperationMethod {
 	 */
 	public static String getUpkeepSendContent(HashMap<String, String> map){
 		StringBuilder sb = new StringBuilder();
+		int state = Integer.parseInt(map.get("MaintainState"));
+//		sb.append("设备的").append(map.get("MaintainPosition")).append("下次保养时间是")
+//		.append(map.get("Maintaintimenext")).append("，保养内容：").append(map.get("MaintainSpecification"));
+		if(state == EnumList.UpkeepHistoryPlanState.STATE_DONE_INT||state == EnumList.UpkeepHistoryPlanState.STATE_HASBEENPLAN_INT){
+			int hours =  Integer.parseInt(map.get("dataToday"));
+			if(hours>0){
+				
+			}else if (hours==0) {
+				
+			}else {
+				
+			}
+		}else {
+			
+		}
+		//dataToday
 		return sb.toString();
 	}
 	/**

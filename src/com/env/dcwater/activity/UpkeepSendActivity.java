@@ -248,7 +248,7 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 			}
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
 			viewHolder.leftbottom.setText(OperationMethod.getUpkeepSendContent(map));
-			viewHolder.righttop.setText(map.get("MaintainStateDescription"));
+			viewHolder.righttop.setText(map.get("MaintainStateDescription").equals("完成")?"等待派发":map.get("MaintainStateDescription"));
 			if(map.get("PicURL").equals("")){
 				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
 			}else {

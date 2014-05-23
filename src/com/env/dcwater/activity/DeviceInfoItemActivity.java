@@ -56,8 +56,8 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	
 	private class StatuViewHoler{
 		public TextView code = null;  
-//		public TextView name = null;  
-//		public TextView value = null;  
+		public TextView name = null;  
+		public TextView value = null;  
 //		public TextView remark = null; 
 	}
 	
@@ -220,6 +220,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 					deviceFiles = detailData.get("DeviceFile");
 					deviceParams = detailData.get("DeviceParam");
 					deviceProperty = detailData.get("DeviceProperty");
+					deviceStatu = detailData.get("DeviceStatu");
 					int i =viewPager.getCurrentItem();
 					switch (i) {
 					case 0:
@@ -448,22 +449,20 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			StatuViewHoler viewHoler ;
-//			HashMap<String, String> map = getItem(position);
+			HashMap<String, String> map = getItem(position);
 			if(convertView ==null){
 				convertView = LayoutInflater.from(DeviceInfoItemActivity.this).inflate(R.layout.item_devicestatu, null);
 				viewHoler = new StatuViewHoler();
 				viewHoler.code = (TextView)convertView.findViewById(R.id.item_devicestatu_code);
-//				viewHoler.name = (TextView)convertView.findViewById(R.id.item_devicestatu_name);
-//				viewHoler.value = (TextView)convertView.findViewById(R.id.item_devicestatu_value);
-//				viewHoler.remark = (TextView)convertView.findViewById(R.id.item_devicestatu_remark);
+				viewHoler.name = (TextView)convertView.findViewById(R.id.item_devicestatu_name);
+				viewHoler.value = (TextView)convertView.findViewById(R.id.item_devicestatu_value);
 				convertView.setTag(viewHoler);
 			}else {
 				viewHoler = (StatuViewHoler)convertView.getTag();
 			}
 			viewHoler.code.setText(position+1+"");
-//			viewHoler.name.setText(map.get("ParameterName"));
-//			viewHoler.value.setText(map.get("ParameterValue"));
-//			viewHoler.remark.setText(map.get("Remark"));
+			viewHoler.name.setText(map.get("DeviceOperatingParameterName"));
+			viewHoler.value.setText(map.get("DeviceOperatingParameterValue"));
 			return convertView;
 		}
 	}
