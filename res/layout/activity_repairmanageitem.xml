@@ -398,8 +398,8 @@
                         android:id="@+id/activity_repairmanageitem_verifyresult"
                         style="@style/ItemValueStyle"
                         android:enabled="false"
-                        android:textOff="审核未通过"
-                        android:textOn="审核通过" />
+                        android:textOff="未通过"
+                        android:textOn="通过" />
                 </TableRow>
 
                 <TextView style="@style/ItemDivider" />

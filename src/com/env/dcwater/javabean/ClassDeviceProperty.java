@@ -2,7 +2,7 @@ package com.env.dcwater.javabean;
 
 import com.google.gson.Gson;
 /**
- * 参数
+ * 设备基本参数
  * @author sk
  */
 public class ClassDeviceProperty {

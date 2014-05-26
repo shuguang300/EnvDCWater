@@ -275,12 +275,14 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				trFaultPhenomenon = (TableRow) findViewById(R.id.activity_repairmanageitem_faultphenomenon_tr);
 				trHandleStep = (TableRow) findViewById(R.id.activity_repairmanageitem_handlestep_tr);
 				trOtherStep = (TableRow) findViewById(R.id.activity_repairmanageitem_otherstep_tr);
-
+				inputSubmit = (Button)findViewById(R.id.activity_repairmanageitem_submit);
+				inputSubmit.setText(methodDesc);
 				trName.setOnClickListener(this);
 				trFaultTime.setOnClickListener(this);
 				trFaultPhenomenon.setOnClickListener(this);
 				trHandleStep.setOnClickListener(this);
 				trOtherStep.setOnClickListener(this);
+				inputSubmit.setOnClickListener(this);
 
 			} else {
 				

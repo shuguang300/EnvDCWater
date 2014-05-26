@@ -2,9 +2,11 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -24,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -248,7 +251,12 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 			}
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
 			viewHolder.leftbottom.setText(OperationMethod.getUpkeepSendContent(map));
-			viewHolder.righttop.setText(map.get("MaintainStateDescription").equals("完成")?"等待派发":map.get("MaintainStateDescription"));
+			String temp = map.get("MaintainStateDescription");
+			if(temp.equals("完成")||temp.equals("已列入计划")){
+				viewHolder.righttop.setText("等待派发");
+			}else {
+				viewHolder.righttop.setText(map.get("MaintainStateDescription"));
+			}
 			if(map.get("PicURL").equals("")){
 				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
 			}else {
@@ -311,6 +319,8 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 				e.printStackTrace();
 			} catch (IOException e) {
 				data = null;
+				e.printStackTrace();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return data;

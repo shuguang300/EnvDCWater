@@ -19,24 +19,23 @@
         android:layout_toRightOf="@id/item_upkeepsend_pic" >
 
         <TextView
+            android:id="@+id/item_upkeepsend_righttop"
+            style="@style/ItemLayout"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/lightgray"
+            android:textSize="@dimen/fontsize_normal" />
+
+        <TextView
             android:id="@+id/item_upkeepsend_lefttop"
             style="@style/ItemLayout"
             android:layout_alignParentLeft="true"
             android:textSize="@dimen/fontsize_large" />
 
         <TextView
-            android:id="@+id/item_upkeepsend_righttop"
-            style="@style/ItemLayout"
-            android:layout_alignParentRight="true" 
-            android:textColor="@color/lightgray"
-            android:textSize="@dimen/fontsize_normal"/>
-
-        <TextView
             android:id="@+id/item_upkeepsend_leftbottom"
             style="@style/ItemLayout"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/item_upkeepsend_lefttop"
-            android:layout_toLeftOf="@id/item_upkeepsend_righttop"
             android:textColor="@color/lightgray"
             android:textSize="@dimen/fontsize_normal" />
     </RelativeLayout>

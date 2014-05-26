@@ -439,7 +439,12 @@ public class EnumList {
 		/**
 		 * 回单待审核
 		 */
-		WAITFORAPPROVE(5,"回单待审核");
+		WAITFORAPPROVE(5,"回单待审核"),
+		
+		/**
+		 * 已填写待上报
+		 */
+		WAITFORREPORT(6,"已填写待上报");
 		
 		/**
 		 * 已列入计划
@@ -461,6 +466,10 @@ public class EnumList {
 		 * 回单待审核
 		 */
 		public static final int STATE_WAITFORAPPROVE_INT = 5;
+		/**
+		 * 已填写待上报
+		 */
+		public static final int STATE_WAITFORREPORT_INT = 6;
 		
 		private int mCode;
 		private String mName;
@@ -490,6 +499,8 @@ public class EnumList {
 				return UpkeepHistoryPlanState.DONE;
 			case STATE_WAITFORAPPROVE_INT:
 				return UpkeepHistoryPlanState.WAITFORAPPROVE;
+			case STATE_WAITFORREPORT_INT:
+				return UpkeepHistoryPlanState.WAITFORREPORT;
 			}
 			return null;
 		}

@@ -14,7 +14,6 @@ import com.env.dcwater.component.ThreadPool.UpkeepTaskUpdate;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.SystemMethod;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,8 +26,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -113,13 +110,6 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 			approveGroup.setVisibility(View.GONE);
 			submit.setVisibility(View.GONE);
 		}
-		
-		tvApproveSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				tvApproveSwitch.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-			}
-		});
 		
 		setViewData();
 	}

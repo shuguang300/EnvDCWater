@@ -125,7 +125,7 @@
 
         <Button
             style="@style/RedButtonStyle"
-            android:id="@+id/view_repair_submit"
+            android:id="@+id/activity_repairmanageitem_submit"
             android:layout_width="match_parent" />
         
     </LinearLayout>

@@ -109,12 +109,24 @@ public class LogicMethod {
 		try{
 			hour = Integer.parseInt(hours);
 			if(hour<24){
-				result = hours+"小时";
+				result = hour+"小时";
 			}else {
 				result = (hour/24)+"天"+(hour%24==0?"":hour%24+"小时");
 			}
 		}catch(Exception e){
 			hour = 0;
+		}
+		return result;
+	}
+	
+	public static String getMinDescrible(int mins){
+		String result ="";
+		if(mins>=0&&mins<60){
+			result = mins + "分钟";
+		}else if(mins>=60&&mins<24*60){
+			result = (mins/60)+"小时"+(mins%60==0?"":mins%60+"分钟");
+		}else {
+			result = (mins/(60*24))+"天";
 		}
 		return result;
 	}

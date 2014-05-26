@@ -59,8 +59,8 @@
                 <Switch
                     android:id="@+id/view_repair_ddopinion_verifyresult"
                     style="@style/ItemValueStyle"
-                    android:textOff="审核未通过"
-                    android:textOn="审核通过" />
+                    android:textOff="未通过"
+                    android:textOn="通过" />
             </TableRow>
 
             <TextView style="@style/ItemDivider" />

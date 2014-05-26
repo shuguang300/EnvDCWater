@@ -89,12 +89,14 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 			getServerConsList();
 		}else {
 			consDataArrayList = SystemParams.getInstance().getConstructionList();
+			constructionAdapter.notifyDataSetChanged();
 		}
 		
 		if(SystemParams.getInstance().getMachineList()==null){
 			getServerDeviceList("",selectCons);
 		}else {
 			deviceDataArrayList = SystemParams.getInstance().getMachineList();
+			deviceAdapter.notifyDataSetChanged();
 		}
 		
 		
@@ -248,7 +250,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		}
 		
 		@Override
-		public Object getItem(int position) {
+		public HashMap<String, String> getItem(int position) {
 			return deviceDataArrayList.get(position);
 		}
 		
@@ -259,11 +261,8 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			if(convertView==null){
-				convertView = LayoutInflater.from(DeviceSelectActivity.this).inflate(R.layout.item_devicelist, null);
-			}
 			DeviceViewHolder deviceViewHolder ;
-			HashMap<String, String> map = deviceDataArrayList.get(position);
+			HashMap<String, String> map = getItem(position);
 			if(convertView ==null){
 				deviceViewHolder = new DeviceViewHolder();
 				convertView = LayoutInflater.from(DeviceSelectActivity.this).inflate(R.layout.item_devicelist, null);

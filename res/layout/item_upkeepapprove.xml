@@ -17,13 +17,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/layout_margin"
         android:layout_toRightOf="@id/item_upkeepapprove_pic" >
-
-        <TextView
-            android:id="@+id/item_upkeepapprove_lefttop"
-            style="@style/ItemLayout"
-            android:layout_alignParentLeft="true"
-            android:textSize="@dimen/fontsize_large" />
-
+        
         <TextView
             android:id="@+id/item_upkeepapprove_righttop"
             style="@style/ItemLayout"
@@ -32,11 +26,16 @@
             android:textSize="@dimen/fontsize_normal"/>
 
         <TextView
+            android:id="@+id/item_upkeepapprove_lefttop"
+            style="@style/ItemLayout"
+            android:layout_alignParentLeft="true"
+            android:textSize="@dimen/fontsize_large" />
+
+        <TextView
             android:id="@+id/item_upkeepapprove_leftbottom"
             style="@style/ItemLayout"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/item_upkeepapprove_lefttop"
-            android:layout_toLeftOf="@id/item_upkeepapprove_righttop"
             android:textColor="@color/lightgray"
             android:textSize="@dimen/fontsize_normal" />
     </RelativeLayout>

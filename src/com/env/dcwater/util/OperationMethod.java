@@ -675,7 +675,6 @@ public class OperationMethod {
 			map.put("DeviceSmallClassID", LogicMethod.getRightString(device.getString("DeviceSmallClassID").toString()));
 			map.put("DeviceOperatingParameterName", LogicMethod.getRightString(device.getString("DeviceOperatingParameterName").toString()));
 			map.put("DeviceOperatingParameterValue", LogicMethod.getRightString(device.getString("DeviceOperatingParameterValue").toString()));
-			map.put("DeviceID", LogicMethod.getRightString(device.getString("DeviceID").toString()));
 			data.add(map);
 		}
 		return data;
@@ -1115,7 +1114,7 @@ public class OperationMethod {
 	 * @return
 	 * @throws JSONException 
 	 */
-	public static ArrayList<HashMap<String, String>> parseUpkeepSendDataList(JSONObject jsonObject, boolean type,String consName,String stateName) throws JSONException{
+	public static ArrayList<HashMap<String, String>> parseUpkeepSendDataList(JSONObject jsonObject, boolean type,String consName,String stateName) throws JSONException,Exception{
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
 		JSONObject json1 = new JSONObject(jsonObject.getString("d"));
 		JSONArray jsonArray = null;
@@ -1178,6 +1177,7 @@ public class OperationMethod {
 				map.put("DeviceName", LogicMethod.getRightString(json2.get("DeviceName").toString()));
 				map.put("InstallPosition", LogicMethod.getRightString(json2.get("InstallPosition").toString()));
 				map.put("StructureID", LogicMethod.getRightString(json2.get("StructureID").toString()));
+				map.put("StructureName", LogicMethod.getRightString(json2.get("StructureName").toString()));
 				map.put("PicURL", LogicMethod.getRightString(json2.get("PicURL").toString()));
 				data.add(map);
 			}
@@ -1515,21 +1515,23 @@ public class OperationMethod {
 	public static String getUpkeepSendContent(HashMap<String, String> map){
 		StringBuilder sb = new StringBuilder();
 		int state = Integer.parseInt(map.get("MaintainState"));
-//		sb.append("设备的").append(map.get("MaintainPosition")).append("下次保养时间是")
-//		.append(map.get("Maintaintimenext")).append("，保养内容：").append(map.get("MaintainSpecification"));
+		sb.append("设备的").append(map.get("MaintainPosition")).append("保养时间是")
+		.append(map.get("Maintaintimenext")).append("，");
 		if(state == EnumList.UpkeepHistoryPlanState.STATE_DONE_INT||state == EnumList.UpkeepHistoryPlanState.STATE_HASBEENPLAN_INT){
-			int hours =  Integer.parseInt(map.get("dataToday"));
-			if(hours>0){
-				
-			}else if (hours==0) {
-				
-			}else {
+			try {
+				int min =  Integer.parseInt(map.get("dataToday"));
+				if(min<0){
+					sb.append("该次保养时间已达到").append(LogicMethod.getMinDescrible(-min)).append("，请派发");
+				}else if (min>=0) {
+					sb.append("距离保养开始还有").append(LogicMethod.getMinDescrible(min));
+				}
+			} catch (Exception e) {
 				
 			}
 		}else {
-			
+			sb.append("当前正在保养中。");
 		}
-		//dataToday
+		sb.append("，保养内容：").append(map.get("MaintainSpecification")).append("。");
 		return sb.toString();
 	}
 	/**
