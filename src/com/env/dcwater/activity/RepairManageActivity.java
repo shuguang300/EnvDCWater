@@ -145,7 +145,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private ArrayList<HashMap<String, String>> mData;
 	private Intent sendedIntent;
 	private GetServerTaskData getServerTaskData;
-	private boolean isFilter = true,actionChooseIsShow = false;;
+	private boolean isFilter = false,actionChooseIsShow = false;;
 	private ProgressDialog mProgressDialog;
 	private int userPositionID,dpi;
 	private String [] dateFilters,nfcCardAction = {"查看设备信息","设备故障上报"};
@@ -404,9 +404,8 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		menuMessage = (TextView)menu.getItem(2).getActionView();
 		menuMessage.setTextColor(getResources().getColor(R.color.white));
 //		menuMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.small));
-		if(userPositionID == EnumList.UserRole.USERROLEEQUIPMENTOPERATION||userPositionID==EnumList.UserRole.USERROLEPRODUCTIONOPERATION){
+		if(userPositionID == EnumList.UserRole.USERROLEREPAIRMAN||userPositionID==EnumList.UserRole.USERROLEPRODUCTIONOPERATION){
 			menu.getItem(0).setVisible(true);
-			menu.findItem(R.id.menu_repairmanage_filter).setVisible(false);
 		}else {
 			menu.getItem(0).setVisible(false);
 		}
@@ -533,6 +532,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		TextView righttop = null;
 		TextView leftbottom = null;
 		ImageView pic = null;
+		ImageView arrow = null;
 	}
 	
 	private class RepairManageItemAdapter extends BaseAdapter{
@@ -559,6 +559,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_repairmanage_righttop);
 				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_repairmanage_leftbottom);
 				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_repairmanage_pic);
+				viewHolder.arrow = (ImageView)convertView.findViewById(R.id.item_repairmanage_rightbottom);
 				convertView.setTag(viewHolder);
 			}else {
 				viewHolder = (ViewHolder)convertView.getTag();
@@ -566,6 +567,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("InstallPosition")+")");
 			viewHolder.leftbottom.setText(OperationMethod.getRepairTaskContent(map));
 			viewHolder.righttop.setText(map.get("StateDescription"));
+			viewHolder.arrow.setVisibility(map.get("CanUpdate").equalsIgnoreCase("true")?View.VISIBLE:View.GONE);
 			if(map.get("PicURL").equals("")){
 				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
 			}else {

@@ -243,6 +243,7 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 		TextView righttop = null;
 		TextView leftbottom = null;
 		ImageView pic = null;
+		ImageView arrow = null;
 	}
 	
 	/**
@@ -277,6 +278,7 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_upkeepreport_righttop);
 				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_upkeepreport_leftbottom);
 				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_upkeepreport_pic);
+				viewHolder.arrow = (ImageView)convertView.findViewById(R.id.item_upkeepreport_rightbottom);
 				convertView.setTag(viewHolder);
 			}else {
 				viewHolder = (ViewHolder)convertView.getTag();
@@ -284,6 +286,7 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
 			viewHolder.leftbottom.setText(OperationMethod.getUpkeepReportContent(map));
 			viewHolder.righttop.setText(map.get("StateDescription"));
+			viewHolder.arrow.setVisibility(map.get("CanUpdate").equalsIgnoreCase("true")?View.VISIBLE:View.GONE);
 			if(map.get("PicURL").equals("")){
 				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
 			}else {

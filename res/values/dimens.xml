@@ -14,6 +14,8 @@
     <dimen name="ic_activity_logo">48dp</dimen>
     <!-- listview的布局中，图片的大小 -->
     <dimen name="ic_adapter_pic">60dp</dimen>
+    <!-- listview的布局中，右箭头的大小 -->
+    <dimen name="ic_adapter_arrow">32dp</dimen>
     <!-- 用户头像 图片的大小 -->
     <dimen name="ic_user_pic">60dp</dimen>
     <!-- 细边框 -->

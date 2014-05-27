@@ -31,13 +31,27 @@
             android:textColor="@color/lightgray"
             android:textSize="@dimen/fontsize_normal" />
 
+        
+        <ImageView 
+            android:id="@+id/item_repairmanage_rightbottom"
+            android:layout_width="@dimen/ic_adapter_arrow"
+            android:layout_height="@dimen/ic_adapter_arrow"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/item_repairmanage_righttop"
+            android:src="@drawable/ic_pic_arrowright"/>
+        
+        
         <TextView
             android:id="@+id/item_repairmanage_leftbottom"
             style="@style/ItemLayout"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/item_repairmanage_lefttop"
+            android:layout_toLeftOf="@id/item_repairmanage_rightbottom"
             android:textColor="@color/lightgray"
             android:textSize="@dimen/fontsize_normal" />
+        
+         
+        
     </RelativeLayout>
 
 </RelativeLayout>

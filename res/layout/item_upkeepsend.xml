@@ -30,11 +30,20 @@
             style="@style/ItemLayout"
             android:layout_alignParentLeft="true"
             android:textSize="@dimen/fontsize_large" />
+        
+        <ImageView 
+            android:id="@+id/item_upkeepsend_rightbottom"
+            android:layout_width="@dimen/ic_adapter_arrow"
+            android:layout_height="@dimen/ic_adapter_arrow"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/item_upkeepsend_righttop"
+            android:src="@drawable/ic_pic_arrowright"/>
 
         <TextView
             android:id="@+id/item_upkeepsend_leftbottom"
             style="@style/ItemLayout"
             android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/item_upkeepsend_rightbottom"
             android:layout_below="@id/item_upkeepsend_lefttop"
             android:textColor="@color/lightgray"
             android:textSize="@dimen/fontsize_normal" />

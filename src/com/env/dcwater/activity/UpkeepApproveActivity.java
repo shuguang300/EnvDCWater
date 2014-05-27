@@ -239,6 +239,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 		TextView righttop = null;
 		TextView leftbottom = null;
 		ImageView pic = null;
+		ImageView arrow = null;
 	}
 	
 	private class UpkeepApproveItemAdapter extends BaseAdapter{
@@ -268,6 +269,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_upkeepapprove_righttop);
 				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_upkeepapprove_leftbottom);
 				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_upkeepapprove_pic);
+				viewHolder.arrow = (ImageView)convertView.findViewById(R.id.item_upkeepapprove_rightbottom);
 				convertView.setTag(viewHolder);
 			}else {
 				viewHolder = (ViewHolder)convertView.getTag();
@@ -275,6 +277,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
 			viewHolder.leftbottom.setText(OperationMethod.getUpkeepApproveContent(map));
 			viewHolder.righttop.setText(map.get("StateDescription"));
+			viewHolder.arrow.setVisibility(map.get("CanUpdate").equalsIgnoreCase("true")?View.VISIBLE:View.GONE);
 			if(map.get("PicURL").equals("")){
 				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
 			}else {

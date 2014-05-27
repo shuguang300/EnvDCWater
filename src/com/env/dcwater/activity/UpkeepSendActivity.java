@@ -219,6 +219,7 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 		TextView righttop = null;
 		TextView leftbottom = null;
 		ImageView pic = null;
+		ImageView arrow = null;
 	}
 	
 	private class UpkeepSendItemAdapter extends BaseAdapter{
@@ -245,12 +246,14 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_upkeepsend_righttop);
 				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_upkeepsend_leftbottom);
 				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_upkeepsend_pic);
+				viewHolder.arrow = (ImageView)convertView.findViewById(R.id.item_upkeepsend_rightbottom);
 				convertView.setTag(viewHolder);
 			}else {
 				viewHolder = (ViewHolder)convertView.getTag();
 			}
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
 			viewHolder.leftbottom.setText(OperationMethod.getUpkeepSendContent(map));
+			viewHolder.arrow.setVisibility(map.get("CanUpdate").equalsIgnoreCase("true")?View.VISIBLE:View.GONE);
 			String temp = map.get("MaintainStateDescription");
 			if(temp.equals("完成")||temp.equals("已列入计划")){
 				viewHolder.righttop.setText("等待派发");

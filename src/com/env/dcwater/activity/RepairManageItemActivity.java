@@ -1083,7 +1083,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					param.put("RepairTaskID","");
 					JSONObject repairDataString = new JSONObject();
 					int postionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
-					if(postionID==EnumList.UserRole.PRODUCTIONOPERATION.getState()){
+					if(postionID==EnumList.UserRole.REPAIRMAN.getState()){
 						repairDataString.put("RepairTaskType", EnumList.RepairTaskType.PRODUCTIONSECTION.getType());
 					}else if (postionID==EnumList.UserRole.EQUIPMENTOPERATION.getState()) {
 						repairDataString.put("RepairTaskType", EnumList.RepairTaskType.EQUIPMENTSECTION.getType());
