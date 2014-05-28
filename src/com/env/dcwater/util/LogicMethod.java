@@ -86,6 +86,7 @@ public class LogicMethod {
 	public static String getTimeSpan(Date date1,Date date2){
 		long timespan = (date2.getTime()-date1.getTime())/3600000;
 		String result = "";
+		timespan = Math.abs(timespan);
 		if(timespan<1&&timespan>=0){
 			result = ((date2.getTime()-date1.getTime())/60000) +"分钟";
 		}else if (timespan>=1&&timespan<24) {
@@ -119,7 +120,7 @@ public class LogicMethod {
 		return result;
 	}
 	
-	public static String getMinDescrible(int mins){
+	public static String getMinsDescrible(int mins){
 		String result ="";
 		if(mins>=0&&mins<60){
 			result = mins + "分钟";

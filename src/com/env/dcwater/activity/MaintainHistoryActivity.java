@@ -22,17 +22,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.component.ThreadPool.GetDevicePic;
 import com.env.dcwater.fragment.DataFilterView;
+import com.env.dcwater.fragment.ListviewItemAdapter;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
@@ -54,7 +53,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	private ProgressDialog mProgressDialog;
 	private GetServerTaskHistoryData getServerTaskHistoryData;
 	private ArrayList<HashMap<String, String>> mHistoryArrayList; 
-	private MaintainHistoryItemAdapter mAdapter;
+	private MaintainHistoryAdapter mAdapter;
 	private Intent receivedIntent;
 	private String receivedAction;
 	private HashMap<String, String> receivedData;
@@ -101,7 +100,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	 * 初始化控件
 	 */
 	private void iniView(){
-		mAdapter = new MaintainHistoryItemAdapter();
+		mAdapter = new MaintainHistoryAdapter(mHistoryArrayList);
 		mHistoryList = (PullToRefreshView)findViewById(R.id.activity_maintainhistory_list);
 		mHistoryList.setAdapter(mAdapter);
 		mHistoryList.setOnItemClickListener(this);
@@ -312,44 +311,27 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		getServerHistoryData();
 	}
 	
-	private class ViewHolder {
-		TextView lefttop = null;
-		TextView righttop = null;
-		TextView leftbottom = null;
-		ImageView pic = null;
-	}
-	
-	/**
-	 * 维修历史的自定义adapter
-	 * @author sk
-	 */
-	private class MaintainHistoryItemAdapter extends BaseAdapter{
-		@Override
-		public int getCount() {
-			return mHistoryArrayList.size();
+	private class MaintainHistoryAdapter extends ListviewItemAdapter{
+
+		public MaintainHistoryAdapter(ArrayList<HashMap<String, String>> data) {
+			super(data);
 		}
-		@Override
-		public HashMap<String, String> getItem(int position) {
-			return mHistoryArrayList.get(position);
-		}
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
+
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			HashMap<String, String> map = getItem(position);
+			final HashMap<String, String> map = getItem(position);
 			ViewHolder viewHolder ;
-			if(convertView == null){
+			if (convertView == null) {
 				viewHolder = new ViewHolder();
-				convertView = LayoutInflater.from(MaintainHistoryActivity.this).inflate(R.layout.item_maintainhistory, null);
-				viewHolder.lefttop = (TextView)convertView.findViewById(R.id.item_maintainhistory_lefttop);
-				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_maintainhistory_righttop);
-				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_maintainhistory_leftbottom);
-				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_maintainhistory_pic);
+				convertView = LayoutInflater.from(MaintainHistoryActivity.this).inflate(R.layout.item_listview, null);
+				viewHolder.lefttop = (TextView) convertView.findViewById(R.id.item_listview_lefttop);
+				viewHolder.righttop = (TextView) convertView.findViewById(R.id.item_listview_righttop);
+				viewHolder.leftbottom = (TextView) convertView.findViewById(R.id.item_listview_leftbottom);
+				viewHolder.pic = (ImageView) convertView.findViewById(R.id.item_listview_pic);
+				viewHolder.arrow = (ImageView) convertView.findViewById(R.id.item_listview_rightbottom);
 				convertView.setTag(viewHolder);
-			}else {
-				viewHolder = (ViewHolder)convertView.getTag();
+			} else {
+				viewHolder = (ViewHolder) convertView.getTag();
 			}
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("InstallPosition")+")");
 			viewHolder.leftbottom.setText(OperationMethod.getMaintainHistoryContent(map));
@@ -360,9 +342,17 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 				GetDevicePic getDevicePic = new GetDevicePic(viewHolder.pic,dpi,MaintainHistoryActivity.this);
 				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
 			}
+			viewHolder.pic.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					SystemMethod.startBigImageActivity(MaintainHistoryActivity.this, map.get("PicURL"));
+				}
+			});
 			return convertView;
 		}
+		
 	}
+	
 	
 	
 	/**
@@ -417,7 +407,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 				int count = 0;
 				if(result!=null){
 					mHistoryArrayList = result;
-					mAdapter.notifyDataSetChanged();
+					mAdapter.datasetNotification(mHistoryArrayList);
 					count = mHistoryArrayList.size();
 				}
 				hideProgressDialog();

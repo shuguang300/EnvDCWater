@@ -121,6 +121,7 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	private void entranceMainActivity(){
 		userRightIntent = new Intent(LoginActivity.this, MainActivity.class);
 		startActivity(userRightIntent);
+		overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out); 
 		finish();
 	}
 	

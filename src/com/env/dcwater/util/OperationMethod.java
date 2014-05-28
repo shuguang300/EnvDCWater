@@ -1521,9 +1521,9 @@ public class OperationMethod {
 			try {
 				int min =  Integer.parseInt(map.get("dataToday"));
 				if(min<0){
-					sb.append("该次保养时间已达到").append(LogicMethod.getMinDescrible(-min)).append("，请派发");
+					sb.append("该次保养时间已达到").append(LogicMethod.getMinsDescrible(-min)).append("，请派发。");
 				}else if (min>=0) {
-					sb.append("距离保养开始还有").append(LogicMethod.getMinDescrible(min));
+					sb.append("距离保养开始还有").append(LogicMethod.getMinsDescrible(min)).append("，");
 				}
 			} catch (Exception e) {
 				
@@ -1531,7 +1531,7 @@ public class OperationMethod {
 		}else {
 			sb.append("当前正在保养中。");
 		}
-		sb.append("，保养内容：").append(map.get("MaintainSpecification")).append("。");
+		sb.append("保养内容：").append(map.get("MaintainSpecification")).append("。");
 		return sb.toString();
 	}
 	/**
@@ -1555,5 +1555,21 @@ public class OperationMethod {
 		sb.append("设备的").append(map.get("MaintainPosition")).append("需在")
 		.append(map.get("NeedComplete")).append("前完成保养。");
 		return sb.toString();
+	}
+	
+	public static boolean isDataABeforeDataB(String dataA,String DataB){
+		boolean temp ;
+		try {
+			Date a = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(dataA);
+			Date b = new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(DataB);
+			if(a.before(b)){
+				temp = true;
+			}else {
+				temp = false;
+			}
+		} catch (Exception e) {
+			temp = false;
+		}
+		return temp;
 	}
 }

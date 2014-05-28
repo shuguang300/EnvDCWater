@@ -18,7 +18,9 @@ public class DCWaterApp extends Application{
 	
 	public static final String ROOT_PATH_STRING = "EnvDCWater";
 	
-	public static final String FILES_PATH_STRING = "files";
+	public static final String FILES_PATH_STRING = "Files";
+	
+	public static final String PICTURE_PATH_STRING = "Picture";
 	
 	public static final String TAG_STRING = "DCWaterApp";
 	

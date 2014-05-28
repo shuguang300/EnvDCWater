@@ -25,8 +25,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -34,6 +32,7 @@ import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.component.ThreadPool.GetDevicePic;
 import com.env.dcwater.component.ThreadPool.GetServerConsData;
 import com.env.dcwater.fragment.DataFilterView;
+import com.env.dcwater.fragment.ListviewItemAdapter;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
@@ -47,7 +46,7 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 	private DataFilterView dataFilterView;
 	private GetServerConsData getServerConsData;
 	private ArrayList<HashMap<String, String>> data;
-	private UpkeepSendItemAdapter adapter;
+	private UpkeepSendAdapter adapter;
 	private GetUpkeepSendData getUpkeepSendData;
 	private ProgressDialog mProgressDialog;
 	private boolean filter = true;
@@ -65,7 +64,7 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 	private void iniData(){
 		dpi = SystemMethod.getDpi(getWindowManager());
 		data = new ArrayList<HashMap<String,String>>();
-		adapter = new UpkeepSendItemAdapter();
+		adapter = new UpkeepSendAdapter(data);
 	}	
 	
 	private void iniActionBar() {
@@ -214,42 +213,33 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 		return super.onOptionsItemSelected(item);
 	}
 	
-	private class ViewHolder {
-		TextView lefttop = null;
-		TextView righttop = null;
-		TextView leftbottom = null;
-		ImageView pic = null;
-		ImageView arrow = null;
-	}
-	
-	private class UpkeepSendItemAdapter extends BaseAdapter{
-		@Override
-		public int getCount() {
-			return data.size();
+	private class UpkeepSendAdapter extends ListviewItemAdapter{
+		
+		public UpkeepSendAdapter(ArrayList<HashMap<String, String>> data) {
+			super(data);
 		}
-		@Override
-		public HashMap<String, String> getItem(int position) {
-			return data.get(position);
-		}
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
+
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			HashMap<String, String> map = getItem(position);
-			ViewHolder viewHolder ;
-			if(convertView == null){
+			final HashMap<String, String> map = getItem(position);
+			ViewHolder viewHolder;
+			if (convertView == null) {
 				viewHolder = new ViewHolder();
-				convertView = LayoutInflater.from(UpkeepSendActivity.this).inflate(R.layout.item_upkeepsend, null);
-				viewHolder.lefttop = (TextView)convertView.findViewById(R.id.item_upkeepsend_lefttop);
-				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_upkeepsend_righttop);
-				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_upkeepsend_leftbottom);
-				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_upkeepsend_pic);
-				viewHolder.arrow = (ImageView)convertView.findViewById(R.id.item_upkeepsend_rightbottom);
+				convertView = LayoutInflater.from(UpkeepSendActivity.this).inflate(R.layout.item_listview, null);
+				viewHolder.lefttop = (TextView) convertView.findViewById(R.id.item_listview_lefttop);
+				viewHolder.righttop = (TextView) convertView.findViewById(R.id.item_listview_righttop);
+				viewHolder.leftbottom = (TextView) convertView.findViewById(R.id.item_listview_leftbottom);
+				viewHolder.pic = (ImageView) convertView.findViewById(R.id.item_listview_pic);
+				viewHolder.arrow = (ImageView) convertView.findViewById(R.id.item_listview_rightbottom);
 				convertView.setTag(viewHolder);
-			}else {
-				viewHolder = (ViewHolder)convertView.getTag();
+			} else {
+				viewHolder = (ViewHolder) convertView.getTag();
+			}
+			if (map.get("PicURL").equals("")) {
+				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
+			} else {
+				GetDevicePic getDevicePic = new GetDevicePic(viewHolder.pic, dpi, UpkeepSendActivity.this);
+				getDevicePic.execute(SystemMethod.getLocalTempPath(), map.get("PicURL").toString(), DataCenterHelper.PIC_URL_STRING + "/" + map.get("PicURL").toString());
 			}
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
 			viewHolder.leftbottom.setText(OperationMethod.getUpkeepSendContent(map));
@@ -260,12 +250,12 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 			}else {
 				viewHolder.righttop.setText(map.get("MaintainStateDescription"));
 			}
-			if(map.get("PicURL").equals("")){
-				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
-			}else {
-				GetDevicePic getDevicePic = new GetDevicePic(viewHolder.pic,dpi,UpkeepSendActivity.this);
-				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
-			}
+			viewHolder.pic.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					SystemMethod.startBigImageActivity(UpkeepSendActivity.this, map.get("PicURL"));
+				}
+			});
 			return convertView;
 		}
 		
@@ -341,7 +331,7 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 			if(mProgressDialog!=null&&mProgressDialog.isShowing()){
 				if(result!=null){
 					data = result;
-					adapter.notifyDataSetChanged();
+					adapter.datasetNotification(data);
 				}
 				hideProgressDialog();
 				dataListView.stopRefresh();

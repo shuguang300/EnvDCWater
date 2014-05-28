@@ -360,6 +360,19 @@
             </intent-filter>
         </activity>
         
+        <!-- 显示大图-->
+        <activity
+            android:name="com.env.dcwater.activity.ShowBigImageActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
+            <intent-filter >
+                <action android:name="com.env.dcwater.activity.ShowBigImageActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
     </application>
 
 </manifest>

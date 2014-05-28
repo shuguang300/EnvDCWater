@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/layout_margin" >
+
+    <ImageView
+        android:id="@+id/item_listview_pic"
+        android:layout_width="@dimen/ic_adapter_pic"
+        android:layout_height="@dimen/ic_adapter_pic"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/layout_margin"
+        android:layout_toRightOf="@id/item_listview_pic" >
+
+        <TextView
+            android:id="@+id/item_listview_righttop"
+            style="@style/ItemLayout"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/lightgray"
+            android:textSize="@dimen/fontsize_normal" />
+
+        <TextView
+            android:id="@+id/item_listview_lefttop"
+            style="@style/ItemLayout"
+            android:layout_alignParentLeft="true"
+            android:textSize="@dimen/fontsize_large" />
+        
+        <ImageView 
+            android:id="@+id/item_listview_rightbottom"
+            android:layout_width="@dimen/ic_adapter_arrow"
+            android:layout_height="@dimen/ic_adapter_arrow"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            android:layout_below="@id/item_listview_righttop"
+            android:src="@drawable/ic_pic_arrowright"/>
+
+        <TextView
+            android:id="@+id/item_listview_leftbottom"
+            style="@style/ItemLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/item_listview_rightbottom"
+            android:layout_below="@id/item_listview_lefttop"
+            android:textColor="@color/lightgray"
+            android:textSize="@dimen/fontsize_normal" />
+    </RelativeLayout>
+
+</RelativeLayout>

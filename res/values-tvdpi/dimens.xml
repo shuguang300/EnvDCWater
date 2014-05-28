@@ -11,7 +11,7 @@
     <!-- 按钮的高度 -->
     <dimen name="buttonheight">48dp</dimen>
     <!-- 布局之间的间隔 -->
-    <dimen name="layout_margin">12dp</dimen>
+    <dimen name="layout_margin">10dp</dimen>
     <!-- 布局之间的间隔 (小)-->
-    <dimen name="layout_margin_short">10dp</dimen>
+    <dimen name="layout_margin_short">8dp</dimen>
 </resources>

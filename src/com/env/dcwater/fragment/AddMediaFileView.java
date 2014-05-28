@@ -1,10 +1,8 @@
 package com.env.dcwater.fragment;
 import java.io.File;
 import java.util.Calendar;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.DCWaterApp;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -55,12 +53,9 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 	 * 初始化控件
 	 */
 	private void iniView(){
-		
-		
 		setWidth(LayoutParams.MATCH_PARENT);
 		setHeight(LayoutParams.WRAP_CONTENT);
 		setAnimationStyle(R.style.PopupwindowAnim);
-		
 		btVoice = (Button)mView.findViewById(R.id.view_addmediafile_voice);
 		btPhoto = (Button)mView.findViewById(R.id.view_addmediafile_photo);
 		btLocation = (Button)mView.findViewById(R.id.view_addmediafile_location);
@@ -73,11 +68,8 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 		btFile.setOnClickListener(this);
 		btVideo.setOnClickListener(this);
 		btLocation.setOnClickListener(this);
-		
 		setBackgroundDrawable(new ColorDrawable(Color.argb(50, 52, 53, 55)));
-
 		setOutsideTouchable(true);
-		
 		setContentView(mView);
 		iniPath();
 	}
@@ -87,7 +79,7 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 	 */
 	private void iniPath(){
 		String pathLevel1 = Environment.getExternalStorageDirectory().getAbsolutePath();
-		String pathLevel2 = pathLevel1+File.separator+DCWaterApp.ROOT_PATH_STRING+File.separator+"Picture";
+		String pathLevel2 = pathLevel1+File.separator+DCWaterApp.ROOT_PATH_STRING+File.separator+DCWaterApp.PICTURE_PATH_STRING;
 		File folder = new File(pathLevel2);
 		if(!folder.exists()){
 			folder.mkdirs();
@@ -132,5 +124,5 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 			break;
 		}
 	}
-	
+
 }

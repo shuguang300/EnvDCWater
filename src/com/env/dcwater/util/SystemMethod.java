@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import com.env.dcwater.activity.LoginActivity;
+import com.env.dcwater.activity.ShowBigImageActivity;
 import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.SystemParams;
 
@@ -220,6 +221,7 @@ public class SystemMethod {
 				editor.commit();
 				SystemParams.getInstance().setLoggedUserInfo(null);
 				context.startActivity(new Intent(LoginActivity.ACTION_STRING));
+				((Activity) context).overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out); 
 				((Activity) context).finish();
 			}
 		}).setNegativeButton("取消", new OnClickListener() {
@@ -239,6 +241,18 @@ public class SystemMethod {
 	public static void startGPSSettings(Context context){
 		Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 		((Activity)context).startActivityForResult(intent, 0);
+	}
+	
+	/**
+	 * 添加查看大图事件
+	 * @param context
+	 * @param fileName
+	 */
+	public static void startBigImageActivity(Context context,String fileName){
+		Intent intent = new Intent(ShowBigImageActivity.ACTION_STRING);
+		intent.putExtra("file", fileName);
+		((Activity) context).startActivity(intent);
+		((Activity) context).overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 	}
 	
 	

@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -30,6 +29,7 @@ import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.component.ThreadPool.GetDevicePic;
 import com.env.dcwater.fragment.DataFilterView;
+import com.env.dcwater.fragment.ListviewItemAdapter;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
@@ -45,7 +45,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	private ThreadPool.GetServerConsData getServerConsData;
 	private ActionBar mActionBar;
 	private PullToRefreshView mHistoryList;
-	private UpkeepHistoryItemAdapter mAdapter;
+	private UpkeepHistoryAdapter mAdapter;
 	private DrawerLayout mDrawerLayout;
 	private DataFilterView mDataFilterView;
 	private ArrayList<HashMap<String, String>> mData;
@@ -83,7 +83,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	 * 初始化界面的控件
 	 */
 	private void iniView(){
-		mAdapter = new UpkeepHistoryItemAdapter();
+		mAdapter = new UpkeepHistoryAdapter(mData);
 		mHistoryList = (PullToRefreshView)findViewById(R.id.activity_upkeephistory_list);
 		mHistoryList.setAdapter(mAdapter);
 		mHistoryList.setOnItemClickListener(this);
@@ -311,57 +311,47 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	}
 	
 	
-	private class ViewHolder {
-		TextView lefttop = null;
-		TextView righttop = null;
-		TextView leftbottom = null;
-		ImageView pic = null;
-	}
 	
 	/**
 	 * 保养记录的自定义adapter 
 	 * @author sk
 	 */
-	private class UpkeepHistoryItemAdapter extends BaseAdapter{
-		@Override
-		public int getCount() {
-			return mData.size();
-		}
+	private class UpkeepHistoryAdapter extends ListviewItemAdapter{
 
-		@Override
-		public HashMap<String, String> getItem(int position) {
-			return mData.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
+		public UpkeepHistoryAdapter(ArrayList<HashMap<String, String>> data) {
+			super(data);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			HashMap<String, String> map = getItem(position);
-			ViewHolder viewHolder ;
-			if(convertView == null){
+			final HashMap<String, String> map = getItem(position);
+			ViewHolder viewHolder;
+			if (convertView == null) {
 				viewHolder = new ViewHolder();
-				convertView = LayoutInflater.from(UpkeepHistoryActivity.this).inflate(R.layout.item_upkeephistory, null);
-				viewHolder.lefttop = (TextView)convertView.findViewById(R.id.item_upkeephistory_lefttop);
-				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_upkeephistory_righttop);
-				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_upkeephistory_leftbottom);
-				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_upkeephistory_pic);
+				convertView = LayoutInflater.from(UpkeepHistoryActivity.this).inflate(R.layout.item_listview, null);
+				viewHolder.lefttop = (TextView) convertView.findViewById(R.id.item_listview_lefttop);
+				viewHolder.righttop = (TextView) convertView.findViewById(R.id.item_listview_righttop);
+				viewHolder.leftbottom = (TextView) convertView.findViewById(R.id.item_listview_leftbottom);
+				viewHolder.pic = (ImageView) convertView.findViewById(R.id.item_listview_pic);
+				viewHolder.arrow = (ImageView) convertView.findViewById(R.id.item_listview_rightbottom);
 				convertView.setTag(viewHolder);
-			}else {
-				viewHolder = (ViewHolder)convertView.getTag();
+			} else {
+				viewHolder = (ViewHolder) convertView.getTag();
+			}
+			if (map.get("PicURL").equals("")) {
+				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
+			} else {
+				GetDevicePic getDevicePic = new GetDevicePic(viewHolder.pic, dpi, UpkeepHistoryActivity.this);
+				getDevicePic.execute(SystemMethod.getLocalTempPath(), map.get("PicURL").toString(), DataCenterHelper.PIC_URL_STRING + "/" + map.get("PicURL").toString());
 			}
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
 			viewHolder.leftbottom.setText(OperationMethod.getUpkeepHistoryContent(map));
-			viewHolder.righttop.setText("");
-			if(map.get("PicURL").equals("")){
-				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
-			}else {
-				GetDevicePic getDevicePic = new GetDevicePic(viewHolder.pic,dpi,UpkeepHistoryActivity.this);
-				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
-			}
+			viewHolder.pic.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					SystemMethod.startBigImageActivity(UpkeepHistoryActivity.this, map.get("PicURL"));
+				}
+			});
 			return convertView;
 		}
 	}
@@ -419,7 +409,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 				int count = 0;
 				if(result!=null){
 					mData = result;
-					mAdapter.notifyDataSetChanged();
+					mAdapter.datasetNotification(mData);
 					count = mData.size();
 				}
 				mHistoryList.stopRefresh();

@@ -20,10 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -31,6 +31,7 @@ import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.component.ThreadPool.GetDevicePic;
 import com.env.dcwater.component.ThreadPool.GetServerConsData;
 import com.env.dcwater.fragment.DataFilterView;
+import com.env.dcwater.fragment.ListviewItemAdapter;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
@@ -50,7 +51,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 	private GetServerConsData getServerConsData;
 	private ArrayList<HashMap<String, String>> data;
 	private ProgressDialog mProgressDialog;
-	private UpkeepApproveItemAdapter adapter;
+	private UpkeepApproveAdapter adapter;
 	private boolean filter = true;
 	private int dpi;
 	
@@ -66,7 +67,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 	private void iniData(){
 		dpi = SystemMethod.getDpi(getWindowManager());
 		data = new ArrayList<HashMap<String,String>>();
-		adapter = new UpkeepApproveItemAdapter();
+		adapter = new UpkeepApproveAdapter(data);
 	}
 	
 	private void iniActionBar(){
@@ -234,60 +235,50 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 		}
 	}
 	
-	private class ViewHolder {
-		TextView lefttop = null;
-		TextView righttop = null;
-		TextView leftbottom = null;
-		ImageView pic = null;
-		ImageView arrow = null;
-	}
 	
-	private class UpkeepApproveItemAdapter extends BaseAdapter{
-		@Override
-		public int getCount() {
-			return data.size();
-		}
+	private class UpkeepApproveAdapter extends ListviewItemAdapter{
 
-		@Override
-		public HashMap<String, String> getItem(int position) {
-			return data.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
+		public UpkeepApproveAdapter(ArrayList<HashMap<String, String>> data) {
+			super(data);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			HashMap<String, String> map = getItem(position);
-			ViewHolder viewHolder ;
-			if(convertView == null){
+			final HashMap<String, String> map = getItem(position);
+			ViewHolder viewHolder;
+			if (convertView == null) {
 				viewHolder = new ViewHolder();
-				convertView = LayoutInflater.from(UpkeepApproveActivity.this).inflate(R.layout.item_upkeepapprove, null);
-				viewHolder.lefttop = (TextView)convertView.findViewById(R.id.item_upkeepapprove_lefttop);
-				viewHolder.righttop = (TextView)convertView.findViewById(R.id.item_upkeepapprove_righttop);
-				viewHolder.leftbottom = (TextView)convertView.findViewById(R.id.item_upkeepapprove_leftbottom);
-				viewHolder.pic = (ImageView)convertView.findViewById(R.id.item_upkeepapprove_pic);
-				viewHolder.arrow = (ImageView)convertView.findViewById(R.id.item_upkeepapprove_rightbottom);
+				convertView = LayoutInflater.from(UpkeepApproveActivity.this).inflate(R.layout.item_listview, null);
+				viewHolder.lefttop = (TextView) convertView.findViewById(R.id.item_listview_lefttop);
+				viewHolder.righttop = (TextView) convertView.findViewById(R.id.item_listview_righttop);
+				viewHolder.leftbottom = (TextView) convertView.findViewById(R.id.item_listview_leftbottom);
+				viewHolder.pic = (ImageView) convertView.findViewById(R.id.item_listview_pic);
+				viewHolder.arrow = (ImageView) convertView.findViewById(R.id.item_listview_rightbottom);
 				convertView.setTag(viewHolder);
-			}else {
-				viewHolder = (ViewHolder)convertView.getTag();
+			} else {
+				viewHolder = (ViewHolder) convertView.getTag();
 			}
-			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
-			viewHolder.leftbottom.setText(OperationMethod.getUpkeepApproveContent(map));
-			viewHolder.righttop.setText(map.get("StateDescription"));
-			viewHolder.arrow.setVisibility(map.get("CanUpdate").equalsIgnoreCase("true")?View.VISIBLE:View.GONE);
 			if(map.get("PicURL").equals("")){
 				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
 			}else {
 				GetDevicePic getDevicePic = new GetDevicePic(viewHolder.pic,dpi,UpkeepApproveActivity.this);
 				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
 			}
+			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
+			viewHolder.leftbottom.setText(OperationMethod.getUpkeepApproveContent(map));
+			viewHolder.righttop.setText(map.get("StateDescription"));
+			viewHolder.arrow.setVisibility(map.get("CanUpdate").equalsIgnoreCase("true")?View.VISIBLE:View.GONE);
+			viewHolder.pic.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					SystemMethod.startBigImageActivity(UpkeepApproveActivity.this, map.get("PicURL"));
+				}
+			});
 			return convertView;
 		}
 		
 	}
+	
 	
 	private class GetUpkeepApproveData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>> {
 
@@ -331,7 +322,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 			if(mProgressDialog!=null&&mProgressDialog.isShowing()){
 				if(result!=null){
 					data = result;
-					adapter.notifyDataSetChanged();
+					adapter.datasetNotification(data);
 				}
 				hideProgressDialog();
 				dataListView.stopRefresh();

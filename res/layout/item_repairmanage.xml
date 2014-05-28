@@ -9,7 +9,9 @@
         android:layout_width="@dimen/ic_adapter_pic"
         android:layout_height="@dimen/ic_adapter_pic"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true" >
+    </ImageView>
+    
 
     <RelativeLayout
         android:layout_width="match_parent"
