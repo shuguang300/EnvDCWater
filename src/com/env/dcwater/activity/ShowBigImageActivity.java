@@ -22,21 +22,26 @@ public class ShowBigImageActivity extends NfcActivity{
 		setContentView(R.layout.activity_showbigimage);
 		imageView = (ImageView)findViewById(R.id.activity_showbigimage);
 		String fileName = getIntent().getExtras().getString("file");
-		File file ;
-		if(Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)){
-			StringBuilder sb = new StringBuilder();
-			sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator)
-			.append(DCWaterApp.ROOT_PATH_STRING).append(File.separator).append(DCWaterApp.CACHE_PATH_STRING)
-			.append(File.separator).append(fileName);
-			file = new File(sb.toString());
-			if(file.exists()){
-				imageView.setImageURI(Uri.fromFile(file));
+		if(fileName.equals("")){
+			imageView.setImageResource(R.drawable.ic_pic_default);
+		}else {
+			File file ;
+			if(Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)){
+				StringBuilder sb = new StringBuilder();
+				sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator)
+				.append(DCWaterApp.ROOT_PATH_STRING).append(File.separator).append(DCWaterApp.CACHE_PATH_STRING)
+				.append(File.separator).append(fileName);
+				file = new File(sb.toString());
+				if(file.exists()){
+					imageView.setImageURI(Uri.fromFile(file));
+				}else {
+					imageView.setImageResource(R.drawable.ic_pic_default);
+				}
 			}else {
 				imageView.setImageResource(R.drawable.ic_pic_default);
 			}
-		}else {
-			imageView.setImageResource(R.drawable.ic_pic_default);
 		}
+		
 		
 	}
 	

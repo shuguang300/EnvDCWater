@@ -73,7 +73,7 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 	private void iniActionBar(){
 		mActionBar = getActionBar();
 		SystemMethod.setActionBarHomeButton(true, mActionBar);
-		mActionBar.setTitle("填写工单");
+		mActionBar.setTitle("保养工单填写");
 	}
 	
 	private void iniView(){

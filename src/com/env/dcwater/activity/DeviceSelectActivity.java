@@ -262,7 +262,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			DeviceViewHolder deviceViewHolder ;
-			HashMap<String, String> map = getItem(position);
+			final HashMap<String, String> map = getItem(position);
 			if(convertView ==null){
 				deviceViewHolder = new DeviceViewHolder();
 				convertView = LayoutInflater.from(DeviceSelectActivity.this).inflate(R.layout.item_devicelist, null);
@@ -281,6 +281,12 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 				GetDevicePic getDevicePic = new GetDevicePic(deviceViewHolder.pic,dpi,DeviceSelectActivity.this);
 				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
 			}
+			deviceViewHolder.pic.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					SystemMethod.startBigImageActivity(DeviceSelectActivity.this, map.get("PicURL"));
+				}
+			});
 			return convertView;
 		}
 	}

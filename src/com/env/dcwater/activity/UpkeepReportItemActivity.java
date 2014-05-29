@@ -265,8 +265,8 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 			if(mUpdateConfirm==null){
 				mUpdateConfirm = new AlertDialog.Builder(UpkeepReportItemActivity.this);
 			}
-			mUpdateConfirm.setTitle("确认").setMessage("确认提交吗？");
-			mUpdateConfirm.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+			mUpdateConfirm.setTitle("保养工单提交").setMessage("确认提交填写的保养工单吗？");
+			mUpdateConfirm.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					try {

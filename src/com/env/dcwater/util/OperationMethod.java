@@ -1557,6 +1557,12 @@ public class OperationMethod {
 		return sb.toString();
 	}
 	
+	/**
+	 * 验证dataa时间否比datab提前
+	 * @param dataA
+	 * @param DataB
+	 * @return
+	 */
 	public static boolean isDataABeforeDataB(String dataA,String DataB){
 		boolean temp ;
 		try {

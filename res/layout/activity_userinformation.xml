@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/layout_margin"
-    tools:ignore="ContentDescription" >
+    android:padding="@dimen/layout_margin" >
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/layout_margin" >
+        style="@style/ItemLineStyle"
+        android:padding="@dimen/layout_margin" >
 
         <ImageView
             android:id="@+id/activity_userinfor_pic"
@@ -32,9 +29,8 @@
     <TextView style="@style/ItemDivider" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/layout_margin" >
+        style="@style/ItemLineStyle"
+        android:padding="@dimen/layout_margin" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,9 +53,8 @@
     <TextView style="@style/ItemDivider" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/layout_margin" >
+        style="@style/ItemLineStyle"
+        android:padding="@dimen/layout_margin" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -82,9 +77,8 @@
     <TextView style="@style/ItemDivider" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/layout_margin" >
+        style="@style/ItemLineStyle"
+        android:padding="@dimen/layout_margin" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -107,9 +101,8 @@
     <TextView style="@style/ItemDivider" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/layout_margin" >
+        style="@style/ItemLineStyle"
+        android:padding="@dimen/layout_margin" >
 
         <TextView
             android:layout_width="wrap_content"

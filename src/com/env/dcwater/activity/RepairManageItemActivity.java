@@ -6,9 +6,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
 import org.apache.http.client.ClientProtocolException;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -25,17 +28,22 @@ import android.view.View;
 import android.view.ViewStub;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.fragment.DateTimePickerView;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
+import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
 
 /**
@@ -48,24 +56,26 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	public static final String ACTION_STRING = "RepairManageItemActivity";
 	private ProgressDialog mProgressDialog;
 	private DateTimePickerView dateTimePickerView;
-	private AlertDialog.Builder mUpdateConfirm,mHandleContent;
+	private AlertDialog.Builder mUpdateConfirm,mHandleContent,stateListDialog;
 	private ActionBar mActionBar;
 	private HashMap<String, String> receivedData;
+	private String [] backStates;
 	private Intent receivedIntent;
 	private Date mFaultTime,mFinishTime;
 	private UpdateServerData updateServerData;
-	private int mRequestCode,taskState,taskType;
+	private int mRequestCode,taskState,taskType,selectState;
 	private TableLayout mGroupInfo,mGroupVerify;
 	private ViewStub viewStub;
 	private String mOtherStep="",mHandleStep="",methodName="",methodDesc="";
 	private String [] handleStepContent = {"尝试手动启动","关闭主电源","拍下急停按钮","悬挂警示标识牌","关闭故障设备工艺段进水"};
 	private boolean [] handleStepSelected = {false,false,false,false,false},tempStepSelected;
 	private TextView etName,etType,etSN,etPosition,etStartTime,etManufacture,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep,etSendTime,etSender,etTimeCost,etContent,etResult,etFinishTime,etThing,etMoney,etVerifyPeople,etEquipmentOpinion,etProductionOpinion,etPlantOpinion;
-	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trResult,trFinishTime,trThingCost,trMoneyCost,trProductionOpinion,trPlantOpinion;
-	private TextView EPtvMoney,EPtvVerifyPerson,EPtvDDOpinion,EPtvPDOpinion,EPtvPMOpinion,EPtvResult,EPtvFinishTime,EPtvThing,EPtvSendTime,EPtvSender,EPtvTime,EPtvContent;
-	private TableRow EPtrMoney,EPtrDDOpinion,EPtrPDOpinion,EPtrPMOpinion,EPtrResult,EPtrFinishTime,EPtrThing,EPtrTime,EPtrContent;
-	private Switch swVerifyResult,EPswVerify;
+	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trResult,trFinishTime,trThingCost,trMoneyCost;
+	private TextView EPtvMoney,EPtvVerifyPerson,EPtvDDOpinion,EPtvPDOpinion,EPtvPMOpinion,EPtvResult,EPtvFinishTime,EPtvThing,EPtvSendTime,EPtvSender,EPtvTime,EPtvContent,EPtvBackState;
+	private TableRow EPtrMoney,EPtrDDOpinion,EPtrPDOpinion,EPtrPMOpinion,EPtrResult,EPtrFinishTime,EPtrThing,EPtrTime,EPtrContent,EPtrBackState;
+	private Switch swVerifyResult,EPswVerify,swPMResult,EPswResult;
 	private Button confirmSubmit,inputSubmit;
+	private LinearLayout pmGroup,pdGroup;
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,6 +113,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					switch (positionID) {
 					case EnumList.UserRole.USERROLEPLANTER:
 						methodName = RepairManageActivity.METHOD_PMAPPROVE_STRING;
+						GetAllowStateListByPosition getAllowStateListByPosition = new GetAllowStateListByPosition();
+						getAllowStateListByPosition.execute("");
 						break;
 					case EnumList.UserRole.USERROLEEQUIPMENTOPERATION:
 					case EnumList.UserRole.USERROLEPRODUCTIONOPERATION:
@@ -252,16 +264,19 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		etMoney = (TextView) findViewById(R.id.activity_repairmanageitem_repairmoneycost);
 
 		swVerifyResult = (Switch) findViewById(R.id.activity_repairmanageitem_verifyresult);
-
+		swPMResult = (Switch)findViewById(R.id.activity_repairmanageitem_plantverify);
+		
 		etVerifyPeople = (TextView) findViewById(R.id.activity_repairmanageitem_verifypeople);
 
 		etEquipmentOpinion = (TextView) findViewById(R.id.activity_repairmanageitem_equipmentopinion);
 
 		etProductionOpinion = (TextView) findViewById(R.id.activity_repairmanageitem_productionopinion);
-		trProductionOpinion = (TableRow) findViewById(R.id.activity_repairmanageitem_productionopinion_tr);
 
-		trPlantOpinion = (TableRow) findViewById(R.id.activity_repairmanageitem_plantopinion_tr);
 		etPlantOpinion = (TextView) findViewById(R.id.activity_repairmanageitem_plantopinion);
+		
+		pmGroup = (LinearLayout)findViewById(R.id.activity_repairmanageitem_plantgroup);
+		
+		pdGroup = (LinearLayout)findViewById(R.id.activity_repairmanageitem_productiongroup);
 
 		if (methodName.equals(RepairManageActivity.METHOD_DETAIL_STRING) || methodName.equals(RepairManageActivity.METHOD_HISTORY_STRING)) {
 
@@ -316,6 +331,12 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				} else if (methodName.equals(RepairManageActivity.METHOD_PMAPPROVE_STRING)) {
 					viewStub.setLayoutResource(R.layout.view_repair_pmopinion);
 					viewStub.inflate();
+					
+					EPswResult = (Switch)findViewById(R.id.view_repair_pmopinion_pmverify);
+					
+					EPtrBackState = (TableRow)findViewById(R.id.view_repair_pmopinion_state_tr);
+					EPtrBackState.setOnClickListener(this);
+					EPtvBackState = (TextView)findViewById(R.id.view_repair_pmopinion_state);
 
 					EPtvPMOpinion = (TextView) findViewById(R.id.view_repair_pmopinion_opinion);
 					EPtvPMOpinion.setText(receivedData.get("PMOpinion"));
@@ -323,6 +344,13 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					EPtrPMOpinion = (TableRow) findViewById(R.id.view_repair_pmopinion_opinion_tr);
 
 					EPtrPMOpinion.setOnClickListener(this);
+					EPswResult.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+						@Override
+						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+							EPtrBackState.setVisibility(isChecked?View.GONE:View.VISIBLE);
+						}
+					});
+					EPtvBackState.setText(getResources().getStringArray(R.array.pm_allow_state)[0]);
 
 				} else if (methodName.equals(RepairManageActivity.METHOD_PDAPPROVE_STRING)) {
 					viewStub.setLayoutResource(R.layout.view_repair_pdopinion);
@@ -653,6 +681,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			etPlantOpinion.setText("");
 		}else {
 			etPlantOpinion.setText(receivedData.get("PMOpinion"));
+			swPMResult.setChecked(true);
 		}
 	}
 	/**
@@ -669,7 +698,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	 * @param isShow
 	 */
 	private void setGroupVerifyPMShow(boolean isShow){
-		trPlantOpinion.setVisibility(isShow?View.VISIBLE:View.GONE);
+		pmGroup.setVisibility(isShow?View.VISIBLE:View.GONE);
 	}
 	
 	
@@ -678,7 +707,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	 * @param isShow
 	 */
 	private void setGroupVerifyPDShow(boolean isShow){
-		trProductionOpinion.setVisibility(isShow?View.VISIBLE:View.GONE);
+		pdGroup.setVisibility(isShow?View.VISIBLE:View.GONE);
 	}
 	
 	/**
@@ -1043,6 +1072,25 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				plantopinion.put("Value", receivedData.get("PMOpinion"));
 				startDataInputActivity(plantopinion);
 				break;
+			case R.id.view_repair_pmopinion_state_tr:
+				if(backStates==null){
+					backStates = getResources().getStringArray(R.array.pm_allow_state);
+				}
+				if(stateListDialog==null){
+					stateListDialog = new AlertDialog.Builder(RepairManageItemActivity.this);
+					stateListDialog.setTitle("请选择返回的工单状态").setCancelable(true);
+				}
+				stateListDialog.setSingleChoiceItems(backStates, selectState, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						selectState = which;
+						EPtvBackState.setText(backStates[selectState]);
+						EPtvBackState.setCompoundDrawables(null,null,null,null);
+						dialog.dismiss();
+					}
+				});
+				stateListDialog.show();
+				break;
 			case R.id.activity_repairmanageitem_submit:
 			case R.id.view_repair_submit:
 				if(mUpdateConfirm==null){
@@ -1148,8 +1196,13 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					param.put("RepairTaskID", Integer.valueOf(receivedData.get("RepairTaskID")));
 					JSONObject repairDataString = new JSONObject();
 					repairDataString.put("PMOpinion", EPtvPMOpinion.getText().toString());
+					repairDataString.put("FactoryPersonID", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
 					param.put("RepairDataString", repairDataString.toString());
-					param.put("State", EnumList.RepairState.STATEDIRECTORTHROUGH);
+					if(EPswResult.isChecked()){
+						param.put("State", EnumList.RepairState.STATEDIRECTORTHROUGH);
+					}else {
+						param.put("State", OperationMethod.getTaskStateByStateName(EPtvBackState.getText().toString()));
+					}
 					param.put("OldState", receivedData.get("State"));
 					result = DataCenterHelper.HttpPostData("UpdateAuditingRepairDataforUser3", param);
 				}else if (methodName.equals(RepairManageActivity.METHOD_DDAPPROVE_STRING)) {
@@ -1211,5 +1264,45 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			}
 			hideProgressDialog();
 		}
+	}
+	
+	private class GetAllowStateListByPosition extends AsyncTask<String, Integer, String[]>{
+
+		@Override
+		protected String[] doInBackground(String... params) {
+			JSONObject param = new JSONObject();
+			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
+			String [] states = null;
+			try {
+				param.put("PositionID", SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+				result = DataCenterHelper.HttpPostData("GetAllowStateListByPosition", param);
+				if(!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
+					JSONObject jsonObject = new JSONObject(result);
+					JSONArray array = new JSONArray(jsonObject.toString());
+					states = new String[array.length()];
+					for(int i = 0;i<array.length();i++){
+						JSONObject temp  = array.getJSONObject(i);
+						states[i] = temp.getString("StateText");
+					}
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return states;
+		}
+		
+		@Override
+		protected void onPostExecute(String[] result) {
+			super.onPostExecute(result);
+			if(result!=null){
+				backStates = result;
+			}
+		}
+
+		
 	}
 }

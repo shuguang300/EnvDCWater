@@ -22,8 +22,8 @@
         android:id="@+id/activity_repairmanageitem_readpart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:layout_above="@id/activity_repairmanageitem_editpart_ll" >
+        android:layout_above="@id/activity_repairmanageitem_editpart_ll"
+        android:fillViewport="true" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -392,7 +392,7 @@
                     <TextView
                         style="@style/ItemTitleStyle"
                         android:drawableLeft="@drawable/ic_item_approve"
-                        android:text="@string/activity_repairmanageitem_verifyresult" />
+                        android:text="@string/activity_repairmanageitem_ddverifyresult" />
 
                     <Switch
                         android:id="@+id/activity_repairmanageitem_verifyresult"
@@ -436,42 +436,74 @@
 
                 <TextView style="@style/ItemDivider" />
 
-                <TableRow
-                    android:id="@+id/activity_repairmanageitem_productionopinion_tr"
-                    style="@style/ItemLineStyle" >
+                <LinearLayout
+                    android:id="@+id/activity_repairmanageitem_productiongroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
 
-                    <TextView
-                        style="@style/ItemTitleStyle"
-                        android:drawableLeft="@drawable/ic_item_opinion"
-                        android:text="@string/activity_repairmanageitem_productionopinion" />
+                    <TableRow
+                        android:id="@+id/activity_repairmanageitem_productionopinion_tr"
+                        style="@style/ItemLineStyle" >
 
-                    <TextView
-                        android:id="@+id/activity_repairmanageitem_productionopinion"
-                        style="@style/ItemValueStyle" />
-                </TableRow>
+                        <TextView
+                            style="@style/ItemTitleStyle"
+                            android:drawableLeft="@drawable/ic_item_opinion"
+                            android:text="@string/activity_repairmanageitem_productionopinion" />
 
-                <TextView style="@style/ItemDivider" />
+                        <TextView
+                            android:id="@+id/activity_repairmanageitem_productionopinion"
+                            style="@style/ItemValueStyle" />
+                    </TableRow>
 
-                <TableRow
-                    android:id="@+id/activity_repairmanageitem_plantopinion_tr"
-                    style="@style/ItemLineStyle" >
+                    <TextView style="@style/ItemDivider" />
+                </LinearLayout>
 
-                    <TextView
-                        style="@style/ItemTitleStyle"
-                        android:drawableLeft="@drawable/ic_item_opinion"
-                        android:text="@string/activity_repairmanageitem_plantopinion" />
+                <LinearLayout
+                    android:id="@+id/activity_repairmanageitem_plantgroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
 
-                    <TextView
-                        android:id="@+id/activity_repairmanageitem_plantopinion"
-                        style="@style/ItemValueStyle" />
-                </TableRow>
+                    <TableRow style="@style/ItemLineStyle" >
+
+                        <TextView
+                            style="@style/ItemTitleStyle"
+                            android:drawableLeft="@drawable/ic_item_approve"
+                            android:text="@string/activity_repairmanageitem_pmverifyresult" />
+
+                        <Switch
+                            android:id="@+id/activity_repairmanageitem_plantverify"
+                            style="@style/ItemValueStyle"
+                            android:enabled="false"
+                            android:textOff="未通过"
+                            android:textOn="通过" />
+                        
+                    </TableRow>
+
+                    <TextView style="@style/ItemDivider" />
+
+                    <TableRow
+                        android:id="@+id/activity_repairmanageitem_plantopinion_tr"
+                        style="@style/ItemLineStyle" >
+
+                        <TextView
+                            style="@style/ItemTitleStyle"
+                            android:drawableLeft="@drawable/ic_item_opinion"
+                            android:text="@string/activity_repairmanageitem_plantopinion" />
+
+                        <TextView
+                            android:id="@+id/activity_repairmanageitem_plantopinion"
+                            style="@style/ItemValueStyle" />
+                    </TableRow>
+                </LinearLayout>
             </TableLayout>
 
             <Button
                 android:id="@+id/activity_repairmanageitem_submit"
                 style="@style/RedButtonStyle"
-                android:visibility="gone"
-                android:layout_width="match_parent" />
+                android:layout_width="match_parent"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 

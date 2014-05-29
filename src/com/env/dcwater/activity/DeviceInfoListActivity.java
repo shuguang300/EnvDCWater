@@ -2,9 +2,11 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -29,6 +31,7 @@ import android.widget.Spinner;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -367,7 +370,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			DeviceViewHolder deviceViewHolder ;
-			HashMap<String, String> map = mData.get(position);
+			final HashMap<String, String> map = mData.get(position);
 			if(convertView ==null){
 				deviceViewHolder = new DeviceViewHolder();
 				convertView = LayoutInflater.from(DeviceInfoListActivity.this).inflate(R.layout.item_devicelist, null);
@@ -386,6 +389,12 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 				GetDevicePic getDevicePic = new GetDevicePic(deviceViewHolder.pic,dpi,DeviceInfoListActivity.this);
 				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
 			}
+			deviceViewHolder.pic.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					SystemMethod.startBigImageActivity(DeviceInfoListActivity.this, map.get("PicURL"));
+				}
+			});
 			return convertView;
 		}
 	}

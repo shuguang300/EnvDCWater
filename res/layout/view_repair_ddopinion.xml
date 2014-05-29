@@ -54,7 +54,7 @@
                 <TextView
                     style="@style/ItemTitleStyle"
                     android:drawableLeft="@drawable/ic_item_approve"
-                    android:text="@string/activity_repairmanageitem_verifyresult" />
+                    android:text="@string/activity_repairmanageitem_ddverifyresult" />
 
                 <Switch
                     android:id="@+id/view_repair_ddopinion_verifyresult"

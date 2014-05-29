@@ -1,7 +1,11 @@
 package com.env.dcwater.util;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
+import com.env.dcwater.R;
 import com.env.dcwater.activity.LoginActivity;
 import com.env.dcwater.activity.ShowBigImageActivity;
 import com.env.dcwater.component.DCWaterApp;
@@ -253,6 +257,30 @@ public class SystemMethod {
 		intent.putExtra("file", fileName);
 		((Activity) context).startActivity(intent);
 		((Activity) context).overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+	}
+	
+	/**
+	 * 拷贝数据库文件到私有文件夹中
+	 * @param path需要复制到的路径
+	 * @throws IOException 
+	 */
+	public static void copyDataBase(String path,Context context) throws IOException{
+		String dataBaseFolder = "/data/data/" + context.getPackageName() + "/databases";
+		File dir = new File(dataBaseFolder);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		InputStream is = context.getResources().openRawResource(R.raw.envdcwater);
+		File file = new File(path);
+		FileOutputStream fos = new FileOutputStream(file);
+		int len = 0;
+		byte [] temp = new byte[4096];
+		while ((len=is.read(temp))!=-1) {
+			fos.write(temp, 0, len);
+		}
+		fos.close();
+		is.close();
+		System.out.println("**********************copy done*******************");
 	}
 	
 	
