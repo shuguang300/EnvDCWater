@@ -124,4 +124,16 @@
 
     <TextView style="@style/ItemDivider" />
 
+    <Button
+        android:id="@+id/activity_userinfor_changepsw"
+        style="@style/RedButtonStyle"
+        android:layout_width="match_parent"
+        android:text="@string/activity_userinfor_changepsw" />
+    
+    <Button
+        android:id="@+id/activity_userinfor_logout"
+        style="@style/RedButtonStyle"
+        android:layout_width="match_parent"
+        android:text="@string/activity_userinfor_logout" />
+
 </LinearLayout>

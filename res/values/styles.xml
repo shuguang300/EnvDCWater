@@ -185,7 +185,7 @@
         <item name="android:actionBarDivider">@drawable/actionbar_item_divider</item>  
         <item name="android:actionOverflowButtonStyle">@style/CustomOverFlowButtonStyle</item>
         <!-- ActionBar 的小箭头 -->  
-     <!--    <item name="android:homeAsUpIndicator">@drawable/activity_machinemanage_arrowleft</item> -->
+	   	<item name="android:homeAsUpIndicator">@drawable/ic_pic_back</item> 
     </style>  
     
 	<!-- 缩放menu的图标 -->

@@ -1,13 +1,18 @@
 package com.env.dcwater.activity;
 import java.util.HashMap;
+
 import android.app.ActionBar;
 import android.os.Bundle;
+import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnDragListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -18,6 +23,7 @@ public class UserInformationAcivity extends NfcActivity implements OnClickListen
 	private HashMap<String, String> user;
 	private TextView acc,name,role,plant;
 	private ImageView rolePic;
+	private Button changePsw,logout;
 	public static final String ACTION_STRING = "com.env.dcwater.activity.UserInformationAcivity";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +49,18 @@ public class UserInformationAcivity extends NfcActivity implements OnClickListen
 		role = (TextView)findViewById(R.id.activity_userinfor_role);
 		plant = (TextView)findViewById(R.id.activity_userinfor_plant);
 		rolePic = (ImageView)findViewById(R.id.activity_userinfor_pic);
+		rolePic.setOnDragListener(new OnDragListener() {
+			@Override
+			public boolean onDrag(View v, DragEvent event) {
+				return true;
+			}
+		});
+		changePsw = (Button)findViewById(R.id.activity_userinfor_changepsw);
+		logout = (Button)findViewById(R.id.activity_userinfor_logout);
+		
 		rolePic.setOnClickListener(this);
+		changePsw.setOnClickListener(this);
+		logout.setOnClickListener(this);
 	}
 	
 	private void setViewData(){
@@ -71,12 +88,18 @@ public class UserInformationAcivity extends NfcActivity implements OnClickListen
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
+		finish();
 	}
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.activity_userinfor_pic:
 			SystemMethod.startBigImageActivity(UserInformationAcivity.this, "");
+			break;
+		case R.id.activity_userinfor_changepsw:
+			break;
+		case R.id.activity_userinfor_logout:
+			SystemMethod.logOut(UserInformationAcivity.this);
 			break;
 		}
 		

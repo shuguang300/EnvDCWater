@@ -216,7 +216,7 @@ public class SystemMethod {
 	 */
 	public static void logOut(final Context context){
 		AlertDialog.Builder adb = new AlertDialog.Builder(context);
-		adb.setTitle("系统通知").setMessage("确认注销吗？");
+		adb.setTitle("系统通知").setMessage("确定注销吗？");
 		adb.setPositiveButton("确定", new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

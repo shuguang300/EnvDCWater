@@ -131,6 +131,8 @@
     <string name="activity_userinfor_name">姓    名</string>
     <string name="activity_userinfor_role">岗    位</string>
     <string name="activity_userinfor_plant">厂    名</string>
+    <string name="activity_userinfor_changepsw">修改密码</string>
+    <string name="activity_userinfor_logout">注    销</string>
 
     <string-array name="view_datafilter_fasttimelist">
         <item>请选择</item>

@@ -16,6 +16,7 @@ import com.env.dcwater.R;
 import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.javabean.EnumList;
+import com.env.dcwater.javabean.EnumList.RepairState;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryPlanState;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryState;
 import com.env.dcwater.javabean.EnumList.UserRight;
@@ -1577,5 +1578,47 @@ public class OperationMethod {
 			temp = false;
 		}
 		return temp;
+	}
+	
+	/**
+	 * 根据工单状态 角色 以及工单类型来显示状态描述
+	 * @param state
+	 * @param postionID
+	 * @param taskType
+	 * @return
+	 */
+	public static String getProperStateDesc(String state,String postionID,String taskType){
+		int mState = Integer.parseInt(state);
+		int mPositionID = Integer.parseInt(postionID);
+		int mTaskType = Integer.parseInt(taskType);
+		String desc = RepairState.getEnumRepairState(mState).getStateDescription();
+		switch (mState) {
+		case RepairState.STATEBEENINGREPAIRED:
+			if(mPositionID == UserRole.USERROLEREPAIRMAN){
+				desc = "工单待填写";
+			}
+			break;
+		case RepairState.STATEDEVICETHROUGH:
+			break;
+		case RepairState.STATEDIRECTORTHROUGH:
+			break;
+		case RepairState.STATEFORCORRECTION:
+			break;
+		case RepairState.STATEHASBEENCONFIRMED:
+			break;
+		case RepairState.STATEHASBEENDISTRIBUTED:
+			break;
+		case RepairState.STATEHASBEENREPAIRED:
+			
+			break;
+		case RepairState.STATEHASBEENREPORTED:
+			break;
+		case RepairState.STATEPRODUCTIONTHROUGH:
+			if(mPositionID == UserRole.USERROLEPLANTER){
+				desc = "等待审核";
+			}
+			break;
+		}
+		return desc;
 	}
 }
