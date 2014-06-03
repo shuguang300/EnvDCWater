@@ -256,7 +256,7 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 			if(mUpdateConfirm==null){
 				mUpdateConfirm = new AlertDialog.Builder(UpkeepApproveItemActivity.this);
 			}
-			mUpdateConfirm.setTitle("保养工单审核").setMessage("确认提交审核信息吗？");
+			mUpdateConfirm.setTitle("养护工单审核").setMessage("确认提交审核信息吗？");
 			mUpdateConfirm.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {

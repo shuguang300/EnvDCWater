@@ -130,6 +130,7 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	 */
 	private void startLogin(){
 		if(getInputUserInfo()){
+//			SystemMethod.hideSoftInput(LoginActivity.this);
 			mLoginAsyncTask = new LoginAsyncTask();
 			mLoginAsyncTask.execute("");	
 		}else {

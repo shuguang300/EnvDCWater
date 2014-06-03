@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 超大号字体 -->
+    <dimen name="fontsize_super_large">20dp</dimen>
 	<!-- 大号字体 -->
     <dimen name="fontsize_large">16dp</dimen>
     <!-- 中号字体 -->
@@ -14,4 +16,12 @@
     <dimen name="layout_margin">10dp</dimen>
     <!-- 布局之间的间隔 (小)-->
     <dimen name="layout_margin_short">8dp</dimen>
+    <!-- 布局之间的间隔 (大)-->
+    <dimen name="layout_margin_long">12dp</dimen>
+    <!-- 系统图片的大小 -->
+    <dimen name="ic_app_logo">96dp</dimen>
+    <!-- 登录界面中，logo距离上边距的大小 -->
+    <dimen name="ic_logo_marginTop">180dp</dimen>
+    <!-- 登录界面中，第一个控件距离logo的大小 -->
+    <dimen name="ic_view_marginLogo">100dp</dimen>
 </resources>

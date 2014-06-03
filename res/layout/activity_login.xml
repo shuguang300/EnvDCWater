@@ -3,11 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    android:gravity="center_vertical"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="30dp" >
+    
+    
+    <TextView 
+        android:layout_marginTop="@dimen/ic_logo_marginTop"
+        android:drawableLeft="@drawable/ic_pic_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/fontsize_super_large"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:singleLine="false"
+        android:text="@string/system_name1"/>
 
     <EditText
+        android:layout_marginTop="@dimen/ic_view_marginLogo"
         android:id="@+id/activity_login_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,5 +57,16 @@
             android:text="@string/activity_login_reset"
             android:textColor="@color/white" />
     </LinearLayout>
+    
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/fontsize_normal"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:singleLine="false"
+        android:layout_marginTop="@dimen/layout_margin_long"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/company_info" />
 
 </LinearLayout>

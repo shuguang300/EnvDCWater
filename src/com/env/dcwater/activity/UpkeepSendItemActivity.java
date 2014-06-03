@@ -251,7 +251,7 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 			if(mUpdateConfirm==null){
 				mUpdateConfirm = new AlertDialog.Builder(UpkeepSendItemActivity.this);
 			}
-			mUpdateConfirm.setTitle("保养工单派发").setMessage("确认派发工单吗？");
+			mUpdateConfirm.setTitle("养护工单派发").setMessage("确认派发工单吗？");
 			mUpdateConfirm.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {

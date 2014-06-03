@@ -3,6 +3,9 @@
 
     <string name="app_name">滇池水务</string>
     <string name="system_name">滇池智慧水务信息系统</string>
+    <string name="system_name1">滇池设备管理信息系统</string>
+    <string name="company_info">北京清控人居环境研究院（有限公司）©版权所有</string>
+    
     <string name="activity_machinemanage_radiogroup_machinemanage">设备信息管理</string>
     <string name="activity_machinemanage_radiogroup_consmanage">构筑物管理</string>
     <string name="activity_machinemanage_radiogroup_machineinfo">设备信息查看</string>
@@ -171,9 +174,16 @@
         <item>设备科长审核通过</item>
         <item>生产科长已确认</item>
     </string-array>
-     <string-array name="pm_allow_state">
+    <string-array name="pm_allow_state">
         <item>维修单已派发</item>
         <item>维修单已上报</item>
+    </string-array>
+    <string-array name="deviceinforlist">
+        <item>基本信息</item>
+        <item>运行管理</item>
+        <item>技术参数</item>
+        <item>运行参数</item>
+        <item>技术文档</item>
     </string-array>
 
     <string name="menu_deviceinfoitem_maintainhistory">维修历史</string>

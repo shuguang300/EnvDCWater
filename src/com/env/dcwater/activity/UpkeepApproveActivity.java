@@ -73,7 +73,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 	private void iniActionBar(){
 		mActionBar = getActionBar();
 		SystemMethod.setActionBarHomeButton(true, mActionBar);
-		mActionBar.setTitle("保养工单审核");
+		mActionBar.setTitle("养护工单审核");
 	}
 	
 	private void iniView(){

@@ -66,7 +66,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	private int mRequestCode,taskState,taskType,selectState;
 	private TableLayout mGroupInfo,mGroupVerify;
 	private ViewStub viewStub;
-	private String mOtherStep="",mHandleStep="",methodName="",methodDesc="";
+	private String mOtherStep="",mHandleStep="",methodName="",methodDesc="",confirmMessage;
 	private String [] handleStepContent = {"尝试手动启动","关闭主电源","拍下急停按钮","悬挂警示标识牌","关闭故障设备工艺段进水"};
 	private boolean [] handleStepSelected = {false,false,false,false,false},tempStepSelected;
 	private TextView etName,etType,etSN,etPosition,etStartTime,etManufacture,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep,etSendTime,etSender,etTimeCost,etContent,etResult,etFinishTime,etThing,etMoney,etVerifyPeople,etEquipmentOpinion,etProductionOpinion,etPlantOpinion;
@@ -189,32 +189,41 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		if(methodName.equals(RepairManageActivity.METHOD_ADD_STRING)){
 			mActionBar.setTitle("上报故障");
 			methodDesc = "上报故障";
+			confirmMessage = "确定将故障信息上报吗？";
 		}else if (methodName.equals(RepairManageActivity.METHOD_HISTORY_STRING)) {
 			mActionBar.setTitle(receivedData.get("FaultReportSN")+"详情");
 		}else if (methodName.equals(RepairManageActivity.METHOD_DDAPPROVE_STRING)) {
 			mActionBar.setTitle("设备科长审核");
 			methodDesc = "提交审核";
+			confirmMessage = "确定提交设备科长审核信息吗？";
 		}else if (methodName.equals(RepairManageActivity.METHOD_PDAPPROVE_STRING)) {
 			mActionBar.setTitle("生产科长审核");
 			methodDesc = "提交审核";
+			confirmMessage = "确定提交生产科长审核信息吗？";
 		}else if (methodName.equals(RepairManageActivity.METHOD_PDCONFIRM_STRING)) {
 			mActionBar.setTitle("确认报修单");
 			methodDesc = "确认报修单";
+			confirmMessage = "确认该报修单吗？";
 		}else if (methodName.equals(RepairManageActivity.METHOD_PMAPPROVE_STRING)) {
 			mActionBar.setTitle("厂长审核");
 			methodDesc = "提交审核";
+			confirmMessage = "确定提交长生审核信息吗？";
 		}else if (methodName.equals(RepairManageActivity.METHOD_RECEIVE_STRING)) {
 			mActionBar.setTitle("确认维修单");
 			methodDesc = "确认维修单";
+			confirmMessage = "确定接收该维修单吗？";
 		}else if (methodName.equals(RepairManageActivity.METHOD_REPAIRTASK_STRING)) {
 			mActionBar.setTitle("填写维修单");
 			methodDesc = "填写维修单";
+			confirmMessage = "确定提交填写的维修单信息吗？";
 		}else if (methodName.equals(RepairManageActivity.METHOD_REREPAIRTASK_STRING)) {
 			mActionBar.setTitle("修改维修单");
 			methodDesc = "修改维修单";
+			confirmMessage = "确定提交修改的维修单信息吗？";
 		}else if (methodName.equals(RepairManageActivity.METHOD_SENDTASK_STRING)) {
 			mActionBar.setTitle("派发维修单");
 			methodDesc = "派发维修单";
+			confirmMessage = "确定派发维修单吗？";
 		}
 	}
 	
@@ -1096,7 +1105,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				if(mUpdateConfirm==null){
 					mUpdateConfirm = new AlertDialog.Builder(RepairManageItemActivity.this);
 				}
-				mUpdateConfirm.setTitle("确认").setMessage("确认提交吗？");
+				mUpdateConfirm.setTitle(methodDesc).setMessage(confirmMessage);
 				mUpdateConfirm.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {

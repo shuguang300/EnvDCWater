@@ -10,7 +10,7 @@
 	<!-- 设备信息表头 -->
     <style name="ItemDeviceDetailFormHead">
         <item name="android:layout_width">0dp</item>
-	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:layout_height">match_parent</item>
 	    <item name="android:singleLine">false</item>
 	    <item name="android:gravity">center_horizontal|center_vertical</item>
 	    <item name="android:textColor">@color/white</item>
@@ -20,17 +20,17 @@
     <!-- 设备信息技术参数样式-->
     <style name="ItemDeviceParam">
         <item name="android:layout_width">0dp</item>
-	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:layout_height">match_parent</item>
 	    <item name="android:singleLine">false</item>
-	    <item name="android:gravity">center_vertical|center_horizontal</item>
+	    <item name="android:gravity">center_vertical|left</item>
     </style>
     
     <!-- 设备信息文件样式-->
     <style name="ItemDeviceFile">
         <item name="android:layout_width">0dp</item>
-	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:layout_height">match_parent</item>
 	    <item name="android:singleLine">false</item>
-	    <item name="android:gravity">center_vertical|center_horizontal</item>
+	    <item name="android:gravity">center_vertical|left</item>
     </style>
     
 	<!-- 单个记看界面中的 每一横列的样式-->
@@ -150,6 +150,7 @@
 	    <item name="android:background">@drawable/btn_style_red</item>
 	    <item name="android:textColor">@color/white</item>
 	    <item name="android:layout_height">@dimen/buttonheight</item>
+	    <item name="android:textSize">@dimen/fontsize_normal</item>
 	</style>
 	
 	<!-- 绿色按钮的样式 -->
@@ -157,6 +158,7 @@
 	    <item name="android:background">@drawable/btn_style_green</item>
 	    <item name="android:textColor">@color/black</item>
 	    <item name="android:layout_height">@dimen/buttonheight</item>
+	    <item name="android:textSize">@dimen/fontsize_normal</item>
 	</style>
 	
 	<style name="ViewPagerRadioButtonStyle">

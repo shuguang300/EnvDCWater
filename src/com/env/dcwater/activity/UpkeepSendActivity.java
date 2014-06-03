@@ -70,7 +70,7 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 	private void iniActionBar() {
 		mActionBar = getActionBar();
 		SystemMethod.setActionBarHomeButton(true, mActionBar);
-		mActionBar.setTitle("保养工单派发");
+		mActionBar.setTitle("养护工单派发");
 	}
 	
 	private void iniView(){

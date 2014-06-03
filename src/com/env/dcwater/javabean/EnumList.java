@@ -32,17 +32,17 @@ public class EnumList {
 		/**
 		 * 保养工单派发
 		 */
-		UPKEEPSEND(2, "保养工单派发","com.env.dcwater.activity.UpkeepSendActivity",R.drawable.ic_act_upkeepsend),
+		UPKEEPSEND(2, "养护工单派发","com.env.dcwater.activity.UpkeepSendActivity",R.drawable.ic_act_upkeepsend),
 		
 		/**
 		 * 保养工单填写
 		 */
-		UPKEEPREPORT(3, "保养工单填写","com.env.dcwater.activity.UpkeepReportActivity",R.drawable.ic_act_upkeepreport),
+		UPKEEPREPORT(3, "养护工单填写","com.env.dcwater.activity.UpkeepReportActivity",R.drawable.ic_act_upkeepreport),
 		
 		/**
 		 * 保养工单审核
 		 */
-		UPKEEPAPPROVE(4, "保养工单审核","com.env.dcwater.activity.UpkeepApproveActivity",R.drawable.ic_act_upkeepapprove),
+		UPKEEPAPPROVE(4, "养护工单审核","com.env.dcwater.activity.UpkeepApproveActivity",R.drawable.ic_act_upkeepapprove),
 		
 		/**
 		 * 维修记录枚举对象
@@ -51,7 +51,7 @@ public class EnumList {
 		/**
 		 * 保养记录枚举对象
 		 */
-		UPKEEPHISTORY(6, "保养历史记录","com.env.dcwater.activity.UpkeepHistoryActivity",R.drawable.ic_act_upkeephistory);
+		UPKEEPHISTORY(6, "养护历史记录","com.env.dcwater.activity.UpkeepHistoryActivity",R.drawable.ic_act_upkeephistory);
 
 		/**
 		 * 权限名称

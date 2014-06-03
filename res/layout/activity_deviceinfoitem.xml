@@ -17,6 +17,10 @@
             android:checked="true">
         </RadioButton>
         <RadioButton 
+            android:id="@+id/activity_deviceinfoitem_title_manage"
+            style="@style/ViewPagerRadioButtonStyle">
+        </RadioButton>
+        <RadioButton 
             android:id="@+id/activity_deviceinfoitem_title_params"
             style="@style/ViewPagerRadioButtonStyle">
         </RadioButton>

@@ -88,10 +88,16 @@ public class ThreadPool {
 					JSONObject devicePropertyJsonObject = new JSONObject(deviceJsonObject.getString("Decivice"));
 					data = new HashMap<String, ArrayList<HashMap<String,String>>>();
 					ArrayList<HashMap<String, String>> deviceproperty= new ArrayList<HashMap<String,String>>();
+					ArrayList<HashMap<String, String>> devicemanage= new ArrayList<HashMap<String,String>>();
 					ArrayList<HashMap<String, String>> deviceparam = new ArrayList<HashMap<String,String>>();
 					ArrayList<HashMap<String, String>> devicefiles = new ArrayList<HashMap<String,String>>();
 					ArrayList<HashMap<String, String>> devicestatus = new ArrayList<HashMap<String,String>>();
-					deviceproperty = OperationMethod.parseDevicePropertyToList(OperationMethod.parseDevicePropertyToHashMap(devicePropertyJsonObject));
+					
+					HashMap<String, String> temp = OperationMethod.parseDevicePropertyToHashMap(devicePropertyJsonObject);
+					
+					deviceproperty = OperationMethod.parseDevicePropertyToList(temp);
+					devicemanage = OperationMethod.parseDevicePropertyToList(temp);
+					
 					if(!LogicMethod.getRightString(deviceJsonObject.getString("DecivicePara")).equals("")){
 						JSONArray deviceParams = new JSONArray(deviceJsonObject.getString("DecivicePara"));
 						deviceparam = OperationMethod.parseDeviceParamsToList(deviceParams);
@@ -105,10 +111,10 @@ public class ThreadPool {
 						devicestatus = OperationMethod.parseDeviceStatuToList(deviceStatu);
 					}
 					data.put("DeviceProperty", deviceproperty);
+					data.put("DeviceManage", devicemanage);
 					data.put("DeviceParam", deviceparam);
 					data.put("DeviceFile", devicefiles);
 					data.put("DeviceStatu", devicestatus);
-					
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
