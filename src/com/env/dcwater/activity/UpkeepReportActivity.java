@@ -2,27 +2,27 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -67,7 +67,7 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 	private void iniData(){
 		dpi = SystemMethod.getDpi(getWindowManager());
 		data = new ArrayList<HashMap<String,String>>();
-		adapter = new UpkeepReportAdapter(data);
+		adapter = new UpkeepReportAdapter(data,UpkeepReportActivity.this);
 	}
 	
 	private void iniActionBar(){
@@ -242,28 +242,11 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 	 * @author sk
 	 */
 	private class UpkeepReportAdapter extends ListviewItemAdapter{
-
-
-		public UpkeepReportAdapter(ArrayList<HashMap<String, String>> data) {
-			super(data);
+		public UpkeepReportAdapter(ArrayList<HashMap<String, String>> data,Context context) {
+			super(data,context);
 		}
-
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			final HashMap<String, String> map = getItem(position);
-			ViewHolder viewHolder;
-			if (convertView == null) {
-				viewHolder = new ViewHolder();
-				convertView = LayoutInflater.from(UpkeepReportActivity.this).inflate(R.layout.item_listview, null);
-				viewHolder.lefttop = (TextView) convertView.findViewById(R.id.item_listview_lefttop);
-				viewHolder.righttop = (TextView) convertView.findViewById(R.id.item_listview_righttop);
-				viewHolder.leftbottom = (TextView) convertView.findViewById(R.id.item_listview_leftbottom);
-				viewHolder.pic = (ImageView) convertView.findViewById(R.id.item_listview_pic);
-				viewHolder.arrow = (ImageView) convertView.findViewById(R.id.item_listview_rightbottom);
-				convertView.setTag(viewHolder);
-			} else {
-				viewHolder = (ViewHolder) convertView.getTag();
-			}
+		public void setData(ViewHolder viewHolder,final HashMap<String, String> map) {
 			if (map.get("PicURL").equals("")) {
 				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
 			} else {
@@ -280,9 +263,7 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 					SystemMethod.startBigImageActivity(UpkeepReportActivity.this, map.get("PicURL"));
 				}
 			});
-			return convertView;
 		}
-		
 	}
 	
 	private class GetUpkeepReportData extends AsyncTask<String, String, ArrayList<HashMap<String, String>>> {

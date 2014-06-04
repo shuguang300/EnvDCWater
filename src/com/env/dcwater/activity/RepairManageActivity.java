@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
@@ -23,18 +24,14 @@ import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -317,7 +314,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 
 		mDataFilterView.hideTimeSelectionPart();
 
-		mListViewAdapter = new RepairManageAdapter(mData);
+		mListViewAdapter = new RepairManageAdapter(mData,RepairManageActivity.this);
 		mListView.setAdapter(mListViewAdapter);
 		mListView.setXListViewListener(this);
 		mListView.setOnItemClickListener(this);
@@ -546,26 +543,12 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 
 	private class RepairManageAdapter extends ListviewItemAdapter {
 
-		public RepairManageAdapter(ArrayList<HashMap<String, String>> data) {
-			super(data);
+		public RepairManageAdapter(ArrayList<HashMap<String, String>> data,Context context) {
+			super(data,context);
 		}
 		
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			final HashMap<String, String> map = getItem(position);
-			ViewHolder viewHolder;
-			if (convertView == null) {
-				viewHolder = new ViewHolder();
-				convertView = LayoutInflater.from(RepairManageActivity.this).inflate(R.layout.item_listview, null);
-				viewHolder.lefttop = (TextView) convertView.findViewById(R.id.item_listview_lefttop);
-				viewHolder.righttop = (TextView) convertView.findViewById(R.id.item_listview_righttop);
-				viewHolder.leftbottom = (TextView) convertView.findViewById(R.id.item_listview_leftbottom);
-				viewHolder.pic = (ImageView) convertView.findViewById(R.id.item_listview_pic);
-				viewHolder.arrow = (ImageView) convertView.findViewById(R.id.item_listview_rightbottom);
-				convertView.setTag(viewHolder);
-			} else {
-				viewHolder = (ViewHolder) convertView.getTag();
-			}
+		public void setData(ViewHolder viewHolder,final HashMap<String, String> map) {
 			if (map.get("PicURL").equals("")) {
 				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
 			} else {
@@ -582,7 +565,6 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 					SystemMethod.startBigImageActivity(RepairManageActivity.this, map.get("PicURL"));
 				}
 			});
-			return convertView;
 		}
 	}
 

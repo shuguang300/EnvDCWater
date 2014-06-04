@@ -9,21 +9,18 @@ import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
@@ -64,7 +61,7 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 	private void iniData(){
 		dpi = SystemMethod.getDpi(getWindowManager());
 		data = new ArrayList<HashMap<String,String>>();
-		adapter = new UpkeepSendAdapter(data);
+		adapter = new UpkeepSendAdapter(data,UpkeepSendActivity.this);
 	}	
 	
 	private void iniActionBar() {
@@ -215,26 +212,11 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 	
 	private class UpkeepSendAdapter extends ListviewItemAdapter{
 		
-		public UpkeepSendAdapter(ArrayList<HashMap<String, String>> data) {
-			super(data);
+		public UpkeepSendAdapter(ArrayList<HashMap<String, String>> data,Context context) {
+			super(data,context);
 		}
-
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			final HashMap<String, String> map = getItem(position);
-			ViewHolder viewHolder;
-			if (convertView == null) {
-				viewHolder = new ViewHolder();
-				convertView = LayoutInflater.from(UpkeepSendActivity.this).inflate(R.layout.item_listview, null);
-				viewHolder.lefttop = (TextView) convertView.findViewById(R.id.item_listview_lefttop);
-				viewHolder.righttop = (TextView) convertView.findViewById(R.id.item_listview_righttop);
-				viewHolder.leftbottom = (TextView) convertView.findViewById(R.id.item_listview_leftbottom);
-				viewHolder.pic = (ImageView) convertView.findViewById(R.id.item_listview_pic);
-				viewHolder.arrow = (ImageView) convertView.findViewById(R.id.item_listview_rightbottom);
-				convertView.setTag(viewHolder);
-			} else {
-				viewHolder = (ViewHolder) convertView.getTag();
-			}
+		public void setData(ViewHolder viewHolder,final HashMap<String, String> map) {
 			if (map.get("PicURL").equals("")) {
 				viewHolder.pic.setImageResource(R.drawable.ic_pic_default);
 			} else {
@@ -256,9 +238,7 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 					SystemMethod.startBigImageActivity(UpkeepSendActivity.this, map.get("PicURL"));
 				}
 			});
-			return convertView;
 		}
-		
 	}
 	
 	@Override

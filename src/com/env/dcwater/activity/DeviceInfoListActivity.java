@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.component.ThreadPool.GetDevicePic;
+import com.env.dcwater.fragment.DeviceListAdapter;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
@@ -53,7 +55,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	private GetServerDeviceData getServerDeviceData;
 	private PullToRefreshView deviceListView;
 	private ConstructionAdapter constructionAdapter;
-	private DeviceListAdapter deviceListAdapter;
+	private DeviceAdapter deviceAdapter;
 	private ThreadPool.GetServerConsData getServerConsData;
 	private SearchView mSearchView;
 	private ImageView mSearchHintIcon;
@@ -78,7 +80,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		deviceArrayList = new ArrayList<HashMap<String,String>>();
 		consArrayList = new ArrayList<HashMap<String,String>>();
 		constructionAdapter = new ConstructionAdapter();
-		deviceListAdapter = new DeviceListAdapter(deviceArrayList);
+		deviceAdapter = new DeviceAdapter(deviceArrayList,DeviceInfoListActivity.this);
 		dpi = SystemMethod.getDpi(getWindowManager());
 	}
 	
@@ -107,7 +109,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		
 		consList.setOnItemSelectedListener(this);
 		
-		deviceListView.setAdapter(deviceListAdapter);
+		deviceListView.setAdapter(deviceAdapter);
 		consList.setAdapter(constructionAdapter);
 	}
 	
@@ -187,8 +189,8 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			getServerDeviceList("");
 		}else {
 			deviceArrayList = SystemParams.getInstance().getMachineList();
-			deviceListAdapter = new DeviceListAdapter(deviceArrayList);
-			deviceListView.setAdapter(deviceListAdapter);
+			deviceAdapter = new DeviceAdapter(deviceArrayList,DeviceInfoListActivity.this);
+			deviceListView.setAdapter(deviceAdapter);
 		}
 	}
 	
@@ -265,8 +267,8 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	 * @param data
 	 */
 	private void updateSearchResult(ArrayList<HashMap<String, String>> data){
-		deviceListAdapter = new DeviceListAdapter(data);
-		deviceListView.setAdapter(deviceListAdapter);
+		deviceAdapter = new DeviceAdapter(data,DeviceInfoListActivity.this);
+		deviceListView.setAdapter(deviceAdapter);
 	}
 	
 	
@@ -337,65 +339,34 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		
 	}
 	
-	private class DeviceViewHolder{
-		TextView name = null;
-		TextView cons = null;
-		ImageView pic = null;
-	}
-	
 	/**
 	 * 自定义设备列表的adapter
 	 * @author sk
 	 */
-	private class DeviceListAdapter extends BaseAdapter {
+	private class DeviceAdapter extends DeviceListAdapter {
 		
-		private ArrayList<HashMap<String, String>> mData;
-		
-		public DeviceListAdapter (ArrayList<HashMap<String, String>> data){
-			mData = data;
+		public DeviceAdapter (ArrayList<HashMap<String, String>> data,Context context){
+			super(data, context);
 		}
 		
 		@Override
-		public int getCount() {
-			return mData.size();
-		}
-		@Override
-		public HashMap<String, String> getItem(int position) {
-			return mData.get(position);
-		}
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			DeviceViewHolder deviceViewHolder ;
-			final HashMap<String, String> map = mData.get(position);
-			if(convertView ==null){
-				deviceViewHolder = new DeviceViewHolder();
-				convertView = LayoutInflater.from(DeviceInfoListActivity.this).inflate(R.layout.item_devicelist, null);
-				deviceViewHolder.name =(TextView)convertView.findViewById(R.id.item_devicelist_name);
-				deviceViewHolder.cons =(TextView)convertView.findViewById(R.id.item_devicelist_cons);
-				deviceViewHolder.pic = (ImageView)convertView.findViewById(R.id.item_devicelist_pic);
-				convertView.setTag(deviceViewHolder);
-			}else {
-				deviceViewHolder = (DeviceViewHolder)convertView.getTag();
-			}
-			deviceViewHolder.name.setText(map.get("DeviceName").toString());
-			deviceViewHolder.cons.setText(map.get("InstallPosition").toString());
+		public void setData(ViewHodler viewHodler,final HashMap<String, String> map) {
+			viewHodler.name.setText(map.get("DeviceName").toString());
+			viewHodler.cons.setText(map.get("InstallPosition").toString());
+			viewHodler.time.setText("上一次维修时间："+map.get("LastRepairTime")+"\n"+"上一次保养时间："+map.get("LastMaintainTime"));
 			if(map.get("PicURL").equals("")){
-				deviceViewHolder.pic.setImageResource(R.drawable.ic_pic_default);
+				viewHodler.pic.setImageResource(R.drawable.ic_pic_default);
 			}else {
-				GetDevicePic getDevicePic = new GetDevicePic(deviceViewHolder.pic,dpi,DeviceInfoListActivity.this);
+				GetDevicePic getDevicePic = new GetDevicePic(viewHodler.pic,dpi,DeviceInfoListActivity.this);
 				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
 			}
-			deviceViewHolder.pic.setOnClickListener(new View.OnClickListener() {
+			viewHodler.pic.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					SystemMethod.startBigImageActivity(DeviceInfoListActivity.this, map.get("PicURL"));
 				}
 			});
-			return convertView;
+			
 		}
 	}
 	
@@ -444,8 +415,8 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 			if(mProgressDialog!=null&&mProgressDialog.isShowing()){
 				if(result!=null){
 					deviceArrayList = result;
-					deviceListAdapter = new DeviceListAdapter(deviceArrayList);
-					deviceListView.setAdapter(deviceListAdapter);
+					deviceAdapter = new DeviceAdapter(deviceArrayList,DeviceInfoListActivity.this);
+					deviceListView.setAdapter(deviceAdapter);
 				}
 				deviceListView.stopRefresh();
 				hideProgressDialog();
@@ -470,7 +441,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 		if(position!=0){
 			Intent intent = new Intent(DeviceInfoListActivity.this,DeviceInfoItemActivity.class);
-			intent.putExtra("data", deviceListAdapter.getItem(position-1));
+			intent.putExtra("data", deviceAdapter.getItem(position-1));
 			startActivity(intent);
 		}
 	}

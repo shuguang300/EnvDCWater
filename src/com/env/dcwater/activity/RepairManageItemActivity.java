@@ -1128,6 +1128,11 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 			try {
 				if (methodName.equals(RepairManageActivity.METHOD_RECEIVE_STRING)) {
 					param.put("RepairTaskID", Integer.valueOf(receivedData.get("RepairTaskID")));
+					JSONObject repairConfirm = new JSONObject();
+					repairConfirm.put("RepairConfirmUserID", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					repairConfirm.put("RepairConfirmTime", new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
+					param.put("RepairDataString", repairConfirm.toString());
+					param.put("State", EnumList.RepairState.STATEBEENINGREPAIRED);
 					param.put("OldState", Integer.valueOf(receivedData.get("State")));
 					result = DataCenterHelper.HttpPostData("ConfirmRepair", param);
 				}else if (methodName.equals(RepairManageActivity.METHOD_PDCONFIRM_STRING)) {
@@ -1141,9 +1146,9 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					JSONObject repairDataString = new JSONObject();
 					int postionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
 					if(postionID==EnumList.UserRole.REPAIRMAN.getState()){
-						repairDataString.put("RepairTaskType", EnumList.RepairTaskType.PRODUCTIONSECTION.getType());
-					}else if (postionID==EnumList.UserRole.EQUIPMENTOPERATION.getState()) {
 						repairDataString.put("RepairTaskType", EnumList.RepairTaskType.EQUIPMENTSECTION.getType());
+					}else if (postionID==EnumList.UserRole.PRODUCTIONOPERATION.getState()) {
+						repairDataString.put("RepairTaskType", EnumList.RepairTaskType.PRODUCTIONSECTION.getType());
 					}
 					String EmergencyMeasures = combineEmergencyMeasures();
 					repairDataString.put("DeviceID", receivedData.get("DeviceID"));

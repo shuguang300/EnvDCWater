@@ -2,13 +2,12 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,15 +19,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.component.ThreadPool.GetDevicePic;
+import com.env.dcwater.fragment.DeviceListAdapter;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
@@ -82,7 +80,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 		deviceDataArrayList = new ArrayList<HashMap<String,String>>();
 		consDataArrayList = new ArrayList<HashMap<String,String>>();
 		constructionAdapter = new ConstructionAdapter();
-		deviceAdapter = new DeviceAdapter();
+		deviceAdapter = new DeviceAdapter(deviceDataArrayList,DeviceSelectActivity.this);
 		selectCons = "";
 		
 		if(SystemParams.getInstance().getConstructionList()==null){
@@ -96,7 +94,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 			getServerDeviceList("",selectCons);
 		}else {
 			deviceDataArrayList = SystemParams.getInstance().getMachineList();
-			deviceAdapter.notifyDataSetChanged();
+			deviceAdapter.datasetNotification(deviceDataArrayList);
 		}
 		
 		
@@ -232,62 +230,33 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 	}
 	
 	
-	private class DeviceViewHolder{
-		TextView name = null;
-		TextView cons = null;
-		ImageView pic = null;
-	}
-	
 	/**
 	 * @author sk
 	 *
 	 */
-	private class DeviceAdapter extends BaseAdapter{
+	private class DeviceAdapter extends DeviceListAdapter{
 		
-		@Override
-		public int getCount() {
-			return deviceDataArrayList.size();
+		public DeviceAdapter(ArrayList<HashMap<String, String>> data,Context context) {
+			super(data,context);
 		}
 		
 		@Override
-		public HashMap<String, String> getItem(int position) {
-			return deviceDataArrayList.get(position);
-		}
-		
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-		
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			DeviceViewHolder deviceViewHolder ;
-			final HashMap<String, String> map = getItem(position);
-			if(convertView ==null){
-				deviceViewHolder = new DeviceViewHolder();
-				convertView = LayoutInflater.from(DeviceSelectActivity.this).inflate(R.layout.item_devicelist, null);
-				deviceViewHolder.name =(TextView)convertView.findViewById(R.id.item_devicelist_name);
-				deviceViewHolder.cons =(TextView)convertView.findViewById(R.id.item_devicelist_cons);
-				deviceViewHolder.pic = (ImageView)convertView.findViewById(R.id.item_devicelist_pic);
-				convertView.setTag(deviceViewHolder);
-			}else {
-				deviceViewHolder = (DeviceViewHolder)convertView.getTag();
-			}
-			deviceViewHolder.name.setText(map.get("DeviceName").toString());
-			deviceViewHolder.cons.setText(map.get("InstallPosition").toString());
+		public void setData(ViewHodler viewHodler,final HashMap<String, String> map) {
+			viewHodler.name.setText(map.get("DeviceName").toString());
+			viewHodler.cons.setText(map.get("InstallPosition").toString());
+			viewHodler.time.setVisibility(View.GONE);
 			if(map.get("PicURL").equals("")){
-				deviceViewHolder.pic.setImageResource(R.drawable.ic_pic_default);
+				viewHodler.pic.setImageResource(R.drawable.ic_pic_default);
 			}else {
-				GetDevicePic getDevicePic = new GetDevicePic(deviceViewHolder.pic,dpi,DeviceSelectActivity.this);
+				GetDevicePic getDevicePic = new GetDevicePic(viewHodler.pic,dpi,DeviceSelectActivity.this);
 				getDevicePic.execute(SystemMethod.getLocalTempPath(),map.get("PicURL").toString(),DataCenterHelper.PIC_URL_STRING+"/"+map.get("PicURL").toString());
 			}
-			deviceViewHolder.pic.setOnClickListener(new View.OnClickListener() {
+			viewHodler.pic.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					SystemMethod.startBigImageActivity(DeviceSelectActivity.this, map.get("PicURL"));
 				}
 			});
-			return convertView;
 		}
 	}
 	
@@ -332,7 +301,7 @@ public class DeviceSelectActivity extends NfcActivity implements IXListViewListe
 			if(mProgressDialog!=null&&mProgressDialog.isShowing()){
 				if(result!=null){
 					deviceDataArrayList = result;
-					deviceAdapter.notifyDataSetChanged();
+					deviceAdapter.datasetNotification(deviceDataArrayList);
 					if(selectCons.equals(consDataArrayList.get(0).get("StructureName")));{
 						SystemParams.getInstance().setMachineList(result);
 					}
