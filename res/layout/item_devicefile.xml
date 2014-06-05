@@ -17,18 +17,26 @@
         android:paddingLeft="@dimen/layout_margin_short"
         android:layout_weight="4" />
 
-    <LinearLayout 
+    <FrameLayout 
         style="@style/ItemDeviceFile"
-        android:layout_weight="1"
-        android:gravity="center" >
+        android:layout_weight="1" >
+        
+        <ProgressBar
+            android:id="@+id/item_devicefiles_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/progressbarheight_downloadfile"
+            android:visibility="gone" />
         
         <Button
         	android:id="@+id/item_devicefiles_dl"
-        	android:layout_width="wrap_content"
+        	android:layout_width="match_parent"
         	android:layout_height="@dimen/buttonheight"
         	style="@style/GreenButtonStyle"
         	android:layout_gravity="center"
         	android:text="@string/item_devicefiles_dl" />
-    </LinearLayout>
+
+    </FrameLayout>
     
 </LinearLayout>

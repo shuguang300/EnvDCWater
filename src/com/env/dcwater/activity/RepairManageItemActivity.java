@@ -1129,7 +1129,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				if (methodName.equals(RepairManageActivity.METHOD_RECEIVE_STRING)) {
 					param.put("RepairTaskID", Integer.valueOf(receivedData.get("RepairTaskID")));
 					JSONObject repairConfirm = new JSONObject();
-					repairConfirm.put("RepairConfirmUserID", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					repairConfirm.put("RepairConfirmPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
 					repairConfirm.put("RepairConfirmTime", new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
 					param.put("RepairDataString", repairConfirm.toString());
 					param.put("State", EnumList.RepairState.STATEBEENINGREPAIRED);
@@ -1137,6 +1137,10 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					result = DataCenterHelper.HttpPostData("ConfirmRepair", param);
 				}else if (methodName.equals(RepairManageActivity.METHOD_PDCONFIRM_STRING)) {
 					param.put("RepairTaskID", Integer.valueOf(receivedData.get("RepairTaskID")));
+					JSONObject PDConfirm = new JSONObject();
+					PDConfirm.put("PDConfirmPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					PDConfirm.put("PDConfirmTime", new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
+					param.put("RepairDataString", PDConfirm.toString());
 					param.put("CheckPerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
 					param.put("OldState", Integer.valueOf(receivedData.get("State")));
 					result = DataCenterHelper.HttpPostData("ValidationReport", param);
@@ -1202,6 +1206,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					JSONObject repairDataString = new JSONObject();
 					repairDataString.put("PDOpinion", EPtvPDOpinion.getText().toString());
 					repairDataString.put("RepairCost", EPtvMoney.getText().toString());
+					repairDataString.put("PDApprovePerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					repairDataString.put("PDApproveTime", new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
 					param.put("RepairDataString", repairDataString.toString());
 					param.put("State", EnumList.RepairState.STATEPRODUCTIONTHROUGH);
 					param.put("OldState", receivedData.get("State"));
@@ -1210,7 +1216,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					param.put("RepairTaskID", Integer.valueOf(receivedData.get("RepairTaskID")));
 					JSONObject repairDataString = new JSONObject();
 					repairDataString.put("PMOpinion", EPtvPMOpinion.getText().toString());
-					repairDataString.put("FactoryPersonID", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					repairDataString.put("PMApprovePerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					repairDataString.put("PMApproveTime", new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
 					param.put("RepairDataString", repairDataString.toString());
 					if(EPswResult.isChecked()){
 						param.put("State", EnumList.RepairState.STATEDIRECTORTHROUGH);
@@ -1224,6 +1231,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					JSONObject repairDataString = new JSONObject();
 					repairDataString.put("ApproveResult", EPswVerify.isChecked()?"1":"2");
 					repairDataString.put("ApprovePerson", SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+					repairDataString.put("ApproveTime", new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
 					repairDataString.put("DDOpinion", EPtvDDOpinion.getText().toString());
 					param.put("RepairDataString", repairDataString.toString());
 					param.put("State", EPswVerify.isChecked()?EnumList.RepairState.STATEDEVICETHROUGH:EnumList.RepairState.STATEFORCORRECTION);

@@ -1,16 +1,28 @@
 package com.env.dcwater.component;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+
 import com.env.dcwater.R;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.LogicMethod;
@@ -24,7 +36,6 @@ import com.env.dcwater.util.SystemMethod;
 public class ThreadPool {
 	
 	public static final String TAG_STRING = "ThreadPool";
-	
 	/**
 	 * 获取构筑物列表数据的异步方法
 	 * @author sk
@@ -237,7 +248,7 @@ public class ThreadPool {
 			if(file.exists()){
 			}else {
 				try {
-					file = DataCenterHelper.HttpGetDownloadFile(params[2], params[0], params[1]);
+					file = DataCenterHelper.HttpGetDownloadPng(params[2], params[0], params[1]);
 				} catch (IOException e) {
 					e.printStackTrace();
 					file = null;
@@ -255,6 +266,93 @@ public class ThreadPool {
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
+			}
+		}
+	}
+	
+	/**
+	 * 下载技术文档
+	 * @author sk
+	 *
+	 */
+	public static class GetDeviceFile extends AsyncTask<String, Integer, String>{
+		
+		private ProgressBar mPb;
+		private Button mBtn;
+		
+		public GetDeviceFile (ProgressBar pb,Button btn){
+			mPb = pb;
+			mBtn = btn;
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
+			String fileUrl = DataCenterHelper.FILE_URL_STRING+"/"+params[0];
+			String localFolderPath = SystemMethod.getDownloadFilePath();
+			File folder = new File(localFolderPath);
+			if(!folder.exists()){
+				folder.mkdirs();
+			}
+			File file = new File(localFolderPath+File.separator+params[0]);
+			URL url;
+			HttpURLConnection conn = null;
+			try {
+				url = new URL(URLEncoder.encode(fileUrl,"UTF-8"));
+				conn = (HttpURLConnection)url.openConnection();
+				conn.setConnectTimeout(DataCenterHelper.CONNECTION_TIMEOUT_INTEGER);
+				conn.setReadTimeout(DataCenterHelper.SO_TIMEOUT_INTEGER);
+				InputStream is = conn.getInputStream();
+				is = conn.getInputStream();
+				if(is.available()>0){
+					FileOutputStream fos = new FileOutputStream(file);
+					byte [] buffer = new byte[8192];
+					int len = 0, hasRead=0 , max = is.available();
+					while ((len = is.read(buffer))!=-1) {
+						fos.write(buffer, 0, len);
+						hasRead += len;
+						mPb.setProgress(hasRead/max);
+					}
+					fos.flush();
+					fos.close();
+					result = DataCenterHelper.RESPONSE_SUCCESS_STRING;
+				}
+				is.close();
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}finally{
+				if(result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
+					file.delete();
+				}
+			}
+			return result;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			mPb.setVisibility(View.VISIBLE);
+			mBtn.setVisibility(View.GONE);
+			mPb.setProgress(0);
+		}
+		
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			super.onProgressUpdate(values);
+			mPb.setProgress(values[0]);
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			mPb.setVisibility(View.GONE);
+			mBtn.setVisibility(View.VISIBLE);
+			if(result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)){
+				mBtn.setText("下载失败");
+			}else {
+				mBtn.setText("打开");
 			}
 		}
 		

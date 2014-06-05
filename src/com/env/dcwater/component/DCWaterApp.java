@@ -1,8 +1,6 @@
 package com.env.dcwater.component;
-
 import java.io.File;
 import java.io.IOException;
-import com.env.dcwater.util.SqliteHelper;
 import com.env.dcwater.util.SystemMethod;
 import android.app.Application;
 import android.content.Context;
@@ -74,8 +72,8 @@ public class DCWaterApp extends Application {
 		sp = getSharedPreferences(PREFERENCE_STRING, Context.MODE_PRIVATE);
 		ed = sp.edit();
 		if (Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)) {
-			cache = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + ROOT_PATH_STRING + File.separator + CACHE_PATH_STRING);
-			files = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + ROOT_PATH_STRING + File.separator + FILES_PATH_STRING);
+			cache = new File(SystemMethod.getDownloadPngPath());
+			files = new File(SystemMethod.getDownloadFilePath());
 			if (!cache.exists()) {
 				cache.mkdirs();
 			}
@@ -84,11 +82,10 @@ public class DCWaterApp extends Application {
 			}
 		}
 		if (sp.getBoolean(PREFERENCE_FIRSTRUN_STRING, true)) {
-			String path = "/data/data/" + PACKAGE_STRING + "/databases/" + SqliteHelper.DATABASE_NAME;
+			String path = SystemMethod.getInternalDataBasePath(getApplicationContext());
 			try {
 				SystemMethod.copyDataBase(path, getApplicationContext());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -22,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.ThreadPool;
+import com.env.dcwater.component.ThreadPool.GetDeviceFile;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.OperationMethod;
@@ -65,6 +67,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		public TextView code = null;  
         public TextView name = null;  
         public Button dl = null;  
+        public ProgressBar pb = null;
 	}
 	
 	private class MyTagHandler implements TagHandler  {
@@ -511,28 +514,49 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		}
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			FileViewHolder viewHolder;
-			HashMap<String, String> map = getItem(position);
+			final FileViewHolder viewHolder;
+			final HashMap<String, String> map = getItem(position);
 			if(convertView ==null){
 				convertView = LayoutInflater.from(DeviceInfoItemActivity.this).inflate(R.layout.item_devicefile, null);
 				viewHolder = new FileViewHolder();
 				viewHolder.code = (TextView)convertView.findViewById(R.id.item_devicefiles_code);
 				viewHolder.name = (TextView)convertView.findViewById(R.id.item_devicefiles_name);
 				viewHolder.dl = (Button)convertView.findViewById(R.id.item_devicefiles_dl);
-				viewHolder.dl.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Toast.makeText(DeviceInfoItemActivity.this, "下载", Toast.LENGTH_SHORT).show();
-					}
-				});
+				viewHolder.pb = (ProgressBar)convertView.findViewById(R.id.item_devicefiles_progress);
 				convertView.setTag(viewHolder);
 			}else {
 				viewHolder = (FileViewHolder)convertView.getTag();
 			}
-			viewHolder.dl.setVisibility(map.get("WhetherDownload").equals("true")?View.VISIBLE:View.GONE);
+			setFileButton(viewHolder.dl,map.get("TechnicalData"),viewHolder.pb);
+//			viewHolder.dl.setVisibility(map.get("WhetherDownload").equals("true")?View.VISIBLE:View.GONE);
 			viewHolder.code.setText(position+1+"");
 			viewHolder.name.setText(map.get("TechnicalData"));
 			return convertView;
+		}
+	}
+	
+	/**
+	 * @param btn
+	 * @param fileName
+	 */
+	private void setFileButton(final Button btn,final String fileName,final ProgressBar pb){
+		if(SystemMethod.isDeviceFileExist(fileName)){
+			btn.setText("打开");
+			btn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(DeviceInfoItemActivity.this, "打开本地文件", Toast.LENGTH_SHORT).show();
+				}
+			});
+		}else {
+			btn.setText("下载");
+			btn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					GetDeviceFile getDeviceFile = new GetDeviceFile(pb, btn);
+					getDeviceFile.execute(fileName);
+				}
+			});
 		}
 	}
 	

@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -49,11 +51,11 @@ public class DataCenterHelper {
 	/**
 	 * 设备文档的地址
 	 */
-	public static final String FILE_URL_STRING = "http://192.168.200.50/dcwater/PdfFiles/";
+	public static final String FILE_URL_STRING = "http://192.168.200.50/dcwater/PdfFiles";
 	/**
 	 * 设备图片的地址
 	 */
-	public static final String PIC_URL_STRING = "http://192.168.200.50/dcwater/UploadImages/";
+	public static final String PIC_URL_STRING = "http://192.168.200.50/dcwater/UploadImages";
 	/**
 	 * 连接超时
 	 */
@@ -68,6 +70,10 @@ public class DataCenterHelper {
 	 * 请求错误
 	 */
 	public static final String RESPONSE_FALSE_STRING = "false";
+	/**
+	 * 请求完成
+	 */
+	public static final String RESPONSE_SUCCESS_STRING = "true";
 	
 	/**
 	 * 使用HttpClient的post方法获取数据
@@ -121,29 +127,25 @@ public class DataCenterHelper {
 	 * @param fileName 文件名
 	 * @throws IOException
 	 */
-	public static File HttpGetDownloadFile(String fileServerPath,String fileLocalPath,String fileName) throws IOException{
+	public static File HttpGetDownloadPng(String fileServerPath,String fileLocalPath,String fileName) throws IOException{
 		File file = null ;
-		URL url = new URL(fileServerPath);
+		URL url = new URL(URLEncoder.encode(fileServerPath, "UTF-8"));
 		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 		conn.setConnectTimeout(CONNECTION_TIMEOUT_INTEGER);
 		conn.setReadTimeout(SO_TIMEOUT_INTEGER);
-		conn.setRequestMethod("GET");
-		conn.setDoInput(true);
-		if(conn.getResponseCode()==200){
-			InputStream os = conn.getInputStream();
-			if(os.available()>0){
-				file = new File(fileLocalPath+File.separator+fileName);
-				FileOutputStream fos = new FileOutputStream(file);
-				byte [] temp = new byte[8192]; 
-				int len = 0;
-				while ((len =os.read(temp))!=-1) {
-					fos.write(temp, 0, len);
-				}
-				fos.flush();
-				fos.close();
+		InputStream os = conn.getInputStream();
+		if(os.available()>0){
+			file = new File(fileLocalPath+File.separator+fileName);
+			FileOutputStream fos = new FileOutputStream(file);
+			byte [] temp = new byte[8192]; 
+			int len = 0;
+			while ((len =os.read(temp))!=-1) {
+				fos.write(temp, 0, len);
 			}
-			os.close();
+			fos.flush();
+			fos.close();
 		}
+		os.close();
 		return file;
 		
 	} 

@@ -120,6 +120,11 @@ public class LogicMethod {
 		return result;
 	}
 	
+	/**
+	 * 获取分钟的描述
+	 * @param mins
+	 * @return
+	 */
 	public static String getMinsDescrible(int mins){
 		String result ="";
 		if(mins>=0&&mins<60){
@@ -130,5 +135,15 @@ public class LogicMethod {
 			result = (mins/(60*24))+"天";
 		}
 		return result;
+	}
+	
+	/**
+	 * 返回文件的后缀名
+	 * @param fileName
+	 * @return
+	 */
+	public static String getFileExtensions(String fileName){
+		int pos = fileName.lastIndexOf(".");
+		return fileName.substring(pos, fileName.length());
 	}
 }

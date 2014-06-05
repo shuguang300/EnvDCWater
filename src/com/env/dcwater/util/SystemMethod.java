@@ -14,6 +14,7 @@ import com.env.dcwater.component.SystemParams;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -28,11 +29,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 /**
  * 一个用于存储 android系统常用方法 的类
@@ -283,6 +286,65 @@ public class SystemMethod {
 		System.out.println("**********************copy done*******************");
 	}
 	
+	/**
+	 * 获取存放设备技术文档的文件夹
+	 * @return
+	 */
+	public static String getDownloadFilePath(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator)
+		.append(DCWaterApp.ROOT_PATH_STRING).append(File.separator).append(DCWaterApp.FILES_PATH_STRING);
+		return sb.toString();
+	}
 	
+	/**
+	 * 获取存放设备图标的文件夹
+	 * @return
+	 */
+	public static String getDownloadPngPath(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator)
+		.append(DCWaterApp.ROOT_PATH_STRING).append(File.separator).append(DCWaterApp.CACHE_PATH_STRING);
+		return sb.toString();
+	}
+	
+	/**
+	 * 获取私有路径下的数据库文件的路径
+	 * @param context
+	 * @return
+	 */
+	public static String getInternalDataBasePath(Context context){
+		StringBuilder sb = new StringBuilder();
+		sb.append("/data/data/").append(context.getPackageName()).append("/databases/").append(SqliteHelper.DATABASE_NAME);
+		return sb.toString();
+	}
+	
+	/**
+	 * 判断文件是否存在
+	 * @param fileName
+	 * @return
+	 */
+	public static boolean isDeviceFileExist(String fileName){
+		String path = getDownloadFilePath()+"/"+fileName;
+		File file = new File(path);
+		if(file.exists())return true;
+		else return false;
+	}
+	
+	/**
+	 * 根据文件后缀名选择打开的程序
+	 * @param fileExtensions
+	 */
+	public static void openFileByFileExtensions(File file, String fileExtensions,Context context,int requestCode){
+		Uri path = Uri.fromFile(file); 
+		Intent intent = new Intent(Intent.ACTION_VIEW); 
+		intent.setDataAndType(path, "application/"+fileExtensions); 
+		try { 
+			((Activity)context).startActivityForResult(intent, requestCode);
+		}  catch (ActivityNotFoundException e) {
+		    Toast.makeText(context, "没有找到能打开该文件的应用程序", Toast.LENGTH_SHORT).show();
+		    e.printStackTrace(); 
+		} 
+	}
 	
 }
