@@ -11,7 +11,7 @@
     <!-- webview中progressbar的大小 -->
     <dimen name="progressbarheight_webview">12dp</dimen>
     <!-- 下载文件中progressbar的大小 -->
-    <dimen name="progressbarheight_downloadfile">14dp</dimen>
+    <dimen name="progressbarheight_downloadfile">24dp</dimen>
     <!-- 按钮的高度 -->
     <dimen name="buttonheight">48dp</dimen>
     <!-- 布局之间的间隔 -->

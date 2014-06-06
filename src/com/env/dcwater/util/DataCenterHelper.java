@@ -127,25 +127,26 @@ public class DataCenterHelper {
 	 * @param fileName 文件名
 	 * @throws IOException
 	 */
-	public static File HttpGetDownloadPng(String fileServerPath,String fileLocalPath,String fileName) throws IOException{
+	public static File HttpGetDownloadPng(String fileName) throws IOException{
 		File file = null ;
-		URL url = new URL(URLEncoder.encode(fileServerPath, "UTF-8"));
+		String urlString = PIC_URL_STRING+"/"+URLEncoder.encode(fileName, HTTP.UTF_8);
+		URL url = new URL(urlString.replace("+", "%20"));
 		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 		conn.setConnectTimeout(CONNECTION_TIMEOUT_INTEGER);
 		conn.setReadTimeout(SO_TIMEOUT_INTEGER);
-		InputStream os = conn.getInputStream();
-		if(os.available()>0){
-			file = new File(fileLocalPath+File.separator+fileName);
+		InputStream is = conn.getInputStream();
+		if(is.available()>0){
+			file = new File(SystemMethod.getDownloadPngPath(fileName));
 			FileOutputStream fos = new FileOutputStream(file);
 			byte [] temp = new byte[8192]; 
 			int len = 0;
-			while ((len =os.read(temp))!=-1) {
+			while ((len =is.read(temp))!=-1) {
 				fos.write(temp, 0, len);
 			}
 			fos.flush();
 			fos.close();
 		}
-		os.close();
+		is.close();
 		return file;
 		
 	} 

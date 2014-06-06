@@ -1603,35 +1603,55 @@ public class OperationMethod {
 	 * @param taskType
 	 * @return
 	 */
-	public static String getProperStateDesc(String state,String postionID,String taskType){
-		int mState = Integer.parseInt(state);
-		int mPositionID = Integer.parseInt(postionID);
-//		int mTaskType = Integer.parseInt(taskType);
+	public static String getProperStateDesc(String state,String taskType,int PositionID){
+		int mState = Integer.valueOf(state);
+		int mTaskType = Integer.valueOf(taskType);
 		String desc = RepairState.getEnumRepairState(mState).getStateDescription();
 		switch (mState) {
 		case RepairState.STATEBEENINGREPAIRED:
-			if(mPositionID == UserRole.USERROLEREPAIRMAN){
+			if(PositionID == UserRole.USERROLEREPAIRMAN){
 				desc = "工单待填写";
 			}
 			break;
 		case RepairState.STATEDEVICETHROUGH:
+			if(mTaskType==EnumList.RepairTaskType.TASKTYPE_EQUIPMENT&&PositionID==UserRole.USERROLEPLANTER){
+				desc = "待审核";
+			}else if(mTaskType==EnumList.RepairTaskType.TASKTYPE_PRODUCTION && PositionID == UserRole.USERROLEPRODUCTIONCHIEF) {
+				desc = "待审核";
+			}
 			break;
 		case RepairState.STATEDIRECTORTHROUGH:
 			break;
 		case RepairState.STATEFORCORRECTION:
+			if(PositionID == UserRole.USERROLEREPAIRMAN){
+				desc = "工单待填写";
+			}
 			break;
 		case RepairState.STATEHASBEENCONFIRMED:
+			if(PositionID == UserRole.USERROLEEQUIPMENTCHIEF){
+				desc = "维修单待派发";
+			}
 			break;
 		case RepairState.STATEHASBEENDISTRIBUTED:
+			if(PositionID == UserRole.USERROLEREPAIRMAN){
+				desc = "确认维修";
+			}
 			break;
 		case RepairState.STATEHASBEENREPAIRED:
-			
+			if(PositionID == UserRole.USERROLEEQUIPMENTCHIEF){
+				desc = "待审核";
+			}
 			break;
 		case RepairState.STATEHASBEENREPORTED:
+			if(mTaskType==EnumList.RepairTaskType.TASKTYPE_EQUIPMENT&&PositionID==UserRole.USERROLEEQUIPMENTCHIEF){
+				desc = "维修单待派发";
+			}else if(mTaskType==EnumList.RepairTaskType.TASKTYPE_PRODUCTION&&PositionID==UserRole.USERROLEPRODUCTIONCHIEF){
+				desc = "报修单待确认";
+			}
 			break;
 		case RepairState.STATEPRODUCTIONTHROUGH:
-			if(mPositionID == UserRole.USERROLEPLANTER){
-				desc = "等待审核";
+			if(PositionID == UserRole.USERROLEPLANTER){
+				desc = "待审核";
 			}
 			break;
 		}

@@ -557,7 +557,12 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			}
 			viewHolder.lefttop.setText(map.get("DeviceName") + "(" + map.get("InstallPosition") + ")");
 			viewHolder.leftbottom.setText(OperationMethod.getRepairTaskContent(map));
-			viewHolder.righttop.setText(map.get("StateDescription"));
+			if(map.get("CanUpdate").equals("true")){
+				viewHolder.righttop.setText(OperationMethod.getProperStateDesc(map.get("State"),map.get("RepairTaskType"),userPositionID));
+			}else {
+				viewHolder.righttop.setText(map.get("StateDescription"));
+			}
+			
 			viewHolder.arrow.setVisibility(map.get("CanUpdate").equalsIgnoreCase("true") ? View.VISIBLE : View.GONE);
 			viewHolder.pic.setOnClickListener(new View.OnClickListener() {
 				@Override

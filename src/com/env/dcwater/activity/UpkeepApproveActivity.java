@@ -2,9 +2,11 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -30,6 +33,7 @@ import com.env.dcwater.fragment.DataFilterView;
 import com.env.dcwater.fragment.ListviewItemAdapter;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
+import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
@@ -248,7 +252,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 			}
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
 			viewHolder.leftbottom.setText(OperationMethod.getUpkeepApproveContent(map));
-			viewHolder.righttop.setText(map.get("StateDescription"));
+			viewHolder.righttop.setText(map.get("StateDescription").equals(EnumList.UpkeepHistoryState.HASBEENBACK.getCodeName())?"待审核":map.get("StateDescription"));
 			viewHolder.arrow.setVisibility(map.get("CanUpdate").equalsIgnoreCase("true")?View.VISIBLE:View.GONE);
 			viewHolder.pic.setOnClickListener(new View.OnClickListener() {
 				@Override

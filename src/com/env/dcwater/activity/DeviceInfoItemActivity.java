@@ -1,11 +1,11 @@
 package com.env.dcwater.activity;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.xml.sax.XMLReader;
-
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -542,22 +542,31 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	private void setFileButton(final Button btn,final String fileName,final ProgressBar pb){
 		if(SystemMethod.isDeviceFileExist(fileName)){
 			btn.setText("打开");
-			btn.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(DeviceInfoItemActivity.this, "打开本地文件", Toast.LENGTH_SHORT).show();
-				}
-			});
 		}else {
 			btn.setText("下载");
-			btn.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
+		}
+		btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(btn.getText().equals("打开")){
+					try {
+						SystemMethod.openFileByFileExtensions(fileName, DeviceInfoItemActivity.this, 0);
+					} catch (IOException e) {
+						e.printStackTrace();
+						Toast.makeText(DeviceInfoItemActivity.this, "未能找到文件", Toast.LENGTH_SHORT).show();
+					} catch (ActivityNotFoundException e) {
+						e.printStackTrace();
+						Toast.makeText(DeviceInfoItemActivity.this, "没有找到能打开该文件的应用程序", Toast.LENGTH_SHORT).show();
+					} catch (NullPointerException e) {
+						e.printStackTrace();
+						Toast.makeText(DeviceInfoItemActivity.this, "未能找到文件", Toast.LENGTH_SHORT).show();
+					}
+				}else {
 					GetDeviceFile getDeviceFile = new GetDeviceFile(pb, btn);
 					getDeviceFile.execute(fileName);
 				}
-			});
-		}
+			}
+		});
 	}
 	
 	private class DevicePagerAdapter extends PagerAdapter {

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -248,7 +250,7 @@ public class ThreadPool {
 			if(file.exists()){
 			}else {
 				try {
-					file = DataCenterHelper.HttpGetDownloadPng(params[2], params[0], params[1]);
+					file = DataCenterHelper.HttpGetDownloadPng(params[1]);
 				} catch (IOException e) {
 					e.printStackTrace();
 					file = null;
@@ -288,22 +290,26 @@ public class ThreadPool {
 		@Override
 		protected String doInBackground(String... params) {
 			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
-			String fileUrl = DataCenterHelper.FILE_URL_STRING+"/"+params[0];
-			String localFolderPath = SystemMethod.getDownloadFilePath();
-			File folder = new File(localFolderPath);
+			String fileUrl = null;
+			try {
+				fileUrl = DataCenterHelper.FILE_URL_STRING+"/"+URLEncoder.encode(params[0],HTTP.UTF_8);
+			} catch (UnsupportedEncodingException e2) {
+				e2.printStackTrace();
+			}
+			File folder = new File(SystemMethod.getDownloadFileFolderPath());
 			if(!folder.exists()){
 				folder.mkdirs();
 			}
-			File file = new File(localFolderPath+File.separator+params[0]);
+			File file = new File(SystemMethod.getDownloadFilePath(params[0]));
 			URL url;
 			HttpURLConnection conn = null;
 			try {
-				url = new URL(URLEncoder.encode(fileUrl,"UTF-8"));
+				url = new URL(fileUrl.replace("+", "%20"));
 				conn = (HttpURLConnection)url.openConnection();
 				conn.setConnectTimeout(DataCenterHelper.CONNECTION_TIMEOUT_INTEGER);
 				conn.setReadTimeout(DataCenterHelper.SO_TIMEOUT_INTEGER);
+				conn.setRequestProperty(HTTP.CONTENT_TYPE,"application/x-www-form-urlencoded");
 				InputStream is = conn.getInputStream();
-				is = conn.getInputStream();
 				if(is.available()>0){
 					FileOutputStream fos = new FileOutputStream(file);
 					byte [] buffer = new byte[8192];
@@ -355,6 +361,5 @@ public class ThreadPool {
 				mBtn.setText("打开");
 			}
 		}
-		
 	}
 }

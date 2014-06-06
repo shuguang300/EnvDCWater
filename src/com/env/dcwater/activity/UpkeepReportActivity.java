@@ -33,6 +33,7 @@ import com.env.dcwater.fragment.DataFilterView;
 import com.env.dcwater.fragment.ListviewItemAdapter;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
+import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
@@ -255,7 +256,7 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 			}
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
 			viewHolder.leftbottom.setText(OperationMethod.getUpkeepReportContent(map));
-			viewHolder.righttop.setText(map.get("StateDescription"));
+			viewHolder.righttop.setText(map.get("StateDescription").equals(EnumList.UpkeepHistoryState.HASBEENSEND.getCodeName())?"待保养":map.get("StateDescription"));
 			viewHolder.arrow.setVisibility(map.get("CanUpdate").equalsIgnoreCase("true")?View.VISIBLE:View.GONE);
 			viewHolder.pic.setOnClickListener(new View.OnClickListener() {
 				@Override

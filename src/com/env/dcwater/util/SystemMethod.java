@@ -5,12 +5,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.env.dcwater.R;
 import com.env.dcwater.activity.LoginActivity;
 import com.env.dcwater.activity.ShowBigImageActivity;
 import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.SystemParams;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -35,7 +37,6 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 /**
  * 一个用于存储 android系统常用方法 的类
@@ -290,10 +291,19 @@ public class SystemMethod {
 	 * 获取存放设备技术文档的文件夹
 	 * @return
 	 */
-	public static String getDownloadFilePath(){
+	public static String getDownloadFileFolderPath(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator)
 		.append(DCWaterApp.ROOT_PATH_STRING).append(File.separator).append(DCWaterApp.FILES_PATH_STRING);
+		return sb.toString();
+	}
+	/**
+	 * 获取技术文档的绝对路径
+	 * @return
+	 */
+	public static String getDownloadFilePath(String fileName){
+		StringBuilder sb = new StringBuilder();
+		sb.append(getDownloadFileFolderPath()).append(File.separator).append(fileName);
 		return sb.toString();
 	}
 	
@@ -301,10 +311,19 @@ public class SystemMethod {
 	 * 获取存放设备图标的文件夹
 	 * @return
 	 */
-	public static String getDownloadPngPath(){
+	public static String getDownloadPngFolderPath(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator)
 		.append(DCWaterApp.ROOT_PATH_STRING).append(File.separator).append(DCWaterApp.CACHE_PATH_STRING);
+		return sb.toString();
+	}
+	/**
+	 * 获取设备图标的绝对路径
+	 * @return
+	 */
+	public static String getDownloadPngPath(String pngName){
+		StringBuilder sb = new StringBuilder();
+		sb.append(getDownloadPngFolderPath()).append(File.separator).append(pngName);
 		return sb.toString();
 	}
 	
@@ -325,8 +344,7 @@ public class SystemMethod {
 	 * @return
 	 */
 	public static boolean isDeviceFileExist(String fileName){
-		String path = getDownloadFilePath()+"/"+fileName;
-		File file = new File(path);
+		File file = new File(getDownloadFilePath(fileName));
 		if(file.exists())return true;
 		else return false;
 	}
@@ -334,17 +352,32 @@ public class SystemMethod {
 	/**
 	 * 根据文件后缀名选择打开的程序
 	 * @param fileExtensions
+	 * @throws IOException 
+	 * @throws JSONException 
 	 */
-	public static void openFileByFileExtensions(File file, String fileExtensions,Context context,int requestCode){
-		Uri path = Uri.fromFile(file); 
-		Intent intent = new Intent(Intent.ACTION_VIEW); 
-		intent.setDataAndType(path, "application/"+fileExtensions); 
-		try { 
-			((Activity)context).startActivityForResult(intent, requestCode);
-		}  catch (ActivityNotFoundException e) {
-		    Toast.makeText(context, "没有找到能打开该文件的应用程序", Toast.LENGTH_SHORT).show();
-		    e.printStackTrace(); 
-		} 
+	public static void openFileByFileExtensions(String fileName, Context context, int requestCode) throws NullPointerException,IOException, ActivityNotFoundException {
+		File file = new File(getDownloadFilePath(fileName));
+		InputStream is = context.getResources().openRawResource(R.raw.mimetype);
+		StringBuilder sb = new StringBuilder();
+		byte[] temp = new byte[is.available()];
+		int len = 0;
+		while ((len = is.read(temp)) != -1) {
+			sb.append(new String(temp, 0, len));
+		}
+		JSONObject jsonObject;
+		if (file.exists()) {
+			Uri path = Uri.fromFile(file);
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			try {
+				jsonObject = new JSONObject(sb.toString());
+				intent.setDataAndType(path, jsonObject.getString(LogicMethod.getFileExtensions(fileName)));
+				((Activity) context).startActivityForResult(intent, requestCode);
+			} catch (JSONException e) {
+				intent.setDataAndType(path, "file/*");
+				((Activity) context).startActivityForResult(intent, requestCode);
+			}
+		}
+
 	}
 	
 }

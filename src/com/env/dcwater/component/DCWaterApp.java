@@ -72,8 +72,8 @@ public class DCWaterApp extends Application {
 		sp = getSharedPreferences(PREFERENCE_STRING, Context.MODE_PRIVATE);
 		ed = sp.edit();
 		if (Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)) {
-			cache = new File(SystemMethod.getDownloadPngPath());
-			files = new File(SystemMethod.getDownloadFilePath());
+			cache = new File(SystemMethod.getDownloadPngFolderPath());
+			files = new File(SystemMethod.getDownloadFileFolderPath());
 			if (!cache.exists()) {
 				cache.mkdirs();
 			}
