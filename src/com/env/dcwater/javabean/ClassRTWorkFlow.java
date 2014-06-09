@@ -9,70 +9,71 @@ import java.util.Date;
  */
 public class ClassRTWorkFlow {
 	
-	private int positionID;
-	private int state;
-	private String realUserName;
-	private String userID;
-	private String positionName;
-	private Date taskTime;
-	private int taskID;
+	private int PositionID;
+	private int State;
+	private String RealUserName;
+	private String UserID;
+	private String PositionName;
+	private Date TaskTime;
+	private int TaskID;
 	
 	public ClassRTWorkFlow (){
 	}
 
 	public int getPositionID() {
-		return positionID;
-	}
-
-	public int getState() {
-		return state;
-	}
-
-	public String getRealUserName() {
-		return realUserName;
-	}
-
-	public String getUserID() {
-		return userID;
-	}
-
-	public String getPositionName() {
-		return positionName;
-	}
-
-	public Date getTaskTime() {
-		return taskTime;
-	}
-
-	public int getTaskID() {
-		return taskID;
+		return PositionID;
 	}
 
 	public void setPositionID(int positionID) {
-		this.positionID = positionID;
+		PositionID = positionID;
+	}
+
+	public int getState() {
+		return State;
 	}
 
 	public void setState(int state) {
-		this.state = state;
+		State = state;
+	}
+
+	public String getRealUserName() {
+		return RealUserName;
 	}
 
 	public void setRealUserName(String realUserName) {
-		this.realUserName = realUserName;
+		RealUserName = realUserName;
+	}
+
+	public String getUserID() {
+		return UserID;
 	}
 
 	public void setUserID(String userID) {
-		this.userID = userID;
+		UserID = userID;
+	}
+
+	public String getPositionName() {
+		return PositionName;
 	}
 
 	public void setPositionName(String positionName) {
-		this.positionName = positionName;
+		PositionName = positionName;
+	}
+
+	public Date getTaskTime() {
+		return TaskTime;
 	}
 
 	public void setTaskTime(Date taskTime) {
-		this.taskTime = taskTime;
+		TaskTime = taskTime;
+	}
+
+	public int getTaskID() {
+		return TaskID;
 	}
 
 	public void setTaskID(int taskID) {
-		this.taskID = taskID;
+		TaskID = taskID;
 	}
+
 }

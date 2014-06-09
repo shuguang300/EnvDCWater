@@ -11,32 +11,25 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-
 import com.env.dcwater.R;
+import com.env.dcwater.javabean.ClassRTWorkFlow;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.LogicMethod;
 import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * 线程及异步方法的管理 
@@ -370,17 +363,19 @@ public class ThreadPool {
 		}
 	}
 	
-	public static class getRepairTaskWorkFlow extends AsyncTask<String, Integer, ArrayList<HashMap<String, String>>>{
+	public static class getRepairTaskWorkFlow extends AsyncTask<String, Integer, ArrayList<ClassRTWorkFlow>>{
 		@Override
-		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
+		protected ArrayList<ClassRTWorkFlow> doInBackground(String... params) {
 			JSONObject param = new JSONObject();
 			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
-			ArrayList<HashMap<String, String>> data = null;
+			ArrayList<ClassRTWorkFlow> data = null;
 			try {
 				param.put("RepairTaskID", params[0]);
 				result = DataCenterHelper.HttpPostData("getWorkFlowForRepairTaskID", param);
 				if(result.equalsIgnoreCase(DataCenterHelper.RESPONSE_FALSE_STRING)){
-					data = 
+					Gson gson = new Gson();
+					JSONObject jsonObject = new JSONObject(result);
+					data = gson.fromJson(jsonObject.getString("d"), new TypeToken<ArrayList<ClassRTWorkFlow>>(){}.getType());
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -393,7 +388,7 @@ public class ThreadPool {
 		}
 		
 		@Override
-		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
+		protected void onPostExecute(ArrayList<ClassRTWorkFlow> result) {
 			super.onPostExecute(result);
 		}
 	}

@@ -4,25 +4,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.SystemParams;
-import com.env.dcwater.javabean.ClassRTWorkFlow;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.javabean.EnumList.RepairState;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryPlanState;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryState;
 import com.env.dcwater.javabean.EnumList.UserRight;
 import com.env.dcwater.javabean.EnumList.UserRole;
-import com.google.gson.Gson;
 
 /**
  * 一个用于存储 污水厂业务逻辑方法 的类
@@ -1298,12 +1293,6 @@ public class OperationMethod {
 		return  data;
 	}
 	
-	
-	public static ArrayList<ClassRTWorkFlow> parseRepairTaskWorkFlowToList(JSONObject jsonObject){
-		ArrayList<ClassRTWorkFlow> data = null;
-		Gson gson = new Gson();
-		data = gson.fromJson(jsonObject.getString("d"), new TypeToken(ArrayList<ClassRTWorkFlow>(){}))
-	}
 	
 	/**
 	 * @param jsonObject
