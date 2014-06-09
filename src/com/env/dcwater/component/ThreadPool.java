@@ -12,8 +12,15 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -360,6 +367,34 @@ public class ThreadPool {
 			}else {
 				mBtn.setText("打开");
 			}
+		}
+	}
+	
+	public static class getRepairTaskWorkFlow extends AsyncTask<String, Integer, ArrayList<HashMap<String, String>>>{
+		@Override
+		protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
+			JSONObject param = new JSONObject();
+			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
+			ArrayList<HashMap<String, String>> data = null;
+			try {
+				param.put("RepairTaskID", params[0]);
+				result = DataCenterHelper.HttpPostData("getWorkFlowForRepairTaskID", param);
+				if(result.equalsIgnoreCase(DataCenterHelper.RESPONSE_FALSE_STRING)){
+					data = 
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return data;
+		}
+		
+		@Override
+		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
+			super.onPostExecute(result);
 		}
 	}
 }

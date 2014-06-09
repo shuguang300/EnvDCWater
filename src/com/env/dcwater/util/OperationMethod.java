@@ -4,20 +4,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.SystemParams;
+import com.env.dcwater.javabean.ClassRTWorkFlow;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.javabean.EnumList.RepairState;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryPlanState;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryState;
 import com.env.dcwater.javabean.EnumList.UserRight;
 import com.env.dcwater.javabean.EnumList.UserRole;
+import com.google.gson.Gson;
 
 /**
  * 一个用于存储 污水厂业务逻辑方法 的类
@@ -441,11 +446,11 @@ public class OperationMethod {
 		
 		map.put("ReMark", LogicMethod.getRightString(device.get("ReMark").toString()));
 		//正常运行的标准
-		map.put("StandardNorOperation", LogicMethod.getRightString(device.get("StandardNorOperation").toString()));
+		map.put("StandardNorOperation", LogicMethod.getRightString(device.get("StandardNorOperation").toString().trim()));
 		//运行管理及操作要点:
-		map.put("OperatManagAndOperatPoint", LogicMethod.getRightString(device.get("OperatManagAndOperatPoint").toString()));
+		map.put("OperatManagAndOperatPoint", LogicMethod.getRightString(device.get("OperatManagAndOperatPoint").toString().trim()));
 		//常见问题及对策:
-		map.put("ComProbAndSolutions", LogicMethod.getRightString(device.get("ComProbAndSolutions").toString()));
+		map.put("ComProbAndSolutions", LogicMethod.getRightString(device.get("ComProbAndSolutions").toString().trim()));
 		//设备类型
 		map.put("DeviceClassType", LogicMethod.getRightString(device.get("DeviceClassType").toString()));
 		//随机附件及数量
@@ -1293,6 +1298,12 @@ public class OperationMethod {
 		return  data;
 	}
 	
+	
+	public static ArrayList<ClassRTWorkFlow> parseRepairTaskWorkFlowToList(JSONObject jsonObject){
+		ArrayList<ClassRTWorkFlow> data = null;
+		Gson gson = new Gson();
+		data = gson.fromJson(jsonObject.getString("d"), new TypeToken(ArrayList<ClassRTWorkFlow>(){}))
+	}
 	
 	/**
 	 * @param jsonObject

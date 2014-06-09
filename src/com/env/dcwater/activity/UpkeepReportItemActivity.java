@@ -15,6 +15,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -161,6 +163,7 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 		}
 	}
 	
+	
 	private void upkeepUpdate() throws JSONException{
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("MaintainPlanID", receivedData.get("MaintainPlanID").toString());
@@ -188,6 +191,7 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 							Toast.makeText(UpkeepReportItemActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
 							setResult(Activity.RESULT_OK);
 							finish();
+							overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 							break;
 						case EnumList.DataCenterResult.CODE_SERVERERRO:
 							Toast.makeText(UpkeepReportItemActivity.this, "服务器数据更新失败", Toast.LENGTH_SHORT).show();
@@ -209,6 +213,29 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 		};
 		upkeepTaskUpdate.execute(UpkeepTaskUpdate.METHOD_REPORT_STRING);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+		
+	@Override
+	public void onBackPressed() {
+		setResult(RESULT_CANCELED);
+		finish();
+		overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	@Override

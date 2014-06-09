@@ -168,6 +168,7 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 							Toast.makeText(UpkeepApproveItemActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
 							setResult(Activity.RESULT_OK);
 							finish();
+							overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 							break;
 						case EnumList.DataCenterResult.CODE_SERVERERRO:
 							Toast.makeText(UpkeepApproveItemActivity.this, "服务器数据更新失败", Toast.LENGTH_SHORT).show();
@@ -238,6 +239,7 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 	public void onBackPressed() {
 		setResult(RESULT_CANCELED);
 		finish();
+		overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 	}
 
 	@Override

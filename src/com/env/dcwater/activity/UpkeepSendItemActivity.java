@@ -164,6 +164,7 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 						case EnumList.DataCenterResult.CODE_SUCCESS:
 							setResult(Activity.RESULT_OK);
 							finish();
+							overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 							break;
 						case EnumList.DataCenterResult.CODE_SERVERERRO:
 							Toast.makeText(UpkeepSendItemActivity.this, "服务器数据更新失败", Toast.LENGTH_SHORT).show();
@@ -242,6 +243,7 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 	public void onBackPressed() {
 		setResult(RESULT_CANCELED);
 		finish();
+		overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 	}
 
 	@Override
