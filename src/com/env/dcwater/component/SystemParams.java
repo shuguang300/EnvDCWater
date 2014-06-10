@@ -3,6 +3,11 @@ package com.env.dcwater.component;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.env.dcwater.util.OperationMethod;
+
 /**
  * 单例模式，存储系统变量 比如是否登录
  * 
@@ -48,7 +53,11 @@ public class SystemParams {
 	/**
 	 * @return the mLoggedUserInfo
 	 */
-	public HashMap<String, String> getLoggedUserInfo() {
+	public HashMap<String, String> getLoggedUserInfo(Context context) {
+		if(mLoggedUserInfo==null){
+			SharedPreferences sp = context.getSharedPreferences(DCWaterApp.PREFERENCE_STRING, Context.MODE_PRIVATE);
+			mLoggedUserInfo = OperationMethod.getLocalUserInfo(sp);
+		}
 		return mLoggedUserInfo;
 	}
 

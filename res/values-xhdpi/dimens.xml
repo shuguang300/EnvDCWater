@@ -17,7 +17,7 @@
     <!-- 布局之间的间隔 -->
     <dimen name="layout_margin">10dp</dimen>
     <!-- 布局之间的间隔 (小)-->
-    <dimen name="layout_margin_short">8dp</dimen>
+    <dimen name="layout_margin_short">4dp</dimen>
     <!-- 布局之间的间隔 (大)-->
     <dimen name="layout_margin_long">12dp</dimen>
     <!-- 系统图片的大小 -->

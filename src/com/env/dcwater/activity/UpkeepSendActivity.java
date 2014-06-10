@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -224,7 +226,7 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 				getDevicePic.execute(SystemMethod.getLocalTempPath(), map.get("PicURL").toString(), DataCenterHelper.PIC_URL_STRING + "/" + map.get("PicURL").toString());
 			}
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
-			viewHolder.leftbottom.setText(OperationMethod.getUpkeepSendContent(map));
+			viewHolder.leftbottom.setText(Html.fromHtml(OperationMethod.getUpkeepSendContent(map)));
 			viewHolder.arrow.setVisibility(map.get("CanUpdate").equalsIgnoreCase("true")?View.VISIBLE:View.GONE);
 			String temp = map.get("MaintainStateDescription");
 			if(temp.equals("完成")||temp.equals("已列入计划")){

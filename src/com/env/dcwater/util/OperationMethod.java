@@ -1,14 +1,18 @@
 package com.env.dcwater.util;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.SystemParams;
@@ -1538,17 +1542,18 @@ public class OperationMethod {
 			try {
 				int min =  Integer.parseInt(map.get("dataToday"));
 				if(min<0){
-					sb.append("该次保养已达到").append(LogicMethod.getMinsDescrible(-min)).append("，请派发。");
+					sb.append("<font color=\"red\">超时:").append(LogicMethod.getMinsDescrible(-min));
 				}else if (min>=0) {
-					sb.append("距离保养开始还有").append(LogicMethod.getMinsDescrible(min)).append("，");
+					sb.append("<font color=\"blue\">还剩:").append(LogicMethod.getMinsDescrible(min));
 				}
+				sb.append("</font>");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
 		}else {
-			sb.append("当前正在保养中。");
+			sb.append("保养中。");
 		}
-		sb.append("\n").append("保养内容：").append(map.get("MaintainSpecification")).append("。");
+		sb.append("<br>").append("保养内容：").append(map.get("MaintainSpecification")).append("。</br>");
 		return sb.toString();
 	}
 	/**
@@ -1558,19 +1563,38 @@ public class OperationMethod {
 	 */
 	public static String getUpkeepReportContent(HashMap<String, String> map){
 		StringBuilder sb = new StringBuilder();
+		int state = Integer.valueOf(map.get("State"));
 		sb.append("保养部位：").append(map.get("MaintainPosition")).append("\n");
-		sb.append("保养期限：").append(map.get("NeedComplete"));
+		try {
+			if(state == EnumList.UpkeepHistoryState.STATE_HASBEENSEND_INT||state == EnumList.UpkeepHistoryState.STATE_NOTAPPROVE_INT||state==EnumList.UpkeepHistoryState.STATE_WAITFORSUBMIT_INT){
+				Date date=new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(map.get("CreateTime"));
+				sb.append("已派发：").append(LogicMethod.getTimeSpan(date,new Date()));
+			}else if (state == EnumList.UpkeepHistoryState.STATE_HASBEENBACK_INT) {
+				Date date= new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(map.get("CheckTime"));
+				sb.append("已回单：").append(LogicMethod.getTimeSpan(date,new Date()));
+			}
+		} catch (ParseException e) {}
 		return sb.toString();
 	}
 	/**
 	 * 获取保养工单审核的描述信息
 	 * @param map
 	 * @return
+	 * @throws ParseException 
 	 */
-	public static String getUpkeepApproveContent(HashMap<String, String> map){
+	public static String getUpkeepApproveContent(HashMap<String, String> map) {
 		StringBuilder sb = new StringBuilder();
+		int state = Integer.valueOf(map.get("State"));
 		sb.append("保养部位：").append(map.get("MaintainPosition")).append("\n");
-		sb.append("保养期限：").append(map.get("NeedComplete"));
+		try {
+			if(state == EnumList.UpkeepHistoryState.STATE_HASBEENSEND_INT||state == EnumList.UpkeepHistoryState.STATE_NOTAPPROVE_INT||state==EnumList.UpkeepHistoryState.STATE_WAITFORSUBMIT_INT){
+				Date date=new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(map.get("CreateTime"));
+				sb.append("已派发：").append(LogicMethod.getTimeSpan(date,new Date()));
+			}else if (state == EnumList.UpkeepHistoryState.STATE_HASBEENBACK_INT) {
+				Date date= new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING,Locale.CHINA).parse(map.get("CheckTime"));
+				sb.append("已回单：").append(LogicMethod.getTimeSpan(date,new Date()));
+			}
+		} catch (ParseException e) {}
 		return sb.toString();
 	}
 	

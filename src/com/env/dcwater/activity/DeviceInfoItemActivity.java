@@ -193,7 +193,6 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		statu = (PullToRefreshView)statuView.findViewById(R.id.view_device_statu);
 		manage = (PullToRefreshView)manageView.findViewById(R.id.view_device_manage);
 		
-		
 		devicePropertyAdapter = new DevicePropertyAdapter(deviceProperty);
 		deviceManageAdapter = new DevicePropertyAdapter(deviceManage);
 		deviceParamAdapter = new DeviceParamAdapter();

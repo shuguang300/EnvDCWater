@@ -35,7 +35,7 @@ public class UserInformationAcivity extends NfcActivity implements OnClickListen
 		setViewData();
 	}
 	private void iniData(){
-		user = SystemParams.getInstance().getLoggedUserInfo();
+		user = SystemParams.getInstance().getLoggedUserInfo(getApplicationContext());
 	}
 	private void iniActionBar() {
 		mActionBar = getActionBar();

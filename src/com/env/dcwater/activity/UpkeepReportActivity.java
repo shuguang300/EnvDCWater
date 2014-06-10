@@ -256,7 +256,13 @@ public class UpkeepReportActivity extends NfcActivity implements OnItemClickList
 			}
 			viewHolder.lefttop.setText(map.get("DeviceName")+"("+ map.get("StructureName")+")");
 			viewHolder.leftbottom.setText(OperationMethod.getUpkeepReportContent(map));
-			viewHolder.righttop.setText(map.get("StateDescription").equals(EnumList.UpkeepHistoryState.HASBEENSEND.getCodeName())?"待保养":map.get("StateDescription"));
+			String statedesc = map.get("StateDescription");
+			if(statedesc.equals(EnumList.UpkeepHistoryState.HASBEENSEND.getCodeName())
+			||statedesc.equals(EnumList.UpkeepHistoryState.NOTAPPROVE.getCodeName())){
+				viewHolder.righttop.setText("待保养");
+			}else {
+				viewHolder.righttop.setText(statedesc);
+			}
 			viewHolder.arrow.setVisibility(map.get("CanUpdate").equalsIgnoreCase("true")?View.VISIBLE:View.GONE);
 			viewHolder.pic.setOnClickListener(new View.OnClickListener() {
 				@Override

@@ -22,7 +22,7 @@ public class UpkeepHistoryItemActivity extends NfcActivity {
 	private HashMap<String, String> receivedData;
 	private Intent receivedIntent;
 	private ActionBar mActionBar;
-	private TextView tvDeviceName,tvInstallPos,tvMTPos,tvMTDetail,tvSendTime,tvSendPerson,tvNeedHour,tvNeedFinishTime,tvMTPerson,tvBackPerson,tvActualHour,tvMTResult,tvApprovePerson,tvApproveTime,tvDDOpinion;
+	private TextView tvCheckTime,tvDeviceName,tvInstallPos,tvMTPos,tvMTDetail,tvSendTime,tvSendPerson,tvNeedHour,tvNeedFinishTime,tvMTPerson,tvBackPerson,tvActualHour,tvMTResult,tvApprovePerson,tvApproveTime,tvDDOpinion;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class UpkeepHistoryItemActivity extends NfcActivity {
 		tvSendPerson = (TextView)findViewById(R.id.activity_upkeephistoryitem_sendperson);
 		tvNeedHour = (TextView)findViewById(R.id.activity_upkeephistoryitem_needhour);
 		tvNeedFinishTime = (TextView)findViewById(R.id.activity_upkeephistoryitem_needfinishtime);
+		tvCheckTime = (TextView)findViewById(R.id.activity_upkeephistoryitem_checktime);
 		tvMTPerson = (TextView)findViewById(R.id.activity_upkeephistoryitem_maintainperson);
 		tvBackPerson = (TextView)findViewById(R.id.activity_upkeephistoryitem_backperson);
 		tvActualHour = (TextView)findViewById(R.id.activity_upkeephistoryitem_actualhour);
@@ -86,6 +87,7 @@ public class UpkeepHistoryItemActivity extends NfcActivity {
 		tvSendPerson.setText(receivedData.get("CreatePerson"));
 		tvNeedHour.setText(receivedData.get("RequiredManHours"));
 		tvNeedFinishTime.setText(receivedData.get("NeedComplete"));
+		tvCheckTime.setText(receivedData.get("CheckTime"));
 		tvMTPerson.setText(receivedData.get("MaintainPerson"));
 		tvBackPerson.setText(receivedData.get("CheckPerson"));
 		tvActualHour.setText(receivedData.get("ActualManHours"));

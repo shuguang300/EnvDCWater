@@ -70,6 +70,7 @@
     <string name="activity_upkeephistoryitem_sendperson">派发人</string>
     <string name="activity_upkeephistoryitem_needhour">所需工时</string>
     <string name="activity_upkeephistoryitem_needfinishtime">要求完成时间</string>
+    <string name="activity_upkeephistoryitem_checktime">回单时间</string>
     <string name="activity_upkeephistoryitem_maintainperson">养护人</string>
     <string name="activity_upkeephistoryitem_backperson">回单人</string>
     <string name="activity_upkeephistoryitem_actualhour">实际工时</string>

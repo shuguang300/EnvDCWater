@@ -373,6 +373,32 @@
             </intent-filter>
         </activity>
         
+        <!-- 显示维修任务进度-->
+        <activity
+            android:name="com.env.dcwater.activity.TaskStateFlowActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
+            <intent-filter >
+                <action android:name="com.env.dcwater.activity.TaskStateFlowActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 显示维修任务流程-->
+        <activity
+            android:name="com.env.dcwater.activity.TaskStateWorkFlowActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
+            <intent-filter >
+                <action android:name="com.env.dcwater.activity.TaskStateWorkFlowActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
     </application>
 
 </manifest>

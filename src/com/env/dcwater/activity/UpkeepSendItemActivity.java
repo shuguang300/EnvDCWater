@@ -124,7 +124,7 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 		tvMTNext.setText(receivedData.get("Maintaintimenext"));
 		
 		tvSendTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(sendDate));
-		tvSendPerson.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+		tvSendPerson.setText(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("RealUserName"));
 		tvNeedFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(finishDate));
 		tvTaskDetail.setText("");
 	}
@@ -143,7 +143,7 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 		jsonObject.put("PlantID",  receivedData.get("PlantID").toString());
 		jsonObject.put("State",  UpkeepHistoryPlanState.STATE_HASBEENPLAN_INT);
 		jsonObject.put("CreateTime",  new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(sendDate));
-		jsonObject.put("CreatePersonID",  SystemParams.getInstance().getLoggedUserInfo().get("UserID").toString());
+		jsonObject.put("CreatePersonID",  SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("UserID").toString());
 		jsonObject.put("TaskDetail",  tvTaskDetail.getText().toString());
 		jsonObject.put("month",  sendDate.getMonth()+1);
 		jsonObject.put("year",  sendDate.getYear());

@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.fragment.AddMediaFileView;
@@ -64,7 +66,11 @@ public class DataInputActivity extends NfcActivity {
 		dataInputer = (EditText)findViewById(R.id.activity_datainput_data);
 		dataInputer.setText(data.get("Value"));
 		dataInputer.selectAll();
-		
+		if(data.get("Key").equals("RequiredManHours")
+			||data.get("Key").equals("RepairCost")
+			||data.get("key").equals("ActualManHours")){
+			dataInputer.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+		}
 		
 		
 		
@@ -97,7 +103,9 @@ public class DataInputActivity extends NfcActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_datainput, menu);
-		if(data.get("Key").equals("RequiredManHours")||data.get("Key").equals("RepairCost")){
+		if(data.get("Key").equals("RequiredManHours")
+			||data.get("Key").equals("RepairCost")
+			||data.get("key").equals("ActualManHours")){
 			menu.findItem(R.id.menu_datainput_add).setVisible(false);
 		}
 		return super.onCreateOptionsMenu(menu);

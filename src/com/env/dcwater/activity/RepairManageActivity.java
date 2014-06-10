@@ -177,7 +177,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 	private void iniData() {
 		dpi = SystemMethod.getDpi(getWindowManager());
 		mData = new ArrayList<HashMap<String, String>>();
-		userPositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+		userPositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("PositionID"));
 		if (userPositionID == EnumList.UserRole.USERROLEEQUIPMENTOPERATION || userPositionID == EnumList.UserRole.USERROLEPRODUCTIONOPERATION) {
 			isFilter = false;
 		}
@@ -464,7 +464,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		// 不需要为headerview注册上下文菜单，所以进行判断
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 		if (info.position != 0 && mData.get(info.position - 1).get("CanUpdate").equals("true")) {
-			int positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+			int positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("PositionID"));
 			int taskState = Integer.valueOf(mData.get(info.position - 1).get("State"));
 			// int taskType =
 			// Integer.valueOf(mData.get(info.position-1).get("RepairTaskType"));
@@ -586,11 +586,11 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 			ArrayList<HashMap<String, String>> data = null;
 			try {
 				object.put("PlantID", SystemParams.PLANTID_INT);
-				object.put("UserRole", Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("UserRole")));
+				object.put("UserRole", Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("UserRole")));
 				String result = DataCenterHelper.HttpPostData("GetReportInfoList", object);
 				if (!result.equals(DataCenterHelper.RESPONSE_FALSE_STRING)) {
 					JSONObject jsonObject = new JSONObject(result);
-					int rolePositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID"));
+					int rolePositionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("PositionID"));
 					dateFilters = mDataFilterView.getSelectCondition();
 					int taskState = OperationMethod.getTaskStateByStateName(dateFilters[3]);
 					data = OperationMethod.parseRepairTaskDataToList(rolePositionID, jsonObject, taskState, dateFilters[2], isFilter);

@@ -159,6 +159,22 @@
                     style="@style/ItemValueStyle" />
             </TableRow>
             
+            <TextView style="@style/ItemDivider" />
+
+            <TableRow
+                android:id="@+id/activity_upkeephistoryitem_checktime_tr"
+                style="@style/ItemLineStyle" >
+
+                <TextView
+                    style="@style/ItemTitleStyle"
+                    android:text="@string/activity_upkeephistoryitem_checktime"
+                    android:drawableLeft="@drawable/ic_item_time" />
+
+                <TextView
+                    android:id="@+id/activity_upkeephistoryitem_checktime"
+                    style="@style/ItemValueStyle" />
+            </TableRow>
+            
             
             <TextView style="@style/ItemDivider" />
 

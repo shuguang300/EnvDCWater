@@ -36,7 +36,7 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 	private HashMap<String, String> receivedData;
 	private Intent receivedIntent;
 	private ActionBar mActionBar;
-	private TextView tvDeviceName,tvInstallPos,tvMTPos,tvTaskDetail,tvSendTime,tvSendPerson,tvNeedHour,tvNeedFinishTime,tvMTPerson,tvBackPerson,tvActualHour,tvMTResult,tvApprovePerson,tvApproveTime,tvDDOpinion;
+	private TextView tvCheckTime,tvDeviceName,tvInstallPos,tvMTPos,tvTaskDetail,tvSendTime,tvSendPerson,tvNeedHour,tvNeedFinishTime,tvMTPerson,tvBackPerson,tvActualHour,tvMTResult,tvApprovePerson,tvApproveTime,tvDDOpinion;
 	private Switch tvApproveSwitch;
 	private TableRow trDDOpinion;
 	private Button submit;
@@ -87,6 +87,8 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 		tvSendPerson = (TextView)findViewById(R.id.activity_upkeepapproveitem_sendperson);
 		tvNeedHour = (TextView)findViewById(R.id.activity_upkeepapproveitem_needhour);
 		tvNeedFinishTime = (TextView)findViewById(R.id.activity_upkeepapproveitem_needfinishtime);
+		tvCheckTime = (TextView)findViewById(R.id.activity_upkeepapproveitem_checktime);
+		
 		
 		tvMTPerson = (TextView)findViewById(R.id.activity_upkeepapproveitem_maintainperson);
 		tvBackPerson = (TextView)findViewById(R.id.activity_upkeepapproveitem_backperson);
@@ -127,6 +129,7 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 		tvSendPerson.setText(receivedData.get("CreatePerson"));
 		tvNeedHour.setText(receivedData.get("RequiredManHours"));
 		tvNeedFinishTime.setText(receivedData.get("NeedComplete"));
+		tvCheckTime.setText(receivedData.get("CheckTime"));
 		
 		tvMTPerson.setText(receivedData.get("MaintainPerson"));
 		tvBackPerson.setText(receivedData.get("CheckPerson"));
@@ -134,7 +137,7 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 		tvMTResult.setText(receivedData.get("MaintainDetail"));
 		
 		tvApproveSwitch.setChecked(false);
-		tvApprovePerson.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+		tvApprovePerson.setText(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("RealUserName"));
 		tvApproveTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
 		tvDDOpinion.setText("");
 	}
@@ -144,7 +147,7 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("MaintainPlanID", receivedData.get("MaintainPlanID").toString());
 		jsonObject.put("MaintainTaskID",  receivedData.get("MaintainTaskID").toString());
-		jsonObject.put("ApprovePersonID",  SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+		jsonObject.put("ApprovePersonID",  SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("UserID"));
 		jsonObject.put("ApproveTime",  tvApproveTime.getText().toString());
 		jsonObject.put("DDOpinion",  tvDDOpinion.getText().toString());
 		if(tvApproveSwitch.isChecked()){
@@ -165,7 +168,6 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 						int code = jsonObject.getInt("d");
 						switch (code) {
 						case EnumList.DataCenterResult.CODE_SUCCESS:
-							Toast.makeText(UpkeepApproveItemActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
 							setResult(Activity.RESULT_OK);
 							finish();
 							overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);

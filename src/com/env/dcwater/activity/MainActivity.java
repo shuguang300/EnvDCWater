@@ -76,7 +76,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	 *   初始化数据
 	 */
 	private void iniData(){
-		data = OperationMethod.getViewByUserRole(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID")));
+		data = OperationMethod.getViewByUserRole(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("PositionID")));
 		SystemParams.getInstance().setUserRightData(data);
 	}
 	
@@ -147,7 +147,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 				}
 			}
 		};
-		getTaskCount.execute(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo().get("PositionID")));
+		getTaskCount.execute(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("PositionID")));
 	}
 	
 	@Override
@@ -191,7 +191,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		titleMessage = (TextView)menu.getItem(0).getActionView();
 		titleMessage.setTextColor(getResources().getColor(R.color.white));
-		titleMessage.setText(SystemParams.getInstance().getLoggedUserInfo().get("PlantName"));
+		titleMessage.setText(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("PlantName"));
 //		titleMessage.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.i_small));
 		return super.onCreateOptionsMenu(menu);
 	}

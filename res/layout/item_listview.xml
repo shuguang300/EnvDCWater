@@ -29,6 +29,7 @@
             android:id="@+id/item_listview_lefttop"
             style="@style/ItemLayout"
             android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/item_listview_righttop"
             android:textSize="@dimen/fontsize_large" />
         
         <ImageView 

@@ -130,7 +130,7 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 			tvActualHour.setText("");
 			tvMTResult.setText("");
 		}
-		tvBackPerson.setText(SystemParams.getInstance().getLoggedUserInfo().get("RealUserName"));
+		tvBackPerson.setText(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("RealUserName"));
 	}
 	
 	private void startDataInputActivity(HashMap<String, String> data){
@@ -169,7 +169,7 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 		jsonObject.put("MaintainPlanID", receivedData.get("MaintainPlanID").toString());
 		jsonObject.put("MaintainTaskID",  receivedData.get("MaintainTaskID").toString());
 		jsonObject.put("MaintainPerson",  tvMTPerson.getText().toString());
-		jsonObject.put("CheckPersonID",  SystemParams.getInstance().getLoggedUserInfo().get("UserID"));
+		jsonObject.put("CheckPersonID",  SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("UserID"));
 		jsonObject.put("ActualManHours",  tvActualHour.getText().toString());
 		jsonObject.put("MaintainDetail",  tvMTResult.getText().toString());
 		jsonObject.put("CheckTime",  new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
@@ -188,7 +188,6 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 						int code = jsonObject.getInt("d");
 						switch (code) {
 						case EnumList.DataCenterResult.CODE_SUCCESS:
-							Toast.makeText(UpkeepReportItemActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
 							setResult(Activity.RESULT_OK);
 							finish();
 							overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);

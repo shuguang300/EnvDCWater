@@ -84,7 +84,7 @@ public class LogicMethod {
 	 * @return
 	 */
 	public static String getTimeSpan(Date date1,Date date2){
-		long timespan = (date2.getTime()-date1.getTime())/3600000;
+		long timespan = Math.abs(date2.getTime()-date1.getTime())/3600000;
 		String result = "";
 		timespan = Math.abs(timespan);
 		if(timespan<1&&timespan>=0){
