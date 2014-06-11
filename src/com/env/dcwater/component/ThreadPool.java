@@ -11,17 +11,20 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
 import com.env.dcwater.R;
 import com.env.dcwater.javabean.ClassRTWorkFlow;
 import com.env.dcwater.util.DataCenterHelper;
@@ -363,7 +366,12 @@ public class ThreadPool {
 		}
 	}
 	
-	public static class getRepairTaskWorkFlow extends AsyncTask<String, Integer, ArrayList<ClassRTWorkFlow>>{
+	/**
+	 * 获得维修单的工作流
+	 * 执行时，请提供一个RepairTaskID
+	 * @author Administrator
+	 */
+	public abstract static class GetRepairTaskWorkFlow extends AsyncTask<String, Integer, ArrayList<ClassRTWorkFlow>>{
 		@Override
 		protected ArrayList<ClassRTWorkFlow> doInBackground(String... params) {
 			JSONObject param = new JSONObject();
@@ -386,10 +394,10 @@ public class ThreadPool {
 			}
 			return data;
 		}
+		@Override
+		public abstract void onPreExecute();
 		
 		@Override
-		protected void onPostExecute(ArrayList<ClassRTWorkFlow> result) {
-			super.onPostExecute(result);
-		}
+		public abstract void onPostExecute(ArrayList<ClassRTWorkFlow> result);
 	}
 }

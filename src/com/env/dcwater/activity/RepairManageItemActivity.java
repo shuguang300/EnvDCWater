@@ -784,6 +784,10 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_repairmanageitem, menu);
+		if(mRequestCode==RepairManageActivity.REPAIRMANAGE_HISTORY_INTEGER){
+			menu.findItem(R.id.menu_repairmanageitem_flow).setVisible(false);
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -792,6 +796,18 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			onBackPressed();	
+			break;
+		case R.id.menu_repairmanageitem_flow:
+			Intent flow = new Intent(TaskStateFlowActivity.ACTION_STRING);
+			flow.putExtra("data", receivedData);
+			startActivityForResult(flow, 0);
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			break;
+		case R.id.menu_repairmanageitem_workflow:
+			Intent workflow = new Intent(TaskStateWorkFlowActivity.ACTION_STRING);
+			workflow.putExtra("data", receivedData);
+			startActivityForResult(workflow, 0);
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 			break;
 		}
 		return super.onOptionsItemSelected(item);

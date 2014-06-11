@@ -26,4 +26,7 @@
     <dimen name="ic_logo_marginTop">180dp</dimen>
     <!-- 登录界面中，第一个控件距离logo的大小 -->
     <dimen name="ic_view_marginLogo">100dp</dimen>
+     <!-- 工作流边框的大小-->
+    <dimen name="stateflow_height">50dp</dimen>
+    <dimen name="stateflow_width">250dp</dimen>
 </resources>

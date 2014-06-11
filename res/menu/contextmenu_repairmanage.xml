@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/contextmenu_repairmanage_flow"
+        android:title="@string/menu_repairmanageitem_flow" />
+
+    <item
+        android:id="@+id/contextmenu_repairmanage_workflow"
+        android:title="@string/menu_repairmanageitem_workflow"/>
+
+</menu>

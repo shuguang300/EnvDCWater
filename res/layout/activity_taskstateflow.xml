@@ -2,18 +2,105 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical" >
-        
-        
-        
-        
-        
+        android:orientation="vertical"
+        android:padding="@dimen/layout_margin_long" >
+
+        <TextView
+            android:id="@+id/activity_taskstateflow_state0"
+            style="@style/StateFlowUndo"
+            android:text="@string/activity_stateflow_state0" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_pic_arrowdown" />
+
+        <LinearLayout
+            android:id="@+id/activity_taskstateflow_state1group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/activity_taskstateflow_state1"
+                style="@style/StateFlowUndo"
+                android:text="@string/activity_stateflow_state1" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_pic_arrowdown" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/activity_taskstateflow_state2"
+            style="@style/StateFlowUndo"
+            android:text="@string/activity_stateflow_state2" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_pic_arrowdown" />
+
+        <TextView
+            android:id="@+id/activity_taskstateflow_state3"
+            style="@style/StateFlowUndo"
+            android:text="@string/activity_stateflow_state3" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_pic_arrowdown" />
+
+        <TextView
+            android:id="@+id/activity_taskstateflow_state4"
+            style="@style/StateFlowUndo"
+            android:text="@string/activity_stateflow_state4" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_pic_arrowdown" />
+
+        <TextView
+            android:id="@+id/activity_taskstateflow_state6"
+            style="@style/StateFlowUndo"
+            android:text="@string/activity_stateflow_state6" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_pic_arrowdown" />
+
+        <LinearLayout
+            android:id="@+id/activity_taskstateflow_state7group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/activity_taskstateflow_state7"
+                style="@style/StateFlowUndo"
+                android:text="@string/activity_stateflow_state7" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_pic_arrowdown" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/activity_taskstateflow_state8"
+            style="@style/StateFlowUndo"
+            android:text="@string/activity_stateflow_state8" />
     </LinearLayout>
 
 </ScrollView>

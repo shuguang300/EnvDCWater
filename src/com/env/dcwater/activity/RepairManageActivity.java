@@ -32,6 +32,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -343,7 +344,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		});
 
 		// mListView.setOnItemLongClickListener(this); //长按事件与上下文菜单冲突，二者只能选其一
-		// registerForContextMenu(mListView);
+		registerForContextMenu(mListView);
 	}
 
 	/**
@@ -463,60 +464,31 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		super.onCreateContextMenu(menu, v, menuInfo);
 		// 不需要为headerview注册上下文菜单，所以进行判断
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-		if (info.position != 0 && mData.get(info.position - 1).get("CanUpdate").equals("true")) {
-			int positionID = Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("PositionID"));
-			int taskState = Integer.valueOf(mData.get(info.position - 1).get("State"));
-			// int taskType =
-			// Integer.valueOf(mData.get(info.position-1).get("RepairTaskType"));
-			switch (positionID) {
-			case EnumList.UserRole.USERROLEPLANTER:
-				getMenuInflater().inflate(R.menu.cm_rm_pm, menu);
-				break;
-			case EnumList.UserRole.USERROLEEQUIPMENTOPERATION:
-			case EnumList.UserRole.USERROLEPRODUCTIONOPERATION:
-				getMenuInflater().inflate(R.menu.cm_rm_op, menu);
-				break;
-			case EnumList.UserRole.USERROLEEQUIPMENTCHIEF:
-				getMenuInflater().inflate(R.menu.cm_rm_dd, menu);
-				if (taskState == EnumList.RepairState.STATEHASBEENCONFIRMED || taskState == EnumList.RepairState.STATEHASBEENREPORTED || taskState == EnumList.RepairState.STATEHASBEENDISTRIBUTED) {
-					menu.getItem(0).setVisible(true);
-					menu.getItem(1).setVisible(false);
-				} else {
-					menu.getItem(0).setVisible(false);
-					menu.getItem(1).setVisible(true);
-				}
-				break;
-			case EnumList.UserRole.USERROLEPRODUCTIONCHIEF:
-				getMenuInflater().inflate(R.menu.cm_rm_pd, menu);
-				if (taskState == EnumList.RepairState.STATEHASBEENREPORTED) {
-					menu.getItem(0).setVisible(true);
-					menu.getItem(1).setVisible(false);
-				} else {
-					menu.getItem(0).setVisible(false);
-					menu.getItem(1).setVisible(true);
-				}
-				break;
-			case EnumList.UserRole.USERROLEREPAIRMAN:
-				getMenuInflater().inflate(R.menu.cm_rm_rm, menu);
-				if (taskState == EnumList.RepairState.STATEHASBEENDISTRIBUTED) {
-					menu.getItem(0).setVisible(true);
-					menu.getItem(1).setVisible(false);
-				} else {
-					menu.getItem(0).setVisible(false);
-					menu.getItem(1).setVisible(true);
-				}
-				break;
-			}
-			menu.setHeaderTitle("更多操作");
+		if (info.position != 0) {
+			getMenuInflater().inflate(R.menu.contextmenu_repairmanage, menu);
+			menu.setHeaderTitle("更多");
 		}
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		// 获得contextmenu的触发控件
-		// AdapterContextMenuInfo
-		// info=(AdapterContextMenuInfo)item.getMenuInfo();
-		// selectedPos = info.position-1;
+//		 获得contextmenu的触发控件
+		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
+	    int selectedPos = info.position-1;
+	    switch (item.getItemId()) {
+		case R.id.contextmenu_repairmanage_flow:
+			Intent flow = new Intent(TaskStateFlowActivity.ACTION_STRING);
+			flow.putExtra("data", mData.get(selectedPos));
+			startActivityForResult(flow, 0);
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			break;
+		case R.id.contextmenu_repairmanage_workflow:
+			Intent workflow = new Intent(TaskStateWorkFlowActivity.ACTION_STRING);
+			workflow.putExtra("data", mData.get(selectedPos));
+			startActivityForResult(workflow, 0);
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			break;
+		}
 		return super.onContextItemSelected(item);
 	}
 

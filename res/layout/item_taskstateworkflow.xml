@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center" >
+    
+    <LinearLayout
+        android:id="@+id/item_taskstateworkflow_group" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <TextView
+            android:id="@+id/item_taskstateworkflow_left"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_marginRight="@dimen/layout_margin_long"
+            android:text="aaaas" />
+        
+        <TextView
+            android:id="@+id/item_taskstateworkflow_right"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:layout_marginLeft="@dimen/layout_margin_long"
+            android:text="aaaas" />
+        
+    </LinearLayout>
+    
+    <ImageView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/stateflow_tv_bg_done"/>
+
+</FrameLayout>

@@ -290,20 +290,6 @@
             </intent-filter>
         </activity>
         
-        <!-- 保养工单详情   -->
-        <activity
-            android:name="com.env.dcwater.activity.UpkeepManageItemActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/CustomActionBarTheme"
-            android:icon="@drawable/ic_act_upkeephistory" >
-            <intent-filter >
-                <action android:name="com.env.dcwater.activity.UpkeepManageItemActivity"/>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        
         <!-- 保养历史记录 -->
         <activity
             android:name="com.env.dcwater.activity.UpkeepHistoryActivity"
@@ -379,7 +365,7 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
+            android:theme="@style/CustomActionBarTheme" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.TaskStateFlowActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -392,7 +378,7 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
+            android:theme="@style/CustomActionBarTheme" >
             <intent-filter >
                 <action android:name="com.env.dcwater.activity.TaskStateWorkFlowActivity"/>
                 <category android:name="android.intent.category.DEFAULT" />

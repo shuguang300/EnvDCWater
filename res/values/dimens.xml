@@ -24,4 +24,10 @@
     <dimen name="thinline">1dp</dimen>
     <!-- 粗边框 -->
     <dimen name="boldline">2dp</dimen>
+    <!-- 时间线-->
+    <dimen name="timeline">4dp</dimen>
+    <!--边角-->
+    <dimen name="thincorner">5dp</dimen>
+    <!--边角-->
+    <dimen name="boldcorner">10dp</dimen>
 </resources>

@@ -137,6 +137,15 @@
     <string name="activity_userinfor_plant">厂    名</string>
     <string name="activity_userinfor_changepsw">修改密码</string>
     <string name="activity_userinfor_logout">注    销</string>
+    <string name="activity_stateflow_state0">报修单已上报</string>
+    <string name="activity_stateflow_state1">报修单已确认</string>
+    <string name="activity_stateflow_state2">维修单已派发</string>
+    <string name="activity_stateflow_state3">维修单填写中</string>
+    <string name="activity_stateflow_state4">维修单已上报</string>
+    <string name="activity_stateflow_state5"></string>
+    <string name="activity_stateflow_state6">设备科长审核通过</string>
+    <string name="activity_stateflow_state7">生产科长已确认</string>
+    <string name="activity_stateflow_state8">厂长审核通过</string>
 
     <string-array name="view_datafilter_fasttimelist">
         <item>请选择</item>
@@ -217,5 +226,6 @@
     <string name="cm_rm_rm_receive">确认维修</string>
     <string name="cm_rm_rm_repair">填写工单</string>
     <string name="cm_rm_pm_confirm">厂长确认</string>
-
+    <string name="menu_repairmanageitem_flow">进度</string>
+    <string name="menu_repairmanageitem_workflow">操作历史</string>
 </resources>
