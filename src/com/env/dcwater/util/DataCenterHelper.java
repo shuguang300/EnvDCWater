@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -42,20 +43,20 @@ public class DataCenterHelper {
 	/**
 	 * 服务器地址
 	 */
-	public static final String URL_STRING = "http://183.81.180.26:8080/dcwater";
+	public static final String URL_STRING = "http://192.168.200.50/dcwater";
 	/**
 	 * webservice数据中心地址
 	 */
 //	public static final String URL_STRING = "http://183.81.180.26:8080/dcwater/MobileDataCenter.asmx";
-	public static final String DATA_URL_STRING = "http://183.81.180.26:8080/dcwater/MobileDataCenter.asmx";
+	public static final String DATA_URL_STRING = "http://192.168.200.50/dcwater/MobileDataCenter.asmx";
 	/**
 	 * 设备文档的地址
 	 */
-	public static final String FILE_URL_STRING = "http://183.81.180.26:8080/dcwater/PdfFiles";
+	public static final String FILE_URL_STRING = "http://192.168.200.50/dcwater/PdfFiles";
 	/**
 	 * 设备图片的地址
 	 */
-	public static final String PIC_URL_STRING = "http://183.81.180.26:8080/dcwater/UploadImages";
+	public static final String PIC_URL_STRING = "http://192.168.200.50/dcwater/UploadImages";
 	/**
 	 * 连接超时
 	 */
@@ -93,7 +94,7 @@ public class DataCenterHelper {
 			request.setEntity(paramEntity);		
 		}
 		HttpResponse response =  new DefaultHttpClient().execute(request);
-		if(response.getStatusLine().getStatusCode()==200){
+		if(response.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
 			return EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
 		}else {
 			return RESPONSE_FALSE_STRING;
@@ -148,7 +149,6 @@ public class DataCenterHelper {
 		}
 		is.close();
 		return file;
-		
 	} 
 	
 	/**

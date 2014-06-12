@@ -366,6 +366,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		sendedIntent.putExtra("RequestCode", code);
 		sendedIntent.putExtra("Data", data);
 		startActivityForResult(sendedIntent, code);
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 	}
 
 	@Override

@@ -112,7 +112,7 @@ public class ThreadPool {
 					HashMap<String, String> temp = OperationMethod.parseDevicePropertyToHashMap(devicePropertyJsonObject);
 					
 					deviceproperty = OperationMethod.parseDevicePropertyToList(temp);
-					devicemanage = OperationMethod.parseDevicePropertyToList(temp);
+					devicemanage = OperationMethod.parseDeviceManageToList(temp);
 					
 					if(!LogicMethod.getRightString(deviceJsonObject.getString("DecivicePara")).equals("")){
 						JSONArray deviceParams = new JSONArray(deviceJsonObject.getString("DecivicePara"));
@@ -380,7 +380,7 @@ public class ThreadPool {
 			try {
 				param.put("RepairTaskID", params[0]);
 				result = DataCenterHelper.HttpPostData("getWorkFlowForRepairTaskID", param);
-				if(result.equalsIgnoreCase(DataCenterHelper.RESPONSE_FALSE_STRING)){
+				if(!result.equalsIgnoreCase(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					Gson gson = new Gson();
 					JSONObject jsonObject = new JSONObject(result);
 					data = gson.fromJson(jsonObject.getString("d"), new TypeToken<ArrayList<ClassRTWorkFlow>>(){}.getType());

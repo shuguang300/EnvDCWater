@@ -2,7 +2,7 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.xml.sax.XMLReader;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -11,9 +11,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.Editable;
 import android.text.Html;
-import android.text.Html.TagHandler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +33,7 @@ import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.component.ThreadPool.GetDeviceFile;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
+import com.env.dcwater.util.HtmlTagHandlerUtil;
 import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
 
@@ -69,28 +68,6 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
         public Button dl = null;  
         public ProgressBar pb = null;
 	}
-	
-	private class MyTagHandler implements TagHandler  {
-		int contentIndex = 0;
-		int count = 0;
-		@Override
-		public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-			if(tag.equalsIgnoreCase("li")){
-				if(opening){
-					contentIndex = output.length();
-					count++;
-				}else {
-					int length = output.length();
-					String content = output.subSequence(contentIndex, length).toString();
-					String spanStr = count+"."+content+"\n";
-					output.replace(contentIndex, length, spanStr);
-				}
-			}else if(tag.equalsIgnoreCase("ol")&&!opening){
-				output.replace(output.length()-1, output.length(), "");
-			}
-		}
-	};
-	
 	public static final String ACTION_STRING = "DeviceInfoItemActivity";
 	
 	private Intent receivedIntent;
@@ -257,6 +234,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 				}
 				hideProgressDialog();
 				property.stopRefresh();
+				manage.stopRefresh();
 				params.stopRefresh();
 				files.stopRefresh();
 				statu.stopRefresh();
@@ -380,7 +358,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		
 		public void notificationDataChanged(ArrayList<HashMap<String, String>> data){
 			mData = data;
-			DevicePropertyAdapter.this.notifyDataSetChanged();
+			notifyDataSetChanged();
 		}
 		
 		@Override
@@ -409,7 +387,7 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 				viewHolder = (PropertyViewHolder)convertView.getTag();
 			}
 			if(map.get("Key").equals("ComProbAndSolutions")||map.get("Key").equals("OperatManagAndOperatPoint")||map.get("Key").equals("StandardNorOperation")){
-				viewHolder.value.setText(Html.fromHtml(map.get("Value"),null,new MyTagHandler()));
+				viewHolder.value.setText(Html.fromHtml(map.get("Value").replace("\\n", "").replace("\\t", ""),null,new HtmlTagHandlerUtil()));
 			}else {
 				viewHolder.value.setText(map.get("Value"));
 			}
@@ -613,10 +591,11 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 		switch (arg0) {
 		case 0:
 			titlegGroup.check(R.id.activity_deviceinfoitem_title_property);
-			devicePropertyAdapter.notifyDataSetChanged();
+			devicePropertyAdapter.notificationDataChanged(deviceProperty);
 			break;
 		case 1:
 			titlegGroup.check(R.id.activity_deviceinfoitem_title_manage);
+			deviceManageAdapter.notificationDataChanged(deviceManage);
 			break;
 		case 2:
 			titlegGroup.check(R.id.activity_deviceinfoitem_title_params);

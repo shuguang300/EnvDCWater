@@ -396,7 +396,9 @@
 
                     <Switch
                         android:id="@+id/activity_repairmanageitem_verifyresult"
-                        style="@style/ItemValueStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:enabled="false"
                         android:textOff="未通过"
                         android:textOn="通过" />
@@ -474,7 +476,9 @@
 
                         <Switch
                             android:id="@+id/activity_repairmanageitem_plantverify"
-                            style="@style/ItemValueStyle"
+                            android:layout_width="0dp"
+                        	android:layout_height="wrap_content"
+                        	android:layout_weight="1"
                             android:enabled="false"
                             android:textOff="未通过"
                             android:textOn="通过" />

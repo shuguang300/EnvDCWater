@@ -3,67 +3,80 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="30dp" >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_pic_logo"
-        android:gravity="center"
-        android:singleLine="false"
-        android:text="@string/system_name1"
-        android:textColor="@color/white"
-        android:textSize="@dimen/fontsize_super_large" />
-
-    <EditText
-        android:id="@+id/activity_login_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/ic_view_marginLogo"
-        android:drawableLeft="@drawable/ic_pic_account"
-        android:drawablePadding="10dp"
-        android:inputType="text" >
-    </EditText>
-
-    <EditText
-        android:id="@+id/activity_login_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_pic_password"
-        android:drawablePadding="10dp"
-        android:inputType="textPassword" />
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_height="0dp"
+        android:layout_weight="3.0"
+        android:gravity="center"
+        android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/activity_login_submit"
-            style="@style/GreenButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:text="@string/activity_login_summit" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_pic_logo"
+            android:gravity="center"
+            android:singleLine="false"
+            android:text="@string/system_name1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fontsize_super_large" />
 
-        <Button
-            android:id="@+id/activity_login_reset"
-            style="@style/RedButtonStyle"
+        <EditText
+            android:id="@+id/activity_login_account"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:text="@string/activity_login_reset"
-            android:textColor="@color/white" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ic_view_marginLogo"
+            android:drawableLeft="@drawable/ic_pic_account"
+            android:drawablePadding="10dp"
+            android:inputType="text" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/activity_login_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_pic_password"
+            android:drawablePadding="10dp"
+            android:inputType="textPassword" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/activity_login_submit"
+                style="@style/GreenButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="@string/activity_login_summit" />
+
+            <Button
+                android:id="@+id/activity_login_reset"
+                style="@style/RedButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="@string/activity_login_reset"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:singleLine="false"
+            android:text="@string/company_info"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fontsize_normal" />
     </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:singleLine="false"
-        android:text="@string/company_info"
-        android:textColor="@color/white"
-        android:textSize="@dimen/fontsize_normal" />
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0" />
 
 </LinearLayout>

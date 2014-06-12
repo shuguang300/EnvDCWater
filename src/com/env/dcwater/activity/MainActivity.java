@@ -1,9 +1,7 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
@@ -20,16 +18,16 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.component.ThreadPool.GetTaskCountByUserPositionID;
 import com.env.dcwater.fragment.NaviBarAdapter;
+import com.env.dcwater.fragment.PullToRefreshView;
+import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
@@ -38,7 +36,7 @@ import com.env.dcwater.util.SystemMethod;
  * 登录后的主界面，
  * @author sk
  */
-public class MainActivity extends NfcActivity implements OnClickListener{
+public class MainActivity extends NfcActivity implements OnClickListener,IXListViewListener{
 	
 	public static final String TAG_STRING = "MainActivity";
 	public static final String ACTION_STRING = "com.env.dcwater.activity.MainActivity";
@@ -48,7 +46,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	private TextView titleMessage;
 	private DrawerLayout drawerLayout;
 	private WebView webView;
-	private ListView naviListView;
+	private PullToRefreshView naviListView;
 	private NaviBarAdapter naviBarAdapter;
 	private Button back,forward,refresh,stop;
 	private ProgressBar progressBar;
@@ -86,7 +84,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 	@SuppressLint("SetJavaScriptEnabled")
 	private void iniView(){
 		drawerLayout = (DrawerLayout)findViewById(R.id.activity_main_drawlayout);
-		naviListView = (ListView)findViewById(R.id.activity_main_navibar);
+		naviListView = (PullToRefreshView)findViewById(R.id.activity_main_navibar);
 		webView = (WebView)findViewById(R.id.activity_main_showdata);
 		back = (Button)findViewById(R.id.activity_main_back);
 		forward = (Button)findViewById(R.id.activity_main_forward);
@@ -102,6 +100,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 		};
 		naviListView.setAdapter(naviBarAdapter);
 		naviListView.setOnItemClickListener(naviBarAdapter);
+		naviListView.setXListViewListener(this);
 		
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.getSettings().setDefaultTextEncodingName("utf-8");
@@ -143,7 +142,7 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 				if(result!=null){
 					data = OperationMethod.addUserTaskCountInfor(data, result);
 					SystemParams.getInstance().setUserRightData(data);
-					naviBarAdapter.notifyDataSetChanged();
+					naviBarAdapter.datasetNotification(data);
 				}
 			}
 		};
@@ -244,6 +243,11 @@ public class MainActivity extends NfcActivity implements OnClickListener{
 			break;
 		}
 		
+	}
+
+	@Override
+	public void onRefresh() {
+		setTaskCountInfor();
 	}
 	
 }

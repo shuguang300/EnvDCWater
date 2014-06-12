@@ -16,7 +16,7 @@
             android:layout_height="match_parent"/>
         
 
-        <ListView
+        <com.env.dcwater.fragment.PullToRefreshView
             android:id="@+id/activity_main_navibar"
             android:layout_width="240dp"
             android:layout_height="match_parent"

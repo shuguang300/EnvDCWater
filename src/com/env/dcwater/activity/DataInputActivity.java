@@ -27,6 +27,7 @@ public class DataInputActivity extends NfcActivity {
 	private EditText dataInputer;
 	private RelativeLayout mainLayout;
 	private AddMediaFileView addMediaFileView;
+	private String key,value,name;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,9 @@ public class DataInputActivity extends NfcActivity {
 	private void iniData(){
 		getedIntend = getIntent();
 		data = (HashMap<String, String>)getedIntend.getSerializableExtra("data");
+		key = data.get("Key");
+		value = data.get("Value");
+		name = data.get("Name");
 	}
 
 	/**
@@ -52,7 +56,7 @@ public class DataInputActivity extends NfcActivity {
 	private void iniActionBar(){
 		mActionBar = getActionBar();
 		SystemMethod.setActionBarHomeButton(true, mActionBar);
-		mActionBar.setTitle(data.get("Name"));
+		mActionBar.setTitle(name);
 	}
 
 	/**
@@ -64,15 +68,11 @@ public class DataInputActivity extends NfcActivity {
 		addMediaFileView = new AddMediaFileView(DataInputActivity.this);
 		
 		dataInputer = (EditText)findViewById(R.id.activity_datainput_data);
-		dataInputer.setText(data.get("Value"));
+		dataInputer.setText(value);
 		dataInputer.selectAll();
-		if(data.get("Key").equals("RequiredManHours")
-			||data.get("Key").equals("RepairCost")
-			||data.get("key").equals("ActualManHours")){
+		if(key.equals("RequiredManHours")||key.equals("RepairCost")||key.equals("ActualManHours")){
 			dataInputer.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
 		}
-		
-		
 		
 	}
 
@@ -103,9 +103,7 @@ public class DataInputActivity extends NfcActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_datainput, menu);
-		if(data.get("Key").equals("RequiredManHours")
-			||data.get("Key").equals("RepairCost")
-			||data.get("key").equals("ActualManHours")){
+		if(key.equals("RequiredManHours")||key.equals("RepairCost")||key.equals("ActualManHours")){
 			menu.findItem(R.id.menu_datainput_add).setVisible(false);
 		}
 		return super.onCreateOptionsMenu(menu);

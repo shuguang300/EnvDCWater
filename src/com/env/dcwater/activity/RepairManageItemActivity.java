@@ -140,6 +140,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 							methodName = RepairManageActivity.METHOD_RECEIVE_STRING;
 						}else if(taskState==EnumList.RepairState.STATEBEENINGREPAIRED){
 							methodName = RepairManageActivity.METHOD_REPAIRTASK_STRING;
+						}else if (taskState==EnumList.RepairState.STATEFORCORRECTION) {
+							methodName = RepairManageActivity.METHOD_REPAIRTASK_STRING;
 						}
 						break;
 					}
@@ -316,17 +318,17 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					viewStub.setLayoutResource(R.layout.view_repair_send);
 					viewStub.inflate();
 
-					EPtvSendTime = (TextView) findViewById(R.id.view_repair_send_repairsttime);
+					EPtvSendTime = (TextView)findViewById(R.id.view_repair_send_repairsttime);
 					EPtvSendTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
-					EPtvSender = (TextView) findViewById(R.id.view_repair_send_repairpeople);
+					EPtvSender = (TextView)findViewById(R.id.view_repair_send_repairpeople);
 					EPtvSender.setText(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("RealUserName"));
-					EPtvTime = (TextView) findViewById(R.id.view_repair_send_repairtimecost);
+					EPtvTime = (TextView)findViewById(R.id.view_repair_send_repairtimecost);
 					EPtvTime.setText(receivedData.get("RequiredManHours"));
-					EPtvContent = (TextView) findViewById(R.id.view_repair_send_repaircontent);
+					EPtvContent = (TextView)findViewById(R.id.view_repair_send_repaircontent);
 					EPtvContent.setText(receivedData.get("TaskDetail"));
 
-					EPtrTime = (TableRow) findViewById(R.id.view_repair_send_repairtimecost_tr);
-					EPtrContent = (TableRow) findViewById(R.id.view_repair_send_repaircontent_tr);
+					EPtrTime = (TableRow)findViewById(R.id.view_repair_send_repairtimecost_tr);
+					EPtrContent = (TableRow)findViewById(R.id.view_repair_send_repaircontent_tr);
 
 					EPtrTime.setOnClickListener(this);
 					EPtrContent.setOnClickListener(this);
@@ -347,10 +349,10 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					EPtrBackState.setOnClickListener(this);
 					EPtvBackState = (TextView)findViewById(R.id.view_repair_pmopinion_state);
 
-					EPtvPMOpinion = (TextView) findViewById(R.id.view_repair_pmopinion_opinion);
+					EPtvPMOpinion = (TextView)findViewById(R.id.view_repair_pmopinion_opinion);
 					EPtvPMOpinion.setText(receivedData.get("PMOpinion"));
 
-					EPtrPMOpinion = (TableRow) findViewById(R.id.view_repair_pmopinion_opinion_tr);
+					EPtrPMOpinion = (TableRow)findViewById(R.id.view_repair_pmopinion_opinion_tr);
 
 					EPtrPMOpinion.setOnClickListener(this);
 					EPswResult.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -365,10 +367,10 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					viewStub.setLayoutResource(R.layout.view_repair_pdopinion);
 					viewStub.inflate();
 
-					EPtvPDOpinion = (TextView) findViewById(R.id.view_repair_pdopinion_opinion);
+					EPtvPDOpinion = (TextView)findViewById(R.id.view_repair_pdopinion_opinion);
 					EPtvPDOpinion.setText(receivedData.get("PDOpinion"));
 
-					EPtrPDOpinion = (TableRow) findViewById(R.id.view_repair_pdopinion_opinion_tr);
+					EPtrPDOpinion = (TableRow)findViewById(R.id.view_repair_pdopinion_opinion_tr);
 
 					EPtrPDOpinion.setOnClickListener(this);
 
@@ -376,17 +378,17 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					viewStub.setLayoutResource(R.layout.view_repair_ddopinion);
 					viewStub.inflate();
 
-					EPtvMoney = (TextView) findViewById(R.id.view_repair_ddopinion_money);
+					EPtvMoney = (TextView)findViewById(R.id.view_repair_ddopinion_money);
 					EPtvMoney.setText(receivedData.get("RepairCost"));
-					EPswVerify = (Switch) findViewById(R.id.view_repair_ddopinion_verifyresult);
+					EPswVerify = (Switch)findViewById(R.id.view_repair_ddopinion_verifyresult);
 					EPswVerify.setChecked(receivedData.get("ApproveResult").equals("1") ? true : false);
-					EPtvVerifyPerson = (TextView) findViewById(R.id.view_repair_ddopinion_verifypeople);
+					EPtvVerifyPerson = (TextView)findViewById(R.id.view_repair_ddopinion_verifypeople);
 					EPtvVerifyPerson.setText(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("RealUserName"));
-					EPtvDDOpinion = (TextView) findViewById(R.id.view_repair_ddopinion_opinion);
+					EPtvDDOpinion = (TextView)findViewById(R.id.view_repair_ddopinion_opinion);
 					EPtvDDOpinion.setText(receivedData.get("DDOpinion"));
 
-					EPtrMoney = (TableRow) findViewById(R.id.view_repair_ddopinion_money_tr);
-					EPtrDDOpinion = (TableRow) findViewById(R.id.view_repair_ddopinion_opinion_tr);
+					EPtrMoney = (TableRow)findViewById(R.id.view_repair_ddopinion_money_tr);
+					EPtrDDOpinion = (TableRow)findViewById(R.id.view_repair_ddopinion_opinion_tr);
 
 					EPtrMoney.setOnClickListener(this);
 					EPtrDDOpinion.setOnClickListener(this);
@@ -394,28 +396,28 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				} else if (methodName.equals(RepairManageActivity.METHOD_REREPAIRTASK_STRING) || methodName.equals(RepairManageActivity.METHOD_REPAIRTASK_STRING)) {
 					viewStub.setLayoutResource(R.layout.view_repair_report);
 					viewStub.inflate();
-
-					EPtvResult = (TextView) findViewById(R.id.view_repair_report_result);
+					
+					EPtvResult = (TextView)findViewById(R.id.view_repair_report_result);
 					EPtvResult.setText(receivedData.get("RepairDetail"));
-					EPtvFinishTime = (TextView) findViewById(R.id.view_repair_report_finishtime);
+					EPtvFinishTime = (TextView)findViewById(R.id.view_repair_report_finishtime);
 					if (receivedData.get("RepairedTime").equals("")) {
 						EPtvFinishTime.setText(new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
 					} else {
 						EPtvFinishTime.setText(receivedData.get("RepairedTime"));
 					}
-					EPtvThing = (TextView) findViewById(R.id.view_repair_report_thing);
+					EPtvThing = (TextView)findViewById(R.id.view_repair_report_thing);
 					EPtvThing.setText(receivedData.get("AccessoryUsed"));
 
-					EPtrResult = (TableRow) findViewById(R.id.view_repair_report_result_tr);
-					EPtrFinishTime = (TableRow) findViewById(R.id.view_repair_report_finishtime_tr);
-					EPtrThing = (TableRow) findViewById(R.id.view_repair_report_thing_tr);
+					EPtrResult = (TableRow)findViewById(R.id.view_repair_report_result_tr);
+					EPtrFinishTime = (TableRow)findViewById(R.id.view_repair_report_finishtime_tr);
+					EPtrThing = (TableRow)findViewById(R.id.view_repair_report_thing_tr);
 
 					EPtrResult.setOnClickListener(this);
 					EPtrFinishTime.setOnClickListener(this);
 					EPtrThing.setOnClickListener(this);
 				}
 				if(!methodName.equals(RepairManageActivity.METHOD_RECEIVE_STRING) && !methodName.equals(RepairManageActivity.METHOD_PDCONFIRM_STRING)){
-					inputSubmit = (Button) findViewById(R.id.view_repair_submit);
+					inputSubmit = (Button)findViewById(R.id.view_repair_submit);
 					inputSubmit.setText(methodDesc);
 					inputSubmit.setOnClickListener(this);
 				}
@@ -1221,7 +1223,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					param.put("RepairTaskID", Integer.valueOf(receivedData.get("RepairTaskID")));
 					JSONObject repairDataString = new JSONObject();
 					repairDataString.put("PDOpinion", EPtvPDOpinion.getText().toString());
-					repairDataString.put("RepairCost", EPtvMoney.getText().toString());
 					repairDataString.put("PDApprovePerson", SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("UserID"));
 					repairDataString.put("PDApproveTime", new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
 					param.put("RepairDataString", repairDataString.toString());

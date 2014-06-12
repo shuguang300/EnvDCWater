@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    
-    
-    <TextView 
-        android:layout_gravity="center_horizontal"
-        android:layout_width="@dimen/boldline"
+    <com.env.dcwater.fragment.PullToRefreshView
+        android:id="@+id/activity_taskstateworkflow_list"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/lightblue"/>
+        android:divider="@null"
+        android:dividerHeight="0dp" >
+    </com.env.dcwater.fragment.PullToRefreshView>
+
+    <TextView
+        android:layout_width="@dimen/thinline"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/lightblue" />
 
 </FrameLayout>

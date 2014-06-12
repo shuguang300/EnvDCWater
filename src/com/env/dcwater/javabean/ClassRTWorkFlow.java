@@ -1,7 +1,4 @@
 package com.env.dcwater.javabean;
-
-import java.util.Date;
-
 import com.google.gson.Gson;
 
 /**
@@ -16,7 +13,7 @@ public class ClassRTWorkFlow {
 	private String RealUserName;
 	private String UserID;
 	private String PositionName;
-	private Date TaskTime;
+	private String TaskTime;
 	private int TaskID;
 	
 	public ClassRTWorkFlow (){
@@ -60,7 +57,7 @@ public class ClassRTWorkFlow {
 	/**
 	 * @return the taskTime
 	 */
-	public Date getTaskTime() {
+	public String getTaskTime() {
 		return TaskTime;
 	}
 
@@ -109,8 +106,8 @@ public class ClassRTWorkFlow {
 	/**
 	 * @param taskTime the taskTime to set
 	 */
-	public void setTaskTime(Date taskTime) {
-		TaskTime = taskTime;
+	public void setTaskTime(String taskTime) {
+		TaskTime = taskTime.replace("T", " ");
 	}
 
 	/**

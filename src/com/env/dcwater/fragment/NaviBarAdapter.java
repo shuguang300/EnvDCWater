@@ -1,10 +1,12 @@
 package com.env.dcwater.fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import com.env.dcwater.R;
 import com.env.dcwater.activity.MainActivity;
 import com.env.dcwater.javabean.EnumList.UserRight;
 import com.env.dcwater.util.SystemMethod;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -15,7 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickListener{
+public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickListener,PullToRefreshAdapter{
 
 	private ArrayList<HashMap<String, String>> mUserRightData;
 	private Context mContext;
@@ -25,6 +27,12 @@ public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickL
 		mUserRightData = userRightData;
 		mContext = context;
 		mAction = action;
+	}
+	
+	@Override
+	public void datasetNotification(ArrayList<HashMap<String, String>> data){
+		mUserRightData = data;
+		notifyDataSetChanged();
 	}
 
 	@Override

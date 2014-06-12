@@ -7,13 +7,20 @@ import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
-import com.env.dcwater.component.ThreadPool;
 import com.env.dcwater.component.ThreadPool.GetRepairTaskWorkFlow;
+import com.env.dcwater.fragment.PullToRefreshView;
+import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
 import com.env.dcwater.javabean.ClassRTWorkFlow;
+import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
 
 /**
@@ -21,7 +28,7 @@ import com.env.dcwater.util.SystemMethod;
  * @author Administrator
  *
  */
-public class TaskStateWorkFlowActivity extends NfcActivity{
+public class TaskStateWorkFlowActivity extends NfcActivity implements IXListViewListener{
 	
 	public static final String ACTION_STRING = "com.env.dcwater.activity.TaskStateWorkFlowActivity";
 	private HashMap<String, String> receivedData;
@@ -31,10 +38,12 @@ public class TaskStateWorkFlowActivity extends NfcActivity{
 	private ProgressDialog mProgressDialog;
 	private ArrayList<ClassRTWorkFlow> workFlows;
 	private GetRepairTaskWorkFlow getRepairTaskWorkFlow;
+	private PullToRefreshView listView;
+	private WorkFlowAdapter adapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_taskstateflow);
+		setContentView(R.layout.activity_taskstateworkflow);
 		iniData();
 		iniActionBar();
 		iniView();
@@ -46,6 +55,8 @@ public class TaskStateWorkFlowActivity extends NfcActivity{
 		receivedIntent = getIntent();
 		receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("data");
 		repairID = receivedData.get("RepairTaskID");
+		workFlows = new ArrayList<ClassRTWorkFlow>();
+		adapter = new WorkFlowAdapter();
 		getServerData();
 	}
 	
@@ -56,15 +67,12 @@ public class TaskStateWorkFlowActivity extends NfcActivity{
 	}
 	
 	private void iniView(){
+		listView = (PullToRefreshView)findViewById(R.id.activity_taskstateworkflow_list);
+		listView.setAdapter(adapter);
+		listView.setXListViewListener(this);
 		
-		
-		
-		setViewData();
 	}
 	
-	private void setViewData(){
-		
-	}
 	
 	/**
 	 * 获取数据时，弹出进度对话框
@@ -104,7 +112,11 @@ public class TaskStateWorkFlowActivity extends NfcActivity{
 				if(mProgressDialog!=null&&mProgressDialog.isShowing()){
 					if(result!=null){
 						workFlows = result;
+						adapter.notifyDataSetChanged();
+					}else {
+						Toast.makeText(getApplicationContext(), "刷新失败", Toast.LENGTH_SHORT).show();
 					}
+					listView.stopRefresh();
 				}
 				hideProgressDialog();
 			}
@@ -112,4 +124,64 @@ public class TaskStateWorkFlowActivity extends NfcActivity{
 		getRepairTaskWorkFlow.execute(repairID);
 	}
 	
+	@Override
+	public void onBackPressed() {
+		setResult(RESULT_CANCELED);
+		finish();
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+	}
+	
+	private class ViewHolder{
+		public TextView left;
+		public TextView right;
+	}
+	
+	private class WorkFlowAdapter extends BaseAdapter{
+
+		@Override
+		public int getCount() {
+			return workFlows.size();
+		}
+
+		@Override
+		public ClassRTWorkFlow getItem(int position) {
+			return workFlows.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder viewHolder ;
+			ClassRTWorkFlow data = workFlows.get(position);
+			if(convertView == null){
+				viewHolder = new ViewHolder();
+				convertView = LayoutInflater.from(TaskStateWorkFlowActivity.this).inflate(R.layout.item_taskstateworkflow, null);
+				viewHolder.left = (TextView)convertView.findViewById(R.id.item_taskstateworkflow_left);
+				viewHolder.right = (TextView)convertView.findViewById(R.id.item_taskstateworkflow_right);
+				convertView.setTag(viewHolder);
+			}else {
+				viewHolder = (ViewHolder)convertView.getTag();
+			}
+			if(position%2==0){
+				viewHolder.left.setVisibility(View.VISIBLE);
+				viewHolder.right.setVisibility(View.GONE);
+				viewHolder.left.setText(OperationMethod.getWorkFlowInfor(data));
+			}else {
+				viewHolder.right.setVisibility(View.VISIBLE);
+				viewHolder.left.setVisibility(View.GONE);
+				viewHolder.right.setText(OperationMethod.getWorkFlowInfor(data));
+			}
+			return convertView;
+		}
+		
+	}
+
+	@Override
+	public void onRefresh() {
+		getServerData();
+	}
 }

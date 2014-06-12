@@ -16,6 +16,7 @@ import android.content.SharedPreferences.Editor;
 import com.env.dcwater.R;
 import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.SystemParams;
+import com.env.dcwater.javabean.ClassRTWorkFlow;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.javabean.EnumList.RepairState;
 import com.env.dcwater.javabean.EnumList.UpkeepHistoryPlanState;
@@ -1680,5 +1681,19 @@ public class OperationMethod {
 			break;
 		}
 		return desc;
+	}
+	
+	/**
+	 * 获得workflow的描述信息
+	 * @param data
+	 * @return
+	 */
+	public static String getWorkFlowInfor(ClassRTWorkFlow data){
+		StringBuilder sb = new StringBuilder();
+		sb.append("姓名：").append(data.getRealUserName()).append("\n")
+		.append("岗位：").append(data.getPositionName()).append("\n")
+		.append("时间：").append(data.getTaskTime().replace("T", " ")).append("\n")
+		.append("状态：").append(EnumList.RepairState.getEnumRepairState(data.getState()).getStateDescription());
+		return sb.toString();
 	}
 }
