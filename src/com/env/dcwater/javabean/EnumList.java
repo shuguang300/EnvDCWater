@@ -591,6 +591,48 @@ public class EnumList {
 		
 	}
 	
+	public enum TaskType{
+		
+		/**
+		 * 维修任务
+		 */
+		TYPE_REPAIR(1),
+		/**
+		 * 养护任务
+		 */
+		TYPE_MAINTAIN(0);
+		
+		/**
+		 * 维修任务
+		 */
+		public static final int TYPE_REPAIR_INT = 1;
+		/**
+		 * 养护任务
+		 */
+		public static final int TYPE_MAINTAIN_INT = 0;
+		
+		private int type;
+		
+		private TaskType (int type){
+			this.type = type;
+		}
+		
+		public static TaskType getTaskType(int type){
+			switch (type) {
+			case 0:
+				return TYPE_MAINTAIN;
+
+			case 1:
+				return TYPE_REPAIR;
+			}
+			return null;
+		}
+		
+		public int getTaskType(){
+			return type;
+		}
+	}
+	
 	
 	
 	/**

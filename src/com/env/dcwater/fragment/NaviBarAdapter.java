@@ -1,6 +1,7 @@
 package com.env.dcwater.fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.env.dcwater.R;
 import com.env.dcwater.activity.MainActivity;
@@ -17,7 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickListener,PullToRefreshAdapter{
+public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickListener,PullToRefreshAdapterInterface{
 
 	private ArrayList<HashMap<String, String>> mUserRightData;
 	private Context mContext;
@@ -29,9 +30,10 @@ public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickL
 		mAction = action;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public void datasetNotification(ArrayList<HashMap<String, String>> data){
-		mUserRightData = data;
+	public <T> void datasetNotification(List<T> data){
+		mUserRightData = (ArrayList<HashMap<String, String>>)data;
 		notifyDataSetChanged();
 	}
 
@@ -72,9 +74,9 @@ public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickL
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		if(position==mUserRightData.size()-1){
+		if(position==mUserRightData.size()){
 			SystemMethod.logOut(mContext);
-		}else if(mUserRightData.get(position).get(UserRight.RightAction).equals(mAction)){
+		}else if(mUserRightData.get(position-1).get(UserRight.RightAction).equals(mAction)){
 			doNothing();
 		}else {
 //			if(mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.REPAIRMANAGE.getName())){
@@ -86,7 +88,7 @@ public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickL
 //			}else if (mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPSEND.getName())) {
 //				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
 //			}
-			Intent intent = new Intent(mUserRightData.get(position).get(UserRight.RightAction));
+			Intent intent = new Intent(mUserRightData.get(position-1).get(UserRight.RightAction));
 			intent.putExtra("action", MainActivity.ACTION_STRING);
 			mContext.startActivity(intent);
 		}

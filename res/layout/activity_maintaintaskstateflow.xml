@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/layout_margin_long" >
+
+        <TextView
+            android:id="@+id/activity_maintaintaskstateflow_state1"
+            style="@style/StateFlowUndo"
+            android:text="@string/activity_maintainstateflow_state1" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_pic_arrowdown" />
+
+        <TextView
+            android:id="@+id/activity_maintaintaskstateflow_state5"
+            style="@style/StateFlowUndo"
+            android:text="@string/activity_maintainstateflow_state5" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_pic_arrowdown" />
+
+        <TextView
+            android:id="@+id/activity_maintaintaskstateflow_state2"
+            style="@style/StateFlowUndo"
+            android:text="@string/activity_maintainstateflow_state2" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_pic_arrowdown" />
+
+        <TextView
+            android:id="@+id/activity_maintaintaskstateflow_state3"
+            style="@style/StateFlowUndo"
+            android:text="@string/activity_maintainstateflow_state3" />
+    </LinearLayout>
+
+</ScrollView>

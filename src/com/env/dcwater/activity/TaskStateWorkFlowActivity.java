@@ -5,21 +5,20 @@ import java.util.HashMap;
 
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
-import com.env.dcwater.component.ThreadPool.GetRepairTaskWorkFlow;
+import com.env.dcwater.component.ThreadPool.GetTaskWorkFlow;
 import com.env.dcwater.fragment.PullToRefreshView;
 import com.env.dcwater.fragment.PullToRefreshView.IXListViewListener;
-import com.env.dcwater.javabean.ClassRTWorkFlow;
+import com.env.dcwater.fragment.WorkFlowAdapter;
+import com.env.dcwater.javabean.ClassTaskWorkFlow;
+import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.OperationMethod;
 import com.env.dcwater.util.SystemMethod;
 
@@ -33,13 +32,14 @@ public class TaskStateWorkFlowActivity extends NfcActivity implements IXListView
 	public static final String ACTION_STRING = "com.env.dcwater.activity.TaskStateWorkFlowActivity";
 	private HashMap<String, String> receivedData;
 	private Intent receivedIntent;
-	private String repairID;
+	private String repairID,maintainID;
 	private ActionBar mActionBar;
 	private ProgressDialog mProgressDialog;
-	private ArrayList<ClassRTWorkFlow> workFlows;
-	private GetRepairTaskWorkFlow getRepairTaskWorkFlow;
+	private ArrayList<ClassTaskWorkFlow> workFlows;
+	private GetTaskWorkFlow getTaskWorkFlow;
 	private PullToRefreshView listView;
-	private WorkFlowAdapter adapter;
+	private MyAdapter adapter;
+	private int taskType;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,16 +54,26 @@ public class TaskStateWorkFlowActivity extends NfcActivity implements IXListView
 	private void iniData(){
 		receivedIntent = getIntent();
 		receivedData = (HashMap<String, String>)receivedIntent.getSerializableExtra("data");
-		repairID = receivedData.get("RepairTaskID");
-		workFlows = new ArrayList<ClassRTWorkFlow>();
-		adapter = new WorkFlowAdapter();
+		taskType = receivedIntent.getExtras().getInt("TaskType");
+		if(taskType==EnumList.TaskType.TYPE_MAINTAIN_INT){
+			maintainID = receivedData.get("MaintainTaskID");
+		}else {
+			repairID = receivedData.get("RepairTaskID");
+		}
+		workFlows = new ArrayList<ClassTaskWorkFlow>();
+		adapter = new MyAdapter(TaskStateWorkFlowActivity.this,workFlows);
 		getServerData();
 	}
 	
 	private void iniActionBar(){
 		mActionBar = getActionBar();
 		SystemMethod.setActionBarHomeButton(true, mActionBar);
-		mActionBar.setTitle(receivedData.get("FaultReportSN")+"操作历史");
+		if(taskType==EnumList.TaskType.TYPE_MAINTAIN_INT){
+			mActionBar.setTitle(receivedData.get("MaintainTaskSN")+"操作历史");
+		}else {
+			mActionBar.setTitle(receivedData.get("FaultReportSN")+"操作历史");
+		}
+		
 	}
 	
 	private void iniView(){
@@ -101,18 +111,18 @@ public class TaskStateWorkFlowActivity extends NfcActivity implements IXListView
 	}
 	
 	private void getServerData(){
-		getRepairTaskWorkFlow = new GetRepairTaskWorkFlow() {
+		getTaskWorkFlow = new GetTaskWorkFlow() {
 			
 			@Override
 			public void onPreExecute() {
 				showProgressDialog(true);
 			}
 			@Override
-			public void onPostExecute(ArrayList<ClassRTWorkFlow> result) {
+			public void onPostExecute(ArrayList<ClassTaskWorkFlow> result) {
 				if(mProgressDialog!=null&&mProgressDialog.isShowing()){
 					if(result!=null){
 						workFlows = result;
-						adapter.notifyDataSetChanged();
+						adapter.datasetNotification(workFlows);
 					}else {
 						Toast.makeText(getApplicationContext(), "刷新失败", Toast.LENGTH_SHORT).show();
 					}
@@ -121,7 +131,11 @@ public class TaskStateWorkFlowActivity extends NfcActivity implements IXListView
 				hideProgressDialog();
 			}
 		};
-		getRepairTaskWorkFlow.execute(repairID);
+		if(taskType==EnumList.TaskType.TYPE_MAINTAIN_INT){
+			getTaskWorkFlow.execute(maintainID,taskType+"");
+		}else {
+			getTaskWorkFlow.execute(repairID,taskType+"");
+		}
 	}
 	
 	@Override
@@ -130,42 +144,20 @@ public class TaskStateWorkFlowActivity extends NfcActivity implements IXListView
 		finish();
 		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 	}
-	
-	private class ViewHolder{
-		public TextView left;
-		public TextView right;
+
+	@Override
+	public void onRefresh() {
+		getServerData();
 	}
 	
-	private class WorkFlowAdapter extends BaseAdapter{
+	private class MyAdapter extends WorkFlowAdapter{
 
-		@Override
-		public int getCount() {
-			return workFlows.size();
+		public MyAdapter(Context context, ArrayList<ClassTaskWorkFlow> data) {
+			super(context, data);
 		}
-
+		
 		@Override
-		public ClassRTWorkFlow getItem(int position) {
-			return workFlows.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder viewHolder ;
-			ClassRTWorkFlow data = workFlows.get(position);
-			if(convertView == null){
-				viewHolder = new ViewHolder();
-				convertView = LayoutInflater.from(TaskStateWorkFlowActivity.this).inflate(R.layout.item_taskstateworkflow, null);
-				viewHolder.left = (TextView)convertView.findViewById(R.id.item_taskstateworkflow_left);
-				viewHolder.right = (TextView)convertView.findViewById(R.id.item_taskstateworkflow_right);
-				convertView.setTag(viewHolder);
-			}else {
-				viewHolder = (ViewHolder)convertView.getTag();
-			}
+		public void setData(ViewHolder viewHolder, ClassTaskWorkFlow data,int position) {
 			if(position%2==0){
 				viewHolder.left.setVisibility(View.VISIBLE);
 				viewHolder.right.setVisibility(View.GONE);
@@ -175,13 +167,7 @@ public class TaskStateWorkFlowActivity extends NfcActivity implements IXListView
 				viewHolder.left.setVisibility(View.GONE);
 				viewHolder.right.setText(OperationMethod.getWorkFlowInfor(data));
 			}
-			return convertView;
 		}
 		
-	}
-
-	@Override
-	public void onRefresh() {
-		getServerData();
 	}
 }

@@ -466,7 +466,7 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		// 不需要为headerview注册上下文菜单，所以进行判断
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 		if (info.position != 0) {
-			getMenuInflater().inflate(R.menu.contextmenu_repairmanage, menu);
+			getMenuInflater().inflate(R.menu.contextmenu_taskstate, menu);
 			menu.setHeaderTitle("更多");
 		}
 	}
@@ -477,15 +477,17 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
 	    int selectedPos = info.position-1;
 	    switch (item.getItemId()) {
-		case R.id.contextmenu_repairmanage_flow:
-			Intent flow = new Intent(TaskStateFlowActivity.ACTION_STRING);
+		case R.id.contextmenu_taskstate_flow:
+			Intent flow = new Intent(RepairTaskStateFlowActivity.ACTION_STRING);
 			flow.putExtra("data", mData.get(selectedPos));
+			flow.putExtra("TaskType", EnumList.TaskType.TYPE_REPAIR_INT);
 			startActivityForResult(flow, 0);
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 			break;
-		case R.id.contextmenu_repairmanage_workflow:
+		case R.id.contextmenu_taskstate_workflow:
 			Intent workflow = new Intent(TaskStateWorkFlowActivity.ACTION_STRING);
 			workflow.putExtra("data", mData.get(selectedPos));
+			workflow.putExtra("TaskType", EnumList.TaskType.TYPE_REPAIR_INT);
 			startActivityForResult(workflow, 0);
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 			break;

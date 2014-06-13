@@ -26,7 +26,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.env.dcwater.R;
-import com.env.dcwater.javabean.ClassRTWorkFlow;
+import com.env.dcwater.javabean.ClassTaskWorkFlow;
+import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.LogicMethod;
 import com.env.dcwater.util.OperationMethod;
@@ -371,19 +372,24 @@ public class ThreadPool {
 	 * 执行时，请提供一个RepairTaskID
 	 * @author Administrator
 	 */
-	public abstract static class GetRepairTaskWorkFlow extends AsyncTask<String, Integer, ArrayList<ClassRTWorkFlow>>{
+	public abstract static class GetTaskWorkFlow extends AsyncTask<String, Integer, ArrayList<ClassTaskWorkFlow>>{
 		@Override
-		protected ArrayList<ClassRTWorkFlow> doInBackground(String... params) {
+		protected ArrayList<ClassTaskWorkFlow> doInBackground(String... params) {
 			JSONObject param = new JSONObject();
 			String result = DataCenterHelper.RESPONSE_FALSE_STRING;
-			ArrayList<ClassRTWorkFlow> data = null;
+			ArrayList<ClassTaskWorkFlow> data = null;
 			try {
-				param.put("RepairTaskID", params[0]);
-				result = DataCenterHelper.HttpPostData("getWorkFlowForRepairTaskID", param);
+				if(params[1].equals(EnumList.TaskType.TYPE_MAINTAIN_INT+"")){
+					param.put("MaintainTaskID", params[0]);
+					result = DataCenterHelper.HttpPostData("getWorkFlowForMaintainTaskID", param);
+				}else {
+					param.put("RepairTaskID", params[0]);
+					result = DataCenterHelper.HttpPostData("getWorkFlowForRepairTaskID", param);
+				}
 				if(!result.equalsIgnoreCase(DataCenterHelper.RESPONSE_FALSE_STRING)){
 					Gson gson = new Gson();
 					JSONObject jsonObject = new JSONObject(result);
-					data = gson.fromJson(jsonObject.getString("d"), new TypeToken<ArrayList<ClassRTWorkFlow>>(){}.getType());
+					data = gson.fromJson(jsonObject.getString("d"), new TypeToken<ArrayList<ClassTaskWorkFlow>>(){}.getType());
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -398,6 +404,6 @@ public class ThreadPool {
 		public abstract void onPreExecute();
 		
 		@Override
-		public abstract void onPostExecute(ArrayList<ClassRTWorkFlow> result);
+		public abstract void onPostExecute(ArrayList<ClassTaskWorkFlow> result);
 	}
 }

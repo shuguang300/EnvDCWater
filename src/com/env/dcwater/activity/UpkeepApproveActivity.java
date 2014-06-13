@@ -15,12 +15,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.env.dcwater.R;
@@ -114,7 +117,7 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 			}
 		});
 		
-		
+		registerForContextMenu(dataListView);
 	}
 	
 	private void getServerData(){
@@ -233,6 +236,41 @@ public class UpkeepApproveActivity extends NfcActivity implements OnItemClickLis
 		if(resultCode==RESULT_OK){
 			getUpkeepApproveData();
 		}
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		// 不需要为headerview注册上下文菜单，所以进行判断
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+		if (info.position != 0) {
+			getMenuInflater().inflate(R.menu.contextmenu_taskstate, menu);
+			menu.setHeaderTitle("更多");
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+//		 获得contextmenu的触发控件
+		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
+	    int selectedPos = info.position-1;
+	    switch (item.getItemId()) {
+		case R.id.contextmenu_taskstate_flow:
+			Intent flow = new Intent(MaintainTaskStateFlowAcivity.ACTION_STRING);
+			flow.putExtra("data", data.get(selectedPos));
+			flow.putExtra("TaskType", EnumList.TaskType.TYPE_MAINTAIN_INT);
+			startActivityForResult(flow, 0);
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			break;
+		case R.id.contextmenu_taskstate_workflow:
+			Intent workflow = new Intent(TaskStateWorkFlowActivity.ACTION_STRING);
+			workflow.putExtra("data", data.get(selectedPos));
+			workflow.putExtra("TaskType", EnumList.TaskType.TYPE_MAINTAIN_INT);
+			startActivityForResult(workflow, 0);
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			break;
+		}
+		return super.onContextItemSelected(item);
 	}
 	
 	

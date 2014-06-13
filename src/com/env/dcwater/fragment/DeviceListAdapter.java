@@ -1,7 +1,10 @@
 package com.env.dcwater.fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import com.env.dcwater.R;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public abstract class DeviceListAdapter extends BaseAdapter implements PullToRefreshAdapter{
+public abstract class DeviceListAdapter extends BaseAdapter implements PullToRefreshAdapterInterface{
 	private ArrayList<HashMap<String, String>> mData;
 	private Context mContext;
 	public class ViewHodler{
@@ -25,9 +28,10 @@ public abstract class DeviceListAdapter extends BaseAdapter implements PullToRef
 		mContext = context;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public void datasetNotification(ArrayList<HashMap<String, String>> data){
-		mData = data;
+	public <T> void datasetNotification(List<T> data){
+		mData = (ArrayList<HashMap<String, String>>)data;
 		this.notifyDataSetChanged();
 	}
 

@@ -12,9 +12,9 @@
         android:padding="@dimen/layout_margin_long" >
 
         <TextView
-            android:id="@+id/activity_taskstateflow_state0"
+            android:id="@+id/activity_repairtaskstateflow_state0"
             style="@style/StateFlowUndo"
-            android:text="@string/activity_stateflow_state0" />
+            android:text="@string/activity_repairstateflow_state0" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -22,16 +22,16 @@
             android:background="@drawable/ic_pic_arrowdown" />
 
         <LinearLayout
-            android:id="@+id/activity_taskstateflow_state1group"
+            android:id="@+id/activity_repairtaskstateflow_state1group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/activity_taskstateflow_state1"
+                android:id="@+id/activity_repairtaskstateflow_state1"
                 style="@style/StateFlowUndo"
-                android:text="@string/activity_stateflow_state1" />
+                android:text="@string/activity_repairstateflow_state1" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -40,9 +40,9 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/activity_taskstateflow_state2"
+            android:id="@+id/activity_repairtaskstateflow_state2"
             style="@style/StateFlowUndo"
-            android:text="@string/activity_stateflow_state2" />
+            android:text="@string/activity_repairstateflow_state2" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -50,9 +50,9 @@
             android:background="@drawable/ic_pic_arrowdown" />
 
         <TextView
-            android:id="@+id/activity_taskstateflow_state3"
+            android:id="@+id/activity_repairtaskstateflow_state3"
             style="@style/StateFlowUndo"
-            android:text="@string/activity_stateflow_state3" />
+            android:text="@string/activity_repairstateflow_state3" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -60,9 +60,9 @@
             android:background="@drawable/ic_pic_arrowdown" />
 
         <TextView
-            android:id="@+id/activity_taskstateflow_state4"
+            android:id="@+id/activity_repairtaskstateflow_state4"
             style="@style/StateFlowUndo"
-            android:text="@string/activity_stateflow_state4" />
+            android:text="@string/activity_repairstateflow_state4" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -70,9 +70,9 @@
             android:background="@drawable/ic_pic_arrowdown" />
 
         <TextView
-            android:id="@+id/activity_taskstateflow_state6"
+            android:id="@+id/activity_repairtaskstateflow_state6"
             style="@style/StateFlowUndo"
-            android:text="@string/activity_stateflow_state6" />
+            android:text="@string/activity_repairstateflow_state6" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -80,16 +80,16 @@
             android:background="@drawable/ic_pic_arrowdown" />
 
         <LinearLayout
-            android:id="@+id/activity_taskstateflow_state7group"
+            android:id="@+id/activity_repairtaskstateflow_state7group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/activity_taskstateflow_state7"
+                android:id="@+id/activity_repairtaskstateflow_state7"
                 style="@style/StateFlowUndo"
-                android:text="@string/activity_stateflow_state7" />
+                android:text="@string/activity_repairstateflow_state7" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -98,9 +98,9 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/activity_taskstateflow_state8"
+            android:id="@+id/activity_repairtaskstateflow_state8"
             style="@style/StateFlowUndo"
-            android:text="@string/activity_stateflow_state8" />
+            android:text="@string/activity_repairstateflow_state8" />
     </LinearLayout>
 
 </ScrollView>

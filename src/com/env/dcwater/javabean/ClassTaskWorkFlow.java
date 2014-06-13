@@ -6,8 +6,9 @@ import com.google.gson.Gson;
  * @author Administrator
  *
  */
-public class ClassRTWorkFlow {
+public class ClassTaskWorkFlow {
 	
+
 	private int PositionID;
 	private int State;
 	private String RealUserName;
@@ -15,8 +16,23 @@ public class ClassRTWorkFlow {
 	private String PositionName;
 	private String TaskTime;
 	private int TaskID;
+	private int TaskType;
 	
-	public ClassRTWorkFlow (){
+	public ClassTaskWorkFlow (){
+	}
+	
+	/**
+	 * @return the taskType
+	 */
+	public int getTaskType() {
+		return TaskType;
+	}
+
+	/**
+	 * @param taskType the taskType to set
+	 */
+	public void setTaskType(int taskType) {
+		TaskType = taskType;
 	}
 
 	/**

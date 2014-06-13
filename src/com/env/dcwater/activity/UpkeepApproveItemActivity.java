@@ -14,6 +14,7 @@ import com.env.dcwater.component.ThreadPool.UpkeepTaskUpdate;
 import com.env.dcwater.javabean.EnumList;
 import com.env.dcwater.util.DataCenterHelper;
 import com.env.dcwater.util.SystemMethod;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -224,6 +225,7 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.contextmenu_taskstate, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -231,7 +233,21 @@ public class UpkeepApproveItemActivity extends NfcActivity implements OnClickLis
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			onBackPressed();
+			onBackPressed();	
+			break;
+		case R.id.contextmenu_taskstate_flow:
+			Intent flow = new Intent(MaintainTaskStateFlowAcivity.ACTION_STRING);
+			flow.putExtra("data", receivedData);
+			flow.putExtra("TaskType", EnumList.TaskType.TYPE_MAINTAIN_INT);
+			startActivityForResult(flow, 0);
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			break;
+		case R.id.contextmenu_taskstate_workflow:
+			Intent workflow = new Intent(TaskStateWorkFlowActivity.ACTION_STRING);
+			workflow.putExtra("data", receivedData);
+			workflow.putExtra("TaskType", EnumList.TaskType.TYPE_MAINTAIN_INT);
+			startActivityForResult(workflow, 0);
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 			break;
 		}
 		return super.onOptionsItemSelected(item);

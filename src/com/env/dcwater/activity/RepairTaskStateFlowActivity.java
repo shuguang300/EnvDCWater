@@ -20,9 +20,9 @@ import com.env.dcwater.util.SystemMethod;
  * @author Administrator
  *
  */
-public class TaskStateFlowActivity extends NfcActivity{
+public class RepairTaskStateFlowActivity extends NfcActivity{
 	
-	public static final String ACTION_STRING = "com.env.dcwater.activity.TaskStateFlowActivity";
+	public static final String ACTION_STRING = "com.env.dcwater.activity.RepairTaskStateFlowActivity";
 	
 	private HashMap<String, String> receivedData;
 	private Intent receivedIntent;
@@ -34,7 +34,7 @@ public class TaskStateFlowActivity extends NfcActivity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_taskstateflow);
+		setContentView(R.layout.activity_repairtaskstateflow);
 		iniData();
 		iniActionBar();
 		iniView();
@@ -58,24 +58,24 @@ public class TaskStateFlowActivity extends NfcActivity{
 	
 	private void iniView(){
 		
-		state0 = (TextView)findViewById(R.id.activity_taskstateflow_state0);
+		state0 = (TextView)findViewById(R.id.activity_repairtaskstateflow_state0);
 		states.add(state0);
-		state1 = (TextView)findViewById(R.id.activity_taskstateflow_state1);
+		state1 = (TextView)findViewById(R.id.activity_repairtaskstateflow_state1);
 		states.add(state1);
-		state2 = (TextView)findViewById(R.id.activity_taskstateflow_state2);
+		state2 = (TextView)findViewById(R.id.activity_repairtaskstateflow_state2);
 		states.add(state2);
-		state3 = (TextView)findViewById(R.id.activity_taskstateflow_state3);
+		state3 = (TextView)findViewById(R.id.activity_repairtaskstateflow_state3);
 		states.add(state3);
-		state4 = (TextView)findViewById(R.id.activity_taskstateflow_state4);
+		state4 = (TextView)findViewById(R.id.activity_repairtaskstateflow_state4);
 		states.add(state4);
-		state6 = (TextView)findViewById(R.id.activity_taskstateflow_state6);
+		state6 = (TextView)findViewById(R.id.activity_repairtaskstateflow_state6);
 		states.add(state6);
-		state7 = (TextView)findViewById(R.id.activity_taskstateflow_state7);
+		state7 = (TextView)findViewById(R.id.activity_repairtaskstateflow_state7);
 		states.add(state7);
-		state8 = (TextView)findViewById(R.id.activity_taskstateflow_state8);
+		state8 = (TextView)findViewById(R.id.activity_repairtaskstateflow_state8);
 		states.add(state8);
-		state1Group = (LinearLayout)findViewById(R.id.activity_taskstateflow_state1group);
-		state7Group = (LinearLayout)findViewById(R.id.activity_taskstateflow_state7group);
+		state1Group = (LinearLayout)findViewById(R.id.activity_repairtaskstateflow_state1group);
+		state7Group = (LinearLayout)findViewById(R.id.activity_repairtaskstateflow_state7group);
 		
 		setViewState();
 		
@@ -120,7 +120,7 @@ public class TaskStateFlowActivity extends NfcActivity{
 		}
 		for(int i =0;i<=start;i++){
 			TextView tv = states.get(i);
-			tv.setTextAppearance(TaskStateFlowActivity.this, R.style.StateFlowDone);
+			tv.setTextAppearance(RepairTaskStateFlowActivity.this, R.style.StateFlowDone);
 			tv.setBackgroundResource(R.drawable.stateflow_tv_bg_done);
 		}
 	}

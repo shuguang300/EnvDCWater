@@ -144,6 +144,8 @@ public class MainActivity extends NfcActivity implements OnClickListener,IXListV
 					SystemParams.getInstance().setUserRightData(data);
 					naviBarAdapter.datasetNotification(data);
 				}
+				naviListView.stopRefresh();
+				
 			}
 		};
 		getTaskCount.execute(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("PositionID")));
