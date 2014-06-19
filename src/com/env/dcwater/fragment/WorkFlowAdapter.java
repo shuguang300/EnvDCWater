@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.env.dcwater.R;
 import com.env.dcwater.javabean.ClassTaskWorkFlow;
 
-public abstract class WorkFlowAdapter extends BaseAdapter implements PullToRefreshAdapterInterface{
+public abstract class WorkFlowAdapter extends BaseAdapter implements PullToRefreshAdapterInterface<ClassTaskWorkFlow>{
 	private ArrayList<ClassTaskWorkFlow> workFlows;
 	private Context context;
 	public class ViewHolder{
@@ -23,9 +23,8 @@ public abstract class WorkFlowAdapter extends BaseAdapter implements PullToRefre
 		workFlows = data;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T> void datasetNotification(List<T> data) {
+	public void datasetNotification(List<ClassTaskWorkFlow> data) {
 		workFlows = (ArrayList<ClassTaskWorkFlow>) data;
 		notifyDataSetChanged();
 	}

@@ -43,20 +43,20 @@ public class DataCenterHelper {
 	/**
 	 * 服务器地址
 	 */
-	public static final String URL_STRING = "http://192.168.200.50/dcwater";
+	public static final String URL_STRING = "http://183.81.180.26:8080/dcwater";
 	/**
 	 * webservice数据中心地址
 	 */
 //	public static final String URL_STRING = "http://183.81.180.26:8080/dcwater/MobileDataCenter.asmx";
-	public static final String DATA_URL_STRING = "http://192.168.200.50/dcwater/MobileDataCenter.asmx";
+	public static final String DATA_URL_STRING = "http://183.81.180.26:8080/dcwater/MobileDataCenter.asmx";
 	/**
 	 * 设备文档的地址
 	 */
-	public static final String FILE_URL_STRING = "http://192.168.200.50/dcwater/PdfFiles";
+	public static final String FILE_URL_STRING = "http://183.81.180.26:8080/dcwater/PdfFiles";
 	/**
 	 * 设备图片的地址
 	 */
-	public static final String PIC_URL_STRING = "http://192.168.200.50/dcwater/UploadImages";
+	public static final String PIC_URL_STRING = "http://183.81.180.26:8080/dcwater/UploadImages";
 	/**
 	 * 连接超时
 	 */

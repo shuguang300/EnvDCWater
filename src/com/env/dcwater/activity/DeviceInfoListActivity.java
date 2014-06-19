@@ -228,7 +228,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	/**
 	 * 跳转到维修历史
 	 */
-	private void startMaintainHistoryActivity(){
+	public void startMaintainHistoryActivity(){
 		Intent intent = new Intent(this, MaintainHistoryActivity.class);
 		intent.putExtra("action", ACTION_STRING);
 		startActivity(intent);
@@ -237,7 +237,7 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 	/**
 	 * 跳转到保养历史
 	 */
-	private void startUpkeepHistoryActivity(){
+	public void startUpkeepHistoryActivity(){
 		Intent intent = new Intent(this, UpkeepHistoryActivity.class);
 		intent.putExtra("action", ACTION_STRING);
 		startActivity(intent);
@@ -289,12 +289,12 @@ public class DeviceInfoListActivity extends NfcActivity implements OnQueryTextLi
 		case android.R.id.home:
 			onBackPressed();
 			break;
-		case R.id.menu_deviceinfolist_maintainhistory:
-			startMaintainHistoryActivity();
-			break;
-		case R.id.menu_deviceinfolist_upkeephistory:
-			startUpkeepHistoryActivity();
-			break;
+//		case R.id.menu_deviceinfolist_maintainhistory:
+//			startMaintainHistoryActivity();
+//			break;
+//		case R.id.menu_deviceinfolist_upkeephistory:
+//			startUpkeepHistoryActivity();
+//			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

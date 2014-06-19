@@ -5,6 +5,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * 获取私有目录里的数据库时使用的方法
+ * @author sk
+ *
+ */
 public class SqliteHelper extends SQLiteOpenHelper{
 	public static final String TAG_STRING = "SqliteHelper";
 	

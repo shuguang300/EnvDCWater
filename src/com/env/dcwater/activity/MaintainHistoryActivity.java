@@ -93,9 +93,9 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		SystemMethod.setActionBarHomeButton(true, mActionBar);
 		//判断是否是所有设备的维修历史
 		if(receivedAction.equals(MainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
-			mActionBar.setTitle("维修历史总览");
+			mActionBar.setTitle("维修历史记录");
 		}else if (receivedAction.equals(DeviceInfoItemActivity.ACTION_STRING)) {
-			mActionBar.setTitle(receivedData.get("DeviceName")+"维修历史");
+			mActionBar.setTitle(receivedData.get("DeviceName")+"维修历史记录");
 		}
 	}
 	

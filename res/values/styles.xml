@@ -140,6 +140,14 @@
 	    <item name="android:gravity">center_vertical|right</item>
 	</style>
 	
+	<!-- 单个记录界面中的 值 的样式 -->
+	<style name="ItemValueSwitchStyle">
+	    <item name="android:layout_width">0dp</item>
+	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:layout_weight">1</item>
+	    <item name="android:layout_gravity">center_vertical</item>
+	</style>
+	
 	<!-- 单个记录查看界面中的 三个大表单的描述信息 -->
 	<style name="ItemGroupTitleStyle">
 	    <item name="android:layout_width">match_parent</item>

@@ -13,7 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public abstract class DeviceListAdapter extends BaseAdapter implements PullToRefreshAdapterInterface{
+public abstract class DeviceListAdapter extends BaseAdapter implements PullToRefreshAdapterInterface<HashMap<String, String>>{
 	private ArrayList<HashMap<String, String>> mData;
 	private Context mContext;
 	public class ViewHodler{
@@ -28,9 +28,8 @@ public abstract class DeviceListAdapter extends BaseAdapter implements PullToRef
 		mContext = context;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T> void datasetNotification(List<T> data){
+	public void datasetNotification(List<HashMap<String, String>> data){
 		mData = (ArrayList<HashMap<String, String>>)data;
 		this.notifyDataSetChanged();
 	}

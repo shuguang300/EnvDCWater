@@ -72,8 +72,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	private TextView etName,etType,etSN,etPosition,etStartTime,etManufacture,etFaultTime,etHandleStep,etPeople,etFaultPhenomenon,etOtherStep,etSendTime,etSender,etTimeCost,etContent,etResult,etFinishTime,etThing,etMoney,etVerifyPeople,etEquipmentOpinion,etProductionOpinion,etPlantOpinion;
 	private TableRow trName,trFaultTime,trFaultPhenomenon,trHandleStep,trOtherStep,trResult,trFinishTime,trThingCost,trMoneyCost;
 	private TextView EPtvMoney,EPtvVerifyPerson,EPtvDDOpinion,EPtvPDOpinion,EPtvPMOpinion,EPtvResult,EPtvFinishTime,EPtvThing,EPtvSendTime,EPtvSender,EPtvTime,EPtvContent,EPtvBackState;
-	private TableRow EPtrMoney,EPtrDDOpinion,EPtrPDOpinion,EPtrPMOpinion,EPtrResult,EPtrFinishTime,EPtrThing,EPtrTime,EPtrContent,EPtrBackState;
-	private Switch swVerifyResult,EPswVerify,swPMResult,EPswResult;
+	private TableRow EPtrTaskType,EPtrMoney,EPtrDDOpinion,EPtrPDOpinion,EPtrPMOpinion,EPtrResult,EPtrFinishTime,EPtrThing,EPtrTime,EPtrContent,EPtrBackState;
+	private Switch swVerifyResult,EPswVerify,swPMResult,EPswResult,EPswTaskType;
 	private Button confirmSubmit,inputSubmit;
 	private LinearLayout pmGroup,pdGroup;
 	@Override 
@@ -343,10 +343,19 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					viewStub.setLayoutResource(R.layout.view_repair_pmopinion);
 					viewStub.inflate();
 					
+					taskType = Integer.valueOf(receivedData.get("RepairTaskType"));
+					
 					EPswResult = (Switch)findViewById(R.id.view_repair_pmopinion_pmverify);
+					EPswTaskType = (Switch)findViewById(R.id.view_repair_pmopinion_tasktype);
+					if(taskType==EnumList.RepairTaskType.TASKTYPE_EQUIPMENT){
+						EPswTaskType.setChecked(true);
+					}else {
+						EPswTaskType.setChecked(false);
+					}
 					
 					EPtrBackState = (TableRow)findViewById(R.id.view_repair_pmopinion_state_tr);
 					EPtrBackState.setOnClickListener(this);
+					EPtrTaskType = (TableRow)findViewById(R.id.view_repair_pmopinion_tasktype_tr);
 					EPtvBackState = (TextView)findViewById(R.id.view_repair_pmopinion_state);
 
 					EPtvPMOpinion = (TextView)findViewById(R.id.view_repair_pmopinion_opinion);
@@ -359,6 +368,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 						@Override
 						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 							EPtrBackState.setVisibility(isChecked?View.GONE:View.VISIBLE);
+							EPtrTaskType.setVisibility(isChecked?View.GONE:View.VISIBLE);
 						}
 					});
 					EPtvBackState.setText(getResources().getStringArray(R.array.pm_allow_state)[0]);
@@ -1237,12 +1247,13 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					repairDataString.put("PMOpinion", EPtvPMOpinion.getText().toString());
 					repairDataString.put("PMApprovePerson", SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("UserID"));
 					repairDataString.put("PMApproveTime", new SimpleDateFormat(SystemParams.STANDARDTIME_PATTERN_STRING, Locale.CHINA).format(new Date()));
-					param.put("RepairDataString", repairDataString.toString());
+					repairDataString.put("RepairTaskType", EPswTaskType.isChecked()?EnumList.RepairTaskType.TASKTYPE_EQUIPMENT:EnumList.RepairTaskType.TASKTYPE_PRODUCTION);
 					if(EPswResult.isChecked()){
 						param.put("State", EnumList.RepairState.STATEDIRECTORTHROUGH);
 					}else {
-						param.put("State", OperationMethod.getTaskStateByStateName(EPtvBackState.getText().toString()));
+						param.put("State", OperationMethod.getNextStateCode(EPtvBackState.getText().toString()));
 					}
+					param.put("RepairDataString", repairDataString.toString());
 					param.put("OldState", receivedData.get("State"));
 					result = DataCenterHelper.HttpPostData("UpdateAuditingRepairDataforUser3", param);
 				}else if (methodName.equals(RepairManageActivity.METHOD_DDAPPROVE_STRING)) {
@@ -1323,7 +1334,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					states = new String[array.length()];
 					for(int i = 0;i<array.length();i++){
 						JSONObject temp  = array.getJSONObject(i);
-						states[i] = temp.getString("StateText");
+						states[i] = OperationMethod.getNextStateDesc(Integer.valueOf(temp.getString("State")));
 					}
 				}
 			} catch (JSONException e) {

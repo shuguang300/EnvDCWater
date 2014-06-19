@@ -23,6 +23,10 @@ public class DCWaterApp extends Application {
 	public static final String CACHE_PATH_STRING = "cache";
 
 	public static final String ROOT_PATH_STRING = "EnvDCWater";
+	
+	public static final String ROOT_PATROL_PATH_STRING = "EnvEasyPatrol";
+	
+	public static final String DB_PATROL_PATH_STRING = "databases";
 
 	public static final String FILES_PATH_STRING = "Files";
 

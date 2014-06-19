@@ -4,30 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/lightblue"
-        android:padding="10dp" >
-
-        <TextView
-            style="@style/ItemDeviceDetailFormHead"
-            android:layout_weight="1"
-            android:text="@string/item_deviceproperty_name" />
-
-        <TextView style="@style/ItemDividerVertical" />
-
-        <TextView
-            style="@style/ItemDeviceDetailFormHead"
-            android:layout_weight="2"
-            android:text="@string/item_deviceproperty_value" />
-    </LinearLayout>
-
-	<com.env.dcwater.fragment.PullToRefreshView
-        android:id="@+id/view_device_manage"
+    <WebView 
+        android:id="@+id/view_device_manage_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:listSelector="@drawable/item_bg_withnocorner_blue" >
-    </com.env.dcwater.fragment.PullToRefreshView>
-    
+        android:scrollbars="vertical"/>
 </LinearLayout>

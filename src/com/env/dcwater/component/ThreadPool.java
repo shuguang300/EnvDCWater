@@ -109,12 +109,9 @@ public class ThreadPool {
 					ArrayList<HashMap<String, String>> deviceparam = new ArrayList<HashMap<String,String>>();
 					ArrayList<HashMap<String, String>> devicefiles = new ArrayList<HashMap<String,String>>();
 					ArrayList<HashMap<String, String>> devicestatus = new ArrayList<HashMap<String,String>>();
-					
 					HashMap<String, String> temp = OperationMethod.parseDevicePropertyToHashMap(devicePropertyJsonObject);
-					
 					deviceproperty = OperationMethod.parseDevicePropertyToList(temp);
 					devicemanage = OperationMethod.parseDeviceManageToList(temp);
-					
 					if(!LogicMethod.getRightString(deviceJsonObject.getString("DecivicePara")).equals("")){
 						JSONArray deviceParams = new JSONArray(deviceJsonObject.getString("DecivicePara"));
 						deviceparam = OperationMethod.parseDeviceParamsToList(deviceParams);
@@ -127,8 +124,10 @@ public class ThreadPool {
 						JSONArray deviceStatu = new JSONArray(deviceJsonObject.getString("DeviceOperatingParameter"));
 						devicestatus = OperationMethod.parseDeviceStatuToList(deviceStatu);
 					}
+					for(HashMap<String, String> map:devicemanage){
+						devicestatus.add(map);
+					}
 					data.put("DeviceProperty", deviceproperty);
-					data.put("DeviceManage", devicemanage);
 					data.put("DeviceParam", deviceparam);
 					data.put("DeviceFile", devicefiles);
 					data.put("DeviceStatu", devicestatus);

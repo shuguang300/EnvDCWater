@@ -4,7 +4,7 @@
         android:title=""
         android:showAsAction="always"
         android:actionViewClass="android.widget.SearchView"/>
-    <item 
+   <!--  <item 
         android:id="@+id/menu_deviceinfolist_maintainhistory"
         android:title="@string/menu_deviceinfolist_maintainhistory"
         android:icon="@drawable/ic_menu_repairhistory"
@@ -14,6 +14,6 @@
         android:id="@+id/menu_deviceinfolist_upkeephistory"
         android:title="@string/menu_deviceinfolist_upkeephistory"
         android:icon="@drawable/ic_menu_upkeephistory"
-        android:showAsAction="always"/>
+        android:showAsAction="always"/> -->
     
 </menu>

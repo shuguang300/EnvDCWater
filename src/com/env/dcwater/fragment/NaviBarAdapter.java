@@ -18,7 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickListener,PullToRefreshAdapterInterface{
+public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickListener,PullToRefreshAdapterInterface<HashMap<String, String>>{
 
 	private ArrayList<HashMap<String, String>> mUserRightData;
 	private Context mContext;
@@ -30,9 +30,8 @@ public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickL
 		mAction = action;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T> void datasetNotification(List<T> data){
+	public void datasetNotification(List<HashMap<String, String>> data){
 		mUserRightData = (ArrayList<HashMap<String, String>>)data;
 		notifyDataSetChanged();
 	}

@@ -78,9 +78,9 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		mActionBar = getActionBar();
 		SystemMethod.setActionBarHomeButton(true, mActionBar);
 		if(receivedAction.equals(MainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
-			mActionBar.setTitle("养护历史总览");
+			mActionBar.setTitle("养护历史记录");
 		}else if (receivedAction.equals(DeviceInfoItemActivity.ACTION_STRING)) {
-			mActionBar.setTitle(receivedData.get("DeviceName")+"养护历史");
+			mActionBar.setTitle(receivedData.get("DeviceName")+"养护历史记录");
 		}
 	}
 	

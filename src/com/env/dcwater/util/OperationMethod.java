@@ -474,34 +474,13 @@ public class OperationMethod {
 	public static ArrayList<HashMap<String, String>> parseDeviceManageToList(HashMap<String, String> maps){
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
 		HashMap<String, String> map = new HashMap<String, String>();
-		map = new HashMap<String, String>();
-		map.put("Name", "正常运行的标准");
-		map.put("Value", maps.get("StandardNorOperation"));
-		map.put("Key", "StandardNorOperation");
+		map.put("DeviceOperatingParameterName", "最近一次维修时间");
+		map.put("DeviceOperatingParameterValue", maps.get("LastRepairTime"));
 		data.add(map);
 		
 		map = new HashMap<String, String>();
-		map.put("Name", "运行管理及操作要点");
-		map.put("Value", maps.get("OperatManagAndOperatPoint"));
-		map.put("Key", "OperatManagAndOperatPoint");
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "常见问题及对策");
-		map.put("Value", maps.get("ComProbAndSolutions"));
-		map.put("Key", "ComProbAndSolutions");
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "最近一次维修时间");
-		map.put("Value", maps.get("LastRepairTime"));
-		map.put("Key", "LastRepairTime");
-		data.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("Name", "最近一次养护时间");
-		map.put("Value", maps.get("LastMaintainTime"));
-		map.put("Key", "LastMaintainTime");
+		map.put("DeviceOperatingParameterName", "最近一次养护时间");
+		map.put("DeviceOperatingParameterValue", maps.get("LastMaintainTime"));
 		data.add(map);
 		
 		return data;
@@ -1619,6 +1598,59 @@ public class OperationMethod {
 			temp = false;
 		}
 		return temp;
+	}
+	
+	/**
+	 * 返回当前状态的代办状态描述
+	 * @param state
+	 * @return
+	 */
+	public static String getNextStateDesc(int state){
+		String temp = "";
+		switch (state) {
+		case EnumList.RepairState.STATEBEENINGREPAIRED:
+			temp = "维修工维修";
+			break;
+		case EnumList.RepairState.STATEDEVICETHROUGH:
+			
+			break;
+		case EnumList.RepairState.STATEDIRECTORTHROUGH:
+			
+			break;
+		case EnumList.RepairState.STATEFORCORRECTION:
+			
+			break;
+		case EnumList.RepairState.STATEHASBEENCONFIRMED:
+			
+			break;
+		case EnumList.RepairState.STATEHASBEENDISTRIBUTED:
+			
+			break;
+		case EnumList.RepairState.STATEHASBEENREPAIRED:
+			temp = "设备科长审核";
+			break;
+		case EnumList.RepairState.STATEHASBEENREPORTED:
+			
+			break;
+		case EnumList.RepairState.STATEPRODUCTIONTHROUGH:
+			break;
+		}
+		return temp;
+	}
+	
+	/**
+	 * 返回当前状态代办状态的代码
+	 * @param desc
+	 * @return
+	 */
+	public static int getNextStateCode(String desc){
+		int code = 0;
+		if(desc.equals("维修工维修")){
+			code = EnumList.RepairState.STATEBEENINGREPAIRED;
+		}else if (desc.equals("设备科长审核")) {
+			code = EnumList.RepairState.STATEHASBEENREPAIRED;
+		}
+		return code;
 	}
 	
 	/**

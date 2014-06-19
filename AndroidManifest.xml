@@ -123,8 +123,8 @@
         <!-- 设备信息查看界面 -->
         <activity
             android:name="com.env.dcwater.activity.DeviceInfoItemActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="unspecified"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/CustomActionBarTheme"
             android:icon="@drawable/ic_act_devicelist">

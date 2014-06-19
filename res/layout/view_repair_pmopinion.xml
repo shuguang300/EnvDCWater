@@ -29,9 +29,7 @@
 
                 <Switch
                     android:id="@+id/view_repair_pmopinion_pmverify"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    style="@style/ItemValueSwitchStyle"
                     android:textOff="未通过"
                     android:textOn="通过" />
             </TableRow>
@@ -51,6 +49,24 @@
                     android:id="@+id/view_repair_pmopinion_state"
                     style="@style/ItemValueStyle"
                     android:drawableRight="@drawable/ic_item_warning" />
+            </TableRow>
+            
+            <TextView style="@style/ItemDivider" />
+            
+            <TableRow
+                android:id="@+id/view_repair_pmopinion_tasktype_tr"
+                style="@style/ItemLineStyle" >
+
+                <TextView
+                    style="@style/ItemTitleStyle"
+                    android:drawableLeft="@drawable/ic_item_state"
+                    android:text="@string/activity_repairmanageitem_tasktype" />
+
+                <Switch
+                    android:id="@+id/view_repair_pmopinion_tasktype"
+                    style="@style/ItemValueSwitchStyle"
+                    android:textOff="生产科"
+                    android:textOn="设备科" />
             </TableRow>
 
             <TextView style="@style/ItemDivider" />

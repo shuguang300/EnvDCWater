@@ -6,7 +6,7 @@ import java.util.List;
  * @author Administrator
  *
  */
-public interface PullToRefreshAdapterInterface {
-	public<T> void datasetNotification(List<T> data);
+public interface PullToRefreshAdapterInterface <T> {
+	public  void datasetNotification(List<T> data);
 
 }

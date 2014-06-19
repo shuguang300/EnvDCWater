@@ -50,6 +50,7 @@
     <string name="activity_repairmanageitem_productionopinion">生产科意见</string>
     <string name="activity_repairmanageitem_plantopinion">厂领导意见</string>
     <string name="activity_repairmanageitem_backstate">返回级别</string>
+    <string name="activity_repairmanageitem_tasktype">返回科室</string>
     <string name="activity_repairmanageitem_repairmoneycost">维修金额</string>
     <string name="activity_deviceselect_construction">构筑物列表</string>
     <string name="activity_deviceselect_search">查询</string>
@@ -193,8 +194,8 @@
         <item>生产科长已确认</item>
     </string-array>
     <string-array name="pm_allow_state">
-        <item>维修单已派发</item>
-        <item>维修单已上报</item>
+        <item>维修工维修</item>
+        <item>设备科长审核</item>
     </string-array>
     <string-array name="deviceinforlist">
         <item>基本信息</item>
@@ -204,6 +205,7 @@
         <item>技术文档</item>
     </string-array>
 
+    <string name="menu_deviceinfoitem_refresh">刷新</string>
     <string name="menu_deviceinfoitem_maintainhistory">维修历史</string>
     <string name="menu_deviceinfoitem_upkeephistory">保养历史</string>
     <string name="menu_deviceinfoitem_showdevice">选择设备</string>
