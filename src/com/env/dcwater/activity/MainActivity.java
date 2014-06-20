@@ -1,15 +1,10 @@
 package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -26,7 +21,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
@@ -65,14 +59,6 @@ public class MainActivity extends NfcActivity implements OnClickListener,IXListV
 		iniActionBar();
 		iniData();
 		iniView();
-		try {
-			Context context = createPackageContext("com.example.test", CONTEXT_IGNORE_SECURITY);
-			SharedPreferences sp = context.getSharedPreferences("test", MODE_WORLD_WRITEABLE);
-			Toast.makeText(getApplicationContext(),"最小值是"+sp.getInt("min", 0)+"\n最大值是"+sp.getInt("max", 0), Toast.LENGTH_SHORT).show();
-		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	/**

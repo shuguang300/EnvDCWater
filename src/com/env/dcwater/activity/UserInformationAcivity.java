@@ -55,7 +55,7 @@ public class UserInformationAcivity extends NfcActivity implements OnClickListen
 				return true;
 			}
 		});
-		changePsw = (Button)findViewById(R.id.activity_userinfor_changepsw);
+//		changePsw = (Button)findViewById(R.id.activity_userinfor_changepsw);
 		logout = (Button)findViewById(R.id.activity_userinfor_logout);
 		
 		rolePic.setOnClickListener(this);
@@ -96,8 +96,8 @@ public class UserInformationAcivity extends NfcActivity implements OnClickListen
 		case R.id.activity_userinfor_pic:
 			SystemMethod.startBigImageActivity(UserInformationAcivity.this, "");
 			break;
-		case R.id.activity_userinfor_changepsw:
-			break;
+//		case R.id.activity_userinfor_changepsw:
+//			break;
 		case R.id.activity_userinfor_logout:
 			SystemMethod.logOut(UserInformationAcivity.this);
 			break;

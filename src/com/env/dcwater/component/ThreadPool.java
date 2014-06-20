@@ -124,9 +124,7 @@ public class ThreadPool {
 						JSONArray deviceStatu = new JSONArray(deviceJsonObject.getString("DeviceOperatingParameter"));
 						devicestatus = OperationMethod.parseDeviceStatuToList(deviceStatu);
 					}
-					for(HashMap<String, String> map:devicemanage){
-						devicestatus.add(map);
-					}
+					devicestatus.addAll(devicemanage);
 					data.put("DeviceProperty", deviceproperty);
 					data.put("DeviceParam", deviceparam);
 					data.put("DeviceFile", devicefiles);
