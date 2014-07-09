@@ -4,10 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.env.dcwater.R;
 import com.env.dcwater.activity.LoginActivity;
 import com.env.dcwater.activity.ShowBigImageActivity;
@@ -33,6 +31,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
@@ -308,6 +307,17 @@ public class SystemMethod {
 	}
 	
 	/**
+	 * 获取错误日志的绝对路径
+	 * @return
+	 */
+	public static String getLogFileFolderPath(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator).append(DCWaterApp.ROOT_PATH_STRING)
+		.append(File.separator).append(DCWaterApp.LOG_PATH_STRING);
+		return sb.toString();
+	}
+	
+	/**
 	 * 获取存放设备图标的文件夹
 	 * @return
 	 */
@@ -377,7 +387,24 @@ public class SystemMethod {
 				((Activity) context).startActivityForResult(intent, requestCode);
 			}
 		}
-
+	}
+	
+	/**
+	 * 桌面添加快捷方式
+	 * @param context
+	 */
+	public static void autoCreateShortCut(Context context){
+		Intent shortCut = new Intent(Intent.ACTION_CREATE_SHORTCUT);
+		shortCut.putExtra("duplicate", false);
+		shortCut.putExtra(Intent.EXTRA_SHORTCUT_NAME, context.getResources().getString(R.string.app_name));
+		Parcelable icon = Intent.ShortcutIconResource.fromContext(context, R.drawable.ic_pic_logo);
+		shortCut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
+		Intent intent= new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_DEFAULT);
+		intent.setClass(context, context.getClass());
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);	
+		shortCut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, intent);
+		context.sendBroadcast(shortCut);
 	}
 	
 }

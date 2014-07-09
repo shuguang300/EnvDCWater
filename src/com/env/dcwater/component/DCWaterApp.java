@@ -16,7 +16,7 @@ import android.os.Environment;
  */
 public class DCWaterApp extends Application {
 
-	private File cache, files;
+	private File cache, files,logs;
 
 	public static final String PACKAGE_STRING = "com.env.dcwater";
 
@@ -31,6 +31,8 @@ public class DCWaterApp extends Application {
 	public static final String FILES_PATH_STRING = "Files";
 
 	public static final String PICTURE_PATH_STRING = "Picture";
+	
+	public static final String LOG_PATH_STRING = "Log";
 
 	public static final String TAG_STRING = "DCWaterApp";
 
@@ -69,26 +71,39 @@ public class DCWaterApp extends Application {
 	private SharedPreferences sp;
 
 	private Editor ed;
+	
+	private Context context;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		context = getApplicationContext();
+		
+		//将应用程序使用自定义的错误处理
+		CrashHandler crashHandler = CrashHandler.getInstance();
+		crashHandler.init(context);
+		
+		
 		sp = getSharedPreferences(PREFERENCE_STRING, Context.MODE_PRIVATE);
 		ed = sp.edit();
 		if (Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)) {
 			cache = new File(SystemMethod.getDownloadPngFolderPath());
 			files = new File(SystemMethod.getDownloadFileFolderPath());
+			logs = new File(SystemMethod.getLogFileFolderPath());
 			if (!cache.exists()) {
 				cache.mkdirs();
 			}
 			if (!files.exists()) {
 				files.mkdirs();
 			}
+			if(!logs.exists()){
+				logs.mkdirs();
+			}
 		}
 		if (sp.getBoolean(PREFERENCE_FIRSTRUN_STRING, true)) {
-			String path = SystemMethod.getInternalDataBasePath(getApplicationContext());
+			String path = SystemMethod.getInternalDataBasePath(context);
 			try {
-				SystemMethod.copyDataBase(path, getApplicationContext());
+				SystemMethod.copyDataBase(path, context);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

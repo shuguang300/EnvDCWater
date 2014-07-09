@@ -14,7 +14,7 @@ public class EnumList {
 		/**
 		 * 个人信息
 		 */
-		USERINFORMATION(99, "个人信息","com.env.dcwater.activity.UserInformationAcivity",R.drawable.ic_act_userinformation),
+		USERINFORMATION(99, "个人信息查看","com.env.dcwater.activity.UserInformationAcivity",R.drawable.ic_act_userinformation),
 		/**
 		 * 设置
 		 */
@@ -51,7 +51,11 @@ public class EnumList {
 		/**
 		 * 保养记录枚举对象
 		 */
-		UPKEEPHISTORY(6, "养护历史记录","com.env.dcwater.activity.UpkeepHistoryActivity",R.drawable.ic_act_upkeephistory);
+		UPKEEPHISTORY(6, "养护历史记录","com.env.dcwater.activity.UpkeepHistoryActivity",R.drawable.ic_act_upkeephistory),
+		/**
+		 * 设备巡检任务
+		 */
+		DEVICEROUTING(7, "设备巡检任务","com.env.easypatrol.SplashActivity",R.drawable.ic_act_devicelist);
 
 		/**
 		 * 权限名称

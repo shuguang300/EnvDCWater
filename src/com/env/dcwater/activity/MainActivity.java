@@ -2,7 +2,6 @@ package com.env.dcwater.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.json.JSONObject;
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -76,12 +75,12 @@ public class MainActivity extends NfcActivity implements OnClickListener,IXListV
 	private void iniData(){
 		data = OperationMethod.getViewByUserRole(Integer.valueOf(SystemParams.getInstance().getLoggedUserInfo(getApplicationContext()).get("PositionID")));
 		SystemParams.getInstance().setUserRightData(data);
+		
 	}
 	
 	/**
 	 * 初始化界面
 	 */
-	@SuppressLint("SetJavaScriptEnabled")
 	private void iniView(){
 		drawerLayout = (DrawerLayout)findViewById(R.id.activity_main_drawlayout);
 		naviListView = (PullToRefreshView)findViewById(R.id.activity_main_navibar);

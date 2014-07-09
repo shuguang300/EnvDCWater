@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.DCWaterApp;
 import com.env.dcwater.component.NfcActivity;
+import com.env.dcwater.util.SystemMethod;
 
 /**
  * 初始化界面
@@ -15,9 +17,11 @@ import com.env.dcwater.component.NfcActivity;
 public class StartupActivity extends NfcActivity{
 	
 	public static final String TAG_STRING = "StartupActivity";
+	public static final String ACTION_STRING = "com.env.dcwater.activity.StartupActivity";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SystemMethod.autoCreateShortCut(StartupActivity.this);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_startup);
 		new Handler().postDelayed(new Runnable() {

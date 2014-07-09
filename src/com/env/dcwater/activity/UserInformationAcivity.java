@@ -23,7 +23,7 @@ public class UserInformationAcivity extends NfcActivity implements OnClickListen
 	private HashMap<String, String> user;
 	private TextView acc,name,role,plant;
 	private ImageView rolePic;
-	private Button changePsw,logout;
+	private Button logout;
 	public static final String ACTION_STRING = "com.env.dcwater.activity.UserInformationAcivity";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,6 @@ public class UserInformationAcivity extends NfcActivity implements OnClickListen
 		logout = (Button)findViewById(R.id.activity_userinfor_logout);
 		
 		rolePic.setOnClickListener(this);
-		changePsw.setOnClickListener(this);
 		logout.setOnClickListener(this);
 	}
 	
@@ -96,8 +95,6 @@ public class UserInformationAcivity extends NfcActivity implements OnClickListen
 		case R.id.activity_userinfor_pic:
 			SystemMethod.startBigImageActivity(UserInformationAcivity.this, "");
 			break;
-//		case R.id.activity_userinfor_changepsw:
-//			break;
 		case R.id.activity_userinfor_logout:
 			SystemMethod.logOut(UserInformationAcivity.this);
 			break;

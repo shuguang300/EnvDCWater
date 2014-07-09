@@ -47,6 +47,14 @@ public class OperationMethod {
 		data.add(map);
 		
 		
+		map = new HashMap<String, String>();
+		map.put(UserRight.RightName, UserRight.DEVICEROUTING.getName());
+		map.put(UserRight.RightCode, UserRight.DEVICEROUTING.getCode()+"");
+		map.put(UserRight.RightAction, UserRight.DEVICEROUTING.getAction());
+		map.put(UserRight.RightResourceID, UserRight.DEVICEROUTING.getResourceID()+"");
+		map.put(UserRight.RightTaskCount, "");
+		data.add(map);
+		
 		if(PositionID == UserRole.EQUIPMENTOPERATION.getState()){
 			
 			

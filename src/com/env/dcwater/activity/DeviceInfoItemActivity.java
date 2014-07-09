@@ -2,7 +2,6 @@ package com.env.dcwater.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -29,7 +28,6 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.env.dcwater.R;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.ThreadPool;
@@ -65,7 +63,6 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
         public ProgressBar pb = null;
 	}
 	public static final String ACTION_STRING = "DeviceInfoItemActivity";
-	
 	private Intent receivedIntent;
 	private HashMap<String, String> receivedDevice;
 	private PullToRefreshView property,params,files,statu;

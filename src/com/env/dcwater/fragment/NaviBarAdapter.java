@@ -8,6 +8,7 @@ import com.env.dcwater.activity.MainActivity;
 import com.env.dcwater.javabean.EnumList.UserRight;
 import com.env.dcwater.util.SystemMethod;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickListener,PullToRefreshAdapterInterface<HashMap<String, String>>{
 
@@ -87,9 +89,13 @@ public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickL
 //			}else if (mUserRightData.get(position).get(UserRight.RightName).equals(UserRight.UPKEEPSEND.getName())) {
 //				mUserRightData.get(position).put(UserRight.RightTaskCount, "");
 //			}
-			Intent intent = new Intent(mUserRightData.get(position-1).get(UserRight.RightAction));
-			intent.putExtra("action", MainActivity.ACTION_STRING);
-			mContext.startActivity(intent);
+			try {
+				Intent intent = new Intent(mUserRightData.get(position-1).get(UserRight.RightAction));
+				intent.putExtra("action", MainActivity.ACTION_STRING);
+				mContext.startActivity(intent);
+			} catch (ActivityNotFoundException e) {
+				Toast.makeText(mContext, "未找到对应的程序，请确保程序已正确安装", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 	
