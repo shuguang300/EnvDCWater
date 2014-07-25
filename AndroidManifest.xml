@@ -68,7 +68,7 @@
             <!--
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
-            </intent-filter>
+            </intent-filter>
             -->
             <!--
       该代码添加 nfc卡片的调度系统
@@ -84,7 +84,7 @@
                 android:resource="@xml/nfc_tech_filter" />
             <intent-filter>
     			<action android:name="android.nfc.action.TAG_DISCOVERED"/>
-			</intent-filter>
+			</intent-filter>
             -->
         </activity>
 
@@ -94,7 +94,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
-        </activity>
+        </activity>
         -->
 
 
