@@ -35,7 +35,7 @@ import com.env.dcwater.util.SystemMethod;
  * 登录后的主界面，
  * @author sk
  */
-public class MainActivity extends NfcActivity implements OnClickListener,IXListViewListener{
+public class WaterMainActivity extends NfcActivity implements OnClickListener,IXListViewListener{
 	
 	public static final String TAG_STRING = "MainActivity";
 	public static final String ACTION_STRING = "com.env.dcwater.activity.MainActivity";
@@ -54,7 +54,7 @@ public class MainActivity extends NfcActivity implements OnClickListener,IXListV
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.water_activity_main);
 		iniActionBar();
 		iniData();
 		iniView();
@@ -91,7 +91,7 @@ public class MainActivity extends NfcActivity implements OnClickListener,IXListV
 		stop = (Button)findViewById(R.id.activity_main_stop);
 		progressBar = (ProgressBar)findViewById(R.id.activity_main_webviewprogress);
 		
-		naviBarAdapter = new NaviBarAdapter(MainActivity.this,data,ACTION_STRING){
+		naviBarAdapter = new NaviBarAdapter(WaterMainActivity.this,data,ACTION_STRING){
 			@Override
 			public void doNothing() {
 				drawerLayout.closeDrawer(Gravity.LEFT);
@@ -216,7 +216,7 @@ public class MainActivity extends NfcActivity implements OnClickListener,IXListV
 			drawerLayout.closeDrawer(Gravity.LEFT);
 		}else {
 			if(System.currentTimeMillis()-lastExitTime>2000){
-				Toast.makeText(MainActivity.this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
+				Toast.makeText(WaterMainActivity.this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
 			}else {
 				SystemParams.getInstance().setLoggedUserInfo(null);
 				finish();
@@ -229,19 +229,15 @@ public class MainActivity extends NfcActivity implements OnClickListener,IXListV
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.activity_main_back:
+		int id = v.getId();
+		if (id == R.id.activity_main_back) {
 			webView.goBack();
-			break;
-		case R.id.activity_main_forward:
+		} else if (id == R.id.activity_main_forward) {
 			webView.goForward();
-			break;
-		case R.id.activity_main_refresh:
+		} else if (id == R.id.activity_main_refresh) {
 			webView.reload();
-			break;
-		case R.id.activity_main_stop:
+		} else if (id == R.id.activity_main_stop) {
 			webView.stopLoading();
-			break;
 		}
 		
 	}

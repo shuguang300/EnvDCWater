@@ -192,22 +192,19 @@ public class UpkeepSendActivity extends NfcActivity implements OnItemClickListen
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		drawerLayout.closeDrawer(Gravity.RIGHT);
-		switch (item.getItemId()) {
-		case android.R.id.home:
+		int itemId = item.getItemId();
+		if (itemId == android.R.id.home) {
 			onBackPressed();
-			break;
-		case R.id.menu_upkeepsend_filter:
+		} else if (itemId == R.id.menu_upkeepsend_filter) {
 			filter = ! filter;
 			item.setChecked(filter);
 			getUpkeepSendData();
-			break;
-		case R.id.menu_upkeepsend_showdrawer:
+		} else if (itemId == R.id.menu_upkeepsend_showdrawer) {
 			if(drawerLayout.isDrawerOpen(Gravity.RIGHT)){
 				drawerLayout.closeDrawer(Gravity.RIGHT);
 			}else {
 				drawerLayout.openDrawer(Gravity.RIGHT);
 			}
-			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

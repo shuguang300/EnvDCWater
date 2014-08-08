@@ -55,7 +55,7 @@ public class SystemParams {
 	 */
 	public HashMap<String, String> getLoggedUserInfo(Context context) {
 		if(mLoggedUserInfo==null){
-			SharedPreferences sp = context.getSharedPreferences(DCWaterApp.PREFERENCE_STRING, Context.MODE_PRIVATE);
+			SharedPreferences sp = context.getSharedPreferences(WaterApplication.PREFERENCE_STRING, Context.MODE_PRIVATE);
 			mLoggedUserInfo = OperationMethod.getLocalUserInfo(sp);
 		}
 		return mLoggedUserInfo;

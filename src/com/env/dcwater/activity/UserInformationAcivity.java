@@ -91,13 +91,11 @@ public class UserInformationAcivity extends NfcActivity implements OnClickListen
 	}
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.activity_userinfor_pic:
+		int id = v.getId();
+		if (id == R.id.activity_userinfor_pic) {
 			SystemMethod.startBigImageActivity(UserInformationAcivity.this, "");
-			break;
-		case R.id.activity_userinfor_logout:
+		} else if (id == R.id.activity_userinfor_logout) {
 			SystemMethod.logOut(UserInformationAcivity.this);
-			break;
 		}
 		
 	}

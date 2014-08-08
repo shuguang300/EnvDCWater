@@ -2,7 +2,7 @@ package com.env.dcwater.util;
 
 import java.io.File;
 import com.env.dcwater.component.CustomContextWrap;
-import com.env.dcwater.component.DCWaterApp;
+import com.env.dcwater.component.WaterApplication;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -39,7 +39,7 @@ public class SDCardSqliteHelp extends SQLiteOpenHelper{
 	public static String getDirPath(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator)
-		.append(DCWaterApp.ROOT_PATROL_PATH_STRING).append(File.separator).append(DCWaterApp.DB_PATROL_PATH_STRING);
+		.append(WaterApplication.ROOT_PATROL_PATH_STRING).append(File.separator).append(WaterApplication.DB_PATROL_PATH_STRING);
 		return sb.toString();
 	}
 

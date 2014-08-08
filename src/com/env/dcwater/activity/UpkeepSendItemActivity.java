@@ -248,8 +248,8 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.activity_upkeepsenditem_send:
+		int id = v.getId();
+		if (id == R.id.activity_upkeepsenditem_send) {
 			if(mUpdateConfirm==null){
 				mUpdateConfirm = new AlertDialog.Builder(UpkeepSendItemActivity.this);
 			}
@@ -267,8 +267,7 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 			}).setNegativeButton("取消", null);
 			mUpdateConfirm.create();
 			mUpdateConfirm.show();
-			break;
-		case R.id.activity_upkeepsenditem_needfinishtime_tr:
+		} else if (id == R.id.activity_upkeepsenditem_needfinishtime_tr) {
 			if(dateTimePickerView==null){
 				dateTimePickerView = new DateTimePickerView(UpkeepSendItemActivity.this);
 			}
@@ -297,14 +296,12 @@ public class UpkeepSendItemActivity extends NfcActivity implements OnClickListen
 			dateTimePickerView.iniWheelView(fualtTimeCL);
 			dateTimePickerView.showAtLocation(findViewById(R.id.activity_upkeepsenditem_main), Gravity.BOTTOM, 0, 0);
 			tvNeedFinishTime.setCompoundDrawables(null, null, null, null);
-			break;
-		case R.id.activity_upkeepsenditem_taskdetail_tr:
+		} else if (id == R.id.activity_upkeepsenditem_taskdetail_tr) {
 			HashMap<String, String> taskdetail= new HashMap<String, String>();
 			taskdetail.put("Name", "备注");
 			taskdetail.put("Key", "TaskDetail");
 			taskdetail.put("Value", tvTaskDetail.getText().toString());
 			startDataInputActivity(taskdetail);
-			break;
 		}
 	}
 }

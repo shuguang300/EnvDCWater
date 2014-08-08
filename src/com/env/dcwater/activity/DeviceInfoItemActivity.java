@@ -315,19 +315,15 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
+		int itemId = item.getItemId();
+		if (itemId == android.R.id.home) {
 			onBackPressed();
-			break;
-		case R.id.menu_deviceinfoitem_refresh:
+		} else if (itemId == R.id.menu_deviceinfoitem_refresh) {
 			onRefresh();
-			break;
-		case R.id.menu_deviceinfoitem_maintainhistory:
+		} else if (itemId == R.id.menu_deviceinfoitem_maintainhistory) {
 			startMaintainHistoryActivity();
-			break;
-		case R.id.menu_deviceinfoitem_upkeephistory:
+		} else if (itemId == R.id.menu_deviceinfoitem_upkeephistory) {
 			startUpkeepHistoryActivity();
-			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -593,22 +589,16 @@ public class DeviceInfoItemActivity extends NfcActivity implements IXListViewLis
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		switch (checkedId) {
-		case R.id.activity_deviceinfoitem_title_property:
+		if (checkedId == R.id.activity_deviceinfoitem_title_property) {
 			viewPager.setCurrentItem(0);
-			break;
-		case R.id.activity_deviceinfoitem_title_manage:
+		} else if (checkedId == R.id.activity_deviceinfoitem_title_manage) {
 			viewPager.setCurrentItem(1);
-			break;
-		case R.id.activity_deviceinfoitem_title_params:
+		} else if (checkedId == R.id.activity_deviceinfoitem_title_params) {
 			viewPager.setCurrentItem(2);
-			break;
-		case R.id.activity_deviceinfoitem_title_statu:
+		} else if (checkedId == R.id.activity_deviceinfoitem_title_statu) {
 			viewPager.setCurrentItem(3);
-			break;
-		case R.id.activity_deviceinfoitem_title_file:
+		} else if (checkedId == R.id.activity_deviceinfoitem_title_file) {
 			viewPager.setCurrentItem(4);
-			break;
 		}
 	}
 	

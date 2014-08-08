@@ -805,24 +805,21 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			onBackPressed();	
-			break;
-		case R.id.contextmenu_taskstate_flow:
+		int itemId = item.getItemId();
+		if (itemId == android.R.id.home) {
+			onBackPressed();
+		} else if (itemId == R.id.contextmenu_taskstate_flow) {
 			Intent flow = new Intent(RepairTaskStateFlowActivity.ACTION_STRING);
 			flow.putExtra("data", receivedData);
 			flow.putExtra("TaskType", EnumList.TaskType.TYPE_REPAIR_INT);
 			startActivityForResult(flow, 0);
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-			break;
-		case R.id.contextmenu_taskstate_workflow:
+		} else if (itemId == R.id.contextmenu_taskstate_workflow) {
 			Intent workflow = new Intent(TaskStateWorkFlowActivity.ACTION_STRING);
 			workflow.putExtra("data", receivedData);
 			workflow.putExtra("TaskType", EnumList.TaskType.TYPE_REPAIR_INT);
 			startActivityForResult(workflow, 0);
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -934,13 +931,12 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 		if(methodName.equals(RepairManageActivity.METHOD_HISTORY_STRING)||methodName.equals(RepairManageActivity.METHOD_DETAIL_STRING)){
 			
 		}else {
-			switch (v.getId()) {
-			case R.id.activity_repairmanageitem_name_tr:
+			int id = v.getId();
+			if (id == R.id.activity_repairmanageitem_name_tr) {
 				Intent intent = new Intent(this, DeviceSelectActivity.class);
 				intent.putExtra("data", receivedData);
 				startActivityForResult(intent, 1);
-				break;
-			case R.id.activity_repairmanageitem_faulttime_tr:
+			} else if (id == R.id.activity_repairmanageitem_faulttime_tr) {
 				etFaultTime.setCompoundDrawables(null, null, null, null);
 				if(dateTimePickerView==null){
 					dateTimePickerView = new DateTimePickerView(RepairManageItemActivity.this);
@@ -969,8 +965,7 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				fualtTimeCL.setTime(mFaultTime);
 				dateTimePickerView.iniWheelView(fualtTimeCL);
 				dateTimePickerView.showAtLocation(findViewById(R.id.activity_repairmanageitem_main), Gravity.BOTTOM, 0, 0);
-				break;
-			case R.id.view_repair_report_finishtime_tr:
+			} else if (id == R.id.view_repair_report_finishtime_tr) {
 				EPtvFinishTime.setCompoundDrawables(null, null, null, null);
 				if(!EPtvFinishTime.getText().toString().equals("")){
 					try {
@@ -1007,15 +1002,13 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					dateTimePickerView.iniWheelView(finishTimeCl);
 					dateTimePickerView.showAtLocation(findViewById(R.id.activity_repairmanageitem_main), Gravity.BOTTOM, 0, 0);
 				}
-				break;
-			case R.id.activity_repairmanageitem_faultphenomenon_tr:
+			} else if (id == R.id.activity_repairmanageitem_faultphenomenon_tr) {
 				HashMap<String, String> faultphenomenon = new HashMap<String, String>();
 				faultphenomenon.put("Key", "AccidentDetail");
 				faultphenomenon.put("Name", "故障现象");
 				faultphenomenon.put("Value", receivedData.get("AccidentDetail"));
 				startDataInputActivity(faultphenomenon);
-				break;
-			case R.id.activity_repairmanageitem_handlestep_tr:
+			} else if (id == R.id.activity_repairmanageitem_handlestep_tr) {
 				if(mHandleContent == null){
 					mHandleContent = new Builder(RepairManageItemActivity.this);
 					mHandleContent.setTitle("应急措施选择").setCancelable(false);
@@ -1047,71 +1040,61 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				});
 				mHandleContent.create();
 				mHandleContent.show();
-				break;
-			case R.id.activity_repairmanageitem_otherstep_tr:
+			} else if (id == R.id.activity_repairmanageitem_otherstep_tr) {
 				HashMap<String, String> otherstep = new HashMap<String, String>();
 				otherstep.put("Key", "Otherstep");
 				otherstep.put("Name", "其他措施");
 				otherstep.put("Value", etOtherStep.getText().toString());
 				startDataInputActivity(otherstep);
-				break;
-			case R.id.view_repair_send_repairtimecost_tr:
+			} else if (id == R.id.view_repair_send_repairtimecost_tr) {
 				HashMap<String, String> repairtimecost = new HashMap<String, String>();
 				repairtimecost.put("Key", "RequiredManHours");
 				repairtimecost.put("Name", "所需工时");
 				repairtimecost.put("Value", receivedData.get("RequiredManHours"));
 				startDataInputActivity(repairtimecost);
-				break;
-			case R.id.view_repair_send_repaircontent_tr:
+			} else if (id == R.id.view_repair_send_repaircontent_tr) {
 				HashMap<String, String> repaircontent = new HashMap<String, String>();
 				repaircontent.put("Key", "TaskDetail");
 				repaircontent.put("Name", "维修内容及要求");
 				repaircontent.put("Value", receivedData.get("TaskDetail"));
 				startDataInputActivity(repaircontent);
-				break;
-			case R.id.view_repair_report_result_tr:
+			} else if (id == R.id.view_repair_report_result_tr) {
 				HashMap<String, String> repairresult = new HashMap<String, String>();
 				repairresult.put("Key", "RepairDetail");
 				repairresult.put("Name", "工作完成情况及处理措施");
 				repairresult.put("Value", receivedData.get("RepairDetail"));
 				startDataInputActivity(repairresult);
-				break;
-			case R.id.view_repair_report_thing_tr:
+			} else if (id == R.id.view_repair_report_thing_tr) {
 				HashMap<String, String> repairthingcost = new HashMap<String, String>();
 				repairthingcost.put("Key", "AccessoryUsed");
 				repairthingcost.put("Name", "物品备件使用情况");
 				repairthingcost.put("Value", receivedData.get("AccessoryUsed"));
 				startDataInputActivity(repairthingcost);
-				break;
-			case R.id.view_repair_ddopinion_money_tr:
+			} else if (id == R.id.view_repair_ddopinion_money_tr) {
 				HashMap<String, String> repairmoneycost = new HashMap<String, String>();
 				repairmoneycost.put("Key", "RepairCost");
 				repairmoneycost.put("Name", "维修金额");
 				repairmoneycost.put("Value", receivedData.get("RepairCost"));
 				startDataInputActivity(repairmoneycost);
-				break;
-			case R.id.view_repair_ddopinion_opinion_tr:
+			} else if (id == R.id.view_repair_ddopinion_opinion_tr) {
 				HashMap<String, String> equipmentopinion = new HashMap<String, String>();
 				equipmentopinion.put("Key", "DDOpinion");
 				equipmentopinion.put("Name", "设备科意见");
 				equipmentopinion.put("Value", receivedData.get("DDOpinion"));
 				startDataInputActivity(equipmentopinion);
-				break;
-			case R.id.view_repair_pdopinion_opinion_tr:
+			} else if (id == R.id.view_repair_pdopinion_opinion_tr) {
 				HashMap<String, String> productionopinion = new HashMap<String, String>();
 				productionopinion.put("Key", "PDOpinion");
 				productionopinion.put("Name", "生产科意见");
 				productionopinion.put("Value", receivedData.get("PDOpinion"));
 				startDataInputActivity(productionopinion);
-				break;
-			case R.id.view_repair_pmopinion_opinion_tr:
+			} else if (id == R.id.view_repair_pmopinion_opinion_tr) {
 				HashMap<String, String> plantopinion = new HashMap<String, String>();
 				plantopinion.put("Key", "PMOpinion");
 				plantopinion.put("Name", "厂领导意见");
 				plantopinion.put("Value", receivedData.get("PMOpinion"));
 				startDataInputActivity(plantopinion);
-				break;
-			case R.id.view_repair_pmopinion_state_tr:
+			} else if (id == R.id.view_repair_pmopinion_state_tr) {
 				if(backStates==null){
 					backStates = getResources().getStringArray(R.array.pm_allow_state);
 				}
@@ -1129,9 +1112,8 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 					}
 				});
 				stateListDialog.show();
-				break;
-			case R.id.activity_repairmanageitem_submit:
-			case R.id.view_repair_submit:
+			} else if (id == R.id.activity_repairmanageitem_submit
+					|| id == R.id.view_repair_submit) {
 				if(mUpdateConfirm==null){
 					mUpdateConfirm = new AlertDialog.Builder(RepairManageItemActivity.this);
 				}
@@ -1144,7 +1126,6 @@ public class RepairManageItemActivity extends NfcActivity implements OnClickList
 				}).setNegativeButton("取消", null);
 				mUpdateConfirm.create();
 				mUpdateConfirm.show();
-				break;
 			}
 		}
 	}

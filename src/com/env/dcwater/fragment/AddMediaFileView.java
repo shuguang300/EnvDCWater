@@ -2,7 +2,7 @@ package com.env.dcwater.fragment;
 import java.io.File;
 import java.util.Calendar;
 import com.env.dcwater.R;
-import com.env.dcwater.component.DCWaterApp;
+import com.env.dcwater.component.WaterApplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -79,7 +79,7 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 	 */
 	private void iniPath(){
 		String pathLevel1 = Environment.getExternalStorageDirectory().getAbsolutePath();
-		String pathLevel2 = pathLevel1+File.separator+DCWaterApp.ROOT_PATH_STRING+File.separator+DCWaterApp.PICTURE_PATH_STRING;
+		String pathLevel2 = pathLevel1+File.separator+WaterApplication.ROOT_PATH_STRING+File.separator+WaterApplication.PICTURE_PATH_STRING;
 		File folder = new File(pathLevel2);
 		if(!folder.exists()){
 			folder.mkdirs();
@@ -90,38 +90,32 @@ public class AddMediaFileView extends PopupWindow implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.view_addmediafile_voice:
+		int id = v.getId();
+		if (id == R.id.view_addmediafile_voice) {
 			Toast.makeText(mContext, "添加录音", Toast.LENGTH_SHORT).show();
-			break;
-		case R.id.view_addmediafile_takephoto:
+		} else if (id == R.id.view_addmediafile_takephoto) {
 			String newPicturePath = folderPath+File.separator+Calendar.getInstance().getTimeInMillis()+".jpg";
 			File newPictureFile = new File(newPicturePath);
 			Intent capture = new Intent();
 			capture.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
 			capture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newPictureFile));
 			((Activity)mContext).startActivityForResult(capture,0);
-			break;
-		case R.id.view_addmediafile_photo:
+		} else if (id == R.id.view_addmediafile_photo) {
 			Intent photo = new Intent();
 			photo.setAction(Intent.ACTION_GET_CONTENT);
 			photo.addCategory(Intent.CATEGORY_OPENABLE);
 			photo.setType("image/*");
 			((Activity)mContext).startActivityForResult(photo, 0);
-			break;
-		case R.id.view_addmediafile_video:
+		} else if (id == R.id.view_addmediafile_video) {
 			Toast.makeText(mContext, "添加视频", Toast.LENGTH_SHORT).show();
-			break;
-		case R.id.view_addmediafile_file:
+		} else if (id == R.id.view_addmediafile_file) {
 			Intent fileIntent = new Intent();
 			fileIntent.setAction(android.content.Intent.ACTION_GET_CONTENT);
 			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator);
 			fileIntent.setDataAndType(Uri.fromFile(file), "file/*");
 			((Activity)mContext).startActivityForResult(fileIntent,0);
-			break;
-		case R.id.view_addmediafile_location:
+		} else if (id == R.id.view_addmediafile_location) {
 			Toast.makeText(mContext, "添加位置", Toast.LENGTH_SHORT).show();
-			break;
 		}
 	}
 

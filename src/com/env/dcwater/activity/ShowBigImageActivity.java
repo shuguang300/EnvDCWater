@@ -7,7 +7,7 @@ import android.os.Environment;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import com.env.dcwater.R;
-import com.env.dcwater.component.DCWaterApp;
+import com.env.dcwater.component.WaterApplication;
 import com.env.dcwater.component.NfcActivity;
 
 public class ShowBigImageActivity extends NfcActivity{
@@ -29,7 +29,7 @@ public class ShowBigImageActivity extends NfcActivity{
 			if(Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)){
 				StringBuilder sb = new StringBuilder();
 				sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator)
-				.append(DCWaterApp.ROOT_PATH_STRING).append(File.separator).append(DCWaterApp.CACHE_PATH_STRING)
+				.append(WaterApplication.ROOT_PATH_STRING).append(File.separator).append(WaterApplication.CACHE_PATH_STRING)
 				.append(File.separator).append(fileName);
 				file = new File(sb.toString());
 				if(file.exists()){

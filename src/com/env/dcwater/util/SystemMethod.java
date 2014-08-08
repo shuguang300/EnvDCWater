@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import com.env.dcwater.R;
 import com.env.dcwater.activity.LoginActivity;
 import com.env.dcwater.activity.ShowBigImageActivity;
-import com.env.dcwater.component.DCWaterApp;
+import com.env.dcwater.component.WaterApplication;
 import com.env.dcwater.component.SystemParams;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -68,7 +68,7 @@ public class SystemMethod {
 	
 	public static String getLocalTempPath(){
 		String root = Environment.getExternalStorageDirectory().getAbsolutePath();
-		String result = root+File.separator+DCWaterApp.ROOT_PATH_STRING+File.separator+DCWaterApp.CACHE_PATH_STRING;
+		String result = root+File.separator+WaterApplication.ROOT_PATH_STRING+File.separator+WaterApplication.CACHE_PATH_STRING;
 		return result;
 	}
 	
@@ -223,8 +223,8 @@ public class SystemMethod {
 		adb.setPositiveButton("确定", new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Editor editor = context.getSharedPreferences(DCWaterApp.PREFERENCE_STRING, Context.MODE_PRIVATE).edit();
-				editor.putBoolean(DCWaterApp.PREFERENCE_ISLOGIN_STRING, false);
+				Editor editor = context.getSharedPreferences(WaterApplication.PREFERENCE_STRING, Context.MODE_PRIVATE).edit();
+				editor.putBoolean(WaterApplication.PREFERENCE_ISLOGIN_STRING, false);
 				editor.commit();
 				SystemParams.getInstance().setLoggedUserInfo(null);
 				context.startActivity(new Intent(LoginActivity.ACTION_STRING));
@@ -293,7 +293,7 @@ public class SystemMethod {
 	public static String getDownloadFileFolderPath(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator)
-		.append(DCWaterApp.ROOT_PATH_STRING).append(File.separator).append(DCWaterApp.FILES_PATH_STRING);
+		.append(WaterApplication.ROOT_PATH_STRING).append(File.separator).append(WaterApplication.FILES_PATH_STRING);
 		return sb.toString();
 	}
 	/**
@@ -312,8 +312,8 @@ public class SystemMethod {
 	 */
 	public static String getLogFileFolderPath(){
 		StringBuilder sb = new StringBuilder();
-		sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator).append(DCWaterApp.ROOT_PATH_STRING)
-		.append(File.separator).append(DCWaterApp.LOG_PATH_STRING);
+		sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator).append(WaterApplication.ROOT_PATH_STRING)
+		.append(File.separator).append(WaterApplication.LOG_PATH_STRING);
 		return sb.toString();
 	}
 	
@@ -324,7 +324,7 @@ public class SystemMethod {
 	public static String getDownloadPngFolderPath(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append(File.separator)
-		.append(DCWaterApp.ROOT_PATH_STRING).append(File.separator).append(DCWaterApp.CACHE_PATH_STRING);
+		.append(WaterApplication.ROOT_PATH_STRING).append(File.separator).append(WaterApplication.CACHE_PATH_STRING);
 		return sb.toString();
 	}
 	/**

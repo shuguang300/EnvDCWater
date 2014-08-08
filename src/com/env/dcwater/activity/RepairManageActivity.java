@@ -437,25 +437,21 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
+		int itemId = item.getItemId();
+		if (itemId == android.R.id.home) {
 			onBackPressed();
-			break;
-		case R.id.menu_repairmanage_add:
+		} else if (itemId == R.id.menu_repairmanage_add) {
 			sendIntent(REPAIRMANAGE_ADD_INTEGER, null);
-			break;
-		case R.id.menu_repairmanage_filter:
+		} else if (itemId == R.id.menu_repairmanage_filter) {
 			isFilter = !isFilter;
 			item.setChecked(isFilter);
 			getServerTaskData();
-			break;
-		case R.id.menu_repairmanage_drawlayout:
+		} else if (itemId == R.id.menu_repairmanage_drawlayout) {
 			if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
 				mDrawerLayout.closeDrawer(Gravity.RIGHT);
 			} else {
 				mDrawerLayout.openDrawer(Gravity.RIGHT);
 			}
-			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -476,21 +472,19 @@ public class RepairManageActivity extends NfcActivity implements IXListViewListe
 //		 获得contextmenu的触发控件
 		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
 	    int selectedPos = info.position-1;
-	    switch (item.getItemId()) {
-		case R.id.contextmenu_taskstate_flow:
+	    int itemId = item.getItemId();
+		if (itemId == R.id.contextmenu_taskstate_flow) {
 			Intent flow = new Intent(RepairTaskStateFlowActivity.ACTION_STRING);
 			flow.putExtra("data", mData.get(selectedPos));
 			flow.putExtra("TaskType", EnumList.TaskType.TYPE_REPAIR_INT);
 			startActivityForResult(flow, 0);
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-			break;
-		case R.id.contextmenu_taskstate_workflow:
+		} else if (itemId == R.id.contextmenu_taskstate_workflow) {
 			Intent workflow = new Intent(TaskStateWorkFlowActivity.ACTION_STRING);
 			workflow.putExtra("data", mData.get(selectedPos));
 			workflow.putExtra("TaskType", EnumList.TaskType.TYPE_REPAIR_INT);
 			startActivityForResult(workflow, 0);
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-			break;
 		}
 		return super.onContextItemSelected(item);
 	}

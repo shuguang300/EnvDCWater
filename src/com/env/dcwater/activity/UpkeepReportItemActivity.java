@@ -221,24 +221,21 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			onBackPressed();	
-			break;
-		case R.id.contextmenu_taskstate_flow:
+		int itemId = item.getItemId();
+		if (itemId == android.R.id.home) {
+			onBackPressed();
+		} else if (itemId == R.id.contextmenu_taskstate_flow) {
 			Intent flow = new Intent(MaintainTaskStateFlowAcivity.ACTION_STRING);
 			flow.putExtra("data", receivedData);
 			flow.putExtra("TaskType", EnumList.TaskType.TYPE_MAINTAIN_INT);
 			startActivityForResult(flow, 0);
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-			break;
-		case R.id.contextmenu_taskstate_workflow:
+		} else if (itemId == R.id.contextmenu_taskstate_workflow) {
 			Intent workflow = new Intent(TaskStateWorkFlowActivity.ACTION_STRING);
 			workflow.putExtra("data", receivedData);
 			workflow.putExtra("TaskType", EnumList.TaskType.TYPE_MAINTAIN_INT);
 			startActivityForResult(workflow, 0);
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -280,29 +277,26 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.activity_upkeepreportitem_maintainperson_tr:
+		int id = v.getId();
+		if (id == R.id.activity_upkeepreportitem_maintainperson_tr) {
 			HashMap<String, String> mtperson= new HashMap<String, String>();
 			mtperson.put("Name", "养护人");
 			mtperson.put("Key", "MaintainPerson");
 			mtperson.put("Value", tvMTPerson.getText().toString());
 			startDataInputActivity(mtperson);
-			break;
-		case R.id.activity_upkeepreportitem_actualhour_tr:
+		} else if (id == R.id.activity_upkeepreportitem_actualhour_tr) {
 			HashMap<String, String> actualhour= new HashMap<String, String>();
 			actualhour.put("Name", "实际工时");
 			actualhour.put("Key", "ActualManHours");
 			actualhour.put("Value", tvActualHour.getText().toString());
 			startDataInputActivity(actualhour);
-			break;
-		case R.id.activity_upkeepreportitem_maintainresult_tr:
+		} else if (id == R.id.activity_upkeepreportitem_maintainresult_tr) {
 			HashMap<String, String> mtresult= new HashMap<String, String>();
 			mtresult.put("Name", "完成情况");
 			mtresult.put("Key", "TaskDetail");
 			mtresult.put("Value", tvMTResult.getText().toString());
 			startDataInputActivity(mtresult);
-			break;
-		case  R.id.activity_upkeepreportitem_report:
+		} else if (id == R.id.activity_upkeepreportitem_report) {
 			if(mUpdateConfirm==null){
 				mUpdateConfirm = new AlertDialog.Builder(UpkeepReportItemActivity.this);
 			}
@@ -320,7 +314,6 @@ public class UpkeepReportItemActivity extends NfcActivity implements OnClickList
 			}).setNegativeButton("取消", null);
 			mUpdateConfirm.create();
 			mUpdateConfirm.show();
-			break;
 		}
 	}
 	

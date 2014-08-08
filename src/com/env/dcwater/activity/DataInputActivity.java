@@ -111,19 +111,16 @@ public class DataInputActivity extends NfcActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
+		int itemId = item.getItemId();
+		if (itemId == android.R.id.home) {
 			onBackPressed();
-			break;
-		case R.id.menu_datainput_save:
+		} else if (itemId == R.id.menu_datainput_save) {
 			addMediaFileView.dismiss();
 			setResult(RESULT_OK, sendDataBack());
 			finish();
-			break;
-		case R.id.menu_datainput_add:
+		} else if (itemId == R.id.menu_datainput_add) {
 			SystemMethod.hideSoftInput(DataInputActivity.this);
 			showMediaFilePanel();
-			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

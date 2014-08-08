@@ -14,7 +14,7 @@ import android.os.Environment;
  * @author sk
  * 
  */
-public class DCWaterApp extends Application {
+public class WaterApplication extends Application {
 
 	private File cache, files,logs;
 
@@ -110,14 +110,6 @@ public class DCWaterApp extends Application {
 		}
 		ed.putBoolean(PREFERENCE_FIRSTRUN_STRING, false);
 		ed.commit();
-//		ContentResolver resolver = getContentResolver();
-//		Uri uri = Uri.parse("content://com.envmobile.user");
-//		Cursor c = resolver.query(uri, null, null, null, null);
-//		c.moveToFirst();
-//		for (int i = 0; i < c.getCount(); i++) {
-//			System.out.println(c.getColumnName(2)+":"+c.getString(2));
-//		}
-//		c.close();
 	}
 
 	@Override

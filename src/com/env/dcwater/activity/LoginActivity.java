@@ -21,7 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.env.dcwater.R;
-import com.env.dcwater.component.DCWaterApp;
+import com.env.dcwater.component.WaterApplication;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.component.SystemParams;
 import com.env.dcwater.util.DataCenterHelper;
@@ -53,7 +53,7 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 		
 		ini();
 		
-		if(sp.getBoolean(DCWaterApp.PREFERENCE_ISLOGIN_STRING, false)){
+		if(sp.getBoolean(WaterApplication.PREFERENCE_ISLOGIN_STRING, false)){
 			user = OperationMethod.getLocalUserInfo(sp);
 			accountView.setText(user.get("UserName"));
 			passwordView.setText(user.get("UserPassword"));
@@ -103,7 +103,7 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	 * 初始化控件，设置控件的点击事件和数据
 	 */
 	private void ini(){
-		sp = getSharedPreferences(DCWaterApp.PREFERENCE_STRING, Context.MODE_PRIVATE);
+		sp = getSharedPreferences(WaterApplication.PREFERENCE_STRING, Context.MODE_PRIVATE);
 		editor = sp.edit();
 		
 		loginButton = (Button)findViewById(R.id.activity_login_submit);
@@ -119,7 +119,7 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 	 * 登录成功，进入到MainActivity界面
 	 */
 	private void entranceMainActivity(){
-		userRightIntent = new Intent(LoginActivity.this, MainActivity.class);
+		userRightIntent = new Intent(LoginActivity.this, WaterMainActivity.class);
 		startActivity(userRightIntent);
 		overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out); 
 		finish();
@@ -179,14 +179,12 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.activity_login_submit:
+		int id = v.getId();
+		if (id == R.id.activity_login_submit) {
 			startLogin();
-			break;
-		case R.id.activity_login_reset:
+		} else if (id == R.id.activity_login_reset) {
 			accountView.setText("");
 			passwordView.setText("");
-			break;
 		}
 	}
 	@Override

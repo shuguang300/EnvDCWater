@@ -92,7 +92,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		mActionBar = getActionBar();
 		SystemMethod.setActionBarHomeButton(true, mActionBar);
 		//判断是否是所有设备的维修历史
-		if(receivedAction.equals(MainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
+		if(receivedAction.equals(WaterMainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
 			mActionBar.setTitle("维修历史记录");
 		}else if (receivedAction.equals(DeviceInfoItemActivity.ACTION_STRING)) {
 			mActionBar.setTitle(receivedData.get("DeviceName")+"维修历史记录");
@@ -194,7 +194,7 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 		String consName = filterData[2];
 		String plantID = SystemParams.PLANTID_INT+"";
 		getServerTaskHistoryData = new GetServerTaskHistoryData();
-		if(receivedAction.equals(MainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
+		if(receivedAction.equals(WaterMainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
 			getServerTaskHistoryData.execute(plantID,startTime,endTime,"",consName);
 		}else if (receivedAction.equals(DeviceInfoItemActivity.ACTION_STRING)) {
 			getServerTaskHistoryData.execute(plantID,startTime,endTime,receivedData.get("DeviceID"),consName);
@@ -272,17 +272,15 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
+		int itemId = item.getItemId();
+		if (itemId == android.R.id.home) {
 			onBackPressed();
-			break;
-		case R.id.menu_maintainhistory_showdraw:
+		} else if (itemId == R.id.menu_maintainhistory_showdraw) {
 			if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
 				mDrawerLayout.closeDrawer(Gravity.RIGHT);
 			}else {
 				mDrawerLayout.openDrawer(Gravity.RIGHT);
 			}
-			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -304,21 +302,19 @@ public class MaintainHistoryActivity extends NfcActivity implements IXListViewLi
 //		 获得contextmenu的触发控件
 		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
 	    int selectedPos = info.position-1;
-	    switch (item.getItemId()) {
-		case R.id.contextmenu_taskstate_flow:
+	    int itemId = item.getItemId();
+		if (itemId == R.id.contextmenu_taskstate_flow) {
 			Intent flow = new Intent(RepairTaskStateFlowActivity.ACTION_STRING);
 			flow.putExtra("data", mHistoryArrayList.get(selectedPos));
 			flow.putExtra("TaskType", EnumList.TaskType.TYPE_REPAIR_INT);
 			startActivityForResult(flow, 0);
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-			break;
-		case R.id.contextmenu_taskstate_workflow:
+		} else if (itemId == R.id.contextmenu_taskstate_workflow) {
 			Intent workflow = new Intent(TaskStateWorkFlowActivity.ACTION_STRING);
 			workflow.putExtra("data", mHistoryArrayList.get(selectedPos));
 			workflow.putExtra("TaskType", EnumList.TaskType.TYPE_REPAIR_INT);
 			startActivityForResult(workflow, 0);
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-			break;
 		}
 		return super.onContextItemSelected(item);
 	}

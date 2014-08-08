@@ -77,7 +77,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	private void iniActionBar(){
 		mActionBar = getActionBar();
 		SystemMethod.setActionBarHomeButton(true, mActionBar);
-		if(receivedAction.equals(MainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
+		if(receivedAction.equals(WaterMainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
 			mActionBar.setTitle("养护历史记录");
 		}else if (receivedAction.equals(DeviceInfoItemActivity.ACTION_STRING)) {
 			mActionBar.setTitle(receivedData.get("DeviceName")+"养护历史记录");
@@ -193,7 +193,7 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 		String consName = filterData[2];
 		String plantID = SystemParams.PLANTID_INT+"";
 		getUpkeepHistoryData = new GetUpkeepHistoryData();
-		if(receivedAction.equals(MainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
+		if(receivedAction.equals(WaterMainActivity.ACTION_STRING)||receivedAction.equals(DeviceInfoListActivity.ACTION_STRING)){
 			getUpkeepHistoryData.execute(plantID,startTime,endTime,"",consName);
 		}else if (receivedAction.equals(DeviceInfoItemActivity.ACTION_STRING)) {
 			getUpkeepHistoryData.execute(plantID,startTime,endTime,receivedData.get("DeviceID"),consName);
@@ -273,17 +273,15 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
+		int itemId = item.getItemId();
+		if (itemId == android.R.id.home) {
 			onBackPressed();
-			break;
-		case R.id.menu_upkeephistory_showdraw:
+		} else if (itemId == R.id.menu_upkeephistory_showdraw) {
 			if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
 				mDrawerLayout.closeDrawer(Gravity.RIGHT);
 			}else {
 				mDrawerLayout.openDrawer(Gravity.RIGHT);
 			}
-			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -333,21 +331,19 @@ public class UpkeepHistoryActivity extends NfcActivity implements OnItemClickLis
 //		 获得contextmenu的触发控件
 		AdapterContextMenuInfo info=(AdapterContextMenuInfo)item.getMenuInfo();
 	    int selectedPos = info.position-1;
-	    switch (item.getItemId()) {
-		case R.id.contextmenu_taskstate_flow:
+	    int itemId = item.getItemId();
+		if (itemId == R.id.contextmenu_taskstate_flow) {
 			Intent flow = new Intent(MaintainTaskStateFlowAcivity.ACTION_STRING);
 			flow.putExtra("data", mData.get(selectedPos));
 			flow.putExtra("TaskType", EnumList.TaskType.TYPE_MAINTAIN_INT);
 			startActivityForResult(flow, 0);
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-			break;
-		case R.id.contextmenu_taskstate_workflow:
+		} else if (itemId == R.id.contextmenu_taskstate_workflow) {
 			Intent workflow = new Intent(TaskStateWorkFlowActivity.ACTION_STRING);
 			workflow.putExtra("data", mData.get(selectedPos));
 			workflow.putExtra("TaskType", EnumList.TaskType.TYPE_MAINTAIN_INT);
 			startActivityForResult(workflow, 0);
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-			break;
 		}
 		return super.onContextItemSelected(item);
 	}

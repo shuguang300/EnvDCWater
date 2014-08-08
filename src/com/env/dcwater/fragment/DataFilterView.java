@@ -298,8 +298,8 @@ public class DataFilterView extends LinearLayout{
 	private class TableRowClickListen implements OnClickListener{
 		@Override
 		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.view_datafilter_tablerow_fasttime:
+			int id = v.getId();
+			if (id == R.id.view_datafilter_tablerow_fasttime) {
 				if(mBuilder==null){
 					mBuilder = new Builder(mContext);
 					mBuilder.setCancelable(true);
@@ -314,8 +314,7 @@ public class DataFilterView extends LinearLayout{
 					}
 				});
 				mBuilder.create().show();
-				break;
-			case R.id.view_datafilter_tablerow_starttime:
+			} else if (id == R.id.view_datafilter_tablerow_starttime) {
 				if(dateTimePickerView==null){
 					dateTimePickerView = new DateTimePickerView(mContext);
 					dateTimePickerView.setShortDateView();
@@ -336,8 +335,7 @@ public class DataFilterView extends LinearLayout{
 				}, null);
 				dateTimePickerView.iniWheelView(mStartTime);
 				dateTimePickerView.showAtLocation(mView.findViewById(R.id.view_datafilter_tablerow_starttime), Gravity.BOTTOM, 0, 0);
-				break;
-			case R.id.view_datafilter_tablerow_endtime:
+			} else if (id == R.id.view_datafilter_tablerow_endtime) {
 				if(dateTimePickerView==null){
 					dateTimePickerView = new DateTimePickerView(mContext);
 					dateTimePickerView.setShortDateView();
@@ -358,8 +356,7 @@ public class DataFilterView extends LinearLayout{
 				}, null);
 				dateTimePickerView.iniWheelView(mEndTime);
 				dateTimePickerView.showAtLocation(mView.findViewById(R.id.view_datafilter_tablerow_starttime), Gravity.BOTTOM, 0, 0);
-				break;
-			case R.id.view_datafilter_tablerow_state:
+			} else if (id == R.id.view_datafilter_tablerow_state) {
 				if(mStateList!=null){
 					if (mBuilder == null) {
 						mBuilder = new Builder(mContext);
@@ -375,8 +372,7 @@ public class DataFilterView extends LinearLayout{
 					});
 					mBuilder.create().show();
 				}
-				break;
-			case R.id.view_datafilter_tablerow_pos:
+			} else if (id == R.id.view_datafilter_tablerow_pos) {
 				if (mPosList != null) {
 					if (mBuilder == null) {
 						mBuilder = new Builder(mContext);
@@ -392,7 +388,6 @@ public class DataFilterView extends LinearLayout{
 					});
 					mBuilder.create().show();
 				}
-				break;
 			}
 		}
 	}

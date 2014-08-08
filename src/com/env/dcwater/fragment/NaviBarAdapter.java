@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.env.dcwater.R;
-import com.env.dcwater.activity.MainActivity;
+import com.env.dcwater.activity.WaterMainActivity;
 import com.env.dcwater.javabean.EnumList.UserRight;
 import com.env.dcwater.util.SystemMethod;
 
@@ -91,7 +91,7 @@ public abstract class NaviBarAdapter extends BaseAdapter implements OnItemClickL
 //			}
 			try {
 				Intent intent = new Intent(mUserRightData.get(position-1).get(UserRight.RightAction));
-				intent.putExtra("action", MainActivity.ACTION_STRING);
+				intent.putExtra("action", WaterMainActivity.ACTION_STRING);
 				mContext.startActivity(intent);
 			} catch (ActivityNotFoundException e) {
 				Toast.makeText(mContext, "未找到对应的程序，请确保程序已正确安装", Toast.LENGTH_SHORT).show();

@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.view.Window;
 
 import com.env.dcwater.R;
-import com.env.dcwater.component.DCWaterApp;
+import com.env.dcwater.component.WaterApplication;
 import com.env.dcwater.component.NfcActivity;
 import com.env.dcwater.util.SystemMethod;
 
@@ -29,7 +29,7 @@ public class StartupActivity extends NfcActivity{
 			public void run() {
 				 startLogin();
 			}
-		}, DCWaterApp.StartupStayTime);
+		}, WaterApplication.StartupStayTime);
 	}
 	
 	@Override
