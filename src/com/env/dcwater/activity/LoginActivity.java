@@ -53,12 +53,12 @@ public class LoginActivity extends NfcActivity implements OnClickListener{
 		
 		ini();
 		
-		if(sp.getBoolean(WaterApplication.PREFERENCE_ISLOGIN_STRING, false)){
-			user = OperationMethod.getLocalUserInfo(sp);
-			accountView.setText(user.get("UserName"));
-			passwordView.setText(user.get("UserPassword"));
-			onClick(loginButton);
-		}
+//		if(sp.getBoolean(WaterApplication.PREFERENCE_ISLOGIN_STRING, false)){
+//			user = OperationMethod.getLocalUserInfo(sp);
+//			accountView.setText(user.get("UserName"));
+//			passwordView.setText(user.get("UserPassword"));
+//			onClick(loginButton);
+//		}
 		
 		
 	}

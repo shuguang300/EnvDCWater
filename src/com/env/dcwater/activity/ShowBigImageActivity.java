@@ -1,11 +1,13 @@
 package com.env.dcwater.activity;
 import java.io.File;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.MotionEvent;
 import android.widget.ImageView;
+
 import com.env.dcwater.R;
 import com.env.dcwater.component.WaterApplication;
 import com.env.dcwater.component.NfcActivity;
@@ -19,6 +21,9 @@ public class ShowBigImageActivity extends NfcActivity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+//		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//      this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_showbigimage);
 		imageView = (ImageView)findViewById(R.id.activity_showbigimage);
 		String fileName = getIntent().getExtras().getString("file");
